@@ -47,6 +47,8 @@ def unit_prices(model: str, when_utc: datetime | None = None) -> tuple[float, fl
 
 
 def call_cost(model: str, usage: dict, when_utc: datetime | None = None) -> float | None:
+    if usage and usage.get("cost") is not None:   # OpenRouter reports the exact charge per call
+        return float(usage["cost"])
     pr = unit_prices(model, when_utc)
     if not pr or not usage:
         return None

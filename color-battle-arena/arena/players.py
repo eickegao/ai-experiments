@@ -165,6 +165,53 @@ class DeepSeekPlayer(Player):
         return Reply(text, time.time() - t0, usage, prompt=obs, at=at)
 
 
+class OpenRouterPlayer(Player):
+    """Any model through OpenRouter (one key, one balance for every vendor). OpenAI-compatible chat API at
+    https://openrouter.ai/api/v1 with the unified `reasoning.effort` parameter; OpenRouter reports the exact USD cost of
+    each call in `usage.cost`, which we record instead of our own price table. Key: OPENROUTER_API_KEY.
+    Model ids: anthropic/claude-fable-5.1, openai/gpt-6-astra, google/gemini-4-argon, deepseek/deepseek-v4-pro …"""
+
+    vendor = "OpenRouter"
+
+    def __init__(self, model: str, effort: str = "high"):
+        import openai
+
+        self.client = openai.OpenAI(base_url="https://openrouter.ai/api/v1", api_key=os.environ["OPENROUTER_API_KEY"],
+                                    default_headers={"HTTP-Referer": "https://github.com/eickegao/ai-experiments", "X-Title": "Color Battle Arena"})
+        self.model, self.effort = model, effort
+        short = model.split("/")[-1]
+        label = {"anthropic": "Claude", "openai": "GPT", "google": "Gemini", "deepseek": "DeepSeek"}.get(model.split("/")[0], model.split("/")[0])
+        self.name = f"{label} ({short})"
+        self.vendor = f"{label} via OpenRouter"
+
+    def decide(self, system, obs) -> Reply:
+        import openai
+
+        t0, at = time.time(), _now()
+        try:
+            r = self.client.chat.completions.create(
+                model=self.model, max_tokens=6000,
+                messages=[{"role": "system", "content": system}, {"role": "user", "content": obs}],
+                extra_body={"reasoning": {"effort": self.effort}, "usage": {"include": True}},
+            )
+        except openai.APIError as e:
+            return Reply("", time.time() - t0, error=f"{type(e).__name__}: {e}", prompt=obs, at=at)
+        text = (r.choices[0].message.content or "") if r.choices else ""
+        u = r.usage
+        usage = {"input": getattr(u, "prompt_tokens", 0) or 0, "output": getattr(u, "completion_tokens", 0) or 0} if u else {}
+        det = getattr(u, "completion_tokens_details", None) if u else None
+        if det is not None and getattr(det, "reasoning_tokens", None) is not None:
+            usage["reasoning"] = det.reasoning_tokens
+        cost = getattr(u, "cost", None) if u else None
+        if cost is None and u is not None and hasattr(u, "model_extra"):
+            cost = (u.model_extra or {}).get("cost")
+        if cost is not None:
+            usage["cost"] = float(cost)
+        if not text and r.choices and getattr(r.choices[0], "finish_reason", "") == "length":
+            return Reply("", time.time() - t0, usage, error="max_tokens reached before any answer text", prompt=obs, at=at)
+        return Reply(text, time.time() - t0, usage, prompt=obs, at=at)
+
+
 class RandomPlayer(Player):
     """Dry runs: turns toward a random point, sometimes casts, sometimes answers garbage (to exercise the rejection path)."""
 
@@ -202,8 +249,10 @@ class BotPlayer(Player):
 
 
 def make_player(spec: str, effort: str = "high", seed: int = 0, slots: int = 0) -> Player:
-    """spec: claude[:<model>] | openai[:<model>] | gemini[:<model>] | deepseek[:<model>] | bot[:<eager>] | random"""
+    """spec: claude[:<model>] | openai[:<model>] | gemini[:<model>] | deepseek[:<model>] | or:<vendor/model> (OpenRouter) | bot[:<eager>] | random"""
     kind, _, arg = spec.partition(":")
+    if kind in ("or", "openrouter"):
+        return OpenRouterPlayer(arg or "anthropic/claude-fable-5.1", effort)
     if kind == "claude":
         return ClaudePlayer(arg or "claude-fable-5-1", effort)
     if kind == "openai":
