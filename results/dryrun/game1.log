@@ -1,0 +1,66 @@
+=== game1: White = Stockfish (50 ms)  |  Black = Random  |  verifier = python-chess + Stockfish 19
+  White try 1: 'e4' ok (0.1s)
+1. e4      eval   +0.37  best e4    
+  Black try 1: 'g5' ok (0.0s)
+1... g5      eval   +2.06  best e5     mistake
+  White try 1: 'd4' ok (0.1s)
+2. d4      eval   +1.93  best d4    
+  Black try 1: 'Qh9' ILLEGAL (0.0s)
+  Black try 2: 'e5' ok (0.0s)
+2... e5      eval   +3.58  best h6     mistake
+  White try 1: 'Nf3' ok (0.1s)
+3. Nf3     eval   +2.96  best Nf3   
+  Black try 1: 'd5' ok (0.0s)
+3... d5      eval   +4.24  best h6     mistake
+  White try 1: 'Nc3' ok (0.1s)
+4. Nc3     eval   +4.21  best Nxe5  
+  Black try 1: 'a6' ok (0.0s)
+4... a6      eval   +6.22  best dxe4   BLUNDER
+  White try 1: 'Bxg5' ok (0.1s)
+5. Bxg5    eval   +5.70  best Bxg5  
+  Black try 1: 'Qf6' ok (0.0s)
+5... Qf6     eval   +9.64  best f6     BLUNDER
+  White try 1: 'Bxf6' ok (0.1s)
+6. Bxf6    eval   +8.86  best Bxf6  
+  Black try 1: 'Ba3' ok (0.0s)
+6... Ba3     eval  +10.42  best Nxf6   mistake
+  White try 1: 'Bxh8' ok (0.1s)
+7. Bxh8    eval  +11.63  best Bxh8  
+  Black try 1: 'Kd7' ok (0.0s)
+7... Kd7     eval  +13.76  best Bd6   
+  White try 1: 'Nxe5+' ok (0.1s)
+8. Nxe5+   eval  +15.17  best bxa3  
+  Black try 1: 'Ke7' ok (0.0s)
+8... Ke7     eval  +15.17  best Ke8   
+  White try 1: 'bxa3' ok (0.1s)
+9. bxa3    eval  +15.94  best Nxd5+ 
+  Black try 1: 'f6' ok (0.0s)
+9... f6      eval  +17.04  best Kf8   
+  White try 1: 'Nxd5+' ok (0.1s)
+10. Nxd5+   eval  +17.68  best Nxd5+ 
+  Black try 1: 'Kd6' ok (0.0s)
+10... Kd6     eval  +18.49  best Kd6   
+  White try 1: 'Nf7+' ok (0.1s)
+11. Nf7+    eval  +23.73  best Nf7+  
+  Black try 1: 'Ke6' ok (0.0s)
+11... Ke6     eval  +28.16  best Kc6   
+  White try 1: 'Qg4+' ok (0.1s)
+12. Qg4+    eval      M5  best Qg4+  
+  Black try 1: 'Qh9' ILLEGAL (0.0s)
+  Black try 2: 'Kxf7' ok (0.0s)
+12... Kxf7    eval      M5  best Kxf7  
+  White try 1: 'Qg7+' ok (0.1s)
+13. Qg7+    eval      M4  best Qg7+  
+  Black try 1: 'Ke6' ok (0.0s)
+13... Ke6     eval      M3  best Ke8   
+  White try 1: 'Nxc7+' ok (0.0s)
+14. Nxc7+   eval      M2  best Nxc7+ 
+  Black try 1: 'Kd6' ok (0.0s)
+14... Kd6     eval      M2  best Kd6   
+  White try 1: 'Ne8+' ok (0.0s)
+15. Ne8+    eval      M1  best Ne8+  
+  Black try 1: 'Kc6' ok (0.0s)
+15... Kc6     eval      M1  best Ke6   
+  White try 1: 'Qc7#' ok (0.0s)
+16. Qc7#    eval     1-0  best Qc7#  
+=== Result 1-0: checkmate
