@@ -16,6 +16,8 @@ A public log of the AI experiments we run for our YouTube channels. Every experi
 
 Each experiment's README lists the exact models, prompts, verification tools and commands. Install the dependencies it names, put your own API keys in `.env` at the repo root (see `.env.example`), and run the command shown. Results you get will differ in detail (the models are not deterministic), which is part of the point: compare your run with ours.
 
+Backlog of scoped-but-not-run ideas: [IDEAS.md](IDEAS.md).
+
 ## Conventions
 
 - One directory per experiment, each with its own `README.md` (method, how to run, results), `requirements.txt`, and a `results/` folder.
