@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """AI 国际象棋对局：两位棋手各执一次白、一次黑，所有走法由 python-chess 验合法性、Stockfish 评估。
 
-用法（项目根目录，.env 里放 ANTHROPIC_API_KEY / OPENAI_API_KEY）：
+用法（在 chess-arena/ 下；密钥放仓库根目录 AIExperiments/.env：ANTHROPIC_API_KEY / OPENAI_API_KEY）：
   python3 run_match.py                                  # Claude (claude-fable-5-1) vs OpenAI (gpt-6-astra)，两局
   python3 run_match.py --a claude:claude-opus-5-5 --b openai:gpt-6.1-terra
   python3 run_match.py --a stockfish:50 --b random:0.1 --games 2 --out results/dryrun   # 不花钱的干跑
@@ -30,13 +30,15 @@ from arena.render import render_game
 
 
 def load_env():
-    p = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
-    if os.path.exists(p):
-        for line in open(p, encoding="utf-8"):
-            line = line.strip()
-            if line and not line.startswith("#") and "=" in line:
-                k, v = line.split("=", 1)
-                os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+    """密钥统一放仓库根目录 AIExperiments/.env（所有实验共用）；实验目录自己的 .env 也认，优先级更高。都不入库。"""
+    here = os.path.dirname(os.path.abspath(__file__))
+    for p in (os.path.join(here, ".env"), os.path.join(os.path.dirname(here), ".env")):
+        if os.path.exists(p):
+            for line in open(p, encoding="utf-8"):
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, v = line.split("=", 1)
+                    os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
 
 
 def slug(s: str) -> str:

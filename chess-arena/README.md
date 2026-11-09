@@ -24,7 +24,7 @@
 ```bash
 brew install stockfish librsvg ffmpeg
 pip3 install -r requirements.txt
-cp .env.example .env   # 填 ANTHROPIC_API_KEY / OPENAI_API_KEY
+cp ../.env.example ../.env   # 密钥放仓库根目录，所有实验共用
 python3 run_match.py                                   # 两局
 python3 run_match.py --a stockfish:50 --b random:0.1 --out results/dryrun   # 不花钱的流水线测试
 ```

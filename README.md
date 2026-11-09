@@ -6,4 +6,4 @@
 |---|---|---|
 | [`chess-arena/`](chess-arena/) | Anthropic 最强模型 vs OpenAI 最强模型下国际象棋，python-chess 验合法性、Stockfish 评估，两局换色 | 环境就绪，待对局 |
 
-约定：每个实验目录自带 README（方法、怎么跑、结果）、`requirements.txt`、`.env.example`，结果放在该目录的 `results/` 下；密钥放各自目录的 `.env`，不入库。
+约定：每个实验目录自带 README（方法、怎么跑、结果）、`requirements.txt`、`.env.example`，结果放在该目录的 `results/` 下；密钥统一放仓库根目录 `.env`（`cp .env.example .env` 后填），所有实验共用；`.gitignore` 忽略任何层级的 `.env`，另有本地 pre-commit 钩子拦截看起来像密钥的内容。
