@@ -2,4 +2,5 @@
 __pycache__/
 *.pyc
 .DS_Store
-results/*/frames/
+# 每一步的棋盘帧太多，不入库；可用 --render-only 重新生成
+*/results/*/frames/
