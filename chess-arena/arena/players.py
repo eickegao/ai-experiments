@@ -62,6 +62,7 @@ class Reply:
     seconds: float
     usage: dict = field(default_factory=dict)
     error: str | None = None
+    prompt: str = ""  # exact text sent to the model (for the public transcript)
 
 
 class Player:
@@ -88,22 +89,23 @@ class ClaudePlayer(Player):
         import anthropic
 
         t0 = time.time()
+        prompt = describe(board, feedback, legal)
         try:
             r = self.client.messages.create(
                 model=self.model,
                 max_tokens=4000,
                 system=SYSTEM,
                 output_config={"effort": self.effort},
-                messages=[{"role": "user", "content": describe(board, feedback, legal)}],
+                messages=[{"role": "user", "content": prompt}],
             )
         except anthropic.APIError as e:
-            return Reply("", None, time.time() - t0, error=f"{type(e).__name__}: {e}")
+            return Reply("", None, time.time() - t0, error=f"{type(e).__name__}: {e}", prompt=prompt)
         if r.stop_reason == "refusal":
             cat = getattr(r.stop_details, "category", None) if r.stop_details else None
-            return Reply("", None, time.time() - t0, error=f"refusal ({cat})")
+            return Reply("", None, time.time() - t0, error=f"refusal ({cat})", prompt=prompt)
         text = "".join(b.text for b in r.content if b.type == "text")
         usage = {"input": r.usage.input_tokens, "output": r.usage.output_tokens}
-        return Reply(text, parse_move(text), time.time() - t0, usage)
+        return Reply(text, parse_move(text), time.time() - t0, usage, prompt=prompt)
 
 
 class OpenAIPlayer(Player):
@@ -121,20 +123,21 @@ class OpenAIPlayer(Player):
         import openai
 
         t0 = time.time()
+        prompt = describe(board, feedback, legal)
         try:
             r = self.client.responses.create(
                 model=self.model,
                 instructions=SYSTEM,
-                input=describe(board, feedback, legal),
+                input=prompt,
                 reasoning={"effort": self.effort},
                 max_output_tokens=4000,
             )
         except openai.APIError as e:
-            return Reply("", None, time.time() - t0, error=f"{type(e).__name__}: {e}")
+            return Reply("", None, time.time() - t0, error=f"{type(e).__name__}: {e}", prompt=prompt)
         text = r.output_text or ""
         u = r.usage
         usage = {"input": getattr(u, "input_tokens", 0), "output": getattr(u, "output_tokens", 0)} if u else {}
-        return Reply(text, parse_move(text), time.time() - t0, usage)
+        return Reply(text, parse_move(text), time.time() - t0, usage, prompt=prompt)
 
 
 class StockfishPlayer(Player):

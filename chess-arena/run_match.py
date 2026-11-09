@@ -9,6 +9,7 @@ Usage (from chess-arena/; keys in the repo-root AIExperiments/.env: ANTHROPIC_AP
 
 Output in results/<timestamp>_<a>_vs_<b>/:
   game1.pgn / game1.json / game1.log   full record (every raw reply, attempt, Stockfish eval per move)
+  game1_transcript.md                  the full PGN exchange: every prompt and every reply, verbatim
   game1_replay.mp4 / game1_eval.png / game1_key_moments.json / frames/game1/*.png   video assets
   summary.md / summary.json            round summary
 """
@@ -27,6 +28,7 @@ from arena.engine import Engine
 from arena.game import Game
 from arena.players import make_player
 from arena.render import render_game
+from transcript import transcript
 
 
 def load_env():
@@ -115,6 +117,7 @@ def main():
             g = Game(white, black, engine, out_dir, f"game{i}", a.attempts, a.on_illegal, a.max_moves * 2).play()
             games.append(g)
             r = render_game(os.path.join(out_dir, f"game{i}.json"), layout=a.layout)
+            open(os.path.join(out_dir, f"game{i}_transcript.md"), "w", encoding="utf-8").write(transcript(os.path.join(out_dir, f"game{i}.json")))
             print(f"  assets: {r['frames']} frames, {r['replay']}, {r['chart']}, {len(r['key_moments'])} key moments")
     finally:
         engine.close()

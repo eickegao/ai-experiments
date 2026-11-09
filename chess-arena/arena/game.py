@@ -52,7 +52,7 @@ class Game:
             move = None
             for n in range(1, self.max_attempts + 1):
                 rep = p.propose(self.board, feedback, legal_list)
-                att = {"n": n, "raw": rep.text, "parsed": rep.move, "seconds": round(rep.seconds, 2), "usage": rep.usage, "error": rep.error, "legal": False}
+                att = {"n": n, "prompt": rep.prompt, "raw": rep.text, "parsed": rep.move, "seconds": round(rep.seconds, 2), "usage": rep.usage, "error": rep.error, "legal": False}
                 if rep.error:
                     feedback = f"Your previous reply failed ({rep.error}). Answer again with a legal move."
                 elif rep.move is None:
