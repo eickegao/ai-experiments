@@ -52,9 +52,9 @@ def frame(move_label: str, who: str, side: str, attempt: dict, verdict: str, ver
     d = ImageDraw.Draw(im)
     d.text((60, 44), move_label, font=font(MONO, 54, True), fill=GOLD)
     d.text((60, 118), f"{who} · {side} · attempt {attempt['n']}", font=font(SANS, 30), fill=DIM)
-    panel(d, 60, 180, 900, 740, "arena → model  (PGN)", attempt.get("prompt") or "", 22, 28)
+    panel(d, 60, 180, 900, 740, "arena -> model  (PGN)", attempt.get("prompt") or "", 22, 28)
     reply = attempt["raw"] if attempt["raw"] else f"(no text; error: {attempt.get('error')})"
-    panel(d, 980, 180, 880, 740, f"model → arena  ({attempt['seconds']}s)", reply, 24, 26)
+    panel(d, 980, 180, 880, 740, f"model -> arena  ({attempt['seconds']}s)", reply, 24, 26)
     d.rounded_rectangle([60, 950, 1860, 1030], radius=16, fill="#0a1026", outline=verdict_color, width=3)
     d.text((84, 968), verdict, font=font(SANS, 30, True), fill=verdict_color)
     im.save(path)
@@ -92,13 +92,13 @@ def render_dialogue(json_path: str, hold: float = 2.5) -> str:
             if a["legal"]:
                 ev = p["eval_after"]
                 evs = ev.get("terminal") or (f"mate in {ev['mate']}" if ev.get("mate") is not None else (f"{ev['cp'] / 100:+.2f}" if ev.get("cp") is not None else "-"))
-                extra = " · Stockfish's top choice" if p["was_best"] else (" · in top 3" if p["in_top3"] else f" · best was {p['best_move']}")
-                extra += f" · BLUNDER, lost {p['loss_pawns']:.1f} pawns" if p["loss_pawns"] >= 2 else ""
-                verdict, color = f"python-chess: legal ✓   Stockfish after move: {evs}{extra}", GREEN if p["loss_pawns"] < 2 else RED
+                extra = " | Stockfish's top choice" if p["was_best"] else (" | in top 3" if p["in_top3"] else f" | best was {p['best_move']}")
+                extra += f" | BLUNDER, lost {p['loss_pawns']:.1f} pawns" if p["loss_pawns"] >= 2 else ""
+                verdict, color = f"python-chess: legal OK   |   Stockfish after move: {evs}{extra}", GREEN if p["loss_pawns"] < 2 else RED
             elif a.get("parsed"):
-                verdict, color = f"python-chess: '{a['parsed']}' is ILLEGAL ✗  →  retry with the legal-move list", RED
+                verdict, color = f"python-chess: '{a['parsed']}' is ILLEGAL   |   retry with the legal-move list", RED
             else:
-                verdict, color = "no 'MOVE:' line found  →  retry", RED
+                verdict, color = "no 'MOVE:' line found   |   retry", RED
             frame(label, who, side, a, verdict, color, os.path.join(fdir, f"{n:04d}.png"))
             n += 1
         if p.get("san"):

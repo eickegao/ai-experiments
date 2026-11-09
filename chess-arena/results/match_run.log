@@ -41,3 +41,5 @@ output dir results/2026-11-08_2051_claude-fable-5-1_vs_gpt-6-astra
   Black try 1: 'b5' ok (13.3s)
 10... b5      eval   +0.52  best Nbd7  
   White try 1: 'g4' ok (2.3s)
+11. g4      eval   +0.30  best Nd5   
+  Black try 1: 'b4' ok (19.4s)
