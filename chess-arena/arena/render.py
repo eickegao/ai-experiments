@@ -25,7 +25,7 @@ def frame_svg(board: chess.Board, last: chess.Move | None, caption: str, sub: st
     if layout == "landscape":
         return frame_svg_landscape(board, last, caption, sub, ev, white_name, black_name)
     bar_h = 880
-    white_frac = max(0.02, min(0.98, 0.5 + ev / 20))  # ev ∈ [-10, 10] → 白方占比
+    white_frac = max(0.02, min(0.98, 0.5 + ev / 20))  # ev in [-10, 10] -> share of the bar for White
     board_svg = _svg_board(board, last, flipped=False)
     import re
     vb = re.search(r'viewBox="0 0 ([\d.]+) ([\d.]+)"', board_svg)
