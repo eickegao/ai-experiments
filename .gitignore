@@ -2,5 +2,5 @@
 __pycache__/
 *.pyc
 .DS_Store
-# per-ply board frames are large; regenerate with --render-only
+# per-ply board frames (chess) and replay frames (color battle) are large; regenerate with the replay / --render-only tools
 */results/*/frames/

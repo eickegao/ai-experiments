@@ -4,7 +4,7 @@ Ideas we've scoped but not run yet. One section per idea; move to its own direct
 
 ## color-battle-arena: four LLMs play Color Battle (PlayDoz) at once
 
-Scoped 2026-11-09, waiting for a go.
+Started 2026-11-09: see [`color-battle-arena/`](color-battle-arena/). Decisions taken: fourth player DeepSeek (`deepseek-v4-pro`); Google plays `gemini-4-argon` because Gemini 4 Carbon has no public API; round 1 steering only, round 2 with fire / lightning / teleport at level 1. The original scoping notes stay below for the record.
 
 - **Game**: Color Battle (`~/Projects/PlayDoz/PlayDozDefold/games/clashdoz/`, pure-Lua sim `cd_sim.lua`). 32×32 board, 60 s, each team's ball paints the cells it bounces through; most cells wins. Four teams start in four quadrants.
 - **Why it fits**: the sim runs headless with LuaJIT (needs a one-line `vmath` stub; a full 4-bot game takes 0.02 s), every action goes through one `command()` API (turn toward a point / cast a skill), and the engine rejects illegal commands itself. The engine is referee and sandbox; the LLMs are remote controls.

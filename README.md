@@ -11,6 +11,7 @@ A public log of the AI experiments we run for our YouTube channels. Every experi
 | Directory | Experiment | Status |
 |---|---|---|
 | [`chess-arena/`](chess-arena/) ([中文](chess-arena/README.zh.md)) | Anthropic's strongest model vs OpenAI's strongest model at chess. Legality checked by python-chess, quality scored by Stockfish, two games per round with colors swapped. | Done: GPT-6 Astra 2–0 Claude Fable 5.1 (2026-11-08) |
+| [`color-battle-arena/`](color-battle-arena/) ([中文](color-battle-arena/README.zh.md)) | Four LLMs (Claude, GPT, Gemini, DeepSeek) each remote-control a ball in PlayDoz's Color Battle, a 60-second four-player territory game. The game engine referees every command; two rounds (steering only, then with skills), every model starts in every corner once. | Harness ready, running soon (2026-11-09) |
 
 ## Reproducing an experiment
 
