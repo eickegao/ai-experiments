@@ -1,0 +1,11 @@
+[Event "AI Chess Arena"]
+[Site "API"]
+[Date "2026.11.09"]
+[Round "game1"]
+[White "Claude (claude-fable-5-1)"]
+[Black "OpenAI (gpt-6-astra)"]
+[Result "0-1"]
+[Termination "checkmate"]
+[Annotator "python-chess (legality) + Stockfish 19 depth 18 (eval)"]
+
+1. e4 { [%eval +0.28] } 1... c5 { [%eval +0.35] } 2. Nf3 { [%eval +0.32] } 2... d6 { [%eval +0.43] } 3. d4 { [%eval +0.19] } 3... cxd4 { [%eval +0.35] } 4. Nxd4 { [%eval +0.26] } 4... Nf6 { [%eval +0.28] } 5. Nc3 { [%eval +0.36] } 5... a6 { [%eval +0.39] } 6. Be3 { [%eval +0.38] } 6... e5 { [%eval +0.37] } 7. Nb3 { [%eval +0.30] } 7... Be6 { [%eval +0.39] } 8. f3 { [%eval +0.24] } 8... Be7 { [%eval +0.27] } 9. Qd2 { [%eval +0.23] } 9... O-O { [%eval +0.37] } 10. O-O-O { [%eval +0.31] } 10... b5 { [%eval +0.52] } 11. g4 { [%eval +0.30] } 11... b4 { [%eval +0.95] } 12. Nd5 { [%eval +1.08] } 12... Nxd5 { [%eval +1.63] } 13. exd5 { [%eval +1.59] } 13... Bd7 { [%eval +1.78] } 14. Kb1 { [%eval -0.29] } 14... a5 { [%eval -0.19] } 15. h4 { [%eval -0.19] } 15... a4 { [%eval -0.14] } 16. Nc1 { [%eval -0.10] } 16... a3 { [%eval +0.50] } 17. b3 { [%eval +0.45] } 17... f5 { [%eval +0.48] } 18. gxf5 { [%eval +0.41] } 18... Bxf5 { [%eval +0.43] } 19. Bd3 { [%eval +0.18] } 19... Bxd3 { [%eval +0.33] } 20. Nxd3 { [%eval +0.32] } 20... Rxf3 { [%eval +0.28] } 21. Rhf1 { [%eval -0.32] } 21... e4 { [%eval +1.40] illegal attempts: 1 } 22. Rxf3 { [%eval +1.42] } 22... exf3 { [%eval +1.35] } 23. Rf1 { [%eval -0.31] } 23... Qf8 { [%eval +2.68] } 24. Qf2 { [%eval -0.21] } 24... Nd7 { [%eval -0.36] } 25. Qxf3 { [%eval -0.66] illegal attempts: 1 } 25... Ne5 { [%eval +2.30] } 26. Qe4 { [%eval -8.55] } 26... Qxf1+ { [%eval -8.71] } 27. Nc1 { [%eval -8.92] } 27... Qf3 { [%eval -8.45] } 28. Qxf3 { [%eval -8.38] } 28... Nxf3 { [%eval -8.04] } 29. Nd3 { [%eval -8.37] } 29... Bf6 { [%eval -7.46] } 30. h5 { [%eval -9.04] } 30... Re8 { [%eval -11.05] } 31. Bf4 { [%eval -11.83] } 31... Bc3 { [%eval -7.55] } 32. Bxd6 { [%eval -7.91] } 32... Re2 { [%eval -8.22] } 33. Bxb4 { [%eval -11.15] } 33... Bxb4 { [%eval -13.85] } 34. Nxb4 { [%eval M-1] } 34... Re1# { [%eval ] } 0-1

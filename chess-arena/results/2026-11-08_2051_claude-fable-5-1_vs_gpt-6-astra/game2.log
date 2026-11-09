@@ -1,0 +1,124 @@
+=== game2: White = OpenAI (gpt-6-astra)  |  Black = Claude (claude-fable-5-1)  |  verifier = python-chess + Stockfish 19
+  White try 1: 'e4' ok (3.2s)
+1. e4      eval   +0.18  best d4    
+  Black try 1: 'e5' ok (1.4s)
+1... e5      eval   +0.17  best c5    
+  White try 1: 'Nf3' ok (3.4s)
+2. Nf3     eval   +0.21  best Nf3   
+  Black try 1: 'Nc6' ok (1.1s)
+2... Nc6     eval   +0.17  best Nc6   
+  White try 1: 'Bb5' ok (3.2s)
+3. Bb5     eval   +0.20  best Bb5   
+  Black try 1: 'a6' ok (1.5s)
+3... a6      eval   +0.32  best Nf6   
+  White try 1: 'Ba4' ok (5.8s)
+4. Ba4     eval   +0.21  best Ba4   
+  Black try 1: 'Nf6' ok (1.0s)
+4... Nf6     eval   +0.25  best Nf6   
+  White try 1: 'O-O' ok (7.2s)
+5. O-O     eval   +0.18  best O-O   
+  Black try 1: 'Be7' ok (1.2s)
+5... Be7     eval   +0.26  best Be7   
+  White try 1: 'Re1' ok (7.9s)
+6. Re1     eval   +0.22  best Re1   
+  Black try 1: 'b5' ok (1.4s)
+6... b5      eval   +0.30  best b5    
+  White try 1: 'Bb3' ok (5.0s)
+7. Bb3     eval   +0.26  best Bb3   
+  Black try 1: 'd6' ok (1.6s)
+7... d6      eval   +0.36  best O-O   
+  White try 1: 'c3' ok (8.4s)
+8. c3      eval   +0.29  best c3    
+  Black try 1: 'O-O' ok (1.3s)
+8... O-O     eval   +0.31  best O-O   
+  White try 1: 'h3' ok (5.1s)
+9. h3      eval   +0.27  best h3    
+  Black try 1: 'Na5' ok (1.6s)
+9... Na5     eval   +0.46  best Bb7   
+  White try 1: 'Bc2' ok (5.6s)
+10. Bc2     eval   +0.39  best Bc2   
+  Black try 1: 'c5' ok (1.3s)
+10... c5      eval   +0.43  best c5    
+  White try 1: 'd4' ok (5.4s)
+11. d4      eval   +0.46  best d4    
+  Black try 1: 'Qc7' ok (1.6s)
+11... Qc7     eval   +0.44  best exd4  
+  White try 1: 'Nbd2' ok (6.7s)
+12. Nbd2    eval   +0.30  best d5    
+  Black try 1: 'cxd4' ok (1.8s)
+12... cxd4    eval   +0.34  best cxd4  
+  White try 1: 'cxd4' ok (6.8s)
+13. cxd4    eval   +0.28  best cxd4  
+  Black try 1: 'Nc6' ok (1.8s)
+13... Nc6     eval   +0.34  best Nc6   
+  White try 1: 'Nb3' ok (15.3s)
+14. Nb3     eval   +0.26  best a3    
+  Black try 1: 'a5' ok (1.7s)
+14... a5      eval   +0.26  best a5    
+  White try 1: 'Be3' ok (50.9s)
+15. Be3     eval   +0.27  best Be3   
+  Black try 1: 'a4' ok (2.7s)
+15... a4      eval   +0.25  best a4    
+  White try 1: 'Nbd2' ok (24.4s)
+16. Nbd2    eval   +0.26  best Nbd2  
+  Black try 1: 'Nb4' ok (3.2s)
+16... Nb4     eval   +0.32  best Qb7   
+  White try 1: 'Bb1' ok (27.7s)
+17. Bb1     eval   +0.27  best Bb1   
+  Black try 1: 'a3' ok (2.9s)
+17... a3      eval   +0.25  best Bd7   
+  White try 1: 'b3' ok (75.9s)
+18. b3      eval   -5.99  best Qb3    BLUNDER
+  Black try 1: 'Bd7' ok (2.2s)
+18... Bd7     eval   -0.17  best Qc3    BLUNDER
+  White try 1: 'Nf1' ok (92.1s)
+19. Nf1     eval   -0.29  best Nf1   
+  Black try 1: 'Rfc8' ok (3.5s)
+19... Rfc8    eval   +0.60  best Qc3   
+  White try 1: 'Ng3' ok (55.7s)
+20. Ng3     eval   -1.82  best Bd2    BLUNDER
+  Black try 1: 'g6' ok (4.8s)
+20... g6      eval   +1.06  best Qc3    BLUNDER
+  White try 1: 'Qd2' ok (113.9s)
+21. Qd2     eval   +0.68  best Bd2   
+  Black try 1: 'Qb7' ok (4.5s)
+21... Qb7     eval   +7.25  best exd4   BLUNDER
+  White try 1: 'Qxb4' ok (65.2s)
+22. Qxb4    eval   +7.33  best Qxb4  
+  Black try 1: 'd5' ok (18.3s)
+22... d5      eval  +10.69  best Bc6    BLUNDER
+  White try 1: 'Qxe7' ok (74.4s)
+23. Qxe7    eval  +10.94  best Qxe7  
+  Black try 1: 'Rce8' ok (11.2s)
+23... Re8     eval  +11.93  best Ra6   
+  White try 1: 'Qxf6' ok (33.8s)
+24. Qxf6    eval  +12.01  best Qxf6  
+  Black try 1: 'dxe4' ok (7.2s)
+24... dxe4    eval      M2  best Ra6   
+  White try 1: 'Bxe4' ok (88.1s)
+25. Bxe4    eval  +13.21  best Bh6   
+  Black try 1: 'Bc6' ok (18.7s)
+25... Bc6     eval      M2  best Ra6   
+  White try 1: 'Bxc6' ok (38.9s)
+26. Bxc6    eval  +14.97  best Bh6   
+  Black try 1: 'Qxc6' ok (3.9s)
+26... Qxc6    eval  +16.93  best Qe7   
+  White try 1: 'Qxc6' ok (22.7s)
+27. Qxc6    eval  +16.89  best Qxc6  
+  Black try 1: 'Ra6' ok (4.8s)
+27... Ra6     eval      M3  best Rac8  
+  White try 1: 'Qxe8+' ok (32.0s)
+28. Qxe8+   eval      M2  best Qxe8+ 
+  Black try 1: 'Kg7' ok (2.9s)
+28... Kg7     eval      M2  best Kg7   
+  White try 1: 'Qxe5+' ok (48.0s)
+29. Qxe5+   eval      M3  best Bh6+  
+  Black try 1: 'Kg8' ok (3.0s)
+29... Kg8     eval      M2  best Rf6   
+  White try 1: 'Bh6' ok (56.8s)
+30. Bh6     eval      M1  best Bh6   
+  Black try 1: 'f6' ok (3.6s)
+30... f6      eval      M1  best b4    
+  White try 1: 'Qe8#' ok (25.2s)
+31. Qe8#    eval     1-0  best Qe8#  
+=== Result 1-0: checkmate

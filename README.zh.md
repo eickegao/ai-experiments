@@ -10,7 +10,7 @@
 
 | 目录 | 实验 | 状态 |
 |---|---|---|
-| [`chess-arena/`](chess-arena/README.zh.md) | Anthropic 最强模型对 OpenAI 最强模型下国际象棋。python-chess 判合法性，Stockfish 评估每一步，每轮两局换色。 | 流水线就绪，待对局 |
+| [`chess-arena/`](chess-arena/README.zh.md) | Anthropic 最强模型对 OpenAI 最强模型下国际象棋。python-chess 判合法性，Stockfish 评估每一步，每轮两局换色。 | 已完成：GPT-6 Astra 2 比 0 胜 Claude Fable 5.1（2026-11-08） |
 
 ## 怎么复现
 

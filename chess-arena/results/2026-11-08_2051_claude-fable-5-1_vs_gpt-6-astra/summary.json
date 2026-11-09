@@ -1,0 +1,96 @@
+{
+ "score": {
+  "Claude (claude-fable-5-1)": 0.0,
+  "OpenAI (gpt-6-astra)": 2.0
+ },
+ "games": [
+  {
+   "name": "game1",
+   "white": {
+    "name": "Claude (claude-fable-5-1)",
+    "model": "claude-fable-5-1"
+   },
+   "black": {
+    "name": "OpenAI (gpt-6-astra)",
+    "model": "gpt-6-astra"
+   },
+   "result": "0-1",
+   "termination": "checkmate",
+   "plies_total": 68,
+   "stats": {
+    "White": {
+     "moves": 34,
+     "illegal_attempts": 1,
+     "forced_random": 0,
+     "best_move_rate": 0.529,
+     "top3_rate": 0.765,
+     "avg_loss_pawns": 0.706,
+     "blunders_2pawns": 3,
+     "avg_seconds": 9.1,
+     "tokens_in": 15560,
+     "tokens_out": 18025,
+     "cost_usd": 1.0569,
+     "total_seconds": 308.2
+    },
+    "Black": {
+     "moves": 34,
+     "illegal_attempts": 1,
+     "forced_random": 0,
+     "best_move_rate": 0.382,
+     "top3_rate": 0.794,
+     "avg_loss_pawns": 0.442,
+     "blunders_2pawns": 3,
+     "avg_seconds": 46.0,
+     "tokens_in": 10693,
+     "tokens_out": 39169,
+     "cost_usd": 2.0654,
+     "total_seconds": 1563.5
+    }
+   }
+  },
+  {
+   "name": "game2",
+   "white": {
+    "name": "OpenAI (gpt-6-astra)",
+    "model": "gpt-6-astra"
+   },
+   "black": {
+    "name": "Claude (claude-fable-5-1)",
+    "model": "claude-fable-5-1"
+   },
+   "result": "1-0",
+   "termination": "checkmate",
+   "plies_total": 61,
+   "stats": {
+    "White": {
+     "moves": 31,
+     "illegal_attempts": 0,
+     "forced_random": 0,
+     "best_move_rate": 0.71,
+     "top3_rate": 0.871,
+     "avg_loss_pawns": 0.321,
+     "blunders_2pawns": 2,
+     "avg_seconds": 32.7,
+     "tokens_in": 8804,
+     "tokens_out": 26726,
+     "cost_usd": 1.4243,
+     "total_seconds": 1014.6
+    },
+    "Black": {
+     "moves": 30,
+     "illegal_attempts": 0,
+     "forced_random": 0,
+     "best_move_rate": 0.367,
+     "top3_rate": 0.667,
+     "avg_loss_pawns": 0.655,
+     "blunders_2pawns": 4,
+     "avg_seconds": 3.9,
+     "tokens_in": 12574,
+     "tokens_out": 5822,
+     "cost_usd": 0.4168,
+     "total_seconds": 117.7
+    }
+   }
+  }
+ ]
+}

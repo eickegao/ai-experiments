@@ -1,0 +1,3819 @@
+{
+ "name": "game1",
+ "started_utc": "2026-11-09T02:51:14.264890+00:00",
+ "white": {
+  "name": "Claude (claude-fable-5-1)",
+  "model": "claude-fable-5-1"
+ },
+ "black": {
+  "name": "OpenAI (gpt-6-astra)",
+  "model": "gpt-6-astra"
+ },
+ "result": "0-1",
+ "termination": "checkmate",
+ "plies_total": 68,
+ "verifier": {
+  "legality": "python-chess 1.11.2",
+  "eval": "Stockfish 19 depth 18"
+ },
+ "effort": "high",
+ "rules": {
+  "max_attempts": 3,
+  "on_illegal": "forfeit",
+  "max_plies": 300,
+  "adjudicate_cp": 800
+ },
+ "stats": {
+  "White": {
+   "moves": 34,
+   "illegal_attempts": 1,
+   "forced_random": 0,
+   "best_move_rate": 0.529,
+   "top3_rate": 0.765,
+   "avg_loss_pawns": 0.706,
+   "blunders_2pawns": 3,
+   "avg_seconds": 9.1,
+   "tokens_in": 15560,
+   "tokens_out": 18025,
+   "cost_usd": 1.0569,
+   "total_seconds": 308.2
+  },
+  "Black": {
+   "moves": 34,
+   "illegal_attempts": 1,
+   "forced_random": 0,
+   "best_move_rate": 0.382,
+   "top3_rate": 0.794,
+   "avg_loss_pawns": 0.442,
+   "blunders_2pawns": 3,
+   "avg_seconds": 46.0,
+   "tokens_in": 10693,
+   "tokens_out": 39169,
+   "cost_usd": 2.0654,
+   "total_seconds": 1563.5
+  }
+ },
+ "final_fen": "6k1/6pp/8/3P3P/1N6/pP3n2/P1P5/1K2r3 w - - 1 35",
+ "plies": [
+  {
+   "ply": 1,
+   "move_no": 1,
+   "side": "White",
+   "san": "e4",
+   "uci": "e2e4",
+   "fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 32,
+    "mate": null,
+    "best": "e4",
+    "top3": [
+     "e4",
+     "Nf3",
+     "d4"
+    ]
+   },
+   "eval_after": {
+    "cp": 28,
+    "mate": null,
+    "best": "e5",
+    "top3": [
+     "e5",
+     "e6",
+     "c5"
+    ]
+   },
+   "loss_pawns": 0.04,
+   "was_best": true,
+   "best_move": "e4",
+   "in_top3": true,
+   "top3": [
+    "e4",
+    "Nf3",
+    "d4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Opening move as White. 1.e4 is a strong, principled choice controlling the center and opening lines for development.\n\nMOVE: e4",
+     "parsed": "e4",
+     "seconds": 1.27,
+     "usage": {
+      "input": 261,
+      "output": 45
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.27
+  },
+  {
+   "ply": 2,
+   "move_no": 1,
+   "side": "Black",
+   "san": "c5",
+   "uci": "c7c5",
+   "fen": "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 28,
+    "mate": null,
+    "best": "e5",
+    "top3": [
+     "e5",
+     "e6",
+     "c5"
+    ]
+   },
+   "eval_after": {
+    "cp": 35,
+    "mate": null,
+    "best": "Nf3",
+    "top3": [
+     "Nf3",
+     "Nc3",
+     "d4"
+    ]
+   },
+   "loss_pawns": 0.07,
+   "was_best": false,
+   "best_move": "e5",
+   "in_top3": true,
+   "top3": [
+    "e5",
+    "e6",
+    "c5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "The Sicilian Defense creates an unbalanced position, contesting d4 and offering active counterplay.\n\nMOVE: c5",
+     "parsed": "c5",
+     "seconds": 4.89,
+     "usage": {
+      "input": 172,
+      "output": 83
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 4.89
+  },
+  {
+   "ply": 3,
+   "move_no": 2,
+   "side": "White",
+   "san": "Nf3",
+   "uci": "g1f3",
+   "fen": "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 35,
+    "mate": null,
+    "best": "Nf3",
+    "top3": [
+     "Nf3",
+     "Nc3",
+     "d4"
+    ]
+   },
+   "eval_after": {
+    "cp": 32,
+    "mate": null,
+    "best": "Nc6",
+    "top3": [
+     "Nc6",
+     "e6",
+     "d6"
+    ]
+   },
+   "loss_pawns": 0.03,
+   "was_best": true,
+   "best_move": "Nf3",
+   "in_top3": true,
+   "top3": [
+    "Nf3",
+    "Nc3",
+    "d4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Open Sicilian with Nf3 is the main line, keeping flexibility and preparing d4.\n\nMOVE: Nf3",
+     "parsed": "Nf3",
+     "seconds": 2.73,
+     "usage": {
+      "input": 269,
+      "output": 44
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 2.73
+  },
+  {
+   "ply": 4,
+   "move_no": 2,
+   "side": "Black",
+   "san": "d6",
+   "uci": "d7d6",
+   "fen": "rnbqkbnr/pp2pppp/3p4/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 3",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 32,
+    "mate": null,
+    "best": "Nc6",
+    "top3": [
+     "Nc6",
+     "e6",
+     "d6"
+    ]
+   },
+   "eval_after": {
+    "cp": 43,
+    "mate": null,
+    "best": "d4",
+    "top3": [
+     "d4",
+     "Nc3",
+     "h3"
+    ]
+   },
+   "loss_pawns": 0.11,
+   "was_best": false,
+   "best_move": "Nc6",
+   "in_top3": true,
+   "top3": [
+    "Nc6",
+    "e6",
+    "d6"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "This controls e5 and prepares ...Nf6, keeping Black’s Sicilian development flexible.\n\nMOVE: d6",
+     "parsed": "d6",
+     "seconds": 10.17,
+     "usage": {
+      "input": 180,
+      "output": 169
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 10.17
+  },
+  {
+   "ply": 5,
+   "move_no": 3,
+   "side": "White",
+   "san": "d4",
+   "uci": "d2d4",
+   "fen": "rnbqkbnr/pp2pppp/3p4/2p5/3PP3/5N2/PPP2PPP/RNBQKB1R b KQkq - 0 3",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 43,
+    "mate": null,
+    "best": "d4",
+    "top3": [
+     "d4",
+     "Nc3",
+     "h3"
+    ]
+   },
+   "eval_after": {
+    "cp": 19,
+    "mate": null,
+    "best": "Nf6",
+    "top3": [
+     "Nf6",
+     "cxd4",
+     "Nd7"
+    ]
+   },
+   "loss_pawns": 0.24,
+   "was_best": true,
+   "best_move": "d4",
+   "in_top3": true,
+   "top3": [
+    "d4",
+    "Nc3",
+    "h3"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard Open Sicilian: 3. d4 challenges the center and leads to active play.\n\nMOVE: d4",
+     "parsed": "d4",
+     "seconds": 1.32,
+     "usage": {
+      "input": 279,
+      "output": 39
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.32
+  },
+  {
+   "ply": 6,
+   "move_no": 3,
+   "side": "Black",
+   "san": "cxd4",
+   "uci": "c5d4",
+   "fen": "rnbqkbnr/pp2pppp/3p4/8/3pP3/5N2/PPP2PPP/RNBQKB1R w KQkq - 0 4",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 19,
+    "mate": null,
+    "best": "Nf6",
+    "top3": [
+     "Nf6",
+     "cxd4",
+     "Nd7"
+    ]
+   },
+   "eval_after": {
+    "cp": 35,
+    "mate": null,
+    "best": "Nxd4",
+    "top3": [
+     "Nxd4",
+     "Qxd4",
+     "Bc4"
+    ]
+   },
+   "loss_pawns": 0.16,
+   "was_best": false,
+   "best_move": "Nf6",
+   "in_top3": true,
+   "top3": [
+    "Nf6",
+    "cxd4",
+    "Nd7"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Capturing on d4 challenges White’s center and opens the c-file for counterplay in the Sicilian.\n\nMOVE: cxd4",
+     "parsed": "cxd4",
+     "seconds": 3.64,
+     "usage": {
+      "input": 187,
+      "output": 74
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 3.64
+  },
+  {
+   "ply": 7,
+   "move_no": 4,
+   "side": "White",
+   "san": "Nxd4",
+   "uci": "f3d4",
+   "fen": "rnbqkbnr/pp2pppp/3p4/8/3NP3/8/PPP2PPP/RNBQKB1R b KQkq - 0 4",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 35,
+    "mate": null,
+    "best": "Nxd4",
+    "top3": [
+     "Nxd4",
+     "Qxd4",
+     "Bc4"
+    ]
+   },
+   "eval_after": {
+    "cp": 26,
+    "mate": null,
+    "best": "Nf6",
+    "top3": [
+     "Nf6",
+     "Nc6",
+     "e5"
+    ]
+   },
+   "loss_pawns": 0.09,
+   "was_best": true,
+   "best_move": "Nxd4",
+   "in_top3": true,
+   "top3": [
+    "Nxd4",
+    "Qxd4",
+    "Bc4"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard Open Sicilian recapture.\n\nMOVE: Nxd4",
+     "parsed": "Nxd4",
+     "seconds": 1.02,
+     "usage": {
+      "input": 289,
+      "output": 27
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.02
+  },
+  {
+   "ply": 8,
+   "move_no": 4,
+   "side": "Black",
+   "san": "Nf6",
+   "uci": "g8f6",
+   "fen": "rnbqkb1r/pp2pppp/3p1n2/8/3NP3/8/PPP2PPP/RNBQKB1R w KQkq - 1 5",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 26,
+    "mate": null,
+    "best": "Nf6",
+    "top3": [
+     "Nf6",
+     "Nc6",
+     "e5"
+    ]
+   },
+   "eval_after": {
+    "cp": 28,
+    "mate": null,
+    "best": "Nc3",
+    "top3": [
+     "Nc3",
+     "Bc4",
+     "Bb5+"
+    ]
+   },
+   "loss_pawns": 0.02,
+   "was_best": true,
+   "best_move": "Nf6",
+   "in_top3": true,
+   "top3": [
+    "Nf6",
+    "Nc6",
+    "e5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Developing the knight attacks e4, prepares castling, and keeps Black’s Sicilian setup flexible.\n\nMOVE: Nf6",
+     "parsed": "Nf6",
+     "seconds": 7.59,
+     "usage": {
+      "input": 196,
+      "output": 157
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 7.59
+  },
+  {
+   "ply": 9,
+   "move_no": 5,
+   "side": "White",
+   "san": "Nc3",
+   "uci": "b1c3",
+   "fen": "rnbqkb1r/pp2pppp/3p1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R b KQkq - 2 5",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 28,
+    "mate": null,
+    "best": "Nc3",
+    "top3": [
+     "Nc3",
+     "Bc4",
+     "Bb5+"
+    ]
+   },
+   "eval_after": {
+    "cp": 36,
+    "mate": null,
+    "best": "a6",
+    "top3": [
+     "a6",
+     "Nc6",
+     "Bd7"
+    ]
+   },
+   "loss_pawns": -0.08,
+   "was_best": true,
+   "best_move": "Nc3",
+   "in_top3": true,
+   "top3": [
+    "Nc3",
+    "Bc4",
+    "Bb5+"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard Sicilian; Nc3 develops and defends e4.\n\nMOVE: Nc3",
+     "parsed": "Nc3",
+     "seconds": 1.26,
+     "usage": {
+      "input": 302,
+      "output": 34
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.26
+  },
+  {
+   "ply": 10,
+   "move_no": 5,
+   "side": "Black",
+   "san": "a6",
+   "uci": "a7a6",
+   "fen": "rnbqkb1r/1p2pppp/p2p1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 6",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 36,
+    "mate": null,
+    "best": "a6",
+    "top3": [
+     "a6",
+     "Nc6",
+     "Bd7"
+    ]
+   },
+   "eval_after": {
+    "cp": 39,
+    "mate": null,
+    "best": "f3",
+    "top3": [
+     "f3",
+     "Be3",
+     "h3"
+    ]
+   },
+   "loss_pawns": 0.03,
+   "was_best": true,
+   "best_move": "a6",
+   "in_top3": true,
+   "top3": [
+    "a6",
+    "Nc6",
+    "Bd7"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "The Najdorf prevents Nb5 and preserves flexible central development with ...e5 or ...e6, while preparing queenside counterplay.\n\nMOVE: a6",
+     "parsed": "a6",
+     "seconds": 6.18,
+     "usage": {
+      "input": 204,
+      "output": 122
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 6.18
+  },
+  {
+   "ply": 11,
+   "move_no": 6,
+   "side": "White",
+   "san": "Be3",
+   "uci": "c1e3",
+   "fen": "rnbqkb1r/1p2pppp/p2p1n2/8/3NP3/2N1B3/PPP2PPP/R2QKB1R b KQkq - 1 6",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 39,
+    "mate": null,
+    "best": "f3",
+    "top3": [
+     "f3",
+     "Be3",
+     "h3"
+    ]
+   },
+   "eval_after": {
+    "cp": 38,
+    "mate": null,
+    "best": "Nc6",
+    "top3": [
+     "Nc6",
+     "Ng4",
+     "e5"
+    ]
+   },
+   "loss_pawns": 0.01,
+   "was_best": false,
+   "best_move": "f3",
+   "in_top3": true,
+   "top3": [
+    "f3",
+    "Be3",
+    "h3"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Najdorf position. A solid, principled choice is 6. Be3 (English Attack) or 6. Bg5. I'll go with Be3.\n\nMOVE: Be3",
+     "parsed": "Be3",
+     "seconds": 1.97,
+     "usage": {
+      "input": 312,
+      "output": 58
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.97
+  },
+  {
+   "ply": 12,
+   "move_no": 6,
+   "side": "Black",
+   "san": "e5",
+   "uci": "e7e5",
+   "fen": "rnbqkb1r/1p3ppp/p2p1n2/4p3/3NP3/2N1B3/PPP2PPP/R2QKB1R w KQkq - 0 7",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 38,
+    "mate": null,
+    "best": "Nc6",
+    "top3": [
+     "Nc6",
+     "Ng4",
+     "e5"
+    ]
+   },
+   "eval_after": {
+    "cp": 37,
+    "mate": null,
+    "best": "Nb3",
+    "top3": [
+     "Nb3",
+     "Nf3",
+     "Nde2"
+    ]
+   },
+   "loss_pawns": -0.01,
+   "was_best": false,
+   "best_move": "Nc6",
+   "in_top3": true,
+   "top3": [
+    "Nc6",
+    "Ng4",
+    "e5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Strike in the center with tempo against the d4-knight, preparing development with ...Be6 and ...Be7.\n\nMOVE: e5",
+     "parsed": "e5",
+     "seconds": 6.62,
+     "usage": {
+      "input": 211,
+      "output": 135
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 6.62
+  },
+  {
+   "ply": 13,
+   "move_no": 7,
+   "side": "White",
+   "san": "Nb3",
+   "uci": "d4b3",
+   "fen": "rnbqkb1r/1p3ppp/p2p1n2/4p3/4P3/1NN1B3/PPP2PPP/R2QKB1R b KQkq - 1 7",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 37,
+    "mate": null,
+    "best": "Nb3",
+    "top3": [
+     "Nb3",
+     "Nf3",
+     "Nde2"
+    ]
+   },
+   "eval_after": {
+    "cp": 30,
+    "mate": null,
+    "best": "Be7",
+    "top3": [
+     "Be7",
+     "Be6",
+     "Ng4"
+    ]
+   },
+   "loss_pawns": 0.07,
+   "was_best": true,
+   "best_move": "Nb3",
+   "in_top3": true,
+   "top3": [
+    "Nb3",
+    "Nf3",
+    "Nde2"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Najdorf, English Attack setup. After 6...e5, the standard retreat is 7. Nb3, keeping the knight active and preparing f3, Qd2, O-O-O.\n\nMOVE: Nb3",
+     "parsed": "Nb3",
+     "seconds": 1.84,
+     "usage": {
+      "input": 321,
+      "output": 72
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.84
+  },
+  {
+   "ply": 14,
+   "move_no": 7,
+   "side": "Black",
+   "san": "Be6",
+   "uci": "c8e6",
+   "fen": "rn1qkb1r/1p3ppp/p2pbn2/4p3/4P3/1NN1B3/PPP2PPP/R2QKB1R w KQkq - 2 8",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 30,
+    "mate": null,
+    "best": "Be7",
+    "top3": [
+     "Be7",
+     "Be6",
+     "Ng4"
+    ]
+   },
+   "eval_after": {
+    "cp": 39,
+    "mate": null,
+    "best": "Qd2",
+    "top3": [
+     "Qd2",
+     "f3",
+     "f4"
+    ]
+   },
+   "loss_pawns": 0.09,
+   "was_best": false,
+   "best_move": "Be7",
+   "in_top3": true,
+   "top3": [
+    "Be7",
+    "Be6",
+    "Ng4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Developing the bishop reinforces control of d5 and prepares harmonious development with ...Be7 and kingside castling.\n\nMOVE: Be6",
+     "parsed": "Be6",
+     "seconds": 6.54,
+     "usage": {
+      "input": 218,
+      "output": 166
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 6.54
+  },
+  {
+   "ply": 15,
+   "move_no": 8,
+   "side": "White",
+   "san": "f3",
+   "uci": "f2f3",
+   "fen": "rn1qkb1r/1p3ppp/p2pbn2/4p3/4P3/1NN1BP2/PPP3PP/R2QKB1R b KQkq - 0 8",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 39,
+    "mate": null,
+    "best": "Qd2",
+    "top3": [
+     "Qd2",
+     "f3",
+     "f4"
+    ]
+   },
+   "eval_after": {
+    "cp": 24,
+    "mate": null,
+    "best": "h5",
+    "top3": [
+     "h5",
+     "Be7",
+     "Nbd7"
+    ]
+   },
+   "loss_pawns": 0.15,
+   "was_best": false,
+   "best_move": "Qd2",
+   "in_top3": true,
+   "top3": [
+    "Qd2",
+    "f3",
+    "f4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard Najdorf English Attack: 8. f3 prepares Qd2, O-O-O, and g4 kingside pawn storm, while shoring up e4.\n\nMOVE: f3",
+     "parsed": "f3",
+     "seconds": 1.82,
+     "usage": {
+      "input": 332,
+      "output": 64
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.82
+  },
+  {
+   "ply": 16,
+   "move_no": 8,
+   "side": "Black",
+   "san": "Be7",
+   "uci": "f8e7",
+   "fen": "rn1qk2r/1p2bppp/p2pbn2/4p3/4P3/1NN1BP2/PPP3PP/R2QKB1R w KQkq - 1 9",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 24,
+    "mate": null,
+    "best": "h5",
+    "top3": [
+     "h5",
+     "Be7",
+     "Nbd7"
+    ]
+   },
+   "eval_after": {
+    "cp": 27,
+    "mate": null,
+    "best": "Qd2",
+    "top3": [
+     "Qd2",
+     "Be2",
+     "Nd5"
+    ]
+   },
+   "loss_pawns": 0.03,
+   "was_best": false,
+   "best_move": "h5",
+   "in_top3": true,
+   "top3": [
+    "h5",
+    "Be7",
+    "Nbd7"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Developing the bishop prepares castling and keeps options open for queenside counterplay with ...b5 and ...Nbd7.\nMOVE: Be7",
+     "parsed": "Be7",
+     "seconds": 6.84,
+     "usage": {
+      "input": 225,
+      "output": 126
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 6.84
+  },
+  {
+   "ply": 17,
+   "move_no": 9,
+   "side": "White",
+   "san": "Qd2",
+   "uci": "d1d2",
+   "fen": "rn1qk2r/1p2bppp/p2pbn2/4p3/4P3/1NN1BP2/PPPQ2PP/R3KB1R b KQkq - 2 9",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 27,
+    "mate": null,
+    "best": "Qd2",
+    "top3": [
+     "Qd2",
+     "Be2",
+     "Nd5"
+    ]
+   },
+   "eval_after": {
+    "cp": 23,
+    "mate": null,
+    "best": "h5",
+    "top3": [
+     "h5",
+     "Nbd7",
+     "O-O"
+    ]
+   },
+   "loss_pawns": 0.04,
+   "was_best": true,
+   "best_move": "Qd2",
+   "in_top3": true,
+   "top3": [
+    "Qd2",
+    "Be2",
+    "Nd5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard English Attack setup: Qd2 followed by O-O-O and g4.\n\nMOVE: Qd2",
+     "parsed": "Qd2",
+     "seconds": 1.67,
+     "usage": {
+      "input": 341,
+      "output": 39
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.67
+  },
+  {
+   "ply": 18,
+   "move_no": 9,
+   "side": "Black",
+   "san": "O-O",
+   "uci": "e8g8",
+   "fen": "rn1q1rk1/1p2bppp/p2pbn2/4p3/4P3/1NN1BP2/PPPQ2PP/R3KB1R w KQ - 3 10",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 23,
+    "mate": null,
+    "best": "h5",
+    "top3": [
+     "h5",
+     "Nbd7",
+     "O-O"
+    ]
+   },
+   "eval_after": {
+    "cp": 37,
+    "mate": null,
+    "best": "O-O-O",
+    "top3": [
+     "O-O-O",
+     "h4",
+     "a3"
+    ]
+   },
+   "loss_pawns": 0.14,
+   "was_best": false,
+   "best_move": "h5",
+   "in_top3": true,
+   "top3": [
+    "h5",
+    "Nbd7",
+    "O-O"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Castling completes kingside development and prepares to challenge White’s attack with queenside counterplay via ...b5 and ...Nbd7.\n\nMOVE: O-O",
+     "parsed": "O-O",
+     "seconds": 10.69,
+     "usage": {
+      "input": 233,
+      "output": 312
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 10.69
+  },
+  {
+   "ply": 19,
+   "move_no": 10,
+   "side": "White",
+   "san": "O-O-O",
+   "uci": "e1c1",
+   "fen": "rn1q1rk1/1p2bppp/p2pbn2/4p3/4P3/1NN1BP2/PPPQ2PP/2KR1B1R b - - 4 10",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 37,
+    "mate": null,
+    "best": "O-O-O",
+    "top3": [
+     "O-O-O",
+     "h4",
+     "a3"
+    ]
+   },
+   "eval_after": {
+    "cp": 31,
+    "mate": null,
+    "best": "Nbd7",
+    "top3": [
+     "Nbd7",
+     "b5",
+     "Qc7"
+    ]
+   },
+   "loss_pawns": 0.06,
+   "was_best": true,
+   "best_move": "O-O-O",
+   "in_top3": true,
+   "top3": [
+    "O-O-O",
+    "h4",
+    "a3"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard English Attack in the Najdorf: castle long and prepare g4.\n\nMOVE: O-O-O",
+     "parsed": "O-O-O",
+     "seconds": 2.5,
+     "usage": {
+      "input": 352,
+      "output": 38
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 2.5
+  },
+  {
+   "ply": 20,
+   "move_no": 10,
+   "side": "Black",
+   "san": "b5",
+   "uci": "b7b5",
+   "fen": "rn1q1rk1/4bppp/p2pbn2/1p2p3/4P3/1NN1BP2/PPPQ2PP/2KR1B1R w - - 0 11",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 31,
+    "mate": null,
+    "best": "Nbd7",
+    "top3": [
+     "Nbd7",
+     "b5",
+     "Qc7"
+    ]
+   },
+   "eval_after": {
+    "cp": 52,
+    "mate": null,
+    "best": "Nd5",
+    "top3": [
+     "Nd5",
+     "g4",
+     "a3"
+    ]
+   },
+   "loss_pawns": 0.21,
+   "was_best": false,
+   "best_move": "Nbd7",
+   "in_top3": true,
+   "top3": [
+    "Nbd7",
+    "b5",
+    "Qc7"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Black begins queenside counterplay against White’s castled king, gaining space and threatening ...b4 to drive the c3-knight away from the center.\n\nMOVE: b5",
+     "parsed": "b5",
+     "seconds": 13.28,
+     "usage": {
+      "input": 241,
+      "output": 349
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 13.28
+  },
+  {
+   "ply": 21,
+   "move_no": 11,
+   "side": "White",
+   "san": "g4",
+   "uci": "g2g4",
+   "fen": "rn1q1rk1/4bppp/p2pbn2/1p2p3/4P1P1/1NN1BP2/PPPQ3P/2KR1B1R b - - 0 11",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 52,
+    "mate": null,
+    "best": "Nd5",
+    "top3": [
+     "Nd5",
+     "g4",
+     "a3"
+    ]
+   },
+   "eval_after": {
+    "cp": 30,
+    "mate": null,
+    "best": "Nbd7",
+    "top3": [
+     "Nbd7",
+     "Qc7",
+     "b4"
+    ]
+   },
+   "loss_pawns": 0.22,
+   "was_best": false,
+   "best_move": "Nd5",
+   "in_top3": true,
+   "top3": [
+    "Nd5",
+    "g4",
+    "a3"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard English Attack position. After 10...b5, the main line is 11. g4, launching the kingside attack while Black's b-pawn push is slower. Also 11.Nd5 is possible. I'll go with g4.\n\nMOVE: g4",
+     "parsed": "g4",
+     "seconds": 2.34,
+     "usage": {
+      "input": 362,
+      "output": 80
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 2.34
+  },
+  {
+   "ply": 22,
+   "move_no": 11,
+   "side": "Black",
+   "san": "b4",
+   "uci": "b5b4",
+   "fen": "rn1q1rk1/4bppp/p2pbn2/4p3/1p2P1P1/1NN1BP2/PPPQ3P/2KR1B1R w - - 0 12",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 30,
+    "mate": null,
+    "best": "Nbd7",
+    "top3": [
+     "Nbd7",
+     "Qc7",
+     "b4"
+    ]
+   },
+   "eval_after": {
+    "cp": 95,
+    "mate": null,
+    "best": "Nd5",
+    "top3": [
+     "Nd5",
+     "Na4",
+     "Ne2"
+    ]
+   },
+   "loss_pawns": 0.65,
+   "was_best": false,
+   "best_move": "Nbd7",
+   "in_top3": true,
+   "top3": [
+    "Nbd7",
+    "Qc7",
+    "b4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Advancing the b-pawn attacks the c3-knight with tempo and gains space for counterplay against White’s queenside king.\n\nMOVE: b4",
+     "parsed": "b4",
+     "seconds": 19.36,
+     "usage": {
+      "input": 248,
+      "output": 541
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 19.36
+  },
+  {
+   "ply": 23,
+   "move_no": 12,
+   "side": "White",
+   "san": "Nd5",
+   "uci": "c3d5",
+   "fen": "rn1q1rk1/4bppp/p2pbn2/3Np3/1p2P1P1/1N2BP2/PPPQ3P/2KR1B1R b - - 1 12",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 95,
+    "mate": null,
+    "best": "Nd5",
+    "top3": [
+     "Nd5",
+     "Na4",
+     "Ne2"
+    ]
+   },
+   "eval_after": {
+    "cp": 108,
+    "mate": null,
+    "best": "Bxd5",
+    "top3": [
+     "Bxd5",
+     "Nxd5",
+     "h5"
+    ]
+   },
+   "loss_pawns": -0.13,
+   "was_best": true,
+   "best_move": "Nd5",
+   "in_top3": true,
+   "top3": [
+    "Nd5",
+    "Na4",
+    "Ne2"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard English Attack line: after 11...b4, the main move is 12. Nd5 Nxd5 13. exd5, gaining space and tempo on the e6 bishop, or 12. Na4. Nd5 is the mainline and sound.\n\nMOVE: Nd5",
+     "parsed": "Nd5",
+     "seconds": 2.04,
+     "usage": {
+      "input": 370,
+      "output": 91
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 2.04
+  },
+  {
+   "ply": 24,
+   "move_no": 12,
+   "side": "Black",
+   "san": "Nxd5",
+   "uci": "f6d5",
+   "fen": "rn1q1rk1/4bppp/p2pb3/3np3/1p2P1P1/1N2BP2/PPPQ3P/2KR1B1R w - - 0 13",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 108,
+    "mate": null,
+    "best": "Bxd5",
+    "top3": [
+     "Bxd5",
+     "Nxd5",
+     "h5"
+    ]
+   },
+   "eval_after": {
+    "cp": 163,
+    "mate": null,
+    "best": "exd5",
+    "top3": [
+     "exd5",
+     "h4",
+     "Bc5"
+    ]
+   },
+   "loss_pawns": 0.55,
+   "was_best": false,
+   "best_move": "Bxd5",
+   "in_top3": true,
+   "top3": [
+    "Bxd5",
+    "Nxd5",
+    "h5"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Exchanging the centralized knight preserves the bishop pair and prepares active queenside counterplay after ...Bd7 and ...a5.\n\nMOVE: Nxd5",
+     "parsed": "Nxd5",
+     "seconds": 34.73,
+     "usage": {
+      "input": 255,
+      "output": 950
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 34.73
+  },
+  {
+   "ply": 25,
+   "move_no": 13,
+   "side": "White",
+   "san": "exd5",
+   "uci": "e4d5",
+   "fen": "rn1q1rk1/4bppp/p2pb3/3Pp3/1p4P1/1N2BP2/PPPQ3P/2KR1B1R b - - 0 13",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 163,
+    "mate": null,
+    "best": "exd5",
+    "top3": [
+     "exd5",
+     "h4",
+     "Bc5"
+    ]
+   },
+   "eval_after": {
+    "cp": 159,
+    "mate": null,
+    "best": "Bc8",
+    "top3": [
+     "Bc8",
+     "Bd7",
+     "a5"
+    ]
+   },
+   "loss_pawns": 0.04,
+   "was_best": true,
+   "best_move": "exd5",
+   "in_top3": true,
+   "top3": [
+    "exd5",
+    "h4",
+    "Bc5"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard English Attack line: after 12...Nxd5, recapturing with the pawn (13. exd5) gains tempo on the e6 bishop and is the main theoretical continuation.\n\nMOVE: exd5",
+     "parsed": "exd5",
+     "seconds": 2.12,
+     "usage": {
+      "input": 383,
+      "output": 71
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 2.12
+  },
+  {
+   "ply": 26,
+   "move_no": 13,
+   "side": "Black",
+   "san": "Bd7",
+   "uci": "e6d7",
+   "fen": "rn1q1rk1/3bbppp/p2p4/3Pp3/1p4P1/1N2BP2/PPPQ3P/2KR1B1R w - - 1 14",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 159,
+    "mate": null,
+    "best": "Bc8",
+    "top3": [
+     "Bc8",
+     "Bd7",
+     "a5"
+    ]
+   },
+   "eval_after": {
+    "cp": 178,
+    "mate": null,
+    "best": "Qxb4",
+    "top3": [
+     "Qxb4",
+     "h4",
+     "g5"
+    ]
+   },
+   "loss_pawns": 0.19,
+   "was_best": false,
+   "best_move": "Bc8",
+   "in_top3": true,
+   "top3": [
+    "Bc8",
+    "Bd7",
+    "a5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "The bishop must escape the d5-pawn’s attack. Retreating to d7 preserves it and supports further queenside pressure with ...a5–a4.\n\nMOVE: Bd7",
+     "parsed": "Bd7",
+     "seconds": 26.92,
+     "usage": {
+      "input": 264,
+      "output": 559
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 26.92
+  },
+  {
+   "ply": 27,
+   "move_no": 14,
+   "side": "White",
+   "san": "Kb1",
+   "uci": "c1b1",
+   "fen": "rn1q1rk1/3bbppp/p2p4/3Pp3/1p4P1/1N2BP2/PPPQ3P/1K1R1B1R b - - 2 14",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 178,
+    "mate": null,
+    "best": "Qxb4",
+    "top3": [
+     "Qxb4",
+     "h4",
+     "g5"
+    ]
+   },
+   "eval_after": {
+    "cp": -29,
+    "mate": null,
+    "best": "a5",
+    "top3": [
+     "a5",
+     "Qc7",
+     "Be8"
+    ]
+   },
+   "loss_pawns": 2.07,
+   "was_best": false,
+   "best_move": "Qxb4",
+   "in_top3": false,
+   "top3": [
+    "Qxb4",
+    "h4",
+    "g5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "This is a standard English Attack position. After 13...Bd7, typical continuations include 14. Kb1 or 14. h4. The main line is 14. Kb1, keeping the king safe and preparing h4-h5 for a kingside pawn storm. Also possible is 14. Na5 but Kb1 is solid and thematic.\n\nMOVE: Kb1",
+     "parsed": "Kb1",
+     "seconds": 2.91,
+     "usage": {
+      "input": 394,
+      "output": 119
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 2.91
+  },
+  {
+   "ply": 28,
+   "move_no": 14,
+   "side": "Black",
+   "san": "a5",
+   "uci": "a6a5",
+   "fen": "rn1q1rk1/3bbppp/3p4/p2Pp3/1p4P1/1N2BP2/PPPQ3P/1K1R1B1R w - - 0 15",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -29,
+    "mate": null,
+    "best": "a5",
+    "top3": [
+     "a5",
+     "Qc7",
+     "Be8"
+    ]
+   },
+   "eval_after": {
+    "cp": -19,
+    "mate": null,
+    "best": "Qg2",
+    "top3": [
+     "Qg2",
+     "Bd3",
+     "h4"
+    ]
+   },
+   "loss_pawns": 0.1,
+   "was_best": true,
+   "best_move": "a5",
+   "in_top3": true,
+   "top3": [
+    "a5",
+    "Qc7",
+    "Be8"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "The pawn advance prepares ...a4, driving away the b3 knight and opening attacking chances against White’s king before the kingside attack develops.\n\nMOVE: a5",
+     "parsed": "a5",
+     "seconds": 17.97,
+     "usage": {
+      "input": 272,
+      "output": 452
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 17.97
+  },
+  {
+   "ply": 29,
+   "move_no": 15,
+   "side": "White",
+   "san": "h4",
+   "uci": "h2h4",
+   "fen": "rn1q1rk1/3bbppp/3p4/p2Pp3/1p4PP/1N2BP2/PPPQ4/1K1R1B1R b - - 0 15",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -19,
+    "mate": null,
+    "best": "Qg2",
+    "top3": [
+     "Qg2",
+     "Bd3",
+     "h4"
+    ]
+   },
+   "eval_after": {
+    "cp": -19,
+    "mate": null,
+    "best": "Na6",
+    "top3": [
+     "Na6",
+     "a4",
+     "Qc8"
+    ]
+   },
+   "loss_pawns": 0.0,
+   "was_best": false,
+   "best_move": "Qg2",
+   "in_top3": true,
+   "top3": [
+    "Qg2",
+    "Bd3",
+    "h4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "This is the English Attack in the Najdorf. After 14.Kb1 a5, Black threatens ...a4 pushing the knight. Standard plans: 15.h4 or 15.Qxb4? Let's check 15.Qxb4 Bxg4? Actually 15.Qxb4 axb4? No—15.Qxb4 is grabbing a pawn; the b4 pawn is defended by a5. So no. Better is 15.h4 continuing the attack, or 15.Na1/Nc1 to reroute. Standard theory: 15.h4 a4 16.Nc1. I'll play h4.\n\nMOVE: h4",
+     "parsed": "h4",
+     "seconds": 3.65,
+     "usage": {
+      "input": 404,
+      "output": 211
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 3.65
+  },
+  {
+   "ply": 30,
+   "move_no": 15,
+   "side": "Black",
+   "san": "a4",
+   "uci": "a5a4",
+   "fen": "rn1q1rk1/3bbppp/3p4/3Pp3/pp4PP/1N2BP2/PPPQ4/1K1R1B1R w - - 0 16",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -19,
+    "mate": null,
+    "best": "Na6",
+    "top3": [
+     "Na6",
+     "a4",
+     "Qc8"
+    ]
+   },
+   "eval_after": {
+    "cp": -14,
+    "mate": null,
+    "best": "Nc1",
+    "top3": [
+     "Nc1",
+     "Nc5",
+     "Na1"
+    ]
+   },
+   "loss_pawns": 0.05,
+   "was_best": false,
+   "best_move": "Na6",
+   "in_top3": true,
+   "top3": [
+    "Na6",
+    "a4",
+    "Qc8"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Advancing with tempo against the b3-knight accelerates the queenside attack, preparing ...Qa5 and a further pawn push to open lines toward White’s king.\n\nMOVE: a4",
+     "parsed": "a4",
+     "seconds": 21.93,
+     "usage": {
+      "input": 279,
+      "output": 520
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 21.93
+  },
+  {
+   "ply": 31,
+   "move_no": 16,
+   "side": "White",
+   "san": "Nc1",
+   "uci": "b3c1",
+   "fen": "rn1q1rk1/3bbppp/3p4/3Pp3/pp4PP/4BP2/PPPQ4/1KNR1B1R b - - 1 16",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -14,
+    "mate": null,
+    "best": "Nc1",
+    "top3": [
+     "Nc1",
+     "Nc5",
+     "Na1"
+    ]
+   },
+   "eval_after": {
+    "cp": -10,
+    "mate": null,
+    "best": "Na6",
+    "top3": [
+     "Na6",
+     "Qa5",
+     "Qc8"
+    ]
+   },
+   "loss_pawns": -0.04,
+   "was_best": true,
+   "best_move": "Nc1",
+   "in_top3": true,
+   "top3": [
+    "Nc1",
+    "Nc5",
+    "Na1"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "The knight on b3 is attacked by the a-pawn; the standard retreat is 16. Nc1, keeping the knight near the king to defend against ...a3/...b3 ideas while White continues the kingside attack with g5, h5.\n\nMOVE: Nc1",
+     "parsed": "Nc1",
+     "seconds": 7.38,
+     "usage": {
+      "input": 412,
+      "output": 383
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 7.38
+  },
+  {
+   "ply": 32,
+   "move_no": 16,
+   "side": "Black",
+   "san": "a3",
+   "uci": "a4a3",
+   "fen": "rn1q1rk1/3bbppp/3p4/3Pp3/1p4PP/p3BP2/PPPQ4/1KNR1B1R w - - 0 17",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -10,
+    "mate": null,
+    "best": "Na6",
+    "top3": [
+     "Na6",
+     "Qa5",
+     "Qc8"
+    ]
+   },
+   "eval_after": {
+    "cp": 50,
+    "mate": null,
+    "best": "b3",
+    "top3": [
+     "b3",
+     "Nd3",
+     "Qxb4"
+    ]
+   },
+   "loss_pawns": 0.6,
+   "was_best": false,
+   "best_move": "Na6",
+   "in_top3": false,
+   "top3": [
+    "Na6",
+    "Qa5",
+    "Qc8"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "The pawn thrust cramps White’s king and creates immediate queenside pressure. After b3, Black can reinforce the attack with ...Qa5 and ...Na6–c5.\n\nMOVE: a3",
+     "parsed": "a3",
+     "seconds": 55.99,
+     "usage": {
+      "input": 286,
+      "output": 1331
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 55.99
+  },
+  {
+   "ply": 33,
+   "move_no": 17,
+   "side": "White",
+   "san": "b3",
+   "uci": "b2b3",
+   "fen": "rn1q1rk1/3bbppp/3p4/3Pp3/1p4PP/pP2BP2/P1PQ4/1KNR1B1R b - - 0 17",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 50,
+    "mate": null,
+    "best": "b3",
+    "top3": [
+     "b3",
+     "Nd3",
+     "Qxb4"
+    ]
+   },
+   "eval_after": {
+    "cp": 45,
+    "mate": null,
+    "best": "f5",
+    "top3": [
+     "f5",
+     "Na6",
+     "Qa5"
+    ]
+   },
+   "loss_pawns": 0.05,
+   "was_best": true,
+   "best_move": "b3",
+   "in_top3": true,
+   "top3": [
+    "b3",
+    "Nd3",
+    "Qxb4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "In this English Attack structure, after ...a3 the standard reply is b3, keeping the pawn shield intact and avoiding opening the b-file; the a3 pawn can later become a target or be blockaded.\n\nMOVE: b3",
+     "parsed": "b3",
+     "seconds": 4.26,
+     "usage": {
+      "input": 422,
+      "output": 229
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 4.26
+  },
+  {
+   "ply": 34,
+   "move_no": 17,
+   "side": "Black",
+   "san": "f5",
+   "uci": "f7f5",
+   "fen": "rn1q1rk1/3bb1pp/3p4/3Ppp2/1p4PP/pP2BP2/P1PQ4/1KNR1B1R w - - 0 18",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 45,
+    "mate": null,
+    "best": "f5",
+    "top3": [
+     "f5",
+     "Na6",
+     "Qa5"
+    ]
+   },
+   "eval_after": {
+    "cp": 48,
+    "mate": null,
+    "best": "g5",
+    "top3": [
+     "g5",
+     "gxf5",
+     "Qxb4"
+    ]
+   },
+   "loss_pawns": 0.03,
+   "was_best": true,
+   "best_move": "f5",
+   "in_top3": true,
+   "top3": [
+    "f5",
+    "Na6",
+    "Qa5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "The central break activates Black’s pieces and opens the f-file, creating counterplay before White can advance further on the kingside.\n\nMOVE: f5",
+     "parsed": "f5",
+     "seconds": 59.55,
+     "usage": {
+      "input": 293,
+      "output": 1588
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 59.55
+  },
+  {
+   "ply": 35,
+   "move_no": 18,
+   "side": "White",
+   "san": "gxf5",
+   "uci": "g4f5",
+   "fen": "rn1q1rk1/3bb1pp/3p4/3PpP2/1p5P/pP2BP2/P1PQ4/1KNR1B1R b - - 0 18",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 48,
+    "mate": null,
+    "best": "g5",
+    "top3": [
+     "g5",
+     "gxf5",
+     "Qxb4"
+    ]
+   },
+   "eval_after": {
+    "cp": 41,
+    "mate": null,
+    "best": "Bxf5",
+    "top3": [
+     "Bxf5",
+     "Na6",
+     "Qc8"
+    ]
+   },
+   "loss_pawns": 0.07,
+   "was_best": false,
+   "best_move": "g5",
+   "in_top3": true,
+   "top3": [
+    "g5",
+    "gxf5",
+    "Qxb4"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard English Attack position after 17...f5. The main line is 18. gxf5 Bxf5 19. Bd3, trading the strong light-squared bishop and keeping White's center/kingside play; it avoids ...f4 cramping the e3 bishop.\n\nMOVE: gxf5",
+     "parsed": "gxf5",
+     "seconds": 8.46,
+     "usage": {
+      "input": 430,
+      "output": 506
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 8.46
+  },
+  {
+   "ply": 36,
+   "move_no": 18,
+   "side": "Black",
+   "san": "Bxf5",
+   "uci": "d7f5",
+   "fen": "rn1q1rk1/4b1pp/3p4/3Ppb2/1p5P/pP2BP2/P1PQ4/1KNR1B1R w - - 0 19",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 41,
+    "mate": null,
+    "best": "Bxf5",
+    "top3": [
+     "Bxf5",
+     "Na6",
+     "Qc8"
+    ]
+   },
+   "eval_after": {
+    "cp": 43,
+    "mate": null,
+    "best": "Bc4",
+    "top3": [
+     "Bc4",
+     "Ne2",
+     "Nd3"
+    ]
+   },
+   "loss_pawns": 0.02,
+   "was_best": true,
+   "best_move": "Bxf5",
+   "in_top3": true,
+   "top3": [
+    "Bxf5",
+    "Na6",
+    "Qc8"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Recapturing develops the bishop actively, restores material balance, and puts pressure on c2 along the f5–c2 diagonal.\nMOVE: Bxf5",
+     "parsed": "Bxf5",
+     "seconds": 60.83,
+     "usage": {
+      "input": 301,
+      "output": 1409
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 60.83
+  },
+  {
+   "ply": 37,
+   "move_no": 19,
+   "side": "White",
+   "san": "Bd3",
+   "uci": "f1d3",
+   "fen": "rn1q1rk1/4b1pp/3p4/3Ppb2/1p5P/pP1BBP2/P1PQ4/1KNR3R b - - 1 19",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 43,
+    "mate": null,
+    "best": "Bc4",
+    "top3": [
+     "Bc4",
+     "Ne2",
+     "Nd3"
+    ]
+   },
+   "eval_after": {
+    "cp": 18,
+    "mate": null,
+    "best": "Qc8",
+    "top3": [
+     "Qc8",
+     "Na6",
+     "Bxd3"
+    ]
+   },
+   "loss_pawns": 0.25,
+   "was_best": false,
+   "best_move": "Bc4",
+   "in_top3": false,
+   "top3": [
+    "Bc4",
+    "Ne2",
+    "Nd3"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Trading off Black's active light-squared bishop (which eyes c2 and the weakened king) with Bd3 is thematic; after ...Bxd3 Nxd3, the knight reroutes to a strong square attacking b4 and unblocking the back rank.\n\nMOVE: Bd3",
+     "parsed": "Bd3",
+     "seconds": 6.59,
+     "usage": {
+      "input": 443,
+      "output": 324
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 6.59
+  },
+  {
+   "ply": 38,
+   "move_no": 19,
+   "side": "Black",
+   "san": "Bxd3",
+   "uci": "f5d3",
+   "fen": "rn1q1rk1/4b1pp/3p4/3Pp3/1p5P/pP1bBP2/P1PQ4/1KNR3R w - - 0 20",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 18,
+    "mate": null,
+    "best": "Qc8",
+    "top3": [
+     "Qc8",
+     "Na6",
+     "Bxd3"
+    ]
+   },
+   "eval_after": {
+    "cp": 33,
+    "mate": null,
+    "best": "Nxd3",
+    "top3": [
+     "Nxd3",
+     "Qxd3",
+     "cxd3"
+    ]
+   },
+   "loss_pawns": 0.15,
+   "was_best": false,
+   "best_move": "Qc8",
+   "in_top3": true,
+   "top3": [
+    "Qc8",
+    "Na6",
+    "Bxd3"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Exchanging White’s active bishop reduces attacking chances against our king and prepares ...Nd7–c5, bringing the knight into the queenside fight.\n\nMOVE: Bxd3",
+     "parsed": "Bxd3",
+     "seconds": 91.2,
+     "usage": {
+      "input": 309,
+      "output": 2111
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 91.2
+  },
+  {
+   "ply": 39,
+   "move_no": 20,
+   "side": "White",
+   "san": "Nxd3",
+   "uci": "c1d3",
+   "fen": "rn1q1rk1/4b1pp/3p4/3Pp3/1p5P/pP1NBP2/P1PQ4/1K1R3R b - - 0 20",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 33,
+    "mate": null,
+    "best": "Nxd3",
+    "top3": [
+     "Nxd3",
+     "Qxd3",
+     "cxd3"
+    ]
+   },
+   "eval_after": {
+    "cp": 32,
+    "mate": null,
+    "best": "Rxf3",
+    "top3": [
+     "Rxf3",
+     "Qa5",
+     "Na6"
+    ]
+   },
+   "loss_pawns": 0.01,
+   "was_best": true,
+   "best_move": "Nxd3",
+   "in_top3": true,
+   "top3": [
+    "Nxd3",
+    "Qxd3",
+    "cxd3"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Recapture options: Nxd3, Qxd3, Rxd3. Nxd3 develops the knight and keeps the queen on d2 covering a2/b4 area; Qxd3 centralizes but leaves d2. Nxd3 looks most natural, eyeing e5 and b4 pawn (Nxb4 possible later).\n\nMOVE: Nxd3",
+     "parsed": "Nxd3",
+     "seconds": 3.43,
+     "usage": {
+      "input": 456,
+      "output": 123
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 3.43
+  },
+  {
+   "ply": 40,
+   "move_no": 20,
+   "side": "Black",
+   "san": "Rxf3",
+   "uci": "f8f3",
+   "fen": "rn1q2k1/4b1pp/3p4/3Pp3/1p5P/pP1NBr2/P1PQ4/1K1R3R w - - 0 21",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 32,
+    "mate": null,
+    "best": "Rxf3",
+    "top3": [
+     "Rxf3",
+     "Qa5",
+     "Na6"
+    ]
+   },
+   "eval_after": {
+    "cp": 28,
+    "mate": null,
+    "best": "Rdg1",
+    "top3": [
+     "Rdg1",
+     "Nxb4",
+     "Qe2"
+    ]
+   },
+   "loss_pawns": -0.04,
+   "was_best": true,
+   "best_move": "Rxf3",
+   "in_top3": true,
+   "top3": [
+    "Rxf3",
+    "Qa5",
+    "Na6"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "The undefended f3-pawn lets Black activate the rook with tempo against the bishop on e3, tying White’s queen to its defense while maintaining queenside pressure.\n\nMOVE: Rxf3",
+     "parsed": "Rxf3",
+     "seconds": 94.99,
+     "usage": {
+      "input": 318,
+      "output": 2292
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 94.99
+  },
+  {
+   "ply": 41,
+   "move_no": 21,
+   "side": "White",
+   "san": "Rhf1",
+   "uci": "h1f1",
+   "fen": "rn1q2k1/4b1pp/3p4/3Pp3/1p5P/pP1NBr2/P1PQ4/1K1R1R2 b - - 1 21",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 28,
+    "mate": null,
+    "best": "Rdg1",
+    "top3": [
+     "Rdg1",
+     "Nxb4",
+     "Qe2"
+    ]
+   },
+   "eval_after": {
+    "cp": -32,
+    "mate": null,
+    "best": "Qf8",
+    "top3": [
+     "Qf8",
+     "Rxf1",
+     "Rh3"
+    ]
+   },
+   "loss_pawns": 0.6,
+   "was_best": false,
+   "best_move": "Rdg1",
+   "in_top3": false,
+   "top3": [
+    "Rdg1",
+    "Nxb4",
+    "Qe2"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Black's rook on f3 is active, attacking Be3. Bg5 fails to ...Rxd3. Trading the active rook with Rhf1 neutralizes Black's pressure and gives White the f-file, while Black's Nb8 is still undeveloped.\n\nMOVE: Rhf1",
+     "parsed": "Rhf1",
+     "seconds": 17.06,
+     "usage": {
+      "input": 470,
+      "output": 1040
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 17.06
+  },
+  {
+   "ply": 42,
+   "move_no": 21,
+   "side": "Black",
+   "san": "e4",
+   "uci": "e5e4",
+   "fen": "rn1q2k1/4b1pp/3p4/3P4/1p2p2P/pP1NBr2/P1PQ4/1K1R1R2 w - - 0 22",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -32,
+    "mate": null,
+    "best": "Qf8",
+    "top3": [
+     "Qf8",
+     "Rxf1",
+     "Rh3"
+    ]
+   },
+   "eval_after": {
+    "cp": 140,
+    "mate": null,
+    "best": "Rxf3",
+    "top3": [
+     "Rxf3",
+     "Nf4",
+     "Nf2"
+    ]
+   },
+   "loss_pawns": 1.72,
+   "was_best": false,
+   "best_move": "Qf8",
+   "in_top3": false,
+   "top3": [
+    "Qf8",
+    "Rxf1",
+    "Rh3"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "",
+     "parsed": null,
+     "seconds": 156.18,
+     "usage": {
+      "input": 327,
+      "output": 4000
+     },
+     "error": null,
+     "legal": false
+    },
+    {
+     "n": 2,
+     "raw": "Advancing the e-pawn defends the rook and attacks the knight. If White exchanges rooks on f3, Black gains a dangerous passed pawn.\n\nMOVE: e4",
+     "parsed": "e4",
+     "seconds": 74.16,
+     "usage": {
+      "input": 453,
+      "output": 1773
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 230.34
+  },
+  {
+   "ply": 43,
+   "move_no": 22,
+   "side": "White",
+   "san": "Rxf3",
+   "uci": "f1f3",
+   "fen": "rn1q2k1/4b1pp/3p4/3P4/1p2p2P/pP1NBR2/P1PQ4/1K1R4 b - - 0 22",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 140,
+    "mate": null,
+    "best": "Rxf3",
+    "top3": [
+     "Rxf3",
+     "Nf4",
+     "Nf2"
+    ]
+   },
+   "eval_after": {
+    "cp": 142,
+    "mate": null,
+    "best": "exf3",
+    "top3": [
+     "exf3",
+     "Na6",
+     "exd3"
+    ]
+   },
+   "loss_pawns": -0.02,
+   "was_best": true,
+   "best_move": "Rxf3",
+   "in_top3": true,
+   "top3": [
+    "Rxf3",
+    "Nf4",
+    "Nf2"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Black's rook on f3 is attacked by my Rf1 and undefended, while it threatens Be3 and the e4 pawn hits Nd3. Capturing first resolves both threats: 22. Rxf3 exf3, then I can win the f3 pawn with Qf2/Rf1 and stay solid.\n\nMOVE: Rxf3",
+     "parsed": "Rxf3",
+     "seconds": 18.1,
+     "usage": {
+      "input": 481,
+      "output": 1177
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 18.1
+  },
+  {
+   "ply": 44,
+   "move_no": 22,
+   "side": "Black",
+   "san": "exf3",
+   "uci": "e4f3",
+   "fen": "rn1q2k1/4b1pp/3p4/3P4/1p5P/pP1NBp2/P1PQ4/1K1R4 w - - 0 23",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 142,
+    "mate": null,
+    "best": "exf3",
+    "top3": [
+     "exf3",
+     "Na6",
+     "exd3"
+    ]
+   },
+   "eval_after": {
+    "cp": 135,
+    "mate": null,
+    "best": "Qxb4",
+    "top3": [
+     "Qxb4",
+     "Qf2",
+     "h5"
+    ]
+   },
+   "loss_pawns": -0.07,
+   "was_best": true,
+   "best_move": "exf3",
+   "in_top3": true,
+   "top3": [
+    "exf3",
+    "Na6",
+    "exd3"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Recapturing restores material balance while keeping an extra pawn and creating a dangerous passed pawn on f3.\n\nMOVE: exf3",
+     "parsed": "exf3",
+     "seconds": 28.35,
+     "usage": {
+      "input": 335,
+      "output": 670
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 28.35
+  },
+  {
+   "ply": 45,
+   "move_no": 23,
+   "side": "White",
+   "san": "Rf1",
+   "uci": "d1f1",
+   "fen": "rn1q2k1/4b1pp/3p4/3P4/1p5P/pP1NBp2/P1PQ4/1K3R2 b - - 1 23",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 135,
+    "mate": null,
+    "best": "Qxb4",
+    "top3": [
+     "Qxb4",
+     "Qf2",
+     "h5"
+    ]
+   },
+   "eval_after": {
+    "cp": -31,
+    "mate": null,
+    "best": "Na6",
+    "top3": [
+     "Na6",
+     "Qa5",
+     "Bxh4"
+    ]
+   },
+   "loss_pawns": 1.66,
+   "was_best": false,
+   "best_move": "Qxb4",
+   "in_top3": false,
+   "top3": [
+    "Qxb4",
+    "Qf2",
+    "h5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "The passed f3 pawn is Black's main asset; I should attack it immediately with Rf1, threatening Rxf3 and bringing the knight (Ne1/Nf4) next to win it or blockade.\n\nMOVE: Rf1",
+     "parsed": "Rf1",
+     "seconds": 16.64,
+     "usage": {
+      "input": 493,
+      "output": 955
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 16.64
+  },
+  {
+   "ply": 46,
+   "move_no": 23,
+   "side": "Black",
+   "san": "Qf8",
+   "uci": "d8f8",
+   "fen": "rn3qk1/4b1pp/3p4/3P4/1p5P/pP1NBp2/P1PQ4/1K3R2 w - - 2 24",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -31,
+    "mate": null,
+    "best": "Na6",
+    "top3": [
+     "Na6",
+     "Qa5",
+     "Bxh4"
+    ]
+   },
+   "eval_after": {
+    "cp": 268,
+    "mate": null,
+    "best": "Qxb4",
+    "top3": [
+     "Qxb4",
+     "Qh2",
+     "h5"
+    ]
+   },
+   "loss_pawns": 2.99,
+   "was_best": false,
+   "best_move": "Na6",
+   "in_top3": false,
+   "top3": [
+    "Na6",
+    "Qa5",
+    "Bxh4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Qf8 protects the advanced f3-pawn and prepares ...Qf6, creating potential mating threats against White’s exposed king.\n\nMOVE: Qf8",
+     "parsed": "Qf8",
+     "seconds": 62.94,
+     "usage": {
+      "input": 344,
+      "output": 1578
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 62.94
+  },
+  {
+   "ply": 47,
+   "move_no": 24,
+   "side": "White",
+   "san": "Qf2",
+   "uci": "d2f2",
+   "fen": "rn3qk1/4b1pp/3p4/3P4/1p5P/pP1NBp2/P1P2Q2/1K3R2 b - - 3 24",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 268,
+    "mate": null,
+    "best": "Qxb4",
+    "top3": [
+     "Qxb4",
+     "Qh2",
+     "h5"
+    ]
+   },
+   "eval_after": {
+    "cp": -21,
+    "mate": null,
+    "best": "Na6",
+    "top3": [
+     "Na6",
+     "Nd7",
+     "Qf5"
+    ]
+   },
+   "loss_pawns": 2.89,
+   "was_best": false,
+   "best_move": "Qxb4",
+   "in_top3": false,
+   "top3": [
+    "Qxb4",
+    "Qh2",
+    "h5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "The f3 pawn is defended only by Qf8; Qf2 attacks it twice (queen + rook behind), and also covers the f2 advance. If ...Qxf2 Rxf2 the pawn falls; if ...Qf7, Qxf3 wins it since ...Qxd5 loses to Qxd5+.\n\nMOVE: Qf2",
+     "parsed": "Qf2",
+     "seconds": 27.82,
+     "usage": {
+      "input": 505,
+      "output": 1826
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 27.82
+  },
+  {
+   "ply": 48,
+   "move_no": 24,
+   "side": "Black",
+   "san": "Nd7",
+   "uci": "b8d7",
+   "fen": "r4qk1/3nb1pp/3p4/3P4/1p5P/pP1NBp2/P1P2Q2/1K3R2 w - - 4 25",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -21,
+    "mate": null,
+    "best": "Na6",
+    "top3": [
+     "Na6",
+     "Nd7",
+     "Qf5"
+    ]
+   },
+   "eval_after": {
+    "cp": -36,
+    "mate": null,
+    "best": "Qg3",
+    "top3": [
+     "Qg3",
+     "Nxb4",
+     "Qxf3"
+    ]
+   },
+   "loss_pawns": -0.15,
+   "was_best": false,
+   "best_move": "Na6",
+   "in_top3": true,
+   "top3": [
+    "Na6",
+    "Nd7",
+    "Qf5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Developing the knight prepares ...Ne5. If White exchanges queens on f3, ...Ne5 then attacks both the rook on f3 and knight on d3.\nMOVE: Nd7",
+     "parsed": "Nd7",
+     "seconds": 126.3,
+     "usage": {
+      "input": 353,
+      "output": 3383
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 126.3
+  },
+  {
+   "ply": 49,
+   "move_no": 25,
+   "side": "White",
+   "san": "Qxf3",
+   "uci": "f2f3",
+   "fen": "r4qk1/3nb1pp/3p4/3P4/1p5P/pP1NBQ2/P1P5/1K3R2 b - - 0 25",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -36,
+    "mate": null,
+    "best": "Qg3",
+    "top3": [
+     "Qg3",
+     "Nxb4",
+     "Qxf3"
+    ]
+   },
+   "eval_after": {
+    "cp": -66,
+    "mate": null,
+    "best": "Qxf3",
+    "top3": [
+     "Qxf3",
+     "Re8",
+     "Bxh4"
+    ]
+   },
+   "loss_pawns": 0.3,
+   "was_best": false,
+   "best_move": "Qg3",
+   "in_top3": true,
+   "top3": [
+    "Qg3",
+    "Nxb4",
+    "Qxf3"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Black's f3 pawn is attacked twice (Qf2, Rf1) and defended only by Qf8. Capturing with the rook is best: 25. Rxf3 — if 25...Bxh4 then 26. Rxf8+ Rxf8 27. Qxh4 wins a piece; if 25...Qxf3 26. Qxf3 White is simply a pawn up with a safer king.\n\nMOVE: Rxf3",
+     "parsed": "Rxf3",
+     "seconds": 21.27,
+     "usage": {
+      "input": 517,
+      "output": 1531
+     },
+     "error": null,
+     "legal": false
+    },
+    {
+     "n": 2,
+     "raw": "Black's pawn on f3 is attacked by queen and rook; it's defended only by the queen on f8. Qxf3 wins the pawn safely — after Qxf3 Qxf3 Rxf3 White is up material (bishop vs pawns-ish). Qxf3 is natural.\n\nMOVE: Qxf3",
+     "parsed": "Qxf3",
+     "seconds": 2.25,
+     "usage": {
+      "input": 732,
+      "output": 108
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 23.52
+  },
+  {
+   "ply": 50,
+   "move_no": 25,
+   "side": "Black",
+   "san": "Ne5",
+   "uci": "d7e5",
+   "fen": "r4qk1/4b1pp/3p4/3Pn3/1p5P/pP1NBQ2/P1P5/1K3R2 w - - 1 26",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -66,
+    "mate": null,
+    "best": "Qxf3",
+    "top3": [
+     "Qxf3",
+     "Re8",
+     "Bxh4"
+    ]
+   },
+   "eval_after": {
+    "cp": 230,
+    "mate": null,
+    "best": "Qg2",
+    "top3": [
+     "Qg2",
+     "Nxe5",
+     "Qh1"
+    ]
+   },
+   "loss_pawns": 2.96,
+   "was_best": false,
+   "best_move": "Qxf3",
+   "in_top3": false,
+   "top3": [
+    "Qxf3",
+    "Re8",
+    "Bxh4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Ne5 attacks both the queen and the d3-knight with tempo. If White exchanges knights, ...dxe5 creates a central passed pawn and opens the bishop’s diagonal toward h4.\n\nMOVE: Ne5",
+     "parsed": "Ne5",
+     "seconds": 110.21,
+     "usage": {
+      "input": 361,
+      "output": 3079
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 110.21
+  },
+  {
+   "ply": 51,
+   "move_no": 26,
+   "side": "White",
+   "san": "Qe4",
+   "uci": "f3e4",
+   "fen": "r4qk1/4b1pp/3p4/3Pn3/1p2Q2P/pP1NB3/P1P5/1K3R2 b - - 2 26",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 230,
+    "mate": null,
+    "best": "Qg2",
+    "top3": [
+     "Qg2",
+     "Nxe5",
+     "Qh1"
+    ]
+   },
+   "eval_after": {
+    "cp": -855,
+    "mate": null,
+    "best": "Qxf1+",
+    "top3": [
+     "Qxf1+",
+     "Qb8",
+     "Qe8"
+    ]
+   },
+   "loss_pawns": 10.85,
+   "was_best": false,
+   "best_move": "Qg2",
+   "in_top3": false,
+   "top3": [
+    "Qg2",
+    "Nxe5",
+    "Qh1"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Black's knight hits my queen and the d3-knight. Centralizing with Qe4 keeps the queen defending d3 and d5, avoids an equal endgame, and keeps the f-file tension (Qxf1+ is covered). If ...Nxd3 Qxd3 maintains everything.\n\nMOVE: Qe4",
+     "parsed": "Qe4",
+     "seconds": 21.05,
+     "usage": {
+      "input": 530,
+      "output": 1444
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 21.05
+  },
+  {
+   "ply": 52,
+   "move_no": 26,
+   "side": "Black",
+   "san": "Qxf1+",
+   "uci": "f8f1",
+   "fen": "r5k1/4b1pp/3p4/3Pn3/1p2Q2P/pP1NB3/P1P5/1K3q2 w - - 0 27",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -855,
+    "mate": null,
+    "best": "Qxf1+",
+    "top3": [
+     "Qxf1+",
+     "Qb8",
+     "Qe8"
+    ]
+   },
+   "eval_after": {
+    "cp": -871,
+    "mate": null,
+    "best": "Nc1",
+    "top3": [
+     "Nc1",
+     "Bc1",
+     "Ne1"
+    ]
+   },
+   "loss_pawns": -0.16,
+   "was_best": true,
+   "best_move": "Qxf1+",
+   "in_top3": true,
+   "top3": [
+    "Qxf1+",
+    "Qb8",
+    "Qe8"
+   ],
+   "check": true,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "The f-file is clear, allowing Black to capture the rook with check and win decisive material.\nMOVE: Qxf1+",
+     "parsed": "Qxf1+",
+     "seconds": 33.95,
+     "usage": {
+      "input": 369,
+      "output": 889
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 33.95
+  },
+  {
+   "ply": 53,
+   "move_no": 27,
+   "side": "White",
+   "san": "Nc1",
+   "uci": "d3c1",
+   "fen": "r5k1/4b1pp/3p4/3Pn3/1p2Q2P/pP2B3/P1P5/1KN2q2 b - - 1 27",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -871,
+    "mate": null,
+    "best": "Nc1",
+    "top3": [
+     "Nc1",
+     "Bc1",
+     "Ne1"
+    ]
+   },
+   "eval_after": {
+    "cp": -892,
+    "mate": null,
+    "best": "Qe1",
+    "top3": [
+     "Qe1",
+     "Qd1",
+     "Qh3"
+    ]
+   },
+   "loss_pawns": 0.21,
+   "was_best": true,
+   "best_move": "Nc1",
+   "in_top3": true,
+   "top3": [
+    "Nc1",
+    "Bc1",
+    "Ne1"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "White's king is in check from f1; Kb2 is illegal due to the a3 pawn, and Ka1 stays on the rank. Only interpositions work: Nc1 or Bc1. Nc1 keeps the knight protected by both king and bishop, and keeps the bishop active on the long diagonal toward g1-a7 ideas and h6/d4 squares, while the queen on e4 eyes e5 and h7.\n\nMOVE: Nc1",
+     "parsed": "Nc1",
+     "seconds": 18.48,
+     "usage": {
+      "input": 545,
+      "output": 1026
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 18.48
+  },
+  {
+   "ply": 54,
+   "move_no": 27,
+   "side": "Black",
+   "san": "Qf3",
+   "uci": "f1f3",
+   "fen": "r5k1/4b1pp/3p4/3Pn3/1p2Q2P/pP2Bq2/P1P5/1KN5 w - - 2 28",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -892,
+    "mate": null,
+    "best": "Qe1",
+    "top3": [
+     "Qe1",
+     "Qd1",
+     "Qh3"
+    ]
+   },
+   "eval_after": {
+    "cp": -845,
+    "mate": null,
+    "best": "Qxf3",
+    "top3": [
+     "Qxf3",
+     "Qd4",
+     "Qf4"
+    ]
+   },
+   "loss_pawns": 0.47,
+   "was_best": false,
+   "best_move": "Qe1",
+   "in_top3": false,
+   "top3": [
+    "Qe1",
+    "Qd1",
+    "Qh3"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Qf3 attacks both White’s queen and bishop, offering a favorable queen trade. With an extra rook, Black benefits from simplification.\n\nMOVE: Qf3",
+     "parsed": "Qf3",
+     "seconds": 86.57,
+     "usage": {
+      "input": 378,
+      "output": 2283
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 86.57
+  },
+  {
+   "ply": 55,
+   "move_no": 28,
+   "side": "White",
+   "san": "Qxf3",
+   "uci": "e4f3",
+   "fen": "r5k1/4b1pp/3p4/3Pn3/1p5P/pP2BQ2/P1P5/1KN5 b - - 0 28",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -845,
+    "mate": null,
+    "best": "Qxf3",
+    "top3": [
+     "Qxf3",
+     "Qd4",
+     "Qf4"
+    ]
+   },
+   "eval_after": {
+    "cp": -838,
+    "mate": null,
+    "best": "Nxf3",
+    "top3": [
+     "Nxf3",
+     "Rf8",
+     "Bxh4"
+    ]
+   },
+   "loss_pawns": -0.07,
+   "was_best": true,
+   "best_move": "Qxf3",
+   "in_top3": true,
+   "top3": [
+    "Qxf3",
+    "Qd4",
+    "Qf4"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "White is down material; the queen on e4 is attacked. Trading queens avoids further losses (Qg2 would drop the e3 bishop to Qxe3).\n\nMOVE: Qxf3",
+     "parsed": "Qxf3",
+     "seconds": 10.04,
+     "usage": {
+      "input": 557,
+      "output": 560
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 10.04
+  },
+  {
+   "ply": 56,
+   "move_no": 28,
+   "side": "Black",
+   "san": "Nxf3",
+   "uci": "e5f3",
+   "fen": "r5k1/4b1pp/3p4/3P4/1p5P/pP2Bn2/P1P5/1KN5 w - - 0 29",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -838,
+    "mate": null,
+    "best": "Nxf3",
+    "top3": [
+     "Nxf3",
+     "Rf8",
+     "Bxh4"
+    ]
+   },
+   "eval_after": {
+    "cp": -804,
+    "mate": null,
+    "best": "h5",
+    "top3": [
+     "h5",
+     "c3",
+     "c4"
+    ]
+   },
+   "loss_pawns": 0.34,
+   "was_best": true,
+   "best_move": "Nxf3",
+   "in_top3": true,
+   "top3": [
+    "Nxf3",
+    "Rf8",
+    "Bxh4"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Recapturing the queen leaves Black a full rook ahead.\n\nMOVE: Nxf3",
+     "parsed": "Nxf3",
+     "seconds": 13.18,
+     "usage": {
+      "input": 387,
+      "output": 313
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 13.18
+  },
+  {
+   "ply": 57,
+   "move_no": 29,
+   "side": "White",
+   "san": "Nd3",
+   "uci": "c1d3",
+   "fen": "r5k1/4b1pp/3p4/3P4/1p5P/pP1NBn2/P1P5/1K6 b - - 1 29",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -804,
+    "mate": null,
+    "best": "h5",
+    "top3": [
+     "h5",
+     "c3",
+     "c4"
+    ]
+   },
+   "eval_after": {
+    "cp": -837,
+    "mate": null,
+    "best": "h5",
+    "top3": [
+     "h5",
+     "Bxh4",
+     "Re8"
+    ]
+   },
+   "loss_pawns": 0.33,
+   "was_best": false,
+   "best_move": "h5",
+   "in_top3": false,
+   "top3": [
+    "h5",
+    "c3",
+    "c4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "White is down material; activating the knight toward b4 (an undefended pawn) and d3 is the best practical try, also preparing Nxb4 to free the queenside.\n\nMOVE: Nd3",
+     "parsed": "Nd3",
+     "seconds": 11.44,
+     "usage": {
+      "input": 571,
+      "output": 687
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 11.44
+  },
+  {
+   "ply": 58,
+   "move_no": 29,
+   "side": "Black",
+   "san": "Bf6",
+   "uci": "e7f6",
+   "fen": "r5k1/6pp/3p1b2/3P4/1p5P/pP1NBn2/P1P5/1K6 w - - 2 30",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -837,
+    "mate": null,
+    "best": "h5",
+    "top3": [
+     "h5",
+     "Bxh4",
+     "Re8"
+    ]
+   },
+   "eval_after": {
+    "cp": -746,
+    "mate": null,
+    "best": "Bf4",
+    "top3": [
+     "Bf4",
+     "Nxb4",
+     "h5"
+    ]
+   },
+   "loss_pawns": 0.91,
+   "was_best": false,
+   "best_move": "h5",
+   "in_top3": false,
+   "top3": [
+    "h5",
+    "Bxh4",
+    "Re8"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Bf6 activates the bishop on the long diagonal and clears e7, preparing ...Re8 and a rook invasion. Active pieces should convert Black’s extra rook.\n\nMOVE: Bf6",
+     "parsed": "Bf6",
+     "seconds": 42.23,
+     "usage": {
+      "input": 395,
+      "output": 1012
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 42.23
+  },
+  {
+   "ply": 59,
+   "move_no": 30,
+   "side": "White",
+   "san": "h5",
+   "uci": "h4h5",
+   "fen": "r5k1/6pp/3p1b2/3P3P/1p6/pP1NBn2/P1P5/1K6 b - - 0 30",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -746,
+    "mate": null,
+    "best": "Bf4",
+    "top3": [
+     "Bf4",
+     "Nxb4",
+     "h5"
+    ]
+   },
+   "eval_after": {
+    "cp": -904,
+    "mate": null,
+    "best": "Re8",
+    "top3": [
+     "Re8",
+     "Rb8",
+     "Bc3"
+    ]
+   },
+   "loss_pawns": 1.58,
+   "was_best": false,
+   "best_move": "Bf4",
+   "in_top3": true,
+   "top3": [
+    "Bf4",
+    "Nxb4",
+    "h5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "White is down a rook with little counterplay. The h4 pawn is attacked by the f3 knight; h5 saves it and keeps the bishop active on e3 rather than passively retreating to f2.\n\nMOVE: h5",
+     "parsed": "h5",
+     "seconds": 16.67,
+     "usage": {
+      "input": 583,
+      "output": 913
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 16.67
+  },
+  {
+   "ply": 60,
+   "move_no": 30,
+   "side": "Black",
+   "san": "Re8",
+   "uci": "a8e8",
+   "fen": "4r1k1/6pp/3p1b2/3P3P/1p6/pP1NBn2/P1P5/1K6 w - - 1 31",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -904,
+    "mate": null,
+    "best": "Re8",
+    "top3": [
+     "Re8",
+     "Rb8",
+     "Bc3"
+    ]
+   },
+   "eval_after": {
+    "cp": -1105,
+    "mate": null,
+    "best": "Bf4",
+    "top3": [
+     "Bf4",
+     "Bc1",
+     "Ne5"
+    ]
+   },
+   "loss_pawns": -0.96,
+   "was_best": true,
+   "best_move": "Re8",
+   "in_top3": true,
+   "top3": [
+    "Re8",
+    "Rb8",
+    "Bc3"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "With an extra rook, activating it with tempo keeps control. This attacks the bishop and prepares to invade White’s second rank.\n\nMOVE: Re8",
+     "parsed": "Re8",
+     "seconds": 60.57,
+     "usage": {
+      "input": 403,
+      "output": 1523
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 60.57
+  },
+  {
+   "ply": 61,
+   "move_no": 31,
+   "side": "White",
+   "san": "Bf4",
+   "uci": "e3f4",
+   "fen": "4r1k1/6pp/3p1b2/3P3P/1p3B2/pP1N1n2/P1P5/1K6 b - - 2 31",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -1105,
+    "mate": null,
+    "best": "Bf4",
+    "top3": [
+     "Bf4",
+     "Bc1",
+     "Ne5"
+    ]
+   },
+   "eval_after": {
+    "cp": -1183,
+    "mate": null,
+    "best": "Bb2",
+    "top3": [
+     "Bb2",
+     "Bg5",
+     "Re2"
+    ]
+   },
+   "loss_pawns": 0.0,
+   "was_best": true,
+   "best_move": "Bf4",
+   "in_top3": true,
+   "top3": [
+    "Bf4",
+    "Bc1",
+    "Ne5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "The bishop on e3 is attacked by the rook. Bd2 and Bd4 lose material to the f3 knight/bishop; Bf4 is safe and eyes d6, keeping some activity in a difficult position.\n\nMOVE: Bf4",
+     "parsed": "Bf4",
+     "seconds": 15.56,
+     "usage": {
+      "input": 592,
+      "output": 982
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 15.56
+  },
+  {
+   "ply": 62,
+   "move_no": 31,
+   "side": "Black",
+   "san": "Bc3",
+   "uci": "f6c3",
+   "fen": "4r1k1/6pp/3p4/3P3P/1p3B2/pPbN1n2/P1P5/1K6 w - - 3 32",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -1183,
+    "mate": null,
+    "best": "Bb2",
+    "top3": [
+     "Bb2",
+     "Bg5",
+     "Re2"
+    ]
+   },
+   "eval_after": {
+    "cp": -755,
+    "mate": null,
+    "best": "Bxd6",
+    "top3": [
+     "Bxd6",
+     "Kc1",
+     "Bg3"
+    ]
+   },
+   "loss_pawns": 2.45,
+   "was_best": false,
+   "best_move": "Bb2",
+   "in_top3": false,
+   "top3": [
+    "Bb2",
+    "Bg5",
+    "Re2"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Bc3 protects b4, restricts White’s king, and supports a future ...Nd2+, offering favorable exchanges while Black is a rook ahead.\n\nMOVE: Bc3",
+     "parsed": "Bc3",
+     "seconds": 68.38,
+     "usage": {
+      "input": 411,
+      "output": 1691
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 68.38
+  },
+  {
+   "ply": 63,
+   "move_no": 32,
+   "side": "White",
+   "san": "Bxd6",
+   "uci": "f4d6",
+   "fen": "4r1k1/6pp/3B4/3P3P/1p6/pPbN1n2/P1P5/1K6 b - - 0 32",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -755,
+    "mate": null,
+    "best": "Bxd6",
+    "top3": [
+     "Bxd6",
+     "Kc1",
+     "Bg3"
+    ]
+   },
+   "eval_after": {
+    "cp": -791,
+    "mate": null,
+    "best": "Re2",
+    "top3": [
+     "Re2",
+     "Nd4",
+     "Bd2"
+    ]
+   },
+   "loss_pawns": 0.36,
+   "was_best": true,
+   "best_move": "Bxd6",
+   "in_top3": true,
+   "top3": [
+    "Bxd6",
+    "Kc1",
+    "Bg3"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "White is down material; the best practical chance is to grab pawns and activate the d-pawn. Bxd6 wins a pawn and threatens Bxb4; if ...Re1+ then Nxe1 Bxe1 Bxb4 collects another pawn.\n\nMOVE: Bxd6",
+     "parsed": "Bxd6",
+     "seconds": 18.32,
+     "usage": {
+      "input": 604,
+      "output": 1193
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 18.32
+  },
+  {
+   "ply": 64,
+   "move_no": 32,
+   "side": "Black",
+   "san": "Re2",
+   "uci": "e8e2",
+   "fen": "6k1/6pp/3B4/3P3P/1p6/pPbN1n2/P1P1r3/1K6 w - - 1 33",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -791,
+    "mate": null,
+    "best": "Re2",
+    "top3": [
+     "Re2",
+     "Nd4",
+     "Bd2"
+    ]
+   },
+   "eval_after": {
+    "cp": -822,
+    "mate": null,
+    "best": "Kc1",
+    "top3": [
+     "Kc1",
+     "Bc5",
+     "Bxb4"
+    ]
+   },
+   "loss_pawns": -0.31,
+   "was_best": true,
+   "best_move": "Re2",
+   "in_top3": true,
+   "top3": [
+    "Re2",
+    "Nd4",
+    "Bd2"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "The rook invades the second rank, attacking c2 and maintaining strong pressure against White’s exposed king.\n\nMOVE: Re2",
+     "parsed": "Re2",
+     "seconds": 65.58,
+     "usage": {
+      "input": 420,
+      "output": 1583
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 65.58
+  },
+  {
+   "ply": 65,
+   "move_no": 33,
+   "side": "White",
+   "san": "Bxb4",
+   "uci": "d6b4",
+   "fen": "6k1/6pp/8/3P3P/1B6/pPbN1n2/P1P1r3/1K6 b - - 0 33",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -822,
+    "mate": null,
+    "best": "Kc1",
+    "top3": [
+     "Kc1",
+     "Bc5",
+     "Bxb4"
+    ]
+   },
+   "eval_after": {
+    "cp": -1115,
+    "mate": null,
+    "best": "Bxb4",
+    "top3": [
+     "Bxb4",
+     "Nd2+",
+     "Bf6"
+    ]
+   },
+   "loss_pawns": 1.78,
+   "was_best": false,
+   "best_move": "Kc1",
+   "in_top3": true,
+   "top3": [
+    "Kc1",
+    "Bc5",
+    "Bxb4"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "White's bishop attacks b4; trading it off removes Black's dangerous queenside pawn chain and the bishop that supports Black's attack. After 33. Bxb4 Bxb4 34. Nxb4, Black's tactics like ...Nd2+ Kc1 Nxb3+ axb3 Re1+ Kd2 lead nowhere, and White's d-pawn and knight hold.\n\nMOVE: Bxb4",
+     "parsed": "Bxb4",
+     "seconds": 27.97,
+     "usage": {
+      "input": 616,
+      "output": 1665
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 27.97
+  },
+  {
+   "ply": 66,
+   "move_no": 33,
+   "side": "Black",
+   "san": "Bxb4",
+   "uci": "c3b4",
+   "fen": "6k1/6pp/8/3P3P/1b6/pP1N1n2/P1P1r3/1K6 w - - 0 34",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -1115,
+    "mate": null,
+    "best": "Bxb4",
+    "top3": [
+     "Bxb4",
+     "Nd2+",
+     "Bf6"
+    ]
+   },
+   "eval_after": {
+    "cp": -1385,
+    "mate": null,
+    "best": "c3",
+    "top3": [
+     "c3",
+     "c4",
+     "d6"
+    ]
+   },
+   "loss_pawns": -0.0,
+   "was_best": true,
+   "best_move": "Bxb4",
+   "in_top3": true,
+   "top3": [
+    "Bxb4",
+    "Nd2+",
+    "Bf6"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Capturing the bishop wins material: 34. Nxb4? allows 34...Re1#, so White cannot safely recapture.\n\nMOVE: Bxb4",
+     "parsed": "Bxb4",
+     "seconds": 55.55,
+     "usage": {
+      "input": 428,
+      "output": 1476
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 55.55
+  },
+  {
+   "ply": 67,
+   "move_no": 34,
+   "side": "White",
+   "san": "Nxb4",
+   "uci": "d3b4",
+   "fen": "6k1/6pp/8/3P3P/1N6/pP3n2/P1P1r3/1K6 b - - 0 34",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -1385,
+    "mate": null,
+    "best": "c3",
+    "top3": [
+     "c3",
+     "c4",
+     "d6"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": -1,
+    "best": "Re1#",
+    "top3": [
+     "Re1#",
+     "Ng5",
+     "Nd2+"
+    ]
+   },
+   "loss_pawns": 0.0,
+   "was_best": false,
+   "best_move": "c3",
+   "in_top3": false,
+   "top3": [
+    "c3",
+    "c4",
+    "d6"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "White must recapture the bishop; 34. Nxb4 is the only move to avoid being hopelessly behind, leaving rook+knight vs knight with a few pawns.\n\nMOVE: Nxb4",
+     "parsed": "Nxb4",
+     "seconds": 4.98,
+     "usage": {
+      "input": 630,
+      "output": 321
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 4.98
+  },
+  {
+   "ply": 68,
+   "move_no": 34,
+   "side": "Black",
+   "san": "Re1#",
+   "uci": "e2e1",
+   "fen": "6k1/6pp/8/3P3P/1N6/pP3n2/P1P5/1K2r3 w - - 1 35",
+   "forced_random": false,
+   "eval_before": {
+    "cp": null,
+    "mate": -1,
+    "best": "Re1#",
+    "top3": [
+     "Re1#",
+     "Ng5",
+     "Nd2+"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": null,
+    "best": null,
+    "terminal": "0-1"
+   },
+   "loss_pawns": -0.0,
+   "was_best": true,
+   "best_move": "Re1#",
+   "in_top3": true,
+   "top3": [
+    "Re1#",
+    "Ng5",
+    "Nd2+"
+   ],
+   "check": true,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "The rook delivers mate on the first rank: a3 covers b2, while White’s own pawns block a2 and c2. White cannot capture or block the rook.\n\nMOVE: Re1#",
+     "parsed": "Re1#",
+     "seconds": 19.49,
+     "usage": {
+      "input": 437,
+      "output": 470
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 19.49
+  }
+ ]
+}

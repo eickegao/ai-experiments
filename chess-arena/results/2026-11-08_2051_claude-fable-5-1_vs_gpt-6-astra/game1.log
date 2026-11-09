@@ -42,3 +42,99 @@
   White try 1: 'g4' ok (2.3s)
 11. g4      eval   +0.30  best Nd5   
   Black try 1: 'b4' ok (19.4s)
+11... b4      eval   +0.95  best Nbd7  
+  White try 1: 'Nd5' ok (2.0s)
+12. Nd5     eval   +1.08  best Nd5   
+  Black try 1: 'Nxd5' ok (34.7s)
+12... Nxd5    eval   +1.63  best Bxd5  
+  White try 1: 'exd5' ok (2.1s)
+13. exd5    eval   +1.59  best exd5  
+  Black try 1: 'Bd7' ok (26.9s)
+13... Bd7     eval   +1.78  best Bc8   
+  White try 1: 'Kb1' ok (2.9s)
+14. Kb1     eval   -0.29  best Qxb4   BLUNDER
+  Black try 1: 'a5' ok (18.0s)
+14... a5      eval   -0.19  best a5    
+  White try 1: 'h4' ok (3.6s)
+15. h4      eval   -0.19  best Qg2   
+  Black try 1: 'a4' ok (21.9s)
+15... a4      eval   -0.14  best Na6   
+  White try 1: 'Nc1' ok (7.4s)
+16. Nc1     eval   -0.10  best Nc1   
+  Black try 1: 'a3' ok (56.0s)
+16... a3      eval   +0.50  best Na6   
+  White try 1: 'b3' ok (4.3s)
+17. b3      eval   +0.45  best b3    
+  Black try 1: 'f5' ok (59.5s)
+17... f5      eval   +0.48  best f5    
+  White try 1: 'gxf5' ok (8.5s)
+18. gxf5    eval   +0.41  best g5    
+  Black try 1: 'Bxf5' ok (60.8s)
+18... Bxf5    eval   +0.43  best Bxf5  
+  White try 1: 'Bd3' ok (6.6s)
+19. Bd3     eval   +0.18  best Bc4   
+  Black try 1: 'Bxd3' ok (91.2s)
+19... Bxd3    eval   +0.33  best Qc8   
+  White try 1: 'Nxd3' ok (3.4s)
+20. Nxd3    eval   +0.32  best Nxd3  
+  Black try 1: 'Rxf3' ok (95.0s)
+20... Rxf3    eval   +0.28  best Rxf3  
+  White try 1: 'Rhf1' ok (17.1s)
+21. Rhf1    eval   -0.32  best Rdg1  
+  Black try 1: None ILLEGAL (156.2s)
+  Black try 2: 'e4' ok (74.2s)
+21... e4      eval   +1.40  best Qf8    mistake
+  White try 1: 'Rxf3' ok (18.1s)
+22. Rxf3    eval   +1.42  best Rxf3  
+  Black try 1: 'exf3' ok (28.4s)
+22... exf3    eval   +1.35  best exf3  
+  White try 1: 'Rf1' ok (16.6s)
+23. Rf1     eval   -0.31  best Qxb4   mistake
+  Black try 1: 'Qf8' ok (62.9s)
+23... Qf8     eval   +2.68  best Na6    BLUNDER
+  White try 1: 'Qf2' ok (27.8s)
+24. Qf2     eval   -0.21  best Qxb4   BLUNDER
+  Black try 1: 'Nd7' ok (126.3s)
+24... Nd7     eval   -0.36  best Na6   
+  White try 1: 'Rxf3' ILLEGAL (21.3s)
+  White try 2: 'Qxf3' ok (2.2s)
+25. Qxf3    eval   -0.66  best Qg3   
+  Black try 1: 'Ne5' ok (110.2s)
+25... Ne5     eval   +2.30  best Qxf3   BLUNDER
+  White try 1: 'Qe4' ok (21.1s)
+26. Qe4     eval   -8.55  best Qg2    BLUNDER
+  Black try 1: 'Qxf1+' ok (33.9s)
+26... Qxf1+   eval   -8.71  best Qxf1+ 
+  White try 1: 'Nc1' ok (18.5s)
+27. Nc1     eval   -8.92  best Nc1   
+  Black try 1: 'Qf3' ok (86.6s)
+27... Qf3     eval   -8.45  best Qe1   
+  White try 1: 'Qxf3' ok (10.0s)
+28. Qxf3    eval   -8.38  best Qxf3  
+  Black try 1: 'Nxf3' ok (13.2s)
+28... Nxf3    eval   -8.04  best Nxf3  
+  White try 1: 'Nd3' ok (11.4s)
+29. Nd3     eval   -8.37  best h5    
+  Black try 1: 'Bf6' ok (42.2s)
+29... Bf6     eval   -7.46  best h5    
+  White try 1: 'h5' ok (16.7s)
+30. h5      eval   -9.04  best Bf4    mistake
+  Black try 1: 'Re8' ok (60.6s)
+30... Re8     eval  -11.05  best Re8   
+  White try 1: 'Bf4' ok (15.6s)
+31. Bf4     eval  -11.83  best Bf4   
+  Black try 1: 'Bc3' ok (68.4s)
+31... Bc3     eval   -7.55  best Bb2    BLUNDER
+  White try 1: 'Bxd6' ok (18.3s)
+32. Bxd6    eval   -7.91  best Bxd6  
+  Black try 1: 'Re2' ok (65.6s)
+32... Re2     eval   -8.22  best Re2   
+  White try 1: 'Bxb4' ok (28.0s)
+33. Bxb4    eval  -11.15  best Kc1    mistake
+  Black try 1: 'Bxb4' ok (55.5s)
+33... Bxb4    eval  -13.85  best Bxb4  
+  White try 1: 'Nxb4' ok (5.0s)
+34. Nxb4    eval     M-1  best c3    
+  Black try 1: 'Re1#' ok (19.5s)
+34... Re1#    eval     0-1  best Re1#  
+=== Result 0-1: checkmate

@@ -1,0 +1,11 @@
+[Event "AI Chess Arena"]
+[Site "API"]
+[Date "2026.11.09"]
+[Round "game2"]
+[White "OpenAI (gpt-6-astra)"]
+[Black "Claude (claude-fable-5-1)"]
+[Result "1-0"]
+[Termination "checkmate"]
+[Annotator "python-chess (legality) + Stockfish 19 depth 18 (eval)"]
+
+1. e4 { [%eval +0.18] } 1... e5 { [%eval +0.17] } 2. Nf3 { [%eval +0.21] } 2... Nc6 { [%eval +0.17] } 3. Bb5 { [%eval +0.20] } 3... a6 { [%eval +0.32] } 4. Ba4 { [%eval +0.21] } 4... Nf6 { [%eval +0.25] } 5. O-O { [%eval +0.18] } 5... Be7 { [%eval +0.26] } 6. Re1 { [%eval +0.22] } 6... b5 { [%eval +0.30] } 7. Bb3 { [%eval +0.26] } 7... d6 { [%eval +0.36] } 8. c3 { [%eval +0.29] } 8... O-O { [%eval +0.31] } 9. h3 { [%eval +0.27] } 9... Na5 { [%eval +0.46] } 10. Bc2 { [%eval +0.39] } 10... c5 { [%eval +0.43] } 11. d4 { [%eval +0.46] } 11... Qc7 { [%eval +0.44] } 12. Nbd2 { [%eval +0.30] } 12... cxd4 { [%eval +0.34] } 13. cxd4 { [%eval +0.28] } 13... Nc6 { [%eval +0.34] } 14. Nb3 { [%eval +0.26] } 14... a5 { [%eval +0.26] } 15. Be3 { [%eval +0.27] } 15... a4 { [%eval +0.25] } 16. Nbd2 { [%eval +0.26] } 16... Nb4 { [%eval +0.32] } 17. Bb1 { [%eval +0.27] } 17... a3 { [%eval +0.25] } 18. b3 { [%eval -5.99] } 18... Bd7 { [%eval -0.17] } 19. Nf1 { [%eval -0.29] } 19... Rfc8 { [%eval +0.60] } 20. Ng3 { [%eval -1.82] } 20... g6 { [%eval +1.06] } 21. Qd2 { [%eval +0.68] } 21... Qb7 { [%eval +7.25] } 22. Qxb4 { [%eval +7.33] } 22... d5 { [%eval +10.69] } 23. Qxe7 { [%eval +10.94] } 23... Re8 { [%eval +11.93] } 24. Qxf6 { [%eval +12.01] } 24... dxe4 { [%eval M2] } 25. Bxe4 { [%eval +13.21] } 25... Bc6 { [%eval M2] } 26. Bxc6 { [%eval +14.97] } 26... Qxc6 { [%eval +16.93] } 27. Qxc6 { [%eval +16.89] } 27... Ra6 { [%eval M3] } 28. Qxe8+ { [%eval M2] } 28... Kg7 { [%eval M2] } 29. Qxe5+ { [%eval M3] } 29... Kg8 { [%eval M2] } 30. Bh6 { [%eval M1] } 30... f6 { [%eval M1] } 31. Qe8# { [%eval ] } 1-0

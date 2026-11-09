@@ -1,0 +1,47 @@
+[
+ {
+  "ply": 27,
+  "type": "blunder",
+  "text": "White Kb1 lost 2.1 pawns (best was Qxb4)"
+ },
+ {
+  "ply": 42,
+  "type": "illegal",
+  "text": "Black tried [None] before e4"
+ },
+ {
+  "ply": 46,
+  "type": "blunder",
+  "text": "Black Qf8 lost 3.0 pawns (best was Na6)"
+ },
+ {
+  "ply": 47,
+  "type": "blunder",
+  "text": "White Qf2 lost 2.9 pawns (best was Qxb4)"
+ },
+ {
+  "ply": 49,
+  "type": "illegal",
+  "text": "White tried ['Rxf3'] before Qxf3"
+ },
+ {
+  "ply": 50,
+  "type": "blunder",
+  "text": "Black Ne5 lost 3.0 pawns (best was Qxf3)"
+ },
+ {
+  "ply": 51,
+  "type": "blunder",
+  "text": "White Qe4 lost 10.8 pawns (best was Qg2)"
+ },
+ {
+  "ply": 62,
+  "type": "blunder",
+  "text": "Black Bc3 lost 2.5 pawns (best was Bb2)"
+ },
+ {
+  "ply": 68,
+  "type": "mate",
+  "text": "Black delivers checkmate with Re1#"
+ }
+]

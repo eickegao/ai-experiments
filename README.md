@@ -10,7 +10,7 @@ A public log of the AI experiments we run for our YouTube channels. Every experi
 
 | Directory | Experiment | Status |
 |---|---|---|
-| [`chess-arena/`](chess-arena/) ([中文](chess-arena/README.zh.md)) | Anthropic's strongest model vs OpenAI's strongest model at chess. Legality checked by python-chess, quality scored by Stockfish, two games per round with colors swapped. | Pipeline ready, match pending |
+| [`chess-arena/`](chess-arena/) ([中文](chess-arena/README.zh.md)) | Anthropic's strongest model vs OpenAI's strongest model at chess. Legality checked by python-chess, quality scored by Stockfish, two games per round with colors swapped. | Done: GPT-6 Astra 2–0 Claude Fable 5.1 (2026-11-08) |
 
 ## Reproducing an experiment
 

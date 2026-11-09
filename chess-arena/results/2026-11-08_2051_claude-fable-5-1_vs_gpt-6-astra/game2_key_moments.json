@@ -1,0 +1,37 @@
+[
+ {
+  "ply": 35,
+  "type": "blunder",
+  "text": "White b3 lost 6.2 pawns (best was Qb3)"
+ },
+ {
+  "ply": 36,
+  "type": "blunder",
+  "text": "Black Bd7 lost 5.8 pawns (best was Qc3)"
+ },
+ {
+  "ply": 39,
+  "type": "blunder",
+  "text": "White Ng3 lost 2.4 pawns (best was Bd2)"
+ },
+ {
+  "ply": 40,
+  "type": "blunder",
+  "text": "Black g6 lost 2.9 pawns (best was Qc3)"
+ },
+ {
+  "ply": 42,
+  "type": "blunder",
+  "text": "Black Qb7 lost 6.6 pawns (best was exd4)"
+ },
+ {
+  "ply": 44,
+  "type": "blunder",
+  "text": "Black d5 lost 2.7 pawns (best was Bc6)"
+ },
+ {
+  "ply": 61,
+  "type": "mate",
+  "text": "White delivers checkmate with Qe8#"
+ }
+]

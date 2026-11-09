@@ -1,0 +1,3404 @@
+{
+ "name": "game2",
+ "started_utc": "2026-11-09T03:25:18.185269+00:00",
+ "white": {
+  "name": "OpenAI (gpt-6-astra)",
+  "model": "gpt-6-astra"
+ },
+ "black": {
+  "name": "Claude (claude-fable-5-1)",
+  "model": "claude-fable-5-1"
+ },
+ "result": "1-0",
+ "termination": "checkmate",
+ "plies_total": 61,
+ "verifier": {
+  "legality": "python-chess 1.11.2",
+  "eval": "Stockfish 19 depth 18"
+ },
+ "effort": "high",
+ "rules": {
+  "max_attempts": 3,
+  "on_illegal": "forfeit",
+  "max_plies": 300,
+  "adjudicate_cp": 800
+ },
+ "stats": {
+  "White": {
+   "moves": 31,
+   "illegal_attempts": 0,
+   "forced_random": 0,
+   "best_move_rate": 0.71,
+   "top3_rate": 0.871,
+   "avg_loss_pawns": 0.321,
+   "blunders_2pawns": 2,
+   "avg_seconds": 32.7,
+   "tokens_in": 8804,
+   "tokens_out": 26726,
+   "cost_usd": 1.4243,
+   "total_seconds": 1014.6
+  },
+  "Black": {
+   "moves": 30,
+   "illegal_attempts": 0,
+   "forced_random": 0,
+   "best_move_rate": 0.367,
+   "top3_rate": 0.667,
+   "avg_loss_pawns": 0.655,
+   "blunders_2pawns": 4,
+   "avg_seconds": 3.9,
+   "tokens_in": 12574,
+   "tokens_out": 5822,
+   "cost_usd": 0.4168,
+   "total_seconds": 117.7
+  }
+ },
+ "final_fen": "4Q1k1/7p/r4ppB/1p6/3P4/pP3NNP/P4PP1/R3R1K1 b - - 1 31",
+ "plies": [
+  {
+   "ply": 1,
+   "move_no": 1,
+   "side": "White",
+   "san": "e4",
+   "uci": "e2e4",
+   "fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 19,
+    "mate": null,
+    "best": "d4",
+    "top3": [
+     "d4",
+     "e4",
+     "Nf3"
+    ]
+   },
+   "eval_after": {
+    "cp": 18,
+    "mate": null,
+    "best": "c5",
+    "top3": [
+     "c5",
+     "e5",
+     "e6"
+    ]
+   },
+   "loss_pawns": 0.01,
+   "was_best": false,
+   "best_move": "d4",
+   "in_top3": true,
+   "top3": [
+    "d4",
+    "e4",
+    "Nf3"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "I’ll claim central space and open lines for the bishop and queen.\nMOVE: e4",
+     "parsed": "e4",
+     "seconds": 3.19,
+     "usage": {
+      "input": 170,
+      "output": 51
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 3.19
+  },
+  {
+   "ply": 2,
+   "move_no": 1,
+   "side": "Black",
+   "san": "e5",
+   "uci": "e7e5",
+   "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 18,
+    "mate": null,
+    "best": "c5",
+    "top3": [
+     "c5",
+     "e5",
+     "e6"
+    ]
+   },
+   "eval_after": {
+    "cp": 17,
+    "mate": null,
+    "best": "Nf3",
+    "top3": [
+     "Nf3",
+     "Nc3",
+     "Bc4"
+    ]
+   },
+   "loss_pawns": -0.01,
+   "was_best": false,
+   "best_move": "c5",
+   "in_top3": true,
+   "top3": [
+    "c5",
+    "e5",
+    "e6"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard reply to 1.e4; I'll play the solid and principled 1...e5, fighting for the center.\n\nMOVE: e5",
+     "parsed": "e5",
+     "seconds": 1.37,
+     "usage": {
+      "input": 265,
+      "output": 45
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.37
+  },
+  {
+   "ply": 3,
+   "move_no": 2,
+   "side": "White",
+   "san": "Nf3",
+   "uci": "g1f3",
+   "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 17,
+    "mate": null,
+    "best": "Nf3",
+    "top3": [
+     "Nf3",
+     "Nc3",
+     "Bc4"
+    ]
+   },
+   "eval_after": {
+    "cp": 21,
+    "mate": null,
+    "best": "Nc6",
+    "top3": [
+     "Nc6",
+     "Nf6",
+     "d6"
+    ]
+   },
+   "loss_pawns": -0.04,
+   "was_best": true,
+   "best_move": "Nf3",
+   "in_top3": true,
+   "top3": [
+    "Nf3",
+    "Nc3",
+    "Bc4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Developing the kingside knight attacks e5 and prepares castling while keeping central options open.\n\nMOVE: Nf3",
+     "parsed": "Nf3",
+     "seconds": 3.42,
+     "usage": {
+      "input": 177,
+      "output": 74
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 3.42
+  },
+  {
+   "ply": 4,
+   "move_no": 2,
+   "side": "Black",
+   "san": "Nc6",
+   "uci": "b8c6",
+   "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 21,
+    "mate": null,
+    "best": "Nc6",
+    "top3": [
+     "Nc6",
+     "Nf6",
+     "d6"
+    ]
+   },
+   "eval_after": {
+    "cp": 17,
+    "mate": null,
+    "best": "Bb5",
+    "top3": [
+     "Bb5",
+     "Bc4",
+     "Nc3"
+    ]
+   },
+   "loss_pawns": -0.04,
+   "was_best": true,
+   "best_move": "Nc6",
+   "in_top3": true,
+   "top3": [
+    "Nc6",
+    "Nf6",
+    "d6"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard development: defend e5 with Nc6.\n\nMOVE: Nc6",
+     "parsed": "Nc6",
+     "seconds": 1.14,
+     "usage": {
+      "input": 275,
+      "output": 28
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.14
+  },
+  {
+   "ply": 5,
+   "move_no": 3,
+   "side": "White",
+   "san": "Bb5",
+   "uci": "f1b5",
+   "fen": "r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 17,
+    "mate": null,
+    "best": "Bb5",
+    "top3": [
+     "Bb5",
+     "Bc4",
+     "Nc3"
+    ]
+   },
+   "eval_after": {
+    "cp": 20,
+    "mate": null,
+    "best": "Nf6",
+    "top3": [
+     "Nf6",
+     "a6",
+     "Be7"
+    ]
+   },
+   "loss_pawns": -0.03,
+   "was_best": true,
+   "best_move": "Bb5",
+   "in_top3": true,
+   "top3": [
+    "Bb5",
+    "Bc4",
+    "Nc3"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "The Ruy Lopez develops the bishop, pressures the knight defending e5, and prepares quick castling.\nMOVE: Bb5",
+     "parsed": "Bb5",
+     "seconds": 3.24,
+     "usage": {
+      "input": 185,
+      "output": 74
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 3.24
+  },
+  {
+   "ply": 6,
+   "move_no": 3,
+   "side": "Black",
+   "san": "a6",
+   "uci": "a7a6",
+   "fen": "r1bqkbnr/1ppp1ppp/p1n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 4",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 20,
+    "mate": null,
+    "best": "Nf6",
+    "top3": [
+     "Nf6",
+     "a6",
+     "Be7"
+    ]
+   },
+   "eval_after": {
+    "cp": 32,
+    "mate": null,
+    "best": "Ba4",
+    "top3": [
+     "Ba4",
+     "Bc4",
+     "Bxc6"
+    ]
+   },
+   "loss_pawns": 0.12,
+   "was_best": false,
+   "best_move": "Nf6",
+   "in_top3": true,
+   "top3": [
+    "Nf6",
+    "a6",
+    "Be7"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Ruy Lopez. The standard Morphy Defense 3...a6 is solid and principled, asking the bishop its intentions.\n\nMOVE: a6",
+     "parsed": "a6",
+     "seconds": 1.54,
+     "usage": {
+      "input": 287,
+      "output": 53
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.54
+  },
+  {
+   "ply": 7,
+   "move_no": 4,
+   "side": "White",
+   "san": "Ba4",
+   "uci": "b5a4",
+   "fen": "r1bqkbnr/1ppp1ppp/p1n5/4p3/B3P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 1 4",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 32,
+    "mate": null,
+    "best": "Ba4",
+    "top3": [
+     "Ba4",
+     "Bc4",
+     "Bxc6"
+    ]
+   },
+   "eval_after": {
+    "cp": 21,
+    "mate": null,
+    "best": "Nf6",
+    "top3": [
+     "Nf6",
+     "Be7",
+     "b5"
+    ]
+   },
+   "loss_pawns": 0.11,
+   "was_best": true,
+   "best_move": "Ba4",
+   "in_top3": true,
+   "top3": [
+    "Ba4",
+    "Bc4",
+    "Bxc6"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Ba4 preserves the light-squared bishop and maintains pressure on the c6-knight, following the main line of the Ruy Lopez.\n\nMOVE: Ba4",
+     "parsed": "Ba4",
+     "seconds": 5.75,
+     "usage": {
+      "input": 192,
+      "output": 140
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 5.75
+  },
+  {
+   "ply": 8,
+   "move_no": 4,
+   "side": "Black",
+   "san": "Nf6",
+   "uci": "g8f6",
+   "fen": "r1bqkb1r/1ppp1ppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 2 5",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 21,
+    "mate": null,
+    "best": "Nf6",
+    "top3": [
+     "Nf6",
+     "Be7",
+     "b5"
+    ]
+   },
+   "eval_after": {
+    "cp": 25,
+    "mate": null,
+    "best": "O-O",
+    "top3": [
+     "O-O",
+     "d3",
+     "Nc3"
+    ]
+   },
+   "loss_pawns": 0.04,
+   "was_best": true,
+   "best_move": "Nf6",
+   "in_top3": true,
+   "top3": [
+    "Nf6",
+    "Be7",
+    "b5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard Ruy Lopez main line; develop the knight.\n\nMOVE: Nf6",
+     "parsed": "Nf6",
+     "seconds": 1.01,
+     "usage": {
+      "input": 297,
+      "output": 32
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.01
+  },
+  {
+   "ply": 9,
+   "move_no": 5,
+   "side": "White",
+   "san": "O-O",
+   "uci": "e1g1",
+   "fen": "r1bqkb1r/1ppp1ppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQ1RK1 b kq - 3 5",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 25,
+    "mate": null,
+    "best": "O-O",
+    "top3": [
+     "O-O",
+     "d3",
+     "Nc3"
+    ]
+   },
+   "eval_after": {
+    "cp": 18,
+    "mate": null,
+    "best": "Be7",
+    "top3": [
+     "Be7",
+     "b5",
+     "Nxe4"
+    ]
+   },
+   "loss_pawns": 0.07,
+   "was_best": true,
+   "best_move": "O-O",
+   "in_top3": true,
+   "top3": [
+    "O-O",
+    "d3",
+    "Nc3"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Castling secures the king and prepares Re1, supporting a later central break with d4.\nMOVE: O-O",
+     "parsed": "O-O",
+     "seconds": 7.16,
+     "usage": {
+      "input": 200,
+      "output": 132
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 7.16
+  },
+  {
+   "ply": 10,
+   "move_no": 5,
+   "side": "Black",
+   "san": "Be7",
+   "uci": "f8e7",
+   "fen": "r1bqk2r/1pppbppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQ1RK1 w kq - 4 6",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 18,
+    "mate": null,
+    "best": "Be7",
+    "top3": [
+     "Be7",
+     "b5",
+     "Nxe4"
+    ]
+   },
+   "eval_after": {
+    "cp": 26,
+    "mate": null,
+    "best": "Re1",
+    "top3": [
+     "Re1",
+     "d3",
+     "Qe2"
+    ]
+   },
+   "loss_pawns": 0.08,
+   "was_best": true,
+   "best_move": "Be7",
+   "in_top3": true,
+   "top3": [
+    "Be7",
+    "b5",
+    "Nxe4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard Ruy Lopez, Closed; 5...Be7 is the main solid line.\n\nMOVE: Be7",
+     "parsed": "Be7",
+     "seconds": 1.19,
+     "usage": {
+      "input": 307,
+      "output": 41
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.19
+  },
+  {
+   "ply": 11,
+   "move_no": 6,
+   "side": "White",
+   "san": "Re1",
+   "uci": "f1e1",
+   "fen": "r1bqk2r/1pppbppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQR1K1 b kq - 5 6",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 26,
+    "mate": null,
+    "best": "Re1",
+    "top3": [
+     "Re1",
+     "d3",
+     "Qe2"
+    ]
+   },
+   "eval_after": {
+    "cp": 22,
+    "mate": null,
+    "best": "b5",
+    "top3": [
+     "b5",
+     "d6",
+     "Bc5"
+    ]
+   },
+   "loss_pawns": 0.04,
+   "was_best": true,
+   "best_move": "Re1",
+   "in_top3": true,
+   "top3": [
+    "Re1",
+    "d3",
+    "Qe2"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Re1 reinforces the e4 pawn and supports a future central expansion with c3 and d4.\n\nMOVE: Re1",
+     "parsed": "Re1",
+     "seconds": 7.89,
+     "usage": {
+      "input": 207,
+      "output": 164
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 7.89
+  },
+  {
+   "ply": 12,
+   "move_no": 6,
+   "side": "Black",
+   "san": "b5",
+   "uci": "b7b5",
+   "fen": "r1bqk2r/2ppbppp/p1n2n2/1p2p3/B3P3/5N2/PPPP1PPP/RNBQR1K1 w kq - 0 7",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 22,
+    "mate": null,
+    "best": "b5",
+    "top3": [
+     "b5",
+     "d6",
+     "Bc5"
+    ]
+   },
+   "eval_after": {
+    "cp": 30,
+    "mate": null,
+    "best": "Bb3",
+    "top3": [
+     "Bb3",
+     "d4",
+     "Nxe5"
+    ]
+   },
+   "loss_pawns": 0.08,
+   "was_best": true,
+   "best_move": "b5",
+   "in_top3": true,
+   "top3": [
+    "b5",
+    "d6",
+    "Bc5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard Closed Ruy Lopez: 6...b5 is the main line, driving the bishop and preparing ...d6 and ...O-O.\n\nMOVE: b5",
+     "parsed": "b5",
+     "seconds": 1.44,
+     "usage": {
+      "input": 317,
+      "output": 58
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.44
+  },
+  {
+   "ply": 13,
+   "move_no": 7,
+   "side": "White",
+   "san": "Bb3",
+   "uci": "a4b3",
+   "fen": "r1bqk2r/2ppbppp/p1n2n2/1p2p3/4P3/1B3N2/PPPP1PPP/RNBQR1K1 b kq - 1 7",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 30,
+    "mate": null,
+    "best": "Bb3",
+    "top3": [
+     "Bb3",
+     "d4",
+     "Nxe5"
+    ]
+   },
+   "eval_after": {
+    "cp": 26,
+    "mate": null,
+    "best": "O-O",
+    "top3": [
+     "O-O",
+     "Bb7",
+     "d6"
+    ]
+   },
+   "loss_pawns": 0.04,
+   "was_best": true,
+   "best_move": "Bb3",
+   "in_top3": true,
+   "top3": [
+    "Bb3",
+    "d4",
+    "Nxe5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Retreating the attacked bishop preserves pressure on f7 and keeps the standard Ruy Lopez plan of c3 and d4 available.\n\nMOVE: Bb3",
+     "parsed": "Bb3",
+     "seconds": 5.01,
+     "usage": {
+      "input": 214,
+      "output": 119
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 5.01
+  },
+  {
+   "ply": 14,
+   "move_no": 7,
+   "side": "Black",
+   "san": "d6",
+   "uci": "d7d6",
+   "fen": "r1bqk2r/2p1bppp/p1np1n2/1p2p3/4P3/1B3N2/PPPP1PPP/RNBQR1K1 w kq - 0 8",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 26,
+    "mate": null,
+    "best": "O-O",
+    "top3": [
+     "O-O",
+     "Bb7",
+     "d6"
+    ]
+   },
+   "eval_after": {
+    "cp": 36,
+    "mate": null,
+    "best": "c3",
+    "top3": [
+     "c3",
+     "a4",
+     "a3"
+    ]
+   },
+   "loss_pawns": 0.1,
+   "was_best": false,
+   "best_move": "O-O",
+   "in_top3": true,
+   "top3": [
+    "O-O",
+    "Bb7",
+    "d6"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard Closed Ruy Lopez; 7...d6 is the main line, preparing ...O-O and ...Na5 or ...Bg4.\n\nMOVE: d6",
+     "parsed": "d6",
+     "seconds": 1.62,
+     "usage": {
+      "input": 327,
+      "output": 59
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.62
+  },
+  {
+   "ply": 15,
+   "move_no": 8,
+   "side": "White",
+   "san": "c3",
+   "uci": "c2c3",
+   "fen": "r1bqk2r/2p1bppp/p1np1n2/1p2p3/4P3/1BP2N2/PP1P1PPP/RNBQR1K1 b kq - 0 8",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 36,
+    "mate": null,
+    "best": "c3",
+    "top3": [
+     "c3",
+     "a4",
+     "a3"
+    ]
+   },
+   "eval_after": {
+    "cp": 29,
+    "mate": null,
+    "best": "O-O",
+    "top3": [
+     "O-O",
+     "Bg4",
+     "Be6"
+    ]
+   },
+   "loss_pawns": 0.07,
+   "was_best": true,
+   "best_move": "c3",
+   "in_top3": true,
+   "top3": [
+    "c3",
+    "a4",
+    "a3"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "c3 prepares the central advance d4 and gives the bishop a retreat to c2 if Black plays ...Na5.\n\nMOVE: c3",
+     "parsed": "c3",
+     "seconds": 8.39,
+     "usage": {
+      "input": 221,
+      "output": 176
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 8.39
+  },
+  {
+   "ply": 16,
+   "move_no": 8,
+   "side": "Black",
+   "san": "O-O",
+   "uci": "e8g8",
+   "fen": "r1bq1rk1/2p1bppp/p1np1n2/1p2p3/4P3/1BP2N2/PP1P1PPP/RNBQR1K1 w - - 1 9",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 29,
+    "mate": null,
+    "best": "O-O",
+    "top3": [
+     "O-O",
+     "Bg4",
+     "Be6"
+    ]
+   },
+   "eval_after": {
+    "cp": 31,
+    "mate": null,
+    "best": "h3",
+    "top3": [
+     "h3",
+     "d4",
+     "a4"
+    ]
+   },
+   "loss_pawns": 0.02,
+   "was_best": true,
+   "best_move": "O-O",
+   "in_top3": true,
+   "top3": [
+    "O-O",
+    "Bg4",
+    "Be6"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard Ruy Lopez Closed; castling is the main line.\n\nMOVE: O-O",
+     "parsed": "O-O",
+     "seconds": 1.33,
+     "usage": {
+      "input": 335,
+      "output": 33
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.33
+  },
+  {
+   "ply": 17,
+   "move_no": 9,
+   "side": "White",
+   "san": "h3",
+   "uci": "h2h3",
+   "fen": "r1bq1rk1/2p1bppp/p1np1n2/1p2p3/4P3/1BP2N1P/PP1P1PP1/RNBQR1K1 b - - 0 9",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 31,
+    "mate": null,
+    "best": "h3",
+    "top3": [
+     "h3",
+     "d4",
+     "a4"
+    ]
+   },
+   "eval_after": {
+    "cp": 27,
+    "mate": null,
+    "best": "Bb7",
+    "top3": [
+     "Bb7",
+     "Re8",
+     "Be6"
+    ]
+   },
+   "loss_pawns": 0.04,
+   "was_best": true,
+   "best_move": "h3",
+   "in_top3": true,
+   "top3": [
+    "h3",
+    "d4",
+    "a4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "h3 prevents ...Bg4, keeping the f3-knight free to support d4 and a strong pawn center.\n\nMOVE: h3",
+     "parsed": "h3",
+     "seconds": 5.13,
+     "usage": {
+      "input": 228,
+      "output": 97
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 5.13
+  },
+  {
+   "ply": 18,
+   "move_no": 9,
+   "side": "Black",
+   "san": "Na5",
+   "uci": "c6a5",
+   "fen": "r1bq1rk1/2p1bppp/p2p1n2/np2p3/4P3/1BP2N1P/PP1P1PP1/RNBQR1K1 w - - 1 10",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 27,
+    "mate": null,
+    "best": "Bb7",
+    "top3": [
+     "Bb7",
+     "Re8",
+     "Be6"
+    ]
+   },
+   "eval_after": {
+    "cp": 46,
+    "mate": null,
+    "best": "Bc2",
+    "top3": [
+     "Bc2",
+     "d4",
+     "d3"
+    ]
+   },
+   "loss_pawns": 0.19,
+   "was_best": false,
+   "best_move": "Bb7",
+   "in_top3": false,
+   "top3": [
+    "Bb7",
+    "Re8",
+    "Be6"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Main line Closed Ruy Lopez; 9...Na5 (Chigorin) or 9...Nb8 (Breyer) are standard. I'll play the Chigorin.\n\nMOVE: Na5",
+     "parsed": "Na5",
+     "seconds": 1.57,
+     "usage": {
+      "input": 344,
+      "output": 70
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.57
+  },
+  {
+   "ply": 19,
+   "move_no": 10,
+   "side": "White",
+   "san": "Bc2",
+   "uci": "b3c2",
+   "fen": "r1bq1rk1/2p1bppp/p2p1n2/np2p3/4P3/2P2N1P/PPBP1PP1/RNBQR1K1 b - - 2 10",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 46,
+    "mate": null,
+    "best": "Bc2",
+    "top3": [
+     "Bc2",
+     "d4",
+     "d3"
+    ]
+   },
+   "eval_after": {
+    "cp": 39,
+    "mate": null,
+    "best": "c5",
+    "top3": [
+     "c5",
+     "Re8",
+     "Nc4"
+    ]
+   },
+   "loss_pawns": 0.07,
+   "was_best": true,
+   "best_move": "Bc2",
+   "in_top3": true,
+   "top3": [
+    "Bc2",
+    "d4",
+    "d3"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Retreating the bishop preserves the bishop pair and reinforces e4, preparing the central break d4.\n\nMOVE: Bc2",
+     "parsed": "Bc2",
+     "seconds": 5.59,
+     "usage": {
+      "input": 235,
+      "output": 150
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 5.59
+  },
+  {
+   "ply": 20,
+   "move_no": 10,
+   "side": "Black",
+   "san": "c5",
+   "uci": "c7c5",
+   "fen": "r1bq1rk1/4bppp/p2p1n2/npp1p3/4P3/2P2N1P/PPBP1PP1/RNBQR1K1 w - - 0 11",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 39,
+    "mate": null,
+    "best": "c5",
+    "top3": [
+     "c5",
+     "Re8",
+     "Nc4"
+    ]
+   },
+   "eval_after": {
+    "cp": 43,
+    "mate": null,
+    "best": "d4",
+    "top3": [
+     "d4",
+     "d3",
+     "a4"
+    ]
+   },
+   "loss_pawns": 0.04,
+   "was_best": true,
+   "best_move": "c5",
+   "in_top3": true,
+   "top3": [
+    "c5",
+    "Re8",
+    "Nc4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard Chigorin main line: 10...c5 gaining space and preparing ...Qc7.\n\nMOVE: c5",
+     "parsed": "c5",
+     "seconds": 1.26,
+     "usage": {
+      "input": 355,
+      "output": 42
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.26
+  },
+  {
+   "ply": 21,
+   "move_no": 11,
+   "side": "White",
+   "san": "d4",
+   "uci": "d2d4",
+   "fen": "r1bq1rk1/4bppp/p2p1n2/npp1p3/3PP3/2P2N1P/PPB2PP1/RNBQR1K1 b - - 0 11",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 43,
+    "mate": null,
+    "best": "d4",
+    "top3": [
+     "d4",
+     "d3",
+     "a4"
+    ]
+   },
+   "eval_after": {
+    "cp": 46,
+    "mate": null,
+    "best": "exd4",
+    "top3": [
+     "exd4",
+     "cxd4",
+     "Qc7"
+    ]
+   },
+   "loss_pawns": -0.03,
+   "was_best": true,
+   "best_move": "d4",
+   "in_top3": true,
+   "top3": [
+    "d4",
+    "d3",
+    "a4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Challenge Black’s queenside expansion by striking in the center, opening lines for the pieces and contesting e5.\nMOVE: d4",
+     "parsed": "d4",
+     "seconds": 5.42,
+     "usage": {
+      "input": 243,
+      "output": 119
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 5.42
+  },
+  {
+   "ply": 22,
+   "move_no": 11,
+   "side": "Black",
+   "san": "Qc7",
+   "uci": "d8c7",
+   "fen": "r1b2rk1/2q1bppp/p2p1n2/npp1p3/3PP3/2P2N1P/PPB2PP1/RNBQR1K1 w - - 1 12",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 46,
+    "mate": null,
+    "best": "exd4",
+    "top3": [
+     "exd4",
+     "cxd4",
+     "Qc7"
+    ]
+   },
+   "eval_after": {
+    "cp": 44,
+    "mate": null,
+    "best": "d5",
+    "top3": [
+     "d5",
+     "Nbd2",
+     "Qe2"
+    ]
+   },
+   "loss_pawns": -0.02,
+   "was_best": false,
+   "best_move": "exd4",
+   "in_top3": true,
+   "top3": [
+    "exd4",
+    "cxd4",
+    "Qc7"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard Chigorin position. 11...Qc7 is the main line, supporting e5 and preparing ...cxd4 or ...Nc6.\n\nMOVE: Qc7",
+     "parsed": "Qc7",
+     "seconds": 1.55,
+     "usage": {
+      "input": 363,
+      "output": 60
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.55
+  },
+  {
+   "ply": 23,
+   "move_no": 12,
+   "side": "White",
+   "san": "Nbd2",
+   "uci": "b1d2",
+   "fen": "r1b2rk1/2q1bppp/p2p1n2/npp1p3/3PP3/2P2N1P/PPBN1PP1/R1BQR1K1 b - - 2 12",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 44,
+    "mate": null,
+    "best": "d5",
+    "top3": [
+     "d5",
+     "Nbd2",
+     "Qe2"
+    ]
+   },
+   "eval_after": {
+    "cp": 30,
+    "mate": null,
+    "best": "cxd4",
+    "top3": [
+     "cxd4",
+     "Bd7",
+     "exd4"
+    ]
+   },
+   "loss_pawns": 0.14,
+   "was_best": false,
+   "best_move": "d5",
+   "in_top3": true,
+   "top3": [
+    "d5",
+    "Nbd2",
+    "Qe2"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Develops the queenside knight, reinforces e4, and prepares the Nf1–g3 maneuver while maintaining central tension.\n\nMOVE: Nbd2",
+     "parsed": "Nbd2",
+     "seconds": 6.73,
+     "usage": {
+      "input": 251,
+      "output": 200
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 6.73
+  },
+  {
+   "ply": 24,
+   "move_no": 12,
+   "side": "Black",
+   "san": "cxd4",
+   "uci": "c5d4",
+   "fen": "r1b2rk1/2q1bppp/p2p1n2/np2p3/3pP3/2P2N1P/PPBN1PP1/R1BQR1K1 w - - 0 13",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 30,
+    "mate": null,
+    "best": "cxd4",
+    "top3": [
+     "cxd4",
+     "Bd7",
+     "exd4"
+    ]
+   },
+   "eval_after": {
+    "cp": 34,
+    "mate": null,
+    "best": "cxd4",
+    "top3": [
+     "cxd4",
+     "Nb1",
+     "Nf1"
+    ]
+   },
+   "loss_pawns": 0.04,
+   "was_best": true,
+   "best_move": "cxd4",
+   "in_top3": true,
+   "top3": [
+    "cxd4",
+    "Bd7",
+    "exd4"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard Chigorin main line: 12...cxd4 13.cxd4 Nc6 is the classical continuation, keeping tension and challenging the center.\n\nMOVE: cxd4",
+     "parsed": "cxd4",
+     "seconds": 1.77,
+     "usage": {
+      "input": 376,
+      "output": 63
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.77
+  },
+  {
+   "ply": 25,
+   "move_no": 13,
+   "side": "White",
+   "san": "cxd4",
+   "uci": "c3d4",
+   "fen": "r1b2rk1/2q1bppp/p2p1n2/np2p3/3PP3/5N1P/PPBN1PP1/R1BQR1K1 b - - 0 13",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 34,
+    "mate": null,
+    "best": "cxd4",
+    "top3": [
+     "cxd4",
+     "Nb1",
+     "Nf1"
+    ]
+   },
+   "eval_after": {
+    "cp": 28,
+    "mate": null,
+    "best": "Nc6",
+    "top3": [
+     "Nc6",
+     "Bd7",
+     "exd4"
+    ]
+   },
+   "loss_pawns": 0.06,
+   "was_best": true,
+   "best_move": "cxd4",
+   "in_top3": true,
+   "top3": [
+    "cxd4",
+    "Nb1",
+    "Nf1"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Recapturing with the c-pawn restores the strong d4–e4 pawn center while keeping both knights available for maneuvering.\n\nMOVE: cxd4",
+     "parsed": "cxd4",
+     "seconds": 6.84,
+     "usage": {
+      "input": 260,
+      "output": 174
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 6.84
+  },
+  {
+   "ply": 26,
+   "move_no": 13,
+   "side": "Black",
+   "san": "Nc6",
+   "uci": "a5c6",
+   "fen": "r1b2rk1/2q1bppp/p1np1n2/1p2p3/3PP3/5N1P/PPBN1PP1/R1BQR1K1 w - - 1 14",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 28,
+    "mate": null,
+    "best": "Nc6",
+    "top3": [
+     "Nc6",
+     "Bd7",
+     "exd4"
+    ]
+   },
+   "eval_after": {
+    "cp": 34,
+    "mate": null,
+    "best": "a3",
+    "top3": [
+     "a3",
+     "Nb3",
+     "a4"
+    ]
+   },
+   "loss_pawns": 0.06,
+   "was_best": true,
+   "best_move": "Nc6",
+   "in_top3": true,
+   "top3": [
+    "Nc6",
+    "Bd7",
+    "exd4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Classical Chigorin main line: after 13.cxd4, Black plays 13...Nc6, pressuring d4 and preparing ...Bd7 and ...Rac8.\n\nMOVE: Nc6",
+     "parsed": "Nc6",
+     "seconds": 1.75,
+     "usage": {
+      "input": 388,
+      "output": 70
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.75
+  },
+  {
+   "ply": 27,
+   "move_no": 14,
+   "side": "White",
+   "san": "Nb3",
+   "uci": "d2b3",
+   "fen": "r1b2rk1/2q1bppp/p1np1n2/1p2p3/3PP3/1N3N1P/PPB2PP1/R1BQR1K1 b - - 2 14",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 34,
+    "mate": null,
+    "best": "a3",
+    "top3": [
+     "a3",
+     "Nb3",
+     "a4"
+    ]
+   },
+   "eval_after": {
+    "cp": 26,
+    "mate": null,
+    "best": "a5",
+    "top3": [
+     "a5",
+     "Bd7",
+     "Nb4"
+    ]
+   },
+   "loss_pawns": 0.08,
+   "was_best": false,
+   "best_move": "a3",
+   "in_top3": true,
+   "top3": [
+    "a3",
+    "Nb3",
+    "a4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Nb3 reinforces d4 and clears the c1-bishop’s diagonal, preparing Be3 while preserving flexibility in the center.\n\nMOVE: Nb3",
+     "parsed": "Nb3",
+     "seconds": 15.3,
+     "usage": {
+      "input": 268,
+      "output": 519
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 15.3
+  },
+  {
+   "ply": 28,
+   "move_no": 14,
+   "side": "Black",
+   "san": "a5",
+   "uci": "a6a5",
+   "fen": "r1b2rk1/2q1bppp/2np1n2/pp2p3/3PP3/1N3N1P/PPB2PP1/R1BQR1K1 w - - 0 15",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 26,
+    "mate": null,
+    "best": "a5",
+    "top3": [
+     "a5",
+     "Bd7",
+     "Nb4"
+    ]
+   },
+   "eval_after": {
+    "cp": 26,
+    "mate": null,
+    "best": "Be3",
+    "top3": [
+     "Be3",
+     "Bd2",
+     "Bg5"
+    ]
+   },
+   "loss_pawns": -0.0,
+   "was_best": true,
+   "best_move": "a5",
+   "in_top3": true,
+   "top3": [
+    "a5",
+    "Bd7",
+    "Nb4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "This is the Chigorin Ruy Lopez. After 14.Nb3, the standard reply is 14...a5, gaining space on the queenside and threatening ...a4 to kick the knight.\n\nMOVE: a5",
+     "parsed": "a5",
+     "seconds": 1.75,
+     "usage": {
+      "input": 400,
+      "output": 73
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 1.75
+  },
+  {
+   "ply": 29,
+   "move_no": 15,
+   "side": "White",
+   "san": "Be3",
+   "uci": "c1e3",
+   "fen": "r1b2rk1/2q1bppp/2np1n2/pp2p3/3PP3/1N2BN1P/PPB2PP1/R2QR1K1 b - - 1 15",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 26,
+    "mate": null,
+    "best": "Be3",
+    "top3": [
+     "Be3",
+     "Bd2",
+     "Bg5"
+    ]
+   },
+   "eval_after": {
+    "cp": 27,
+    "mate": null,
+    "best": "a4",
+    "top3": [
+     "a4",
+     "Qb7",
+     "h6"
+    ]
+   },
+   "loss_pawns": -0.01,
+   "was_best": true,
+   "best_move": "Be3",
+   "in_top3": true,
+   "top3": [
+    "Be3",
+    "Bd2",
+    "Bg5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Be3 develops the last minor piece and reinforces d4, keeping the center flexible while preparing to bring a rook to the c-file.\nMOVE: Be3",
+     "parsed": "Be3",
+     "seconds": 50.91,
+     "usage": {
+      "input": 275,
+      "output": 1513
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 50.91
+  },
+  {
+   "ply": 30,
+   "move_no": 15,
+   "side": "Black",
+   "san": "a4",
+   "uci": "a5a4",
+   "fen": "r1b2rk1/2q1bppp/2np1n2/1p2p3/p2PP3/1N2BN1P/PPB2PP1/R2QR1K1 w - - 0 16",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 27,
+    "mate": null,
+    "best": "a4",
+    "top3": [
+     "a4",
+     "Qb7",
+     "h6"
+    ]
+   },
+   "eval_after": {
+    "cp": 25,
+    "mate": null,
+    "best": "Nbd2",
+    "top3": [
+     "Nbd2",
+     "Nc1",
+     "dxe5"
+    ]
+   },
+   "loss_pawns": -0.02,
+   "was_best": true,
+   "best_move": "a4",
+   "in_top3": true,
+   "top3": [
+    "a4",
+    "Qb7",
+    "h6"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard Chigorin line: after 15. Be3, Black plays 15...a4 16. Nbd2 Bd7 or 15...Bd7. The main theoretical move is 15...a4 16. Nbd2 Nb4 or Bd7. I'll play a4, gaining space and pushing the knight back.\n\nMOVE: a4",
+     "parsed": "a4",
+     "seconds": 2.68,
+     "usage": {
+      "input": 409,
+      "output": 113
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 2.68
+  },
+  {
+   "ply": 31,
+   "move_no": 16,
+   "side": "White",
+   "san": "Nbd2",
+   "uci": "b3d2",
+   "fen": "r1b2rk1/2q1bppp/2np1n2/1p2p3/p2PP3/4BN1P/PPBN1PP1/R2QR1K1 b - - 1 16",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 25,
+    "mate": null,
+    "best": "Nbd2",
+    "top3": [
+     "Nbd2",
+     "Nc1",
+     "dxe5"
+    ]
+   },
+   "eval_after": {
+    "cp": 26,
+    "mate": null,
+    "best": "Qb7",
+    "top3": [
+     "Qb7",
+     "Nb4",
+     "Bd7"
+    ]
+   },
+   "loss_pawns": -0.01,
+   "was_best": true,
+   "best_move": "Nbd2",
+   "in_top3": true,
+   "top3": [
+    "Nbd2",
+    "Nc1",
+    "dxe5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Retreating the attacked knight to d2 reinforces e4 and preserves the option of rerouting it toward the kingside via f1.\n\nMOVE: Nbd2",
+     "parsed": "Nbd2",
+     "seconds": 24.39,
+     "usage": {
+      "input": 282,
+      "output": 678
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 24.39
+  },
+  {
+   "ply": 32,
+   "move_no": 16,
+   "side": "Black",
+   "san": "Nb4",
+   "uci": "c6b4",
+   "fen": "r1b2rk1/2q1bppp/3p1n2/1p2p3/pn1PP3/4BN1P/PPBN1PP1/R2QR1K1 w - - 2 17",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 26,
+    "mate": null,
+    "best": "Qb7",
+    "top3": [
+     "Qb7",
+     "Nb4",
+     "Bd7"
+    ]
+   },
+   "eval_after": {
+    "cp": 32,
+    "mate": null,
+    "best": "Bb1",
+    "top3": [
+     "Bb1",
+     "dxe5",
+     "Rc1"
+    ]
+   },
+   "loss_pawns": 0.06,
+   "was_best": false,
+   "best_move": "Qb7",
+   "in_top3": true,
+   "top3": [
+    "Qb7",
+    "Nb4",
+    "Bd7"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "This is a standard Chigorin line. After 16.Nbd2, Black typically plays 16...Bd7 or 16...Nb4 hitting the c2 bishop. 16...Nb4 17.Bb1 and then ...a3 or ...Bd7. Alternatively 16...Bd7 is solid. I'll play Nb4 to gain tempo and control d5/c2 ideas.\n\nMOVE: Nb4",
+     "parsed": "Nb4",
+     "seconds": 3.19,
+     "usage": {
+      "input": 420,
+      "output": 142
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 3.19
+  },
+  {
+   "ply": 33,
+   "move_no": 17,
+   "side": "White",
+   "san": "Bb1",
+   "uci": "c2b1",
+   "fen": "r1b2rk1/2q1bppp/3p1n2/1p2p3/pn1PP3/4BN1P/PP1N1PP1/RB1QR1K1 b - - 3 17",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 32,
+    "mate": null,
+    "best": "Bb1",
+    "top3": [
+     "Bb1",
+     "dxe5",
+     "Rc1"
+    ]
+   },
+   "eval_after": {
+    "cp": 27,
+    "mate": null,
+    "best": "Bd7",
+    "top3": [
+     "Bd7",
+     "a3",
+     "Nc6"
+    ]
+   },
+   "loss_pawns": 0.05,
+   "was_best": true,
+   "best_move": "Bb1",
+   "in_top3": true,
+   "top3": [
+    "Bb1",
+    "dxe5",
+    "Rc1"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Bb1 preserves the valuable bishop and keeps the central pawn tension intact. White can follow with a3 to drive the knight back and create a retreat square on a2.\n\nMOVE: Bb1",
+     "parsed": "Bb1",
+     "seconds": 27.72,
+     "usage": {
+      "input": 290,
+      "output": 755
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 27.72
+  },
+  {
+   "ply": 34,
+   "move_no": 17,
+   "side": "Black",
+   "san": "a3",
+   "uci": "a4a3",
+   "fen": "r1b2rk1/2q1bppp/3p1n2/1p2p3/1n1PP3/p3BN1P/PP1N1PP1/RB1QR1K1 w - - 0 18",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 27,
+    "mate": null,
+    "best": "Bd7",
+    "top3": [
+     "Bd7",
+     "a3",
+     "Nc6"
+    ]
+   },
+   "eval_after": {
+    "cp": 25,
+    "mate": null,
+    "best": "Qb3",
+    "top3": [
+     "Qb3",
+     "bxa3",
+     "dxe5"
+    ]
+   },
+   "loss_pawns": -0.02,
+   "was_best": false,
+   "best_move": "Bd7",
+   "in_top3": true,
+   "top3": [
+    "Bd7",
+    "a3",
+    "Nc6"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "This is the Chigorin Ruy Lopez main line. After 17. Bb1, the standard continuation is 17...Bd7 or 17...a3. Playing 17...a3 undermines White's queenside structure; 18. bxa3 Rxa3 gives Black active play. The well-known theoretical move here is 17...a3.\n\nMOVE: a3",
+     "parsed": "a3",
+     "seconds": 2.88,
+     "usage": {
+      "input": 432,
+      "output": 118
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 2.88
+  },
+  {
+   "ply": 35,
+   "move_no": 18,
+   "side": "White",
+   "san": "b3",
+   "uci": "b2b3",
+   "fen": "r1b2rk1/2q1bppp/3p1n2/1p2p3/1n1PP3/pP2BN1P/P2N1PP1/RB1QR1K1 b - - 0 18",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 25,
+    "mate": null,
+    "best": "Qb3",
+    "top3": [
+     "Qb3",
+     "bxa3",
+     "dxe5"
+    ]
+   },
+   "eval_after": {
+    "cp": -599,
+    "mate": null,
+    "best": "Qc3",
+    "top3": [
+     "Qc3",
+     "Bxh3",
+     "Bb7"
+    ]
+   },
+   "loss_pawns": 6.24,
+   "was_best": false,
+   "best_move": "Qb3",
+   "in_top3": false,
+   "top3": [
+    "Qb3",
+    "bxa3",
+    "dxe5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "b3 prevents ...axb2 from forking the rook and bishop, while avoiding an open a-file for Black’s rook. White can then prepare d5 and improve the knights.\n\nMOVE: b3",
+     "parsed": "b3",
+     "seconds": 75.85,
+     "usage": {
+      "input": 297,
+      "output": 1972
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 75.85
+  },
+  {
+   "ply": 36,
+   "move_no": 18,
+   "side": "Black",
+   "san": "Bd7",
+   "uci": "c8d7",
+   "fen": "r4rk1/2qbbppp/3p1n2/1p2p3/1n1PP3/pP2BN1P/P2N1PP1/RB1QR1K1 w - - 1 19",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -599,
+    "mate": null,
+    "best": "Qc3",
+    "top3": [
+     "Qc3",
+     "Bxh3",
+     "Bb7"
+    ]
+   },
+   "eval_after": {
+    "cp": -17,
+    "mate": null,
+    "best": "Nf1",
+    "top3": [
+     "Nf1",
+     "Qc1",
+     "dxe5"
+    ]
+   },
+   "loss_pawns": 5.82,
+   "was_best": false,
+   "best_move": "Qc3",
+   "in_top3": false,
+   "top3": [
+    "Qc3",
+    "Bxh3",
+    "Bb7"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "This is the Chigorin main line. After 18. b3, Black's typical move is ...Bd7 or ...Nc6. Standard continuation: 18...Bd7 developing the bishop and connecting rooks; also ...Re8 is possible. I'll play Bd7.\n\nMOVE: Bd7",
+     "parsed": "Bd7",
+     "seconds": 2.24,
+     "usage": {
+      "input": 440,
+      "output": 101
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 2.24
+  },
+  {
+   "ply": 37,
+   "move_no": 19,
+   "side": "White",
+   "san": "Nf1",
+   "uci": "d2f1",
+   "fen": "r4rk1/2qbbppp/3p1n2/1p2p3/1n1PP3/pP2BN1P/P4PP1/RB1QRNK1 b - - 2 19",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -17,
+    "mate": null,
+    "best": "Nf1",
+    "top3": [
+     "Nf1",
+     "Qc1",
+     "dxe5"
+    ]
+   },
+   "eval_after": {
+    "cp": -29,
+    "mate": null,
+    "best": "Qc3",
+    "top3": [
+     "Qc3",
+     "exd4",
+     "Rac8"
+    ]
+   },
+   "loss_pawns": 0.12,
+   "was_best": true,
+   "best_move": "Nf1",
+   "in_top3": true,
+   "top3": [
+    "Nf1",
+    "Qc1",
+    "dxe5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Nf1 prepares Ng3 to reinforce e4 and support kingside play, while keeping the central pawn tension flexible.\n\nMOVE: Nf1",
+     "parsed": "Nf1",
+     "seconds": 92.09,
+     "usage": {
+      "input": 304,
+      "output": 2352
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 92.09
+  },
+  {
+   "ply": 38,
+   "move_no": 19,
+   "side": "Black",
+   "san": "Rfc8",
+   "uci": "f8c8",
+   "fen": "r1r3k1/2qbbppp/3p1n2/1p2p3/1n1PP3/pP2BN1P/P4PP1/RB1QRNK1 w - - 3 20",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -29,
+    "mate": null,
+    "best": "Qc3",
+    "top3": [
+     "Qc3",
+     "exd4",
+     "Rac8"
+    ]
+   },
+   "eval_after": {
+    "cp": 60,
+    "mate": null,
+    "best": "Bd2",
+    "top3": [
+     "Bd2",
+     "Qd2",
+     "Bd3"
+    ]
+   },
+   "loss_pawns": 0.89,
+   "was_best": false,
+   "best_move": "Qc3",
+   "in_top3": false,
+   "top3": [
+    "Qc3",
+    "exd4",
+    "Rac8"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard Chigorin line: ...Rfc8 preparing ...Bf8 and queenside play; or ...Nc6/...Na6. Typical plan is Rfc8 with pressure on c-file; queen can also eye c3 later. Rfc8 is solid and thematic.\n\nMOVE: Rfc8",
+     "parsed": "Rfc8",
+     "seconds": 3.46,
+     "usage": {
+      "input": 452,
+      "output": 106
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 3.46
+  },
+  {
+   "ply": 39,
+   "move_no": 20,
+   "side": "White",
+   "san": "Ng3",
+   "uci": "f1g3",
+   "fen": "r1r3k1/2qbbppp/3p1n2/1p2p3/1n1PP3/pP2BNNP/P4PP1/RB1QR1K1 b - - 4 20",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 60,
+    "mate": null,
+    "best": "Bd2",
+    "top3": [
+     "Bd2",
+     "Qd2",
+     "Bd3"
+    ]
+   },
+   "eval_after": {
+    "cp": -182,
+    "mate": null,
+    "best": "Qc3",
+    "top3": [
+     "Qc3",
+     "exd4",
+     "Bd8"
+    ]
+   },
+   "loss_pawns": 2.42,
+   "was_best": false,
+   "best_move": "Bd2",
+   "in_top3": false,
+   "top3": [
+    "Bd2",
+    "Qd2",
+    "Bd3"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Ng3 reinforces e4 and prepares Nf5, improving the knight while preserving central tension and kingside attacking chances.\n\nMOVE: Ng3",
+     "parsed": "Ng3",
+     "seconds": 55.73,
+     "usage": {
+      "input": 313,
+      "output": 1444
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 55.73
+  },
+  {
+   "ply": 40,
+   "move_no": 20,
+   "side": "Black",
+   "san": "g6",
+   "uci": "g7g6",
+   "fen": "r1r3k1/2qbbp1p/3p1np1/1p2p3/1n1PP3/pP2BNNP/P4PP1/RB1QR1K1 w - - 0 21",
+   "forced_random": false,
+   "eval_before": {
+    "cp": -182,
+    "mate": null,
+    "best": "Qc3",
+    "top3": [
+     "Qc3",
+     "exd4",
+     "Bd8"
+    ]
+   },
+   "eval_after": {
+    "cp": 106,
+    "mate": null,
+    "best": "Bd2",
+    "top3": [
+     "Bd2",
+     "Qd2",
+     "Bd3"
+    ]
+   },
+   "loss_pawns": 2.88,
+   "was_best": false,
+   "best_move": "Qc3",
+   "in_top3": false,
+   "top3": [
+    "Qc3",
+    "exd4",
+    "Bd8"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard Chigorin setup; a typical plan is ...exd4 and ...d5, or ...g6 to control f5. Bb1 is passive. 20...g6 restrains Nf5 and prepares ...Bf8. Alternatively 20...exd4 21.Nxd4 d5 22.e5 Ne4 is thematic and active. I'll play the solid prophylactic ...g6.\n\nMOVE: g6",
+     "parsed": "g6",
+     "seconds": 4.78,
+     "usage": {
+      "input": 465,
+      "output": 141
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 4.78
+  },
+  {
+   "ply": 41,
+   "move_no": 21,
+   "side": "White",
+   "san": "Qd2",
+   "uci": "d1d2",
+   "fen": "r1r3k1/2qbbp1p/3p1np1/1p2p3/1n1PP3/pP2BNNP/P2Q1PP1/RB2R1K1 b - - 1 21",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 106,
+    "mate": null,
+    "best": "Bd2",
+    "top3": [
+     "Bd2",
+     "Qd2",
+     "Bd3"
+    ]
+   },
+   "eval_after": {
+    "cp": 68,
+    "mate": null,
+    "best": "exd4",
+    "top3": [
+     "exd4",
+     "Na6",
+     "Qa5"
+    ]
+   },
+   "loss_pawns": 0.38,
+   "was_best": false,
+   "best_move": "Bd2",
+   "in_top3": true,
+   "top3": [
+    "Bd2",
+    "Qd2",
+    "Bd3"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Qd2 attacks the loose b4-knight while preparing Bh6 and improving coordination. It also allows Qxc3 if Black tries to invade with ...Qc3.\n\nMOVE: Qd2",
+     "parsed": "Qd2",
+     "seconds": 113.88,
+     "usage": {
+      "input": 320,
+      "output": 3151
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 113.88
+  },
+  {
+   "ply": 42,
+   "move_no": 21,
+   "side": "Black",
+   "san": "Qb7",
+   "uci": "c7b7",
+   "fen": "r1r3k1/1q1bbp1p/3p1np1/1p2p3/1n1PP3/pP2BNNP/P2Q1PP1/RB2R1K1 w - - 2 22",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 68,
+    "mate": null,
+    "best": "exd4",
+    "top3": [
+     "exd4",
+     "Na6",
+     "Qa5"
+    ]
+   },
+   "eval_after": {
+    "cp": 725,
+    "mate": null,
+    "best": "Qxb4",
+    "top3": [
+     "Qxb4",
+     "Bg5",
+     "Bh6"
+    ]
+   },
+   "loss_pawns": 6.57,
+   "was_best": false,
+   "best_move": "exd4",
+   "in_top3": false,
+   "top3": [
+    "exd4",
+    "Na6",
+    "Qa5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Standard Chigorin structure. Black's knight on b4 is strong; Bb1 is passive. Qd2 eyes Nb4 and h6. A natural plan: exd5... wait, no d5. Options: d5 striking center, or Qb7 keeping pressure, or Bf8. 21...exd4 22.Bxd4 (or Nxd4) opens the e-file; d6 weak. 21...d5 22.exd5 (22.dxe5 Nxe4) Nbxd5 23.Bh6 is fine. I'll go with the solid Qb7, pressuring e4 and preparing d5.\n\nMOVE: Qb7",
+     "parsed": "Qb7",
+     "seconds": 4.46,
+     "usage": {
+      "input": 475,
+      "output": 215
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 4.46
+  },
+  {
+   "ply": 43,
+   "move_no": 22,
+   "side": "White",
+   "san": "Qxb4",
+   "uci": "d2b4",
+   "fen": "r1r3k1/1q1bbp1p/3p1np1/1p2p3/1Q1PP3/pP2BNNP/P4PP1/RB2R1K1 b - - 0 22",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 725,
+    "mate": null,
+    "best": "Qxb4",
+    "top3": [
+     "Qxb4",
+     "Bg5",
+     "Bh6"
+    ]
+   },
+   "eval_after": {
+    "cp": 733,
+    "mate": null,
+    "best": "Bc6",
+    "top3": [
+     "Bc6",
+     "Be6",
+     "Bxh3"
+    ]
+   },
+   "loss_pawns": -0.08,
+   "was_best": true,
+   "best_move": "Qxb4",
+   "in_top3": true,
+   "top3": [
+    "Qxb4",
+    "Bg5",
+    "Bh6"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "The knight on b4 is undefended, and the d2–c3–b4 diagonal is clear. White can simply win a piece.\n\nMOVE: Qxb4",
+     "parsed": "Qxb4",
+     "seconds": 65.15,
+     "usage": {
+      "input": 329,
+      "output": 1645
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 65.15
+  },
+  {
+   "ply": 44,
+   "move_no": 22,
+   "side": "Black",
+   "san": "d5",
+   "uci": "d6d5",
+   "fen": "r1r3k1/1q1bbp1p/5np1/1p1pp3/1Q1PP3/pP2BNNP/P4PP1/RB2R1K1 w - - 0 23",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 733,
+    "mate": null,
+    "best": "Bc6",
+    "top3": [
+     "Bc6",
+     "Be6",
+     "Bxh3"
+    ]
+   },
+   "eval_after": {
+    "cp": 1069,
+    "mate": null,
+    "best": "Qxe7",
+    "top3": [
+     "Qxe7",
+     "Qd2",
+     "Bd2"
+    ]
+   },
+   "loss_pawns": 2.67,
+   "was_best": false,
+   "best_move": "Bc6",
+   "in_top3": false,
+   "top3": [
+    "Bc6",
+    "Be6",
+    "Bxh3"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "White won a knight on b4 outright. I need counterplay: d5 challenges the center, and after exd5 Nxd5 the knight forks the queen and Be3, regaining some material/activity.\n\nMOVE: d5",
+     "parsed": "d5",
+     "seconds": 18.33,
+     "usage": {
+      "input": 488,
+      "output": 1190
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 18.33
+  },
+  {
+   "ply": 45,
+   "move_no": 23,
+   "side": "White",
+   "san": "Qxe7",
+   "uci": "b4e7",
+   "fen": "r1r3k1/1q1bQp1p/5np1/1p1pp3/3PP3/pP2BNNP/P4PP1/RB2R1K1 b - - 0 23",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 1069,
+    "mate": null,
+    "best": "Qxe7",
+    "top3": [
+     "Qxe7",
+     "Qd2",
+     "Bd2"
+    ]
+   },
+   "eval_after": {
+    "cp": 1094,
+    "mate": null,
+    "best": "Ra6",
+    "top3": [
+     "Ra6",
+     "exd4",
+     "Qa6"
+    ]
+   },
+   "loss_pawns": 0.0,
+   "was_best": true,
+   "best_move": "Qxe7",
+   "in_top3": true,
+   "top3": [
+    "Qxe7",
+    "Qd2",
+    "Bd2"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "The bishop on e7 is undefended, allowing White to increase the material advantage. If Black plays ...Re8, Qxf6 escapes the attack while capturing another knight.\n\nMOVE: Qxe7",
+     "parsed": "Qxe7",
+     "seconds": 74.41,
+     "usage": {
+      "input": 337,
+      "output": 1835
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 74.41
+  },
+  {
+   "ply": 46,
+   "move_no": 23,
+   "side": "Black",
+   "san": "Re8",
+   "uci": "c8e8",
+   "fen": "r3r1k1/1q1bQp1p/5np1/1p1pp3/3PP3/pP2BNNP/P4PP1/RB2R1K1 w - - 1 24",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 1094,
+    "mate": null,
+    "best": "Ra6",
+    "top3": [
+     "Ra6",
+     "exd4",
+     "Qa6"
+    ]
+   },
+   "eval_after": {
+    "cp": 1193,
+    "mate": null,
+    "best": "Qxf6",
+    "top3": [
+     "Qxf6",
+     "Qb4",
+     "Qc5"
+    ]
+   },
+   "loss_pawns": -0.0,
+   "was_best": false,
+   "best_move": "Ra6",
+   "in_top3": false,
+   "top3": [
+    "Ra6",
+    "exd4",
+    "Qa6"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Black is down material after White's queen captured on b4 and e7. The best practical try is to harass the queen and open lines: Rce8 attacks the queen, forcing it to retreat (Qc5/Qd6), while keeping d7 defended by queen and knight. Then Black can follow with exd4 or dxe4 to create complications.\n\nMOVE: Rce8",
+     "parsed": "Rce8",
+     "seconds": 11.23,
+     "usage": {
+      "input": 499,
+      "output": 722
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 11.23
+  },
+  {
+   "ply": 47,
+   "move_no": 24,
+   "side": "White",
+   "san": "Qxf6",
+   "uci": "e7f6",
+   "fen": "r3r1k1/1q1b1p1p/5Qp1/1p1pp3/3PP3/pP2BNNP/P4PP1/RB2R1K1 b - - 0 24",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 1193,
+    "mate": null,
+    "best": "Qxf6",
+    "top3": [
+     "Qxf6",
+     "Qb4",
+     "Qc5"
+    ]
+   },
+   "eval_after": {
+    "cp": 1201,
+    "mate": null,
+    "best": "Ra6",
+    "top3": [
+     "Ra6",
+     "Qc6",
+     "Qa6"
+    ]
+   },
+   "loss_pawns": 0.0,
+   "was_best": true,
+   "best_move": "Qxf6",
+   "in_top3": true,
+   "top3": [
+    "Qxf6",
+    "Qb4",
+    "Qc5"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "The knight on f6 is undefended. Capturing it saves the queen from the rook’s attack and leaves White three minor pieces ahead.\n\nMOVE: Qxf6",
+     "parsed": "Qxf6",
+     "seconds": 33.81,
+     "usage": {
+      "input": 345,
+      "output": 893
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 33.81
+  },
+  {
+   "ply": 48,
+   "move_no": 24,
+   "side": "Black",
+   "san": "dxe4",
+   "uci": "d5e4",
+   "fen": "r3r1k1/1q1b1p1p/5Qp1/1p2p3/3Pp3/pP2BNNP/P4PP1/RB2R1K1 w - - 0 25",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 1201,
+    "mate": null,
+    "best": "Ra6",
+    "top3": [
+     "Ra6",
+     "Qc6",
+     "Qa6"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": 2,
+    "best": "Bh6",
+    "top3": [
+     "Bh6",
+     "Nh5",
+     "Nf5"
+    ]
+   },
+   "loss_pawns": -0.0,
+   "was_best": false,
+   "best_move": "Ra6",
+   "in_top3": false,
+   "top3": [
+    "Ra6",
+    "Qc6",
+    "Qa6"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Black is heavily down material; best practical try is dxe4, attacking the f3 knight and opening the queen's diagonal.\n\nMOVE: dxe4",
+     "parsed": "dxe4",
+     "seconds": 7.16,
+     "usage": {
+      "input": 511,
+      "output": 366
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 7.16
+  },
+  {
+   "ply": 49,
+   "move_no": 25,
+   "side": "White",
+   "san": "Bxe4",
+   "uci": "b1e4",
+   "fen": "r3r1k1/1q1b1p1p/5Qp1/1p2p3/3PB3/pP2BNNP/P4PP1/R3R1K1 b - - 0 25",
+   "forced_random": false,
+   "eval_before": {
+    "cp": null,
+    "mate": 2,
+    "best": "Bh6",
+    "top3": [
+     "Bh6",
+     "Nh5",
+     "Nf5"
+    ]
+   },
+   "eval_after": {
+    "cp": 1321,
+    "mate": null,
+    "best": "Ra6",
+    "top3": [
+     "Ra6",
+     "Re6",
+     "Qa6"
+    ]
+   },
+   "loss_pawns": 0.0,
+   "was_best": false,
+   "best_move": "Bh6",
+   "in_top3": false,
+   "top3": [
+    "Bh6",
+    "Nh5",
+    "Nf5"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Bxe4 removes the pawn attacking my knight and develops the bishop with tempo against Black’s queen, preserving White’s decisive material advantage.\n\nMOVE: Bxe4",
+     "parsed": "Bxe4",
+     "seconds": 88.06,
+     "usage": {
+      "input": 354,
+      "output": 2299
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 88.06
+  },
+  {
+   "ply": 50,
+   "move_no": 25,
+   "side": "Black",
+   "san": "Bc6",
+   "uci": "d7c6",
+   "fen": "r3r1k1/1q3p1p/2b2Qp1/1p2p3/3PB3/pP2BNNP/P4PP1/R3R1K1 w - - 1 26",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 1321,
+    "mate": null,
+    "best": "Ra6",
+    "top3": [
+     "Ra6",
+     "Re6",
+     "Qa6"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": 2,
+    "best": "Bh6",
+    "top3": [
+     "Bh6",
+     "Nh5",
+     "Nf5"
+    ]
+   },
+   "loss_pawns": -0.0,
+   "was_best": false,
+   "best_move": "Ra6",
+   "in_top3": false,
+   "top3": [
+    "Ra6",
+    "Re6",
+    "Qa6"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Black is down heavily. Trading White's active light-squared bishop reduces mating threats on the kingside (Bxg6, Ng5 ideas). Bc6 offers the trade and keeps the queen protected.\n\nMOVE: Bc6",
+     "parsed": "Bc6",
+     "seconds": 18.68,
+     "usage": {
+      "input": 524,
+      "output": 1134
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 18.68
+  },
+  {
+   "ply": 51,
+   "move_no": 26,
+   "side": "White",
+   "san": "Bxc6",
+   "uci": "e4c6",
+   "fen": "r3r1k1/1q3p1p/2B2Qp1/1p2p3/3P4/pP2BNNP/P4PP1/R3R1K1 b - - 0 26",
+   "forced_random": false,
+   "eval_before": {
+    "cp": null,
+    "mate": 2,
+    "best": "Bh6",
+    "top3": [
+     "Bh6",
+     "Nh5",
+     "Nf5"
+    ]
+   },
+   "eval_after": {
+    "cp": 1497,
+    "mate": null,
+    "best": "Qe7",
+    "top3": [
+     "Qe7",
+     "Re6",
+     "Qxc6"
+    ]
+   },
+   "loss_pawns": 0.0,
+   "was_best": false,
+   "best_move": "Bh6",
+   "in_top3": false,
+   "top3": [
+    "Bh6",
+    "Nh5",
+    "Nf5"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Bxc6 removes Black’s last minor piece and attacks the e8-rook. Black cannot safely recapture with the queen because Qxc6 would win it.\n\nMOVE: Bxc6",
+     "parsed": "Bxc6",
+     "seconds": 38.9,
+     "usage": {
+      "input": 363,
+      "output": 1050
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 38.9
+  },
+  {
+   "ply": 52,
+   "move_no": 26,
+   "side": "Black",
+   "san": "Qxc6",
+   "uci": "b7c6",
+   "fen": "r3r1k1/5p1p/2q2Qp1/1p2p3/3P4/pP2BNNP/P4PP1/R3R1K1 w - - 0 27",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 1497,
+    "mate": null,
+    "best": "Qe7",
+    "top3": [
+     "Qe7",
+     "Re6",
+     "Qxc6"
+    ]
+   },
+   "eval_after": {
+    "cp": 1693,
+    "mate": null,
+    "best": "Qxc6",
+    "top3": [
+     "Qxc6",
+     "Qh4",
+     "Qg5"
+    ]
+   },
+   "loss_pawns": -0.0,
+   "was_best": false,
+   "best_move": "Qe7",
+   "in_top3": true,
+   "top3": [
+    "Qe7",
+    "Re6",
+    "Qxc6"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Bishop on c6 attacks my queen and is undefended; recapture it.\n\nMOVE: Qxc6",
+     "parsed": "Qxc6",
+     "seconds": 3.92,
+     "usage": {
+      "input": 537,
+      "output": 251
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 3.92
+  },
+  {
+   "ply": 53,
+   "move_no": 27,
+   "side": "White",
+   "san": "Qxc6",
+   "uci": "f6c6",
+   "fen": "r3r1k1/5p1p/2Q3p1/1p2p3/3P4/pP2BNNP/P4PP1/R3R1K1 b - - 0 27",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 1693,
+    "mate": null,
+    "best": "Qxc6",
+    "top3": [
+     "Qxc6",
+     "Qh4",
+     "Qg5"
+    ]
+   },
+   "eval_after": {
+    "cp": 1689,
+    "mate": null,
+    "best": "Rac8",
+    "top3": [
+     "Rac8",
+     "Rec8",
+     "Rab8"
+    ]
+   },
+   "loss_pawns": 0.0,
+   "was_best": true,
+   "best_move": "Qxc6",
+   "in_top3": true,
+   "top3": [
+    "Qxc6",
+    "Qh4",
+    "Qg5"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Black’s queen is undefended. Capturing it also attacks both rooks along the diagonals, securing a decisive material advantage.\n\nMOVE: Qxc6",
+     "parsed": "Qxc6",
+     "seconds": 22.66,
+     "usage": {
+      "input": 372,
+      "output": 590
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 22.66
+  },
+  {
+   "ply": 54,
+   "move_no": 27,
+   "side": "Black",
+   "san": "Ra6",
+   "uci": "a8a6",
+   "fen": "4r1k1/5p1p/r1Q3p1/1p2p3/3P4/pP2BNNP/P4PP1/R3R1K1 w - - 1 28",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 1689,
+    "mate": null,
+    "best": "Rac8",
+    "top3": [
+     "Rac8",
+     "Rec8",
+     "Rab8"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": 3,
+    "best": "Qxe8+",
+    "top3": [
+     "Qxe8+",
+     "Qxa6",
+     "Qxb5"
+    ]
+   },
+   "loss_pawns": -0.0,
+   "was_best": false,
+   "best_move": "Rac8",
+   "in_top3": false,
+   "top3": [
+    "Rac8",
+    "Rec8",
+    "Rab8"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Black is hopelessly behind material; only legal/non-losing option is to minimize. Let me check: after 27.Qxc6, Black's pieces: Ra8, Re8, Kg8, pawns. Queen on c6 attacks a8 rook and e8 rook. Can't recapture. Best is to save a rook: Rac8 attacks queen? Qxc8 wins. Rec8 — Qxa8? No, Rac8 pins... Simplest: Ra6 attacks queen, keeps material.\n\nMOVE: Ra6",
+     "parsed": "Ra6",
+     "seconds": 4.85,
+     "usage": {
+      "input": 551,
+      "output": 180
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 4.85
+  },
+  {
+   "ply": 55,
+   "move_no": 28,
+   "side": "White",
+   "san": "Qxe8+",
+   "uci": "c6e8",
+   "fen": "4Q1k1/5p1p/r5p1/1p2p3/3P4/pP2BNNP/P4PP1/R3R1K1 b - - 0 28",
+   "forced_random": false,
+   "eval_before": {
+    "cp": null,
+    "mate": 3,
+    "best": "Qxe8+",
+    "top3": [
+     "Qxe8+",
+     "Qxa6",
+     "Qxb5"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": 2,
+    "best": "Kg7",
+    "top3": [
+     "Kg7"
+    ]
+   },
+   "loss_pawns": 0.0,
+   "was_best": true,
+   "best_move": "Qxe8+",
+   "in_top3": true,
+   "top3": [
+    "Qxe8+",
+    "Qxa6",
+    "Qxb5"
+   ],
+   "check": true,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Capturing the rook with check forces ...Kg7 and further increases White’s decisive material advantage.\n\nMOVE: Qxe8+",
+     "parsed": "Qxe8+",
+     "seconds": 32.01,
+     "usage": {
+      "input": 380,
+      "output": 867
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 32.01
+  },
+  {
+   "ply": 56,
+   "move_no": 28,
+   "side": "Black",
+   "san": "Kg7",
+   "uci": "g8g7",
+   "fen": "4Q3/5pkp/r5p1/1p2p3/3P4/pP2BNNP/P4PP1/R3R1K1 w - - 1 29",
+   "forced_random": false,
+   "eval_before": {
+    "cp": null,
+    "mate": 2,
+    "best": "Kg7",
+    "top3": [
+     "Kg7"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": 2,
+    "best": "Bh6+",
+    "top3": [
+     "Bh6+",
+     "Qxe5+",
+     "Nxe5"
+    ]
+   },
+   "loss_pawns": -0.0,
+   "was_best": true,
+   "best_move": "Kg7",
+   "in_top3": true,
+   "top3": [
+    "Kg7"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Black is completely lost; only legal reply is Kg7.\n\nMOVE: Kg7",
+     "parsed": "Kg7",
+     "seconds": 2.91,
+     "usage": {
+      "input": 565,
+      "output": 31
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 2.91
+  },
+  {
+   "ply": 57,
+   "move_no": 29,
+   "side": "White",
+   "san": "Qxe5+",
+   "uci": "e8e5",
+   "fen": "8/5pkp/r5p1/1p2Q3/3P4/pP2BNNP/P4PP1/R3R1K1 b - - 0 29",
+   "forced_random": false,
+   "eval_before": {
+    "cp": null,
+    "mate": 2,
+    "best": "Bh6+",
+    "top3": [
+     "Bh6+",
+     "Qxe5+",
+     "Nxe5"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": 3,
+    "best": "Rf6",
+    "top3": [
+     "Rf6",
+     "f6",
+     "Kg8"
+    ]
+   },
+   "loss_pawns": 0.0,
+   "was_best": false,
+   "best_move": "Bh6+",
+   "in_top3": true,
+   "top3": [
+    "Bh6+",
+    "Qxe5+",
+    "Nxe5"
+   ],
+   "check": true,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Qxe5+ removes Black’s central pawn with check, keeps the king exposed, and preserves White’s overwhelming material advantage.\n\nMOVE: Qxe5+",
+     "parsed": "Qxe5+",
+     "seconds": 48.01,
+     "usage": {
+      "input": 389,
+      "output": 1184
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 48.01
+  },
+  {
+   "ply": 58,
+   "move_no": 29,
+   "side": "Black",
+   "san": "Kg8",
+   "uci": "g7g8",
+   "fen": "6k1/5p1p/r5p1/1p2Q3/3P4/pP2BNNP/P4PP1/R3R1K1 w - - 1 30",
+   "forced_random": false,
+   "eval_before": {
+    "cp": null,
+    "mate": 3,
+    "best": "Rf6",
+    "top3": [
+     "Rf6",
+     "f6",
+     "Kg8"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": 2,
+    "best": "Bh6",
+    "top3": [
+     "Bh6",
+     "Qe8+",
+     "Qb8+"
+    ]
+   },
+   "loss_pawns": -0.0,
+   "was_best": false,
+   "best_move": "Rf6",
+   "in_top3": true,
+   "top3": [
+    "Rf6",
+    "f6",
+    "Kg8"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Black is completely lost (down queen, rook, two bishops). Only legal moves: Kg8, Kh6, Kf8, f6.\n\nKh6 or Kg8 or f6... After f6, Qxf6+ wins more. Kg8 or Kf8 keeps king away from mate briefly; Kg8: Qe8+? no. Just pick Kg8.\n\nMOVE: Kg8",
+     "parsed": "Kg8",
+     "seconds": 2.95,
+     "usage": {
+      "input": 579,
+      "output": 133
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 2.95
+  },
+  {
+   "ply": 59,
+   "move_no": 30,
+   "side": "White",
+   "san": "Bh6",
+   "uci": "e3h6",
+   "fen": "6k1/5p1p/r5pB/1p2Q3/3P4/pP3NNP/P4PP1/R3R1K1 b - - 2 30",
+   "forced_random": false,
+   "eval_before": {
+    "cp": null,
+    "mate": 2,
+    "best": "Bh6",
+    "top3": [
+     "Bh6",
+     "Qe8+",
+     "Qb8+"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": 1,
+    "best": "b4",
+    "top3": [
+     "b4",
+     "g5",
+     "f6"
+    ]
+   },
+   "loss_pawns": 0.0,
+   "was_best": true,
+   "best_move": "Bh6",
+   "in_top3": true,
+   "top3": [
+    "Bh6",
+    "Qe8+",
+    "Qb8+"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Bh6 creates the twin mating threats Qg7# and Qe8#, which Black cannot both prevent.\n\nMOVE: Bh6",
+     "parsed": "Bh6",
+     "seconds": 56.77,
+     "usage": {
+      "input": 398,
+      "output": 1584
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 56.77
+  },
+  {
+   "ply": 60,
+   "move_no": 30,
+   "side": "Black",
+   "san": "f6",
+   "uci": "f7f6",
+   "fen": "6k1/7p/r4ppB/1p2Q3/3P4/pP3NNP/P4PP1/R3R1K1 w - - 0 31",
+   "forced_random": false,
+   "eval_before": {
+    "cp": null,
+    "mate": 1,
+    "best": "b4",
+    "top3": [
+     "b4",
+     "g5",
+     "f6"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": 1,
+    "best": "Qe8#",
+    "top3": [
+     "Qe8#",
+     "Qb8+",
+     "Qc7"
+    ]
+   },
+   "loss_pawns": -0.0,
+   "was_best": false,
+   "best_move": "b4",
+   "in_top3": true,
+   "top3": [
+    "b4",
+    "g5",
+    "f6"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Black is hopelessly lost (down queen, rook, bishop, knight). White threatens Qg7#. Only move to delay mate: f6 attacks the queen... but Qe8+ Kh? Actually after f6, Qe6+ Kh8 Qf7 wins. Still, the only legal defence to Qg7# is f6 or Rxa2? Rxa2 doesn't stop Qg7#. f6 is forced.\n\nMOVE: f6",
+     "parsed": "f6",
+     "seconds": 3.64,
+     "usage": {
+      "input": 591,
+      "output": 152
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 3.64
+  },
+  {
+   "ply": 61,
+   "move_no": 31,
+   "side": "White",
+   "san": "Qe8#",
+   "uci": "e5e8",
+   "fen": "4Q1k1/7p/r4ppB/1p6/3P4/pP3NNP/P4PP1/R3R1K1 b - - 1 31",
+   "forced_random": false,
+   "eval_before": {
+    "cp": null,
+    "mate": 1,
+    "best": "Qe8#",
+    "top3": [
+     "Qe8#",
+     "Qb8+",
+     "Qc7"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": null,
+    "best": null,
+    "terminal": "1-0"
+   },
+   "loss_pawns": 0.0,
+   "was_best": true,
+   "best_move": "Qe8#",
+   "in_top3": true,
+   "top3": [
+    "Qe8#",
+    "Qb8+",
+    "Qc7"
+   ],
+   "check": true,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "Qe8 delivers checkmate: Black cannot block or capture the queen, and every escape square is covered or occupied.\n\nMOVE: Qe8#",
+     "parsed": "Qe8#",
+     "seconds": 25.2,
+     "usage": {
+      "input": 405,
+      "output": 725
+     },
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 25.2
+  }
+ ]
+}
