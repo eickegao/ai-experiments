@@ -101,6 +101,15 @@ def parse_pick(text: str, valid: list[str], slots: int, rng: random.Random) -> t
     return found, note
 
 
+def short_name(p: Player) -> str:
+    """HUD label (the status row fits ~8 characters): 'Claude (claude-fable-5-1)' → 'Claude', 'Bot (eager 0.6) #2' → 'Bot 2'."""
+    base = p.name.split(" (")[0]
+    m = re.search(r"#(\d+)$", p.name)
+    if base.startswith("Random"):
+        base = "Rand"
+    return f"{base} {m.group(1)}" if m else base
+
+
 # ---------------------------------------------------------------- per-game state
 class Game:
     def __init__(self, no: int, seed: int, players: dict[int, Player], slots: int, effort: str):
@@ -140,7 +149,7 @@ class Game:
         for t, picks, r, note in results:
             p = self.players[t]
             L = LETTERS[t - 1]
-            teams[L] = {"name": p.name, "model": p.model, "bot": not p.is_llm, "skills": [{"id": i, "level": 1} for i in picks]}
+            teams[L] = {"name": short_name(p), "full_name": p.name, "model": p.model, "bot": not p.is_llm, "skills": [{"id": i, "level": 1} for i in picks]}
             self.record["draft"][L] = {
                 "picks": picks, "note": note, "prompt": user if r else "", "reply": r.text if r else "", "seconds": round(r.seconds, 2) if r else 0,
                 "usage": r.usage if r else {}, "error": r.error if r else None, "at": r.at if r else "",
@@ -303,6 +312,15 @@ class Server:
         self.specs, self.seeds, self.out, self.bundle, self.slots, self.effort = specs, seeds, out, bundle, slots, effort
         self.games: dict[int, Game] = {}
         self.players_cache = [make_player(s, effort, seed=100 + k, slots=slots) for k, s in enumerate(specs)]
+        seen: dict[str, int] = {}
+        for p in self.players_cache:   # two bots / two randoms must stay apart in the summary
+            seen[p.name] = seen.get(p.name, 0) + 1
+        dup = {n for n, c in seen.items() if c > 1}
+        counter: dict[str, int] = {}
+        for p in self.players_cache:
+            if p.name in dup:
+                counter[p.name] = counter.get(p.name, 0) + 1
+                p.name = f"{p.name} #{counter[p.name]}"
         self.lock = threading.Lock()
         self.log_path = out / "server.log"
         out.mkdir(parents=True, exist_ok=True)

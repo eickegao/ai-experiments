@@ -1,116 +1,136 @@
 {
- "players": [
-  "random",
-  "random",
-  "bot",
-  "bot"
- ],
- "games": 1,
- "seeds": [
-  1001
- ],
- "skills": [
-  [
-   "fire",
-   1
+ "Random#100": {
+  "name": "Random#100",
+  "model": "random",
+  "games": 2,
+  "wins": 0,
+  "places": [
+   4,
+   4
   ],
-  [
-   "lightning",
-   1
+  "cells": [
+   182,
+   167
   ],
-  [
-   "teleport",
-   1
+  "seconds": 0.0,
+  "cost_usd": 0.0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "commands": 68,
+  "rejected": 3,
+  "casts": 9,
+  "errors": 0,
+  "no_command": 4,
+  "decisions": 60,
+  "skills": [
+   "freeze, bomb, split",
+   "bomb, teleport, chain"
   ]
- ],
- "effort": "high",
- "decision_dt": 2.0,
- "results": [
-  {
-   "seed": 1001,
-   "players": {
-    "A": "Random#0",
-    "B": "Random#1",
-    "C": "Bot (eager 0.6)",
-    "D": "Bot (eager 0.6)"
-   },
-   "ranking": [
-    "C",
-    "D",
-    "A",
-    "B"
-   ],
-   "counts": {
-    "0": 0,
-    "1": 241,
-    "2": 123,
-    "3": 335,
-    "4": 325
-   }
-  }
- ],
- "aggregate": {
-  "Random#0": {
-   "model": "random",
-   "games": 1,
-   "wins": 0,
-   "ranks": [
-    3
-   ],
-   "cells": [
-    241
-   ],
-   "seconds": 0.0,
-   "input_tokens": 0,
-   "output_tokens": 0,
-   "cost_usd": 0,
-   "commands": 33,
-   "rejected": 1,
-   "no_command": 3,
-   "errors": 0,
-   "casts": 5,
-   "avg_rank": 3.0,
-   "avg_cells": 241.0,
-   "avg_seconds_per_decision": 0.0
-  },
-  "Random#1": {
-   "model": "random",
-   "games": 1,
-   "wins": 0,
-   "ranks": [
-    4
-   ],
-   "cells": [
-    123
-   ],
-   "seconds": 0.0,
-   "input_tokens": 0,
-   "output_tokens": 0,
-   "cost_usd": 0,
-   "commands": 34,
-   "rejected": 2,
-   "no_command": 3,
-   "errors": 0,
-   "casts": 5,
-   "avg_rank": 4.0,
-   "avg_cells": 123.0,
-   "avg_seconds_per_decision": 0.0
-  },
-  "Bot (eager 0.6)": {
-   "model": "cd_ai",
-   "games": 2,
-   "wins": 1,
-   "ranks": [
-    1,
-    2
-   ],
-   "cells": [
-    335,
-    325
-   ],
-   "bot": true,
-   "avg_rank": 1.5,
-   "avg_cells": 330.0
-  }
+ },
+ "Random#101": {
+  "name": "Random#101",
+  "model": "random",
+  "games": 2,
+  "wins": 1,
+  "places": [
+   1,
+   3
+  ],
+  "cells": [
+   360,
+   218
+  ],
+  "seconds": 0.0,
+  "cost_usd": 0.0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "commands": 88,
+  "rejected": 13,
+  "casts": 17,
+  "errors": 0,
+  "no_command": 2,
+  "decisions": 60,
+  "skills": [
+   "shatter, lightning, accel",
+   "freeze, fire, split"
+  ]
+ },
+ "Bot (eager 0.6) #1": {
+  "name": "Bot (eager 0.6) #1",
+  "model": "cd_ai",
+  "games": 1,
+  "wins": 0,
+  "places": [
+   2
+  ],
+  "cells": [
+   249
+  ],
+  "seconds": 0.0,
+  "cost_usd": 0.0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "commands": 0,
+  "rejected": 0,
+  "casts": 0,
+  "errors": 0,
+  "no_command": 0,
+  "decisions": 0,
+  "skills": [
+   "lightning, fire, shock"
+  ]
+ },
+ "Bot (eager 0.6) #2": {
+  "name": "Bot (eager 0.6) #2",
+  "model": "cd_ai",
+  "games": 1,
+  "wins": 0,
+  "places": [
+   3
+  ],
+  "cells": [
+   233
+  ],
+  "seconds": 0.0,
+  "cost_usd": 0.0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "commands": 0,
+  "rejected": 0,
+  "casts": 0,
+  "errors": 0,
+  "no_command": 0,
+  "decisions": 0,
+  "skills": [
+   "chain, lightning, shock"
+  ]
+ },
+ "Bot (eager 0.6)": {
+  "name": "Bot (eager 0.6)",
+  "model": "cd_ai",
+  "games": 2,
+  "wins": 1,
+  "places": [
+   2,
+   1
+  ],
+  "cells": [
+   253,
+   386
+  ],
+  "seconds": 0.0,
+  "cost_usd": 0.0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "commands": 0,
+  "rejected": 0,
+  "casts": 0,
+  "errors": 0,
+  "no_command": 0,
+  "decisions": 0,
+  "skills": [
+   "teleport, shatter, fire",
+   "shatter, teleport, lightning"
+  ]
  }
 }

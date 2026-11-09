@@ -1,6 +1,7 @@
-lupa>=2.4
+lupa>=2.4          # only for the legacy headless harness (run_match.py); the arena runs inside the game
 anthropic>=2.0
 openai>=3.0
 google-genai>=1.30
 pillow>=10
 matplotlib>=3.8
+playwright>=1.50   # record_match.py / tools/web_smoke.py drive the installed Google Chrome (channel="chrome")

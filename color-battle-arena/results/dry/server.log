@@ -1,0 +1,82 @@
+14:42:47 arena server on http://127.0.0.1:8787  players=['random', 'random', 'bot', 'bot']  out=results/dry  bundle=/Users/eicke/Projects/AIExperiments/color-battle-arena/game/build_web/Color Battle Arena
+14:42:47 open http://127.0.0.1:8787/index.html?arena=live&game=1
+14:42:53 game 1 draft A Random#100: freeze, bomb, split
+14:42:53 game 1 draft B Random#101: shatter, lightning, accel
+14:42:53 game 1 draft C Bot (eager 0.6): lightning, fire, shock
+14:42:53 game 1 draft D Bot (eager 0.6): chain, lightning, shock
+14:53:17 game 2 draft A Bot (eager 0.6): shatter, shock, lightning
+14:53:17 game 2 draft B Random#100: giant, teleport, accel
+14:53:17 game 2 draft C Random#101: bomb, accel, chain
+14:53:17 game 2 draft D Bot (eager 0.6): chain, shock, snowball
+14:54:49 game 3 draft A Bot (eager 0.6): teleport, shatter, fire
+14:54:49 game 3 draft B Bot (eager 0.6): shatter, teleport, lightning
+14:54:49 game 3 draft C Random#100: bomb, teleport, chain
+14:54:49 game 3 draft D Random#101: freeze, fire, split
+14:54:49 game 3 decision 1/30 t=   0s  A:256  B:256  C:256  D:256  lead A  wall 0.0s  C 0s | D 0s
+14:54:51 game 3 decision 2/30 t=   2s  A:316  B:352  C:196  D:160  lead B  wall 0.0s  C 0s | D 0s
+14:54:53 game 3 decision 3/30 t=   4s  A:351  B:373  C:172  D:128  lead B  wall 0.0s  C 0s | D 0s
+14:54:55 game 3 decision 4/30 t=   6s  A:339  B:401  C:158  D:126  lead B  wall 0.0s  C 0s | D 0s
+14:54:57 game 3 decision 5/30 t=   8s  A:339  B:409  C:149  D:127  lead B  wall 0.0s  C 0s | D 0s
+14:54:59 game 3 decision 6/30 t=  10s  A:336  B:411  C:144  D:133  lead B  wall 0.0s  C 0s | D 0s
+14:55:01 game 3 decision 7/30 t=  12s  A:337  B:410  C:150  D:127  lead B  wall 0.0s  C 0s | D 0s
+14:55:03 game 3 decision 8/30 t=  14s  A:330  B:410  C:150  D:134  lead B  wall 0.0s  C 0s | D 0s
+14:55:05 game 3 decision 9/30 t=  16s  A:322  B:433  C:142  D:127  lead B  wall 0.0s  C 0s | D 0s
+14:55:07 game 3 decision 10/30 t=  18s  A:321  B:412  C:134  D:157  lead B  wall 0.0s  C 0s | D 0s
+14:55:09 game 3 decision 11/30 t=  20s  A:331  B:402  C:136  D:155  lead B  wall 0.0s  C 0s | D 0s
+14:55:11 game 3 decision 12/30 t=  22s  A:376  B:379  C:124  D:145  lead B  wall 0.0s  C 0s | D 0s
+14:55:13 game 3 decision 13/30 t=  24s  A:389  B:371  C:119  D:145  lead A  wall 0.0s  C 0s | D 0s
+14:55:15 game 3 decision 14/30 t=  26s  A:390  B:368  C:120  D:146  lead A  wall 0.0s  C 0s | D 0s
+14:55:17 game 3 decision 15/30 t=  28s  A:398  B:357  C:120  D:149  lead A  wall 0.0s  C 0s | D 0s
+14:55:19 game 3 decision 16/30 t=  30s  A:369  B:379  C:125  D:151  lead B  wall 0.0s  C 0s | D 0s
+14:55:21 game 3 decision 17/30 t=  32s  A:272  B:475  C:106  D:171  lead B  wall 0.0s  C 0s | D 0s
+14:55:23 game 3 decision 18/30 t=  34s  A:235  B:497  C:109  D:183  lead B  wall 0.0s  C 0s | D 0s
+14:55:25 game 3 decision 19/30 t=  36s  A:246  B:455  C:137  D:186  lead B  wall 0.0s  C 0s | D 0s
+14:55:28 game 3 decision 20/30 t=  38s  A:300  B:391  C:146  D:187  lead B  wall 0.0s  C 0s | D 0s
+14:55:30 game 3 decision 21/30 t=  40s  A:344  B:346  C:145  D:189  lead B  wall 0.0s  C 0s | D 0s
+14:55:32 game 3 decision 22/30 t=  42s  A:343  B:336  C:145  D:200  lead A  wall 0.0s  C 0s | D 0s
+14:55:34 game 3 decision 23/30 t=  44s  A:335  B:334  C:150  D:205  lead A  wall 0.0s  C 0s | D 0s
+14:55:36 game 3 decision 24/30 t=  46s  A:330  B:333  C:154  D:207  lead B  wall 0.0s  C 0s | D 0s
+14:55:38 game 3 decision 25/30 t=  48s  A:299  B:374  C:154  D:197  lead B  wall 0.0s  C 0s | D 0s
+14:55:40 game 3 decision 26/30 t=  50s  A:281  B:379  C:151  D:213  lead B  wall 0.0s  C 0s | D 0s
+14:55:42 game 3 decision 27/30 t=  52s  A:251  B:411  C:154  D:208  lead B  wall 0.0s  C 0s | D 0s
+14:55:44 game 3 decision 28/30 t=  54s  A:237  B:411  C:157  D:219  lead B  wall 0.0s  C 0s | D 0s
+14:55:46 game 3 decision 29/30 t=  56s  A:235  B:407  C:162  D:220  lead B  wall 0.0s  C 0s | D 0s
+14:55:48 game 3 decision 30/30 t=  58s  A:232  B:402  C:164  D:226  lead B  wall 0.0s  C 0s | D 0s
+14:55:50 game 3 finished: B > A > D > C  cells A 253 B 386 C 167 D 218
+15:00:16 arena server on http://127.0.0.1:8787  players=['random', 'random', 'bot', 'bot']  out=results/dry  bundle=/Users/eicke/Projects/AIExperiments/color-battle-arena/game/build_web/Color Battle Arena
+15:00:16 open http://127.0.0.1:8787/index.html?arena=live&game=1
+15:02:25 game 1 draft A Random#100: freeze, bomb, split
+15:02:25 game 1 draft B Random#101: shatter, lightning, accel
+15:02:25 game 1 draft C Bot (eager 0.6) #1: lightning, fire, shock
+15:02:25 game 1 draft D Bot (eager 0.6) #2: chain, lightning, shock
+15:02:25 game 1 decision 1/30 t=   0s  A:256  B:256  C:256  D:256  lead A  wall 0.0s  A 0s | B 0s
+15:02:27 game 1 decision 2/30 t=   2s  A:243  B:227  C:281  D:273  lead C  wall 0.0s  A 0s | B 0s
+15:02:29 game 1 decision 3/30 t=   4s  A:245  B:228  C:305  D:246  lead C  wall 0.0s  A 0s | B 0s
+15:02:31 game 1 decision 4/30 t=   6s  A:249  B:254  C:288  D:233  lead C  wall 0.0s  A 0s | B 0s
+15:02:33 game 1 decision 5/30 t=   8s  A:246  B:281  C:284  D:213  lead C  wall 0.0s  A 0s | B 0s
+15:02:35 game 1 decision 6/30 t=  10s  A:242  B:305  C:276  D:201  lead B  wall 0.0s  A 0s | B 0s
+15:02:37 game 1 decision 7/30 t=  12s  A:243  B:307  C:276  D:198  lead B  wall 0.0s  A 0s | B 0s
+15:02:39 game 1 decision 8/30 t=  14s  A:235  B:309  C:285  D:195  lead B  wall 0.0s  A 0s | B 0s
+15:02:41 game 1 decision 9/30 t=  16s  A:232  B:280  C:292  D:220  lead C  wall 0.0s  A 0s | B 0s
+15:02:43 game 1 decision 10/30 t=  18s  A:232  B:302  C:286  D:204  lead B  wall 0.0s  A 0s | B 0s
+15:02:45 game 1 decision 11/30 t=  20s  A:233  B:296  C:289  D:206  lead B  wall 0.0s  A 0s | B 0s
+15:02:47 game 1 decision 12/30 t=  22s  A:239  B:296  C:289  D:200  lead B  wall 0.0s  A 0s | B 0s
+15:02:49 game 1 decision 13/30 t=  24s  A:217  B:330  C:287  D:190  lead B  wall 0.0s  A 0s | B 0s
+15:02:51 game 1 decision 14/30 t=  26s  A:208  B:344  C:283  D:189  lead B  wall 0.0s  A 0s | B 0s
+15:02:53 game 1 decision 15/30 t=  28s  A:210  B:355  C:281  D:178  lead B  wall 0.0s  A 0s | B 0s
+15:02:55 game 1 decision 16/30 t=  30s  A:206  B:338  C:303  D:177  lead B  wall 0.0s  A 0s | B 0s
+15:02:57 game 1 decision 17/30 t=  32s  A:210  B:329  C:282  D:203  lead B  wall 0.0s  A 0s | B 0s
+15:02:59 game 1 decision 18/30 t=  34s  A:212  B:339  C:276  D:197  lead B  wall 0.0s  A 0s | B 0s
+15:03:01 game 1 decision 19/30 t=  36s  A:215  B:335  C:272  D:202  lead B  wall 0.0s  A 0s | B 0s
+15:03:03 game 1 decision 20/30 t=  38s  A:222  B:334  C:265  D:203  lead B  wall 0.0s  A 0s | B 0s
+15:03:05 game 1 decision 21/30 t=  40s  A:228  B:322  C:283  D:191  lead B  wall 0.0s  A 0s | B 0s
+15:03:07 game 1 decision 22/30 t=  42s  A:215  B:339  C:288  D:182  lead B  wall 0.0s  A 0s | B 0s
+15:03:09 game 1 decision 23/30 t=  44s  A:210  B:354  C:281  D:179  lead B  wall 0.0s  A 0s | B 0s
+15:03:11 game 1 decision 24/30 t=  46s  A:182  B:356  C:284  D:202  lead B  wall 0.0s  A 0s | B 0s
+15:03:13 game 1 decision 25/30 t=  48s  A:175  B:385  C:256  D:208  lead B  wall 0.0s  A 0s | B 0s
+15:03:15 game 1 decision 26/30 t=  50s  A:175  B:389  C:254  D:206  lead B  wall 0.0s  A 0s | B 0s
+15:03:17 game 1 decision 27/30 t=  52s  A:182  B:390  C:248  D:204  lead B  wall 0.0s  A 0s | B 0s
+15:03:19 game 1 decision 28/30 t=  54s  A:163  B:389  C:258  D:214  lead B  wall 0.0s  A 0s | B 0s
+15:03:21 game 1 decision 29/30 t=  56s  A:182  B:382  C:243  D:217  lead B  wall 0.0s  A 0s | B 0s
+15:03:23 game 1 decision 30/30 t=  58s  A:193  B:375  C:242  D:214  lead B  wall 0.0s  A 0s | B 0s
+15:03:25 game 1 finished: B > C > D > A  cells A 182 B 360 C 249 D 233

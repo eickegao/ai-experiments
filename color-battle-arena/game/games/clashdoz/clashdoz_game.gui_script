@@ -432,7 +432,7 @@ end
 --- 底栏布局：对战 n 个大圆钮居中一排（第 3 位没开画锁）；试验场 8 个小圆钮两排。按安全区整体上移。
 local function layout_buttons(U, m)
 	local screen_bottom = -(960 + layout.extra()) + math.max(layout.safe_bottom(), 0) + 20
-	if m.showcase or m.preview then for k = 1, #C.SKILL_IDS do enable_skill_button(U.sk[k], false) end; gui.set_enabled(U.lock, false); return end   -- 展示 / 预览：底栏不画（预览底下是等级胶囊）
+	if m.showcase or m.preview or m.arena then for k = 1, #C.SKILL_IDS do enable_skill_button(U.sk[k], false) end; gui.set_enabled(U.lock, false); return end   -- 展示 / 预览：底栏不画（预览底下是等级胶囊）
 	if m.sim.track then for k = 1, #C.SKILL_IDS do enable_skill_button(U.sk[k], false) end; gui.set_enabled(U.lock, false); return end   -- 跑道关禁技能：底栏不画
 	local n = math.max(#m.sim.teams[PLAYER].skills, math.min(m.slots or C.SLOTS_DEFAULT, C.SLOTS_MAX))
 	local show_lock = not m.lab and not m.sim.build and (m.slots or C.SLOTS_DEFAULT) < C.SLOTS_MAX and #m.sim.teams[PLAYER].skills <= (m.slots or C.SLOTS_DEFAULT)   -- 道具关不卖第 3 位
@@ -813,7 +813,7 @@ start_match = function(opts)
 	local m = { sim = sim.new(seed, { layout = layout_name, level = L, loadout = loadout, enemies = opts.enemies, lab = opts.lab, solo_n = opts.n }), seed = seed, layout = opts.lab and "lab" or (L and "level" or layout_name),
 				level = opts.level, ais = {}, acc = 0, last_capture = -1, last_second = C.ROUND_TIME + 1, finished = false, demo = opts.demo,
 				slowmo = 0, shake_until = 0, slots = opts.slots, debug_giant = opts.debug_giant, autopilot = opts.autopilot, lab = opts.lab, eager = opts.eager, showcase = opts.showcase, show_scale = opts.scale, show_y = opts.y, show_n = opts.n,
-				preview = opts.preview }
+				preview = opts.preview, arena = opts.arena }
 	set_text(gui.get_node("level_text"), opts.preview and T(C.def(opts.preview.id).name) or (opts.lab and T("TEST LAB") or (opts.level and ("LV." .. opts.level) or "")))
 	local policy = { eager = opts.eager or 0.6 }
 	if opts.arena then   -- arena: LLM seats get no bot; "bot" seats keep the game AI
@@ -848,6 +848,7 @@ start_match = function(opts)
 	setup_goal_ui(m)   -- 再最后：非占地关把份额条收掉换目标行、摆装置（要在 set_showcase 之后，它会把份额条打开）
 	cam.setup(m)   -- 镜头：zoom 关放大棋盘、对准玩家的球
 	m.cdn_t0 = nil; S.hold = nil
+	if opts.arena then gui.set_enabled(S.coin_icon, false); gui.set_enabled(S.coin_text, false); gui.set_enabled(gui.get_node("btn_back"), false) end   -- after set_showcase re-enabled them
 	if opts.level and not opts.demo and not opts.showcase then CDN.start(m) end   -- 关卡：开局 3 2 1 GO
 end
 

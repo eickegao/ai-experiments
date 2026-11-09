@@ -226,7 +226,10 @@ function M.on_finish(m, s)
         local want = (M.replay and M.replay.final and M.replay.final.counts) or {}
         local same = true
         for _, L in ipairs(LETTERS) do if want[L] ~= nil and want[L] ~= final.counts[L] then same = false end end
-        print((same and M.mismatch == 0) and "ARENA_REPLAY_OK" or ("ARENA_REPLAY_MISMATCH verdicts=" .. M.mismatch .. " counts=" .. json.encode(final.counts) .. " want=" .. json.encode(want)))
+        local ok = same and M.mismatch == 0
+        print(ok and "ARENA_REPLAY_OK" or ("ARENA_REPLAY_MISMATCH verdicts=" .. M.mismatch .. " counts=" .. json.encode(final.counts) .. " want=" .. json.encode(want)))
+        -- release builds do not forward print() to the browser console, so the recorder reads this instead
+        js("window.__arena_replay = " .. json.encode({ ok = ok, mismatch = M.mismatch, counts = final.counts, want = want }))
         js("window.__arena_done = 1")
     end
 end

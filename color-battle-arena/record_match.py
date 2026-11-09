@@ -12,6 +12,7 @@ mp4 at results/<run>/game_N.mp4 and checks the console for ARENA_REPLAY_OK.
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import subprocess
 import sys
@@ -75,13 +76,17 @@ def main():
         page.on("console", lambda m: replay_logs.append(m.text))
         page.goto(f"{a.server}/index.html?arena=replay&log=/{rel}/game_{a.game}.json&speed={a.speed:g}")
         err = wait_done(page, 60 / a.speed + 120, "replay")
+        try:
+            verdict = page.evaluate("window.__arena_replay || null")
+        except Exception:
+            verdict = None
         time.sleep(2.0)
         video = page.video
         ctx.close()
         webm = video.path()
         browser.close()
-    ok = any("ARENA_REPLAY_OK" in l for l in replay_logs)
-    mism = [l for l in replay_logs if "ARENA_REPLAY_MISMATCH" in l]
+    ok = bool(verdict and verdict.get("ok"))
+    mism = [json.dumps(verdict)] if verdict and not verdict.get("ok") else []
     mp4 = out / f"game_{a.game}.mp4"
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", webm, "-r", "30", "-vf", "scale=1080:1920", "-c:v", "libx264", "-crf", "18",
                     "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(mp4)], check=True)

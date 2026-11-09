@@ -50,6 +50,10 @@ PATCHES = {
         (r'(\t+)(m\.acc = m\.acc \+ math\.min\(dt, 0\.25\) \* scale\n)', r'\1\2\1if m.arena then m.acc = m.acc * arena.speed end   -- replay: optional playback speed\n'),
         (r'\t\twhile m\.acc >= C\.FIXED_DT and not s\.over do\n\t\t\tfor _, bot in ipairs\(m\.ais\) do ai\.update\(bot, s, C\.FIXED_DT\) end\n\t\t\tsim\.step\(s, C\.FIXED_DT\)\n\t\t\tm\.acc = m\.acc - C\.FIXED_DT\n\t\tend',
          '\t\twhile m.acc >= C.FIXED_DT and not s.over do\n\t\t\tif m.arena and not arena.before_step(m, s) then m.acc = 0; break end   -- models thinking: game time frozen\n\t\t\tfor _, bot in ipairs(m.ais) do ai.update(bot, s, C.FIXED_DT) end\n\t\t\tsim.step(s, C.FIXED_DT)\n\t\t\tm.tick = (m.tick or 0) + 1\n\t\t\tif m.arena then arena.after_step(m, s) end\n\t\t\tm.acc = m.acc - C.FIXED_DT\n\t\tend'),
+        (r'preview = opts\.preview \}', 'preview = opts.preview, arena = opts.arena }'),
+        # arena HUD: no coin counter, no back button, no skill buttons (all four seats are AIs; cooldowns live in the log)
+        (r'(\tm\.cdn_t0 = nil; S\.hold = nil\n)', r'\1\tif opts.arena then gui.set_enabled(S.coin_icon, false); gui.set_enabled(S.coin_text, false); gui.set_enabled(gui.get_node("btn_back"), false) end   -- after set_showcase re-enabled them\n'),
+        (r'if m\.showcase or m\.preview then for k = 1, #C\.SKILL_IDS do enable_skill_button', 'if m.showcase or m.preview or m.arena then for k = 1, #C.SKILL_IDS do enable_skill_button'),
         (r'set_text\(st\.name, t == PLAYER and T\("YOU"\) or T\(TEAMS\[t\]\.name\)\)', 'set_text(st.name, (m.arena and arena.names[t]) or (t == PLAYER and T("YOU") or T(TEAMS[t].name)))'),
         (r'(function on_input\(self, action_id, action\)\n\tif not S\.visible then return false end\n)', r'\1\tif S.match and S.match.arena then return false end   -- arena: nobody touches the board\n'),
         (r'(finish_match = function\(m\)\n\tm\.finished = true\n\tlocal s = m\.sim\n)', r'\1\tif m.arena then arena.on_finish(m, s); bgm_fade_out(1.0); snd("win"); return end   -- arena: report, no result page\n'),
