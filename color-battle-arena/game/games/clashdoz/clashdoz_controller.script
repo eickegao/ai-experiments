@@ -1,20 +1,25 @@
 -- games/clashdoz/clashdoz_controller.script — arena version (replaces the PlayDoz controller: no cover / prep / levels).
--- start_game → a quad match straight away. Without an arena URL (see arena.lua) all four teams are the game's own bots
--- with randomly rolled level-1 skills, which is the free smoke test; finish → the game asks for another one.
+-- start_game → with ?arena=live|replay in the URL the match comes from arena.lua (four LLM seats, or the log being
+-- replayed); otherwise a quad match of the game's own bots with random level-1 skills (free smoke test, loops forever).
 local levels = require("games.clashdoz.cd_levels")
+local arena = require("games.clashdoz.arena")
 
 local function start_bots(self)
     local seed = os.time()
     local loadout, enemies = levels.roll(4, levels.TRIAL_PLAN, seed, 3)
-    msg.post("#game", "start_match", { layout = "quad", loadout = loadout, enemies = enemies, autopilot = true, eager = 0.7 })
+    msg.post("#game", "start_match", { layout = "quad", loadout = loadout, enemies = enemies, autopilot = true, eager = 0.7, seed = seed })
 end
 
 function init(self) end
 
 function on_message(self, message_id, message, sender)
     if message_id == hash("start_game") then
-        start_bots(self)
+        if arena.init() then
+            arena.start(function(opts) msg.post("#game", "start_match", opts) end)
+        else
+            start_bots(self)
+        end
     elseif message_id == hash("back_to_cover") or message_id == hash("next_level") or message_id == hash("retry_level") then
-        start_bots(self)
+        if not arena.mode then start_bots(self) end
     end
 end

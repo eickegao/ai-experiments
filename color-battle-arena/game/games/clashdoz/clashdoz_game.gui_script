@@ -24,6 +24,7 @@ local ai = require("games.clashdoz.cd_ai")
 local levels = require("games.clashdoz.cd_levels")
 local profile = require("games.clashdoz.cd_profile")
 local game_progress = require("shared.game_progress")
+local arena = require("games.clashdoz.arena")   -- arena mode (AIExperiments)
 
 local ATLAS = "clashdoz"
 local GRID = C.GRID                    -- 这局每边格数（道具关 16 / 球关 32）：start_match 里 layout_board 重设；格索引步长永远是 STRIDE = 32
@@ -802,7 +803,7 @@ start_match = function(opts)
 	opts = opts or {}
 	hide_result(); scoreboard_ui.close(true); S.result = nil   -- 上一局结果必须清：multitouch 分支拿 S.result.shown 判"结算页开着"，不清的话真机第二局所有按下全被吞（2026-11-01 用户：玩好一局后技能全点不了）
 	clear_beams()
-	local seed = os.time() + math.floor((socket and socket.gettime and socket.gettime() or 0) * 1000) % 100000
+	local seed = opts.seed or os.time() + math.floor((socket and socket.gettime and socket.gettime() or 0) * 1000) % 100000
 	local layout_name = opts.layout or C.DEFAULT_LAYOUT
 	local L = opts.level and levels.get(opts.level) or opts.level_tbl or nil   -- level_tbl：直接给关卡表（技能预览用 levels.PREVIEW）
 	-- 带进场的技能 / 对手配置由 controller（经准备页）传入；没传就裸打（演示局、调试直达）
@@ -815,8 +816,12 @@ start_match = function(opts)
 				preview = opts.preview }
 	set_text(gui.get_node("level_text"), opts.preview and T(C.def(opts.preview.id).name) or (opts.lab and T("TEST LAB") or (opts.level and ("LV." .. opts.level) or "")))
 	local policy = { eager = opts.eager or 0.6 }
+	if opts.arena then   -- arena: LLM seats get no bot; "bot" seats keep the game AI
+		for t = 1, m.sim.n do if opts.bots and opts.bots[t] then m.ais[#m.ais + 1] = ai.new(t, seed + t * 7919, policy) end end
+	else
 	for t = 1, m.sim.n do   -- 演示 / 预览：玩家的球也交给 AI 走（预览里 AI 不放技能，招由 FX.pv_drive 放）
 		if (t ~= PLAYER or opts.demo or opts.preview or opts.autopilot) and not opts.showcase then m.ais[#m.ais + 1] = ai.new(t, seed + t * 7919, opts.preview and { eager = 0 } or policy) end
+	end
 	end
 	if opts.preview then m.pv_rng = cd_rng.new(seed * 7 + 1); m.pv_t, m.pv_next = 0, 1.2 end
 	gui.set_enabled(S.U.labreset.node, opts.lab == true)
@@ -1661,7 +1666,7 @@ local function update_top(m)
 		if st and s.n <= STATUS_COLS then
 			-- 用户 2026-10-28：队名/效果跟着自己那段份额条的中心走（和段里的百分数同一竖线），贴边夹在棋盘内
 			m.name_x = m.name_x or {}; m.name_x[t] = x - w / 2
-			set_text(st.name, t == PLAYER and T("YOU") or T(TEAMS[t].name))
+			set_text(st.name, (m.arena and arena.names[t]) or (t == PLAYER and T("YOU") or T(TEAMS[t].name)))
 		end
 	end
 	local neutral_w = BOARD_W * (s.counts[0] or 0) / total
@@ -1862,6 +1867,7 @@ end
 finish_match = function(m)
 	m.finished = true
 	local s = m.sim
+	if m.arena then arena.on_finish(m, s); bgm_fade_out(1.0); snd("win"); return end   -- arena: report, no result page
 	local place = player_place(s)
 	bgm_fade_out(1.0)
 	local race_win = place == 1 and s.goal and s.goal.kind == "race" and s.goal.at and not m.showcase and not m.demo
@@ -2056,9 +2062,13 @@ function update(self, dt)
 	end
 	if not s.over and not CDN.active(m) and not m.stage_hold then
 		m.acc = m.acc + math.min(dt, 0.25) * scale
+		if m.arena then m.acc = m.acc * arena.speed end   -- replay: optional playback speed
 		while m.acc >= C.FIXED_DT and not s.over do
+			if m.arena and not arena.before_step(m, s) then m.acc = 0; break end   -- models thinking: game time frozen
 			for _, bot in ipairs(m.ais) do ai.update(bot, s, C.FIXED_DT) end
 			sim.step(s, C.FIXED_DT)
+			m.tick = (m.tick or 0) + 1
+			if m.arena then arena.after_step(m, s) end
 			m.acc = m.acc - C.FIXED_DT
 		end
 		if s.over and not m.finished then finish_match(m) end
@@ -2151,7 +2161,7 @@ function on_message(self, message_id, message, sender)
 		S.visible = true
 		gui.set_enabled(gui.get_node("root"), true)
 		local ok, err = pcall(start_match, { layout = message.layout, level = message.level, debug_giant = message.debug_giant, debug_card = message.debug_card, debug_level = message.debug_level, lab = message.lab,
-											  loadout = message.loadout, enemies = message.enemies, eager = message.eager, slots = message.slots,
+											  loadout = message.loadout, enemies = message.enemies, eager = message.eager, slots = message.slots, arena = message.arena, seed = message.seed, bots = message.bots,
 											  showcase = message.showcase, scale = message.scale, y = message.y, n = message.n })
 		if not ok then print("[clashdoz] start_match error: " .. tostring(err)) end
 	elseif message_id == hash("start_demo") then   -- How to Play：四队全 AI 的真实对局 + 字幕
@@ -2260,6 +2270,7 @@ end
 
 function on_input(self, action_id, action)
 	if not S.visible then return false end
+	if S.match and S.match.arena then return false end   -- arena: nobody touches the board
 	if S.match and S.match.showcase then return false end   -- 封面展示：输入交给封面
 	-- 多点触控（用户 2026-10-28：一根手指点棋盘控球的同时，另一根要能点技能钮）：
 	-- "touch" 只报第一根手指，第二根按下会被吞；这里按 action.touch 逐根处理按下。真机只要收到过一次就改走这条路。

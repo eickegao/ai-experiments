@@ -22,6 +22,7 @@ SKILL_HELP = {
     "shatter": "SHATTER: for {d} s every bounce on a foreign cell spawns a small extra ball that also paints.",
     "chain": "CHAIN LIGHTNING: stuns every enemy ball on the board for {s} s (does not paint).",
     "snowball": "PLASMA: your main ball grows on each hit; after 5 hits the next hit paints a circle around it.",
+    "bomb": "BOMB: for {d} s your main ball also paints {e} neighbouring cell(s) on every bounce.",
 }
 
 
@@ -50,12 +51,12 @@ def system_prompt(n_decisions: int, decision_dt: float, skills: list[dict]) -> s
     ]
     if skills:
         rules.append("")
-        rules.append("Your skills this game (same for every team):")
+        rules.append("Your skills this game (you picked them in the draft; the other teams picked their own):")
         for sk in skills:
             p = sk.get("params", {})
             text = SKILL_HELP.get(sk["id"], sk["id"]).format(
                 r=p.get("radius", ""), m=p.get("mult", ""), d=p.get("dur", ""), c=p.get("count", ""), w=p.get("window", ""),
-                a=p.get("arc", ""), s=p.get("stun", ""))
+                a=p.get("arc", ""), s=p.get("stun", ""), e=p.get("extra", ""))
             rules.append(f"  slot {sk['slot']}: {text} Cooldown {sk['cd']:g} s.")
     return "\n".join(rules)
 

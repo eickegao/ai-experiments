@@ -11,6 +11,6 @@ function on_message(self, message_id, message, sender)
     if message_id == hash("proxy_loaded") then
         msg.post(PROXY, "init")
         msg.post(PROXY, "enable")
-        msg.post("/clashdoz/clashdoz#controller", "start_game", {})
+        msg.post("clashdoz:/clashdoz#controller", "start_game", {})   -- the proxy collection's socket is its name
     end
 end

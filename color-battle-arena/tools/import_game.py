@@ -15,8 +15,8 @@ leaderboard pages, no how-to-play, one background track, English only):
   assets/           only images / fonts / audio referenced from the files above (resource closure).
   main/, input/, web/, game.project   written here (bootstrap: load the game and start a match straight away).
 
-Edits applied to copied files are listed in PATCHES below so a re-import reproduces the same tree. Files under
-game/games/clashdoz/arena*.lua (the arena mode) are never touched.
+Edits applied to copied files are listed in PATCHES below so a re-import reproduces the same tree. The arena mode
+itself is copied from arena_game/arena.lua (kept outside game/ so a re-import cannot lose it).
 """
 import os, re, shutil
 
@@ -41,6 +41,20 @@ PATCHES = {
     # one background track, pick deterministic
     "clashdoz_game.gui_script": [
         (r'local BGM_TRACKS = \{[^\n]*\}', 'local BGM_TRACKS = { "#snd_bgm_four_color_2" }   -- arena: one track (user 2026-11-09)'),
+        # arena hooks (games/clashdoz/arena.lua): module, seed from the setup, no bots unless the seat is a bot,
+        # decision pauses in the step loop, names on the HUD, no touch input, no result page
+        (r'(local game_progress = require\("shared.game_progress"\)\n)', r'\1local arena = require("games.clashdoz.arena")   -- arena mode (AIExperiments)\n'),
+        (r'local seed = os\.time\(\) \+ math\.floor\(', 'local seed = opts.seed or os.time() + math.floor('),
+        (r'(\tfor t = 1, m\.sim\.n do   -- 演示 / 预览[^\n]*\n\t\tif \(t ~= PLAYER or opts\.demo[^\n]*\n\tend\n)',
+         r'\tif opts.arena then   -- arena: LLM seats get no bot; "bot" seats keep the game AI\n\t\tfor t = 1, m.sim.n do if opts.bots and opts.bots[t] then m.ais[#m.ais + 1] = ai.new(t, seed + t * 7919, policy) end end\n\telse\n\1\tend\n'),
+        (r'(\t+)(m\.acc = m\.acc \+ math\.min\(dt, 0\.25\) \* scale\n)', r'\1\2\1if m.arena then m.acc = m.acc * arena.speed end   -- replay: optional playback speed\n'),
+        (r'\t\twhile m\.acc >= C\.FIXED_DT and not s\.over do\n\t\t\tfor _, bot in ipairs\(m\.ais\) do ai\.update\(bot, s, C\.FIXED_DT\) end\n\t\t\tsim\.step\(s, C\.FIXED_DT\)\n\t\t\tm\.acc = m\.acc - C\.FIXED_DT\n\t\tend',
+         '\t\twhile m.acc >= C.FIXED_DT and not s.over do\n\t\t\tif m.arena and not arena.before_step(m, s) then m.acc = 0; break end   -- models thinking: game time frozen\n\t\t\tfor _, bot in ipairs(m.ais) do ai.update(bot, s, C.FIXED_DT) end\n\t\t\tsim.step(s, C.FIXED_DT)\n\t\t\tm.tick = (m.tick or 0) + 1\n\t\t\tif m.arena then arena.after_step(m, s) end\n\t\t\tm.acc = m.acc - C.FIXED_DT\n\t\tend'),
+        (r'set_text\(st\.name, t == PLAYER and T\("YOU"\) or T\(TEAMS\[t\]\.name\)\)', 'set_text(st.name, (m.arena and arena.names[t]) or (t == PLAYER and T("YOU") or T(TEAMS[t].name)))'),
+        (r'(function on_input\(self, action_id, action\)\n\tif not S\.visible then return false end\n)', r'\1\tif S.match and S.match.arena then return false end   -- arena: nobody touches the board\n'),
+        (r'(finish_match = function\(m\)\n\tm\.finished = true\n\tlocal s = m\.sim\n)', r'\1\tif m.arena then arena.on_finish(m, s); bgm_fade_out(1.0); snd("win"); return end   -- arena: report, no result page\n'),
+        (r'loadout = message\.loadout, enemies = message\.enemies, eager = message\.eager, slots = message\.slots,',
+         'loadout = message.loadout, enemies = message.enemies, eager = message.eager, slots = message.slots, arena = message.arena, seed = message.seed, bots = message.bots,'),
     ],
     # the match screen's static nodes only use the clashdoz atlases; result / scoreboard atlases belonged to the pages we dropped
     "clashdoz_game.gui": [
@@ -83,29 +97,34 @@ function on_message(self, message_id, message, sender)
     if message_id == hash("proxy_loaded") then
         msg.post(PROXY, "init")
         msg.post(PROXY, "enable")
-        msg.post("/clashdoz/clashdoz#controller", "start_game", {})
+        msg.post("clashdoz:/clashdoz#controller", "start_game", {})   -- the proxy collection's socket is its name
     end
 end
 '''
 
 CONTROLLER = '''-- games/clashdoz/clashdoz_controller.script — arena version (replaces the PlayDoz controller: no cover / prep / levels).
--- start_game → a quad match straight away. Without an arena URL (see arena.lua) all four teams are the game's own bots
--- with randomly rolled level-1 skills, which is the free smoke test; finish → the game asks for another one.
+-- start_game → with ?arena=live|replay in the URL the match comes from arena.lua (four LLM seats, or the log being
+-- replayed); otherwise a quad match of the game's own bots with random level-1 skills (free smoke test, loops forever).
 local levels = require("games.clashdoz.cd_levels")
+local arena = require("games.clashdoz.arena")
 
 local function start_bots(self)
     local seed = os.time()
     local loadout, enemies = levels.roll(4, levels.TRIAL_PLAN, seed, 3)
-    msg.post("#game", "start_match", { layout = "quad", loadout = loadout, enemies = enemies, autopilot = true, eager = 0.7 })
+    msg.post("#game", "start_match", { layout = "quad", loadout = loadout, enemies = enemies, autopilot = true, eager = 0.7, seed = seed })
 end
 
 function init(self) end
 
 function on_message(self, message_id, message, sender)
     if message_id == hash("start_game") then
-        start_bots(self)
+        if arena.init() then
+            arena.start(function(opts) msg.post("#game", "start_match", opts) end)
+        else
+            start_bots(self)
+        end
     elseif message_id == hash("back_to_cover") or message_id == hash("next_level") or message_id == hash("retry_level") then
-        start_bots(self)
+        if not arena.mode then start_bots(self) end
     end
 end
 '''
@@ -273,12 +292,22 @@ def main():
     # shared: two real modules, the rest stubs
     copy("/shared/layout.lua")
     copy("/shared/pill_btn.lua")
+    copy("/shared/safe_area.lua")   # layout.lua needs it (web: no notch, returns 0)
     for res, text in STUBS.items():
         put("/" + res, text)
+    # every require() in the copied Lua must resolve: report anything still missing
+    for r, _, fs in os.walk(DST):
+        for f in fs:
+            if f.endswith((".lua", ".script", ".gui_script")) and "/build" not in r:
+                for mod in re.findall(r'require\("([^"]+)"\)', open(os.path.join(r, f), encoding="utf-8", errors="ignore").read()):
+                    if not os.path.exists(dst("/" + mod.replace(".", "/") + ".lua")):
+                        print("  unresolved require:", mod, "in", f)
     # bootstrap, input, web template, texture profiles
     put("/main/main.script", MAIN_SCRIPT)
     put("/main/main.go", 'components {\n  id: "script"\n  component: "/main/main.script"\n}\ncomponents {\n  id: "clashdoz_proxy"\n  component: "/games/clashdoz/clashdoz.collectionproxy"\n}\n')
     put("/main/main.collection", 'name: "main"\ninstances {\n  id: "main"\n  prototype: "/main/main.go"\n  position {\n    x: 0.0\n    y: 0.0\n    z: 0.0\n  }\n  rotation {\n    x: 0.0\n    y: 0.0\n    z: 0.0\n    w: 1.0\n  }\n  scale3 {\n    x: 1.0\n    y: 1.0\n    z: 1.0\n  }\n}\nscale_along_z: 0\n')
+    # the arena mode itself (source of truth lives outside game/ so a re-import cannot lose it)
+    shutil.copy2(os.path.join(HERE, "..", "arena_game", "arena.lua"), dst(f"{G}/arena.lua")); copied.add(f"{G}/arena.lua")
     copy("/input/game.input_binding")
     copy("/web/engine_template.html")
     copy("/game.texture_profiles")
