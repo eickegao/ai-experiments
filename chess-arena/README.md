@@ -8,7 +8,7 @@ Two frontier LLMs play chess against each other. Every move is verified independ
 - **Quality**: Stockfish 19 (depth 18, 3 principal variations) evaluates the position before and after every move, recording pawns lost, whether the move was Stockfish's top-1 or top-3 choice, and blunders (≥2 pawns lost).
 - Games unresolved after 150 moves are adjudicated by Stockfish (±8 pawns = win, otherwise draw).
 
-Both players receive **exactly the same prompt**: the full move list (PGN), the FEN, an ASCII board and the opponent's last move. The first attempt does not include a legal-move list, so it measures the model's own chess ability. Players are stateless: one independent request per move, no multi-turn memory.
+Both players receive **exactly the same prompt**, and the exchange is pure PGN: the game so far as a PGN record, the model answers with one SAN move. The first attempt does not include a legal-move list, so it measures the model's own chess ability. Players are stateless: one independent request per move, no multi-turn memory.
 
 ## Experiment design
 

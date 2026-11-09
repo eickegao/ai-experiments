@@ -1,7 +1,7 @@
 """Players. Every player gets the same position description and returns one move (SAN) plus a short rationale.
 
-All players share one prompt (SYSTEM) for fairness. LLM players are stateless: each move is a fresh request carrying the
-full move list and FEN, so context never grows. The first attempt gets no legal-move list (it tests real chess ability);
+All players share one prompt (SYSTEM) for fairness. The exchange is pure PGN: each move is a fresh, stateless request
+carrying the game so far as PGN, and the model answers with one SAN move. The first attempt gets no legal-move list (it tests real chess ability);
 the list is added only when retrying after an illegal move.
 """
 from __future__ import annotations
@@ -24,28 +24,21 @@ SYSTEM = (
 
 
 def describe(board: chess.Board, feedback: str | None, legal: list[str] | None) -> str:
+    """The whole exchange is PGN: the game so far as a PGN (headers + movetext), ending at the side to move."""
     color = "White" if board.turn == chess.WHITE else "Black"
-    moves = board.root().variation_san(board.move_stack) if board.move_stack else "(game start)"
-    last = board.peek() if board.move_stack else None
-    last_san = ""
-    if last is not None:
-        b2 = board.copy()
-        b2.pop()
-        last_san = b2.san(last)
-    parts = [
-        f"You are {color}. It is your move (move {board.fullmove_number}).",
-        f"Moves so far (PGN): {moves}",
-        f"Last move by your opponent: {last_san or 'none'}",
-        f"Current position (FEN): {board.fen()}",
-        "Board (White at bottom, uppercase = White):\n" + str(board),
-    ]
-    if board.is_check():
-        parts.append("You are in check.")
+    movetext = board.root().variation_san(board.move_stack) if board.move_stack else ""
+    if board.turn == chess.WHITE:
+        movetext = (movetext + f" {board.fullmove_number}.").strip()
+    pgn = (
+        '[Event "AI Chess Arena"]\n'
+        '[White "?"]\n[Black "?"]\n[Result "*"]\n\n' + movetext + " *"
+    )
+    parts = [f"You are {color}. Here is the game so far in PGN. Give your next move.", pgn]
     if feedback:
         parts.append(f"IMPORTANT: {feedback}")
     if legal is not None:
-        parts.append("Legal moves: " + " ".join(legal))
-    parts.append("Reply with your brief reasoning, then the final line 'MOVE: <san>'.")
+        parts.append("Legal moves in this position: " + " ".join(legal))
+    parts.append("Reply with brief reasoning, then the final line 'MOVE: <san>'.")
     return "\n\n".join(parts)
 
 
