@@ -76,6 +76,7 @@ def draft_prompts(catalog: list[dict], slots: int, n_decisions: int, decision_dt
         "other colour it paints that cell your colour and bounces back. Balls bounce off the board edges. Most cells wins.",
         f"During the game you decide every {decision_dt:g} s of game time ({n_decisions} decisions): point the ball somewhere (1 s cooldown)",
         "and cast your skills (each has its own cooldown). Before the game starts, every team picks its skills from the same list.",
+        "Decide fast: keep your thinking short and answer right away; do not deliberate at length.",
     ])
     lines = [f"Pick exactly {slots} different skills from this list (every skill is at level {level}, the maximum). Your opponents pick independently.", ""]
     for sk in catalog:
@@ -154,7 +155,7 @@ class Game:
         self.decision_dt = 2.0
         self.record: dict = {
             "seed": seed, "game": no, "started": now(), "effort": effort,
-            "players": {LETTERS[t - 1]: {"name": p.name, "model": p.model, "vendor": p.vendor, "llm": p.is_llm} for t, p in players.items()},
+            "players": {LETTERS[t - 1]: {"name": p.name, "model": p.model, "vendor": p.vendor, "llm": p.is_llm, "effort": getattr(p, "effort", None)} for t, p in players.items()},
             "draft": {}, "decisions": [], "commands": [], "timeline": [], "final": None,
         }
         self.done = False

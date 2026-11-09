@@ -1,0 +1,7 @@
+16:24:49 arena server on http://127.0.0.1:8787  players=['claude', 'openai', 'gemini', 'deepseek']  out=results/2026-11-09_arena  bundle=/Users/eicke/Projects/AIExperiments/color-battle-arena/game/build_web/Color Battle Arena
+16:24:49 open http://127.0.0.1:8787/index.html?arena=live&game=1
+16:33:18 game 1 draft A Claude (claude-fable-5-1): lightning, split, accel
+16:33:18 game 1 draft B GPT (gpt-6-astra): accel, shatter, lightning
+16:33:18 game 1 draft C Gemini (gemini-4-argon): accel, shatter, lightning
+16:33:18 game 1 draft D DeepSeek (deepseek-v4-pro): accel, bomb, lightning
+16:39:58 game 1 decision 1/30 t=   0s  A:256  B:256  C:256  D:256  lead A  wall 400.1s  A 31s | B 9s | C 68s | D 400s

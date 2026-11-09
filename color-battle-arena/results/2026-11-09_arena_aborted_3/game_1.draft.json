@@ -29,11 +29,11 @@
     "bot": false,
     "skills": [
      {
-      "id": "shatter",
+      "id": "accel",
       "level": 3
      },
      {
-      "id": "accel",
+      "id": "shatter",
       "level": 3
      },
      {
@@ -69,15 +69,15 @@
     "bot": false,
     "skills": [
      {
-      "id": "fire",
+      "id": "accel",
+      "level": 3
+     },
+     {
+      "id": "bomb",
       "level": 3
      },
      {
       "id": "lightning",
-      "level": 3
-     },
-     {
-      "id": "teleport",
       "level": 3
      }
     ]
@@ -93,34 +93,34 @@
    ],
    "note": "",
    "prompt": "Pick exactly 3 different skills from this list (every skill is at level 3, the maximum). Your opponents pick independently.\n\n- freeze: FREEZE: a wave spreads from your ball; enemy teams it reaches are slowed for 6 s. Cooldown 20 s.\n- split: SPLIT: your ball becomes 5 balls for 4 s, then the extras vanish. Cooldown 20 s.\n- accel: ACCEL: all your balls move x2 for 6 s. Cooldown 8 s.\n- bomb: BOMB: for 7 s your main ball also paints 3 neighbouring cell(s) on every bounce. Cooldown 16 s.\n- giant: GIANT: your balls get bigger for 3 s and hit more cells per bounce. Cooldown 24 s.\n- fire: FIRE: pick a point (x y); after 0.35 s a circle of radius 3 cells around it is painted your colour. Cooldown 20 s.\n- lightning: LIGHTNING: from your main ball's cell, four 1-cell-wide lines shoot to the board edges (up/down/left/right) and paint every cell they cross. Cooldown 10 s.\n- teleport: TELEPORT: pick a point (x y); your main ball jumps there instantly and paints the landing cell. Any distance. Cooldown 20 s.\n- shatter: SHATTER: for 7 s every bounce on a foreign cell spawns a small extra ball that also paints. Cooldown 15 s.\n- shock: SHOCKWAVE: an arc of 120 degrees spreads forward from your ball and paints the first non-own cell on every ray. Cooldown 10 s.\n- chain: CHAIN LIGHTNING: stuns every enemy ball on the board for 2.5 s (does not paint). Cooldown 14 s.\n- snowball: PLASMA: your main ball grows on each hit; after 5 hits the next hit paints a circle around it. Cooldown 14 s.\n\nReply with brief reasoning (under 80 words), then one last line exactly like this, using the ids as written above:\nPICK: <id>, <id>, <id>",
-   "reply": "Lightning paints up to ~62 cells every 10 s (6 casts = ~370 cells), by far the highest raw output. Split quintuples painting for 4 s every 20 s. Accel doubles my ball speed on a tight 8 s cooldown, meaning more bounces/paints almost constantly and it stacks with split. Pure painting throughput beats disruption skills here.\n\nPICK: lightning, split, accel",
-   "seconds": 3.53,
+   "reply": "Reasoning: Painting output matters most in a 60s game. Lightning has a 10s cooldown and paints up to ~62 cells per cast (6 casts). Split multiplies ball bounces fivefold for 4s every 20s. Accel on an 8s cooldown doubles movement/bounce rate much of the game and stacks with split. These three maximize raw territory gain rather than disruption.\n\nPICK: lightning, split, accel",
+   "seconds": 3.15,
    "usage": {
     "input": 912,
-    "output": 139
+    "output": 144
    },
    "error": null,
-   "at": "2026-11-09T22:16:04+00:00",
-   "cost_usd": 0.01607
+   "at": "2026-11-09T22:24:59+00:00",
+   "cost_usd": 0.01632
   },
   "B": {
    "picks": [
-    "shatter",
     "accel",
+    "shatter",
     "lightning"
    ],
    "note": "",
    "prompt": "Pick exactly 3 different skills from this list (every skill is at level 3, the maximum). Your opponents pick independently.\n\n- freeze: FREEZE: a wave spreads from your ball; enemy teams it reaches are slowed for 6 s. Cooldown 20 s.\n- split: SPLIT: your ball becomes 5 balls for 4 s, then the extras vanish. Cooldown 20 s.\n- accel: ACCEL: all your balls move x2 for 6 s. Cooldown 8 s.\n- bomb: BOMB: for 7 s your main ball also paints 3 neighbouring cell(s) on every bounce. Cooldown 16 s.\n- giant: GIANT: your balls get bigger for 3 s and hit more cells per bounce. Cooldown 24 s.\n- fire: FIRE: pick a point (x y); after 0.35 s a circle of radius 3 cells around it is painted your colour. Cooldown 20 s.\n- lightning: LIGHTNING: from your main ball's cell, four 1-cell-wide lines shoot to the board edges (up/down/left/right) and paint every cell they cross. Cooldown 10 s.\n- teleport: TELEPORT: pick a point (x y); your main ball jumps there instantly and paints the landing cell. Any distance. Cooldown 20 s.\n- shatter: SHATTER: for 7 s every bounce on a foreign cell spawns a small extra ball that also paints. Cooldown 15 s.\n- shock: SHOCKWAVE: an arc of 120 degrees spreads forward from your ball and paints the first non-own cell on every ray. Cooldown 10 s.\n- chain: CHAIN LIGHTNING: stuns every enemy ball on the board for 2.5 s (does not paint). Cooldown 14 s.\n- snowball: PLASMA: your main ball grows on each hit; after 5 hits the next hit paints a circle around it. Cooldown 14 s.\n\nReply with brief reasoning (under 80 words), then one last line exactly like this, using the ids as written above:\nPICK: <id>, <id>, <id>",
-   "reply": "Shatter generates extra painting balls, and accel boosts all of them while offering excellent uptime. Lightning adds reliable, board-spanning territory gains every 10 seconds, complementing the swarm’s local expansion and reaching enemy territory without travel time.\n\nPICK: shatter, accel, lightning",
-   "seconds": 19.1,
+   "reply": "Accel offers high uptime and boosts all balls, including Shatter’s extras. Shatter turns frontier bounces into additional painters, multiplying expansion pressure. Lightning complements both with instant, long-range painting every 10 seconds, opening routes into enemy territory and enabling late-game steals.\n\nPICK: accel, shatter, lightning",
+   "seconds": 18.67,
    "usage": {
     "input": 597,
-    "output": 480,
-    "reasoning": 418
+    "output": 509,
+    "reasoning": 440
    },
    "error": null,
-   "at": "2026-11-09T22:16:04+00:00",
-   "cost_usd": 0.02997
+   "at": "2026-11-09T22:24:59+00:00",
+   "cost_usd": 0.03142
   },
   "C": {
    "picks": [
@@ -130,35 +130,36 @@
    ],
    "note": "",
    "prompt": "Pick exactly 3 different skills from this list (every skill is at level 3, the maximum). Your opponents pick independently.\n\n- freeze: FREEZE: a wave spreads from your ball; enemy teams it reaches are slowed for 6 s. Cooldown 20 s.\n- split: SPLIT: your ball becomes 5 balls for 4 s, then the extras vanish. Cooldown 20 s.\n- accel: ACCEL: all your balls move x2 for 6 s. Cooldown 8 s.\n- bomb: BOMB: for 7 s your main ball also paints 3 neighbouring cell(s) on every bounce. Cooldown 16 s.\n- giant: GIANT: your balls get bigger for 3 s and hit more cells per bounce. Cooldown 24 s.\n- fire: FIRE: pick a point (x y); after 0.35 s a circle of radius 3 cells around it is painted your colour. Cooldown 20 s.\n- lightning: LIGHTNING: from your main ball's cell, four 1-cell-wide lines shoot to the board edges (up/down/left/right) and paint every cell they cross. Cooldown 10 s.\n- teleport: TELEPORT: pick a point (x y); your main ball jumps there instantly and paints the landing cell. Any distance. Cooldown 20 s.\n- shatter: SHATTER: for 7 s every bounce on a foreign cell spawns a small extra ball that also paints. Cooldown 15 s.\n- shock: SHOCKWAVE: an arc of 120 degrees spreads forward from your ball and paints the first non-own cell on every ray. Cooldown 10 s.\n- chain: CHAIN LIGHTNING: stuns every enemy ball on the board for 2.5 s (does not paint). Cooldown 14 s.\n- snowball: PLASMA: your main ball grows on each hit; after 5 hits the next hit paints a circle around it. Cooldown 14 s.\n\nReply with brief reasoning (under 80 words), then one last line exactly like this, using the ids as written above:\nPICK: <id>, <id>, <id>",
-   "reply": "**ACCEL** provides near-permanent double speed (6s duration on an 8s cooldown) for all balls. This synergizes powerfully with **SHATTER**, as our sped-up main ball rapidly bounces off enemy cells to spawn numerous extra balls that also inherit the 2x speed buff. Finally, **LIGHTNING** on a short 10s cooldown paints up to 63 cells across the entire board, claiming massive territory instantly and slicing enemy zones with barriers that trap their balls.\n\nPICK: accel, shatter, lightning",
-   "seconds": 22.6,
+   "reply": "**ACCEL** provides near-permanent 2x speed (6 s duration on an 8 s cooldown) for all balls, drastically increasing bounce frequency. **SHATTER** synergizes directly with Accel: for 7 s on a short 15 s cooldown, rapid bounces spawn extra balls that also benefit from Accel's 2x speed multiplier. **LIGHTNING** (10 s cooldown) instantly claims up to 63 cells across the board while slicing through enemy territory to block their movement.\n\nPICK: accel, shatter, lightning",
+   "seconds": 24.3,
    "usage": {
     "input": 658,
-    "output": 1665,
-    "reasoning": 1551
+    "output": 1549,
+    "reasoning": 1431
    },
    "error": null,
-   "at": "2026-11-09T22:16:04+00:00",
-   "cost_usd": 0.01797
+   "at": "2026-11-09T22:24:59+00:00",
+   "cost_usd": 0.01681
   },
   "D": {
    "picks": [
-    "fire",
-    "lightning",
-    "teleport"
+    "accel",
+    "bomb",
+    "lightning"
    ],
-   "note": "only 0 valid pick(s) found; filled with fire, lightning, teleport",
+   "note": "",
    "prompt": "Pick exactly 3 different skills from this list (every skill is at level 3, the maximum). Your opponents pick independently.\n\n- freeze: FREEZE: a wave spreads from your ball; enemy teams it reaches are slowed for 6 s. Cooldown 20 s.\n- split: SPLIT: your ball becomes 5 balls for 4 s, then the extras vanish. Cooldown 20 s.\n- accel: ACCEL: all your balls move x2 for 6 s. Cooldown 8 s.\n- bomb: BOMB: for 7 s your main ball also paints 3 neighbouring cell(s) on every bounce. Cooldown 16 s.\n- giant: GIANT: your balls get bigger for 3 s and hit more cells per bounce. Cooldown 24 s.\n- fire: FIRE: pick a point (x y); after 0.35 s a circle of radius 3 cells around it is painted your colour. Cooldown 20 s.\n- lightning: LIGHTNING: from your main ball's cell, four 1-cell-wide lines shoot to the board edges (up/down/left/right) and paint every cell they cross. Cooldown 10 s.\n- teleport: TELEPORT: pick a point (x y); your main ball jumps there instantly and paints the landing cell. Any distance. Cooldown 20 s.\n- shatter: SHATTER: for 7 s every bounce on a foreign cell spawns a small extra ball that also paints. Cooldown 15 s.\n- shock: SHOCKWAVE: an arc of 120 degrees spreads forward from your ball and paints the first non-own cell on every ray. Cooldown 10 s.\n- chain: CHAIN LIGHTNING: stuns every enemy ball on the board for 2.5 s (does not paint). Cooldown 14 s.\n- snowball: PLASMA: your main ball grows on each hit; after 5 hits the next hit paints a circle around it. Cooldown 14 s.\n\nReply with brief reasoning (under 80 words), then one last line exactly like this, using the ids as written above:\nPICK: <id>, <id>, <id>",
-   "reply": "",
-   "seconds": 62.33,
+   "reply": "Lightning and accel give strong immediate painting and speed, while bomb turns the frequent bounces into extra area control. This combo maximizes territory gain efficiently.\n\nPICK: accel, bomb, lightning",
+   "seconds": 498.54,
    "usage": {
-    "input": 698,
-    "output": 6000,
-    "reasoning": 6000
+    "input": 1396,
+    "output": 47936,
+    "reasoning": 47895,
+    "retried_at_medium": true
    },
    "error": null,
-   "at": "2026-11-09T22:16:04+00:00",
-   "cost_usd": 0.01185
+   "at": "2026-11-09T22:24:59+00:00",
+   "cost_usd": 0.09203
   }
  }
 }

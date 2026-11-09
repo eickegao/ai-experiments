@@ -261,7 +261,10 @@ class BotPlayer(Player):
 
 
 def make_player(spec: str, effort: str = "high", seed: int = 0, slots: int = 0) -> Player:
-    """spec: claude[:<model>] | openai[:<model>] | gemini[:<model>] | deepseek[:<model>] | or:<vendor/model> (OpenRouter) | bot[:<eager>] | random"""
+    """spec: claude[:<model>] | openai[:<model>] | gemini[:<model>] | deepseek[:<model>] | or:<vendor/model> (OpenRouter) | bot[:<eager>] | random; add @<effort> to override the reasoning effort for that seat"""
+    spec, _, eff = spec.partition("@")   # "deepseek@medium": this seat at another reasoning effort (user 2026-11-09)
+    if eff:
+        effort = eff
     kind, _, arg = spec.partition(":")
     if kind in ("or", "openrouter"):
         return OpenRouterPlayer(arg or "anthropic/claude-fable-5.1", effort)

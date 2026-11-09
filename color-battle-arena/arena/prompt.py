@@ -48,6 +48,8 @@ def system_prompt(n_decisions: int, decision_dt: float, skills: list[dict]) -> s
         "",
         "Rules of the exchange: a command the engine rejects (on cooldown, off the board, frozen) is simply ignored and you are",
         "told next turn. Reply with brief reasoning (under 60 words), then the CMD line(s) last. Play to win.",
+        "Decide fast: this is a real-time game, so keep your thinking short and answer right away. A good move now beats a",
+        "perfect move later; do not deliberate at length.",
     ]
     if skills:
         rules.append("")
