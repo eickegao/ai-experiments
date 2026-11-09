@@ -1,0 +1,12 @@
+images {
+  image: "/assets/images/buttons/btn_glass_orange.png"
+}
+images {
+  image: "/assets/images/buttons/btn_glass_green.png"
+}
+images {
+  image: "/assets/images/buttons/btn_glass_purple.png"
+}
+margin: 0
+extrude_borders: 2
+inner_padding: 0

@@ -1,0 +1,4 @@
+sound: "/assets/audio/clashdoz/plasma_burst.wav"
+looping: 0
+group: "master"
+gain: 1.0

@@ -1,0 +1,503 @@
+animations {
+  id: "fx_portal"
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_00.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_01.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_02.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_03.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_04.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_05.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_06.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_07.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_08.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_09.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_10.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_11.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_12.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_13.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_14.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_15.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_16.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_17.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_18.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_19.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_20.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_21.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_22.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_23.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_24.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_25.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_26.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_27.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_28.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_29.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_30.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_31.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_32.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_33.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_34.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_35.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_36.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_37.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_38.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_39.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_40.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_41.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_42.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_43.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_44.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_45.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_46.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_portal_47.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 15
+}
+animations {
+  id: "fx_star"
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_00.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_01.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_02.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_03.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_04.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_05.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_06.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_07.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_08.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_09.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_10.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_11.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_12.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_13.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_14.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_15.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_16.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_17.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_18.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_19.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_20.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_21.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_22.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_star_23.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 15
+}
+animations {
+  id: "fx_suck"
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_00.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_01.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_02.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_03.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_04.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_05.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_06.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_07.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_08.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_09.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_10.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_11.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_12.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_13.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_14.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_15.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_16.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_17.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_18.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_19.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_20.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_21.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_22.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_23.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_24.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_25.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_26.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_27.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_28.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_29.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_30.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_31.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_32.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_33.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_34.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_35.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_36.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_37.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_suck_38.png"
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 30
+}
+animations {
+  id: "fx_burst"
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_00.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_01.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_02.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_03.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_04.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_05.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_06.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_07.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_08.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_09.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_10.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_11.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_12.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_13.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_14.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_15.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_16.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_17.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_18.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_19.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_20.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_21.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_22.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_23.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_burst_24.png"
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 20
+}
+animations {
+  id: "fx_zap"
+  images {
+    image: "/assets/images/clashdoz_fx/fx_zap_00.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_zap_01.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_zap_02.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_zap_03.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_zap_04.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_zap_05.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_zap_06.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_zap_07.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_zap_08.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_zap_09.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_zap_10.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_zap_11.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_zap_12.png"
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 30
+}
+animations {
+  id: "fx_clap"
+  images {
+    image: "/assets/images/clashdoz_fx/fx_clap_00.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_clap_01.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_clap_02.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_clap_03.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_clap_04.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_clap_05.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_clap_06.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_fx/fx_clap_07.png"
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 20
+}
+margin: 2
+extrude_borders: 2

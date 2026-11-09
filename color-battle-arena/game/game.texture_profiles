@@ -1,0 +1,49 @@
+# 全部图集开 BasisU（UASTC，高质量）纹理压缩（2026-10-06 包瘦身，用户定）：GPU 直接用压缩格式，包体与显存都降。
+# bigtex 大背景是运行时加载的 PNG，不走此处。要给某个目录换预设，在上面加一条 path_settings 即可。
+# Picfitz 图库（两张 4096² 图集，纯卡通图）：iOS/Android 只打 ASTC 块压缩（比 UASTC 8bpp 小一半以上），Web 仍 BasisU（2026-10-06；10-08 去掉 Android 的 BasisU 兜底）
+path_settings {
+  path: "/games/picfitz/**"
+  profile: "picfitz"
+}
+path_settings {
+  path: "**"
+  profile: "Default"
+}
+profiles {
+  name: "Default"
+  platforms {
+    os: OS_ID_GENERIC
+    formats {
+      format: TEXTURE_FORMAT_RGBA
+      compressor: "BasisU"
+      compressor_preset: "BASISU_HIGH"
+    }
+    mipmaps: false
+    max_texture_size: 0
+    premultiply_alpha: true
+  }
+}
+profiles {
+  name: "picfitz"
+  platforms {
+    os: OS_ID_IOS
+    formats { format: TEXTURE_FORMAT_RGBA_ASTC_6X6 compressor: "ASTC" compressor_preset: "ASTC_QUALITY_98" }
+    mipmaps: false
+    max_texture_size: 0
+    premultiply_alpha: true
+  }
+  platforms {
+    os: OS_ID_ANDROID
+    formats { format: TEXTURE_FORMAT_RGBA_ASTC_6X6 compressor: "ASTC" compressor_preset: "ASTC_QUALITY_98" }   # 2026-10-08 去掉 BasisU 兜底：两份一起打 AAB 多 30 MB；minSdk 24 机型都支持 ASTC
+    mipmaps: false
+    max_texture_size: 0
+    premultiply_alpha: true
+  }
+  platforms {
+    os: OS_ID_WEB
+    formats { format: TEXTURE_FORMAT_RGBA compressor: "BasisU" compressor_preset: "BASISU_HIGH" }
+    mipmaps: false
+    max_texture_size: 0
+    premultiply_alpha: true
+  }
+}

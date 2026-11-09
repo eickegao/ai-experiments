@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui, shrink-to-fit=no, viewport-fit=cover">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+	<title>{{project.title}} {{project.version}}</title>
+	<style type='text/css'>
+	/* Disable user selection to avoid strange bug in Chrome on Windows:
+	* Selecting a text outside the canvas, then clicking+draging would
+	* drag the selected text but block mouse down/up events to the engine.
+	*/
+	body {
+	{{^DEFOLD_SCALE_MODE_IS_NO_SCALE}}
+		position: fixed; /* Prevent overscroll */
+	{{/DEFOLD_SCALE_MODE_IS_NO_SCALE}}
+		margin:0;
+		padding:0;
+		background-color: #000000;
+	}
+
+	.canvas-app-container {
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+		background: #000000;
+	}
+
+	.canvas-app-container:-webkit-full-screen {
+		/* Auto width and height in Safari/Chrome fullscreen. */
+		width: auto;
+		height: auto;
+	}
+
+	#canvas {
+		outline: none;
+		border: 0;
+		/* !important：引擎启动后会清掉 canvas 的内联尺寸，只按像素属性显示，
+		   devicePixelRatio≠1（Retina=2）时画面会放大被裁/缩小留边；改为永远贴满容器 */
+		width: 100% !important;
+		height: 100% !important;
+		vertical-align: bottom;
+	}
+
+	#canvas-container {
+		position: relative;
+		width: 100%;
+		height: 100%;
+	}
+
+	canvas:focus, canvas:active {
+		outline: none;
+		border: 0;
+		ie-dummy: expression(this.hideFocus=true);
+		-moz-outline-style: none;
+	}
+
+	body, div {
+		-webkit-tap-highlight-color: rgba(0,0,0,0);
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+	.canvas-app-progress {
+		position: absolute;
+		background-color: #d1dbeb;
+		height: 6px;
+		margin-top: -6px;
+		width: 100%;
+	}
+
+	.canvas-app-progress-bar {
+		font-size: 12px;
+		height: 6px;
+		color: rgb(255, 255, 255);
+		background-color: #1a72eb;
+		text-align: center;
+		line-height: 20px;
+		transition: transform 1s ease;
+		transform-origin: left;
+		transform: scaleX(1.0);
+	}
+
+	.canvas-app-canvas {
+		background-repeat:no-repeat;
+		background-position: center center;
+	}
+	</style>
+</head>
+
+<body>
+
+	<div id="app-container" class="canvas-app-container">
+		<div id="running-from-file-warning" style="display: none; margin: 3em;">
+			<h1>Running from local file ⚠️</h1>
+			<p>It seems like you have opened this file by double-clicking on it. In order to test your build in a browser <b>you need to load this file from a web server</b>. You can either upload this file and the rest of the files from a Defold HTML5 bundle to a web hosting service OR host them using a local web server on your home network.</p>
+			<p><a href="https://defold.com/manuals/html5/#testing-html5-build" target="_blank">Learn more about running a local web server in the Defold HTML5 manual</a>.</p>
+		</div>
+		<div id="webgl-not-supported" style="display: none; margin: 3em;">
+			<h1>WebGL not supported ⚠️</h1>
+			<p>WebGL is not supported by your browser - visit <a href="https://get.webgl.org/">https://get.webgl.org/</a> to learn more.</p>
+		</div>
+		<div id="canvas-container" class="canvas-app-canvas-container">
+			<canvas id="canvas" class="canvas-app-canvas" tabindex="1" width="{{display.width}}" height="{{display.height}}"></canvas>
+		</div>
+	</div>
+	<!-- -->
+	<script>
+		// Fallback to make sure globalThis is available when running in an old
+		// browser (available from Chome 71)
+		// https://github.com/defold/defold/issues/10503
+		if (typeof globalThis === 'undefined') {
+			window.globalThis = window;
+		}
+	</script>
+	<script id='engine-loader' type='text/javascript' src="dmloader.js"></script>
+	<script id='engine-setup' type='text/javascript'>
+		// 覆盖 dmloader 默认 resize：等比适配、居中，不预留按钮栏高度。
+		// 画布宽高比跟随窗口，但夹在 [9:19.5, 3:4] 之间（用户 2026-10-21 定案）：
+		//   手机浏览器（窄于 9:19.5）→ 和 iPhone 一样的瘦长画面、手机版式；
+		//   平板竖屏（介于两者之间）→ 画布贴满、游戏按真实比例排（比例 >0.6 走 iPad 版式，shared/layout.is_wide）；
+		//   桌面横屏（宽于 3:4）→ 固定 3:4 居中，和 iPad 所见一致。
+		var MIN_RATIO = 1080 / 2340, MAX_RATIO = 3 / 4;
+		CUSTOM_PARAMETERS.resize_window_callback = function() {
+			var container = document.getElementById('app-container');
+			var canvas = document.getElementById('canvas');
+			var winW = window.innerWidth;
+			var winH = window.innerHeight;
+			var targetRatio = Math.min(MAX_RATIO, Math.max(MIN_RATIO, winW / winH));
+			// 调试用：?aspect=ipad 按 iPad Pro 11（1668×2388）画布、?aspect=0.75 任意宽高比（iPad 布局回归截图，2026-10-19）
+			var aspectParam = new URLSearchParams(window.location.search).get("aspect");
+			if (aspectParam === "ipad") { targetRatio = 1668 / 2388; }
+			else if (aspectParam && !isNaN(parseFloat(aspectParam))) { targetRatio = parseFloat(aspectParam); }
+			var w, h;
+			if (winW / winH > targetRatio) {
+				h = winH;
+				w = Math.round(winH * targetRatio);
+			} else {
+				w = winW;
+				h = Math.round(winW / targetRatio);
+			}
+			var dpi = Math.min(2, window.devicePixelRatio || 1);   // 像素比封顶 2：素材按 1080 设计，再高只多耗显卡
+			// 容器本身就是信箱框并居中；canvas 由 CSS 贴满容器，像素属性按 dpi 给引擎
+			container.style.width = w + "px";
+			container.style.height = h + "px";
+			container.style.left = Math.floor((winW - w) / 2) + "px";
+			container.style.top = Math.floor((winH - h) / 2) + "px";
+			canvas.width = Math.floor(w * dpi);
+			canvas.height = Math.floor(h * dpi);
+		};
+	</script>
+	<script id='engine-start' type='text/javascript'>
+		var runningFromFileWarning = document.getElementById("running-from-file-warning");
+		if (window.location.href.startsWith("file://")) {
+			runningFromFileWarning.style.display = "block";
+		}
+		else {
+			EngineLoader.load("canvas", "{{exe-name}}");
+			runningFromFileWarning.parentNode.removeChild(runningFromFileWarning);
+		}
+	</script>
+</body>
+</html>

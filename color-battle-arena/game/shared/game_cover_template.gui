@@ -1,0 +1,413 @@
+script: "/shared/game_cover_template.gui_script"
+fonts {
+  name: "game_font"
+  font: "/assets/fonts/rubik_medium.font"
+}
+textures {
+  name: "game_cover"
+  texture: "/shared/game_cover_template.atlas"
+}
+nodes {
+  position { x: 540.0 y: 960.0 }
+  size { x: 1080.0 y: 1920.0 }
+  color { x: 0.98 y: 0.94 z: 0.86 }
+  type: TYPE_BOX
+  id: "root"
+  adjust_mode: ADJUST_MODE_STRETCH
+  inherit_alpha: true
+}
+nodes {
+  position { x: -450.0 y: 820.0 }
+  size { x: 120.0 y: 120.0 }
+  type: TYPE_BOX
+  texture: "game_cover/icon_back"
+  id: "btn_back"
+  parent: "root"
+  inherit_alpha: true
+}
+nodes {
+  position { x: 0.0 y: 820.0 }
+  size { x: 900.0 y: 120.0 }
+  color { x: 0.15 y: 0.15 z: 0.2 }
+  scale { x: 1.6 y: 1.6 }
+  type: TYPE_TEXT
+  text: "GAME TITLE"
+  font: "game_font"
+  id: "title_text"
+  parent: "root"
+  inherit_alpha: true
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
+}
+nodes {
+  position { x: 450.0 y: 820.0 }
+  size { x: 120.0 y: 120.0 }
+  type: TYPE_BOX
+  texture: "game_cover/icon_gear"
+  id: "btn_settings"
+  parent: "root"
+  inherit_alpha: true
+}
+nodes {
+  position { x: 0.0 y: 680.0 }
+  size { x: 900.0 y: 320.0 }
+  color { x: 0.2 y: 0.2 z: 0.25 }
+  scale { x: 0.8 y: 0.8 }
+  type: TYPE_TEXT
+  text: "Short description of how the game plays."
+  font: "game_font"
+  id: "description_text"
+  parent: "root"
+  inherit_alpha: true
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
+  line_break: true
+}
+nodes {
+  position { x: 0.0 y: 220.0 }
+  size { x: 240.0 y: 240.0 }
+  type: TYPE_BOX
+  texture: "game_cover/white_placeholder"
+  id: "difficulty_face"
+  parent: "root"
+  inherit_alpha: true
+}
+nodes {
+  position { x: 0.0 y: 20.0 }
+  size { x: 900.0 y: 120.0 }
+  color { x: 0.28 y: 0.22 z: 0.68 }
+  scale { x: 1.8 y: 1.8 }
+  type: TYPE_TEXT
+  text: "MEDIUM"
+  font: "game_font"
+  id: "difficulty_label"
+  parent: "root"
+  inherit_alpha: true
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
+}
+nodes {
+  position { x: 0.0 y: -180.0 }
+  size { x: 720.0 y: 40.0 }
+  color { x: 0.28 y: 0.22 z: 0.68 }
+  type: TYPE_BOX
+  id: "slider_track"
+  parent: "root"
+  inherit_alpha: true
+}
+nodes {
+  position { x: 0.0 y: 0.0 }
+  size { x: 70.0 y: 70.0 }
+  color { x: 1.0 y: 1.0 z: 1.0 }
+  type: TYPE_BOX
+  id: "slider_knob"
+  parent: "slider_track"
+  inherit_alpha: true
+}
+nodes {
+  position { x: 0.0 y: -620.0 }
+  size { x: 620.0 y: 180.0 }
+  color { x: 0.28 y: 0.22 z: 0.68 }
+  type: TYPE_BOX
+  id: "btn_play"
+  parent: "root"
+  inherit_alpha: true
+}
+nodes {
+  position { x: 0.0 y: 30.0 }
+  size { x: 500.0 y: 70.0 }
+  color { x: 1.0 y: 1.0 z: 1.0 }
+  scale { x: 1.4 y: 1.4 }
+  type: TYPE_TEXT
+  text: "PLAY"
+  font: "game_font"
+  id: "btn_play_text"
+  parent: "btn_play"
+  inherit_alpha: true
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
+}
+nodes {
+  position { x: 0.0 y: -40.0 }
+  size { x: 500.0 y: 50.0 }
+  color { x: 1.0 y: 1.0 z: 1.0 }
+  scale { x: 0.8 y: 0.8 }
+  type: TYPE_TEXT
+  text: "Level 1"
+  font: "game_font"
+  id: "play_level_text"
+  parent: "btn_play"
+  inherit_alpha: true
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
+}
+nodes {
+  position { x: 0.0 y: -400.0 }
+  size { x: 500.0 y: 120.0 }
+  color { x: 0.58 y: 0.4 z: 0.7 }
+  type: TYPE_BOX
+  id: "btn_howto"
+  parent: "root"
+  inherit_alpha: true
+}
+nodes {
+  position { x: 0.0 y: 0.0 }
+  size { x: 500.0 y: 120.0 }
+  color { x: 1.0 y: 1.0 z: 1.0 }
+  scale { x: 1.0 y: 1.0 }
+  type: TYPE_TEXT
+  text: "HOW TO PLAY"
+  font: "game_font"
+  id: "btn_howto_text"
+  parent: "btn_howto"
+  inherit_alpha: true
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
+}
+nodes {
+  position { x: 0.0 y: -820.0 }
+  size { x: 900.0 y: 80.0 }
+  color { x: 0.2 y: 0.2 z: 0.2 w: 0.0 }
+  type: TYPE_TEXT
+  text: ""
+  font: "game_font"
+  id: "toast_text"
+  parent: "root"
+  inherit_alpha: true
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
+}
+nodes {
+  position { x: 0.0 y: 0.0 }
+  size { x: 1080.0 y: 1920.0 }
+  color { x: 0.0 y: 0.0 z: 0.0 w: 0.65 }
+  type: TYPE_BOX
+  id: "howto_modal"
+  parent: "root"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
+  position { x: 0.0 y: 600.0 }
+  size { x: 900.0 y: 120.0 }
+  color { x: 1.0 y: 1.0 z: 1.0 }
+  scale { x: 1.6 y: 1.6 }
+  type: TYPE_TEXT
+  text: "HOW TO PLAY"
+  font: "game_font"
+  id: "howto_title"
+  parent: "howto_modal"
+  inherit_alpha: true
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
+}
+nodes {
+  position { x: 0.0 y: 120.0 }
+  size { x: 720.0 y: 720.0 }
+  type: TYPE_BOX
+  texture: "game_cover/white_placeholder"
+  id: "howto_image"
+  parent: "howto_modal"
+  inherit_alpha: true
+}
+nodes {
+  position { x: 0.0 y: -400.0 }
+  size { x: 900.0 y: 280.0 }
+  color { x: 1.0 y: 1.0 z: 1.0 }
+  scale { x: 0.9 y: 0.9 }
+  type: TYPE_TEXT
+  text: "Tap to play."
+  font: "game_font"
+  id: "howto_text"
+  parent: "howto_modal"
+  inherit_alpha: true
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
+  line_break: true
+}
+nodes {
+  position { x: -120.0 y: -620.0 }
+  size { x: 30.0 y: 30.0 }
+  color { x: 0.4 y: 0.3 z: 0.6 w: 1.0 }
+  type: TYPE_BOX
+  id: "page_dot_1"
+  parent: "howto_modal"
+  inherit_alpha: true
+}
+nodes {
+  position { x: -60.0 y: -620.0 }
+  size { x: 30.0 y: 30.0 }
+  color { x: 0.4 y: 0.3 z: 0.6 w: 0.35 }
+  type: TYPE_BOX
+  id: "page_dot_2"
+  parent: "howto_modal"
+  inherit_alpha: true
+}
+nodes {
+  position { x: 0.0 y: -620.0 }
+  size { x: 30.0 y: 30.0 }
+  color { x: 0.4 y: 0.3 z: 0.6 w: 0.35 }
+  type: TYPE_BOX
+  id: "page_dot_3"
+  parent: "howto_modal"
+  inherit_alpha: true
+}
+nodes {
+  position { x: 60.0 y: -620.0 }
+  size { x: 30.0 y: 30.0 }
+  color { x: 0.4 y: 0.3 z: 0.6 w: 0.35 }
+  type: TYPE_BOX
+  id: "page_dot_4"
+  parent: "howto_modal"
+  inherit_alpha: true
+}
+nodes {
+  position { x: 120.0 y: -620.0 }
+  size { x: 30.0 y: 30.0 }
+  color { x: 0.4 y: 0.3 z: 0.6 w: 0.35 }
+  type: TYPE_BOX
+  id: "page_dot_5"
+  parent: "howto_modal"
+  inherit_alpha: true
+}
+nodes {
+  position { x: -320.0 y: -780.0 }
+  size { x: 160.0 y: 160.0 }
+  color { x: 0.3 y: 0.35 z: 0.4 }
+  type: TYPE_BOX
+  id: "btn_prev"
+  parent: "howto_modal"
+  inherit_alpha: true
+}
+nodes {
+  position { x: 0.0 y: 0.0 }
+  size { x: 160.0 y: 160.0 }
+  color { x: 1.0 y: 1.0 z: 1.0 }
+  scale { x: 1.6 y: 1.6 }
+  type: TYPE_TEXT
+  text: "<"
+  font: "game_font"
+  id: "btn_prev_text"
+  parent: "btn_prev"
+  inherit_alpha: true
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
+}
+nodes {
+  position { x: 0.0 y: -780.0 }
+  size { x: 320.0 y: 160.0 }
+  color { x: 0.58 y: 0.4 z: 0.7 }
+  type: TYPE_BOX
+  id: "btn_ok"
+  parent: "howto_modal"
+  inherit_alpha: true
+}
+nodes {
+  position { x: 0.0 y: 0.0 }
+  size { x: 320.0 y: 160.0 }
+  color { x: 1.0 y: 1.0 z: 1.0 }
+  scale { x: 1.6 y: 1.6 }
+  type: TYPE_TEXT
+  text: "OK"
+  font: "game_font"
+  id: "btn_ok_text"
+  parent: "btn_ok"
+  inherit_alpha: true
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
+}
+nodes {
+  position { x: 320.0 y: -780.0 }
+  size { x: 160.0 y: 160.0 }
+  color { x: 0.58 y: 0.4 z: 0.7 }
+  type: TYPE_BOX
+  id: "btn_next"
+  parent: "howto_modal"
+  inherit_alpha: true
+}
+nodes {
+  position { x: 0.0 y: 0.0 }
+  size { x: 160.0 y: 160.0 }
+  color { x: 1.0 y: 1.0 z: 1.0 }
+  scale { x: 1.6 y: 1.6 }
+  type: TYPE_TEXT
+  text: ">"
+  font: "game_font"
+  id: "btn_next_text"
+  parent: "btn_next"
+  inherit_alpha: true
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
+}
+nodes {
+  position { x: 0.0 y: 0.0 }
+  size { x: 1080.0 y: 1920.0 }
+  color { x: 0.0 y: 0.0 z: 0.0 w: 0.65 }
+  type: TYPE_BOX
+  id: "settings_modal"
+  parent: "root"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
+  position { x: 0.0 y: 300.0 }
+  size { x: 900.0 y: 120.0 }
+  color { x: 1.0 y: 1.0 z: 1.0 }
+  scale { x: 1.6 y: 1.6 }
+  type: TYPE_TEXT
+  text: "SETTINGS"
+  font: "game_font"
+  id: "settings_title"
+  parent: "settings_modal"
+  inherit_alpha: true
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
+}
+nodes {
+  position { x: 0.0 y: 0.0 }
+  size { x: 640.0 y: 160.0 }
+  color { x: 0.85 y: 0.2 z: 0.2 }
+  type: TYPE_BOX
+  id: "btn_reset"
+  parent: "settings_modal"
+  inherit_alpha: true
+}
+nodes {
+  position { x: 0.0 y: 0.0 }
+  size { x: 640.0 y: 160.0 }
+  color { x: 1.0 y: 1.0 z: 1.0 }
+  scale { x: 1.1 y: 1.1 }
+  type: TYPE_TEXT
+  text: "DELETE PROGRESS"
+  font: "game_font"
+  id: "btn_reset_text"
+  parent: "btn_reset"
+  inherit_alpha: true
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
+}
+nodes {
+  position { x: 0.0 y: -280.0 }
+  size { x: 320.0 y: 140.0 }
+  color { x: 0.3 y: 0.35 z: 0.4 }
+  type: TYPE_BOX
+  id: "btn_close_settings"
+  parent: "settings_modal"
+  inherit_alpha: true
+}
+nodes {
+  position { x: 0.0 y: 0.0 }
+  size { x: 320.0 y: 140.0 }
+  color { x: 1.0 y: 1.0 z: 1.0 }
+  scale { x: 1.1 y: 1.1 }
+  type: TYPE_TEXT
+  text: "CLOSE"
+  font: "game_font"
+  id: "btn_close_settings_text"
+  parent: "btn_close_settings"
+  inherit_alpha: true
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

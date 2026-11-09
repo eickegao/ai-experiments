@@ -1,0 +1,2353 @@
+-- games/clashdoz/clashdoz_game.gui_script
+-- CLASHDOZ 玩法画面（2026-10-26 集成自 github.com/eickegao/clashdoz 原型；规则在 cd_sim/cd_ai，这里只做画面与输入）。
+-- 2026-10-27 晚 八技能改版（设计稿 docs/superpowers/specs/2026-10-27-clashdoz-eight-skills-design.md）：
+--   没有能量条、没有 BOOST；底栏 = 带进场的 2～3 个圆形技能钮，外圈 pie 节点画冷却环（放的一刻清空、随冷却重新画满 = 可再点）。
+--   火焰 / 传送点钮进瞄准态再点棋盘；其余点一下立刻放。试验场（2026-10-28）= 四人一局，随机一级技能 + 玩家三级巨球，顶上 RESET 重开。
+-- 布局（root 中心坐标，root = 屏幕中心 540,960）：
+--   顶栏 返回(-450,820) / 金币 HUD(居中) / 声音(450,820)；计时器 y=700；份额条 y=628（960×34，皇冠在领先段上）；四队状态 y≈572
+--   棋盘 960×960 中心 (0, BOARD_CY)：1024 个格子 box 节点 + 独立格线；球 = ball 贴图 + 加色 ball_light 子节点
+-- 固定步长推进（1/60）：update 里 AI 发指令 → sim.step → 同步声音/格子/球/特效。局终 finish_match（名次 → 结算页）。
+-- 触点 → 格：layout.touch_fit（iPad 上 action.x/y 与 FIT 子节点坐标系不同，2026-10-21 坑）。
+local layout = require("shared.layout")
+local result_ui = require("shared.result_ui")
+local scoreboard_ui = require("shared.scoreboard_ui")
+local scores = require("shared.scores")
+local cd_scores = require("games.clashdoz.cd_scores")
+local coin = require("shared.coin")
+local earn = require("shared.earn")
+local haptic = require("shared.haptic")
+local pill_btn = require("shared.pill_btn")
+local T = require("shared.i18n").t
+local C = require("games.clashdoz.cd_config")
+local sim = require("games.clashdoz.cd_sim")
+local ai = require("games.clashdoz.cd_ai")
+local levels = require("games.clashdoz.cd_levels")
+local profile = require("games.clashdoz.cd_profile")
+local game_progress = require("shared.game_progress")
+
+local ATLAS = "clashdoz"
+local GRID = C.GRID                    -- 这局每边格数（道具关 16 / 球关 32）：start_match 里 layout_board 重设；格索引步长永远是 STRIDE = 32
+local STRIDE = C.GRID
+local TEAMS, SKILLS, PLAYER = C.TEAMS, C.SKILLS, C.PLAYER_TEAM
+-- 格距/格线宽：init 里按设备物理像素重算（device_cell）
+local CELL, LINE_W = C.CELL, 3
+local HALF = C.BOARD_SIZE / 2          -- 480：顶部份额条 / 队名行的半宽（固定）
+local BOARD_W = C.BOARD_SIZE           -- 份额条宽（固定 960）
+local BOARD_CY = 10                    -- 棋盘中心 y（root 坐标）：方盘上沿 490、下沿 -470；竖长 1v1 场地（24×48）在 layout_board 里下移
+-- 这局棋盘几何（layout_board 重设）：GW×GH 格、像素 BW×BH、半宽半高 HALF_W / HALF_H（格坐标 → 本地像素：x*CELL - HALF_W, y*CELL - HALF_H）
+local GW, GH, BW, BH, HALF_W, HALF_H = C.GRID, C.GRID, C.BOARD_SIZE, C.BOARD_SIZE, C.BOARD_SIZE / 2, C.BOARD_SIZE / 2
+local TIMER_Y, BAR_Y, BAR_H, STATUS_Y = 748, 600, 34, 546   -- 2026-10-30 用户：秒数离皇冠太近被挡 → 状态行只剩队名一行，份额条/队名整体下移 28、计时器上移 24（皇冠上沿 671、数字下沿约 714）；iPad/16:9 顶部没余量时 init 里另算
+local TIMER_SCALE = 2.0
+local NAME_GAP = 150                  -- 状态行队名跟段中心走，但相邻两名至少隔这么远（开局段窄时别叠字）
+local CROWN_LIFT = BAR_H / 2 + 30     -- 皇冠中心离条中线：底边悬在条上沿之上 6 px，不压条（原 +20 压进条里 4 px，像那段更高）
+local BUTTON_Y = -720                  -- 对战底栏圆钮中心 y
+local BTN_D, BTN_GAP = 200, 260        -- 对战圆钮直径 / 间距
+local RING_PAD, RING_W = 14, 9         -- 冷却环：比圆钮大 RING_PAD、线宽 RING_W
+local BALL_PX = 62                     -- 原型 32 px 贴图 × 1.3 × 1.5
+local BEAM_FADE = 0.35
+local CAPTURE_GAP = 0.07
+local AI_GAIN = 0.55
+local FROZEN = vmath.vector4(0.55, 0.6, 0.7, 1)
+local WHITE = vmath.vector4(1, 1, 1, 1)
+local MUTED = vmath.vector4(0.55, 0.57, 0.7, 1)
+local WARNING = vmath.vector4(1, 0.35, 0.35, 1)
+local PANEL = vmath.vector4(0.13, 0.13, 0.22, 1)
+local PANEL_LIT = vmath.vector4(0.22, 0.22, 0.36, 1)
+local TRACK = vmath.vector4(0.2, 0.2, 0.3, 1)
+local LINE_COLOR = vmath.vector4(0.04, 0.04, 0.1, 1)   -- 格线 = 棋盘底色
+local GRID_LINES = true                -- 2026-10-30 试过去掉格线，用户看后定案要保留（false 可关）
+local NO_LIGHT = vmath.vector4(0, 0, 0, 0)
+local NEUTRAL = vmath.vector4(0.93, 0.93, 0.96, 1)   -- 关卡中立格：白色，谁都不属于、谁都能抢
+local SLOWED = vmath.vector4(0.55, 0.75, 1, 1)
+local ICE = vmath.vector4(0.6, 0.9, 1, 1)
+local FIRE_TINT = vmath.vector4(1, 0.55, 0.2, 1)
+local BOLT = vmath.vector4(1, 0.95, 0.6, 1)
+local GOLD_TEXT = vmath.vector4(1, 0.83, 0.3, 1)
+local ROMAN = { "I", "II", "III" }
+-- 每种技能：图标着色 / 释放音效 {名, 音量, 变调}
+local SKILL_TINT = {
+	freeze = ICE, split = vmath.vector4(0.5, 0.95, 0.55, 1), accel = vmath.vector4(0.3, 0.9, 1, 1), bomb = vmath.vector4(1, 0.5, 0.25, 1),
+	giant = vmath.vector4(1, 0.75, 0.4, 1), fire = FIRE_TINT, lightning = BOLT, teleport = vmath.vector4(0.85, 0.6, 1, 1),
+	cannon = vmath.vector4(1, 0.8, 0.4, 1), amp = vmath.vector4(0.5, 1, 0.85, 1), soldier = vmath.vector4(1, 0.6, 0.65, 1),   -- 道具关三样（2026-11-03）
+	turret = vmath.vector4(0.75, 0.85, 1, 1),   -- 球关炮台（2026-11-04）
+	shatter = vmath.vector4(0.6, 1, 0.55, 1), shock = vmath.vector4(1, 0.7, 0.4, 1), chain = vmath.vector4(1, 0.95, 0.5, 1), snowball = vmath.vector4(0.8, 0.6, 1, 1),   -- 2026-11-04 晚四个新技能（snowball 2026-11-05 改等离子球：紫）
+}
+local SKILL_SND = {
+	freeze = { "timestop", 0.9, 1.0 }, split = { "clone", 0.8, 1.1 }, accel = { "boost", 0.8, 1.2 }, bomb = { "bomb", 0.9, 0.8 },
+	giant = { "giant", 1.0, 1.0 }, fire = { "bomb", 1.0, 1.0 }, lightning = { "laser", 0.8, 1.3 }, teleport = { "warp", 0.9, 1.0 },
+	shatter = { "clone", 0.8, 0.8 }, shock = { "shock", 1.0, 1.0 }, chain = { "chain", 0.9, 1.0 }, snowball = { "shock", 0.45, 1.5 },   -- shock.wav：雷鸣 + 电火花（tools/clashdoz_sounds_shock.py）
+}
+local SHAKE_T, SLOWMO_T, SLOWMO_K = 0.3, 0.35, 0.3
+-- 道具关（build 模式，用户 2026-11-03：大炮 / 放大器 / 士兵，没有球）渲染常量 + 函数都收在这一张表里（顶层 local 逼近 200 上限）
+local BD = { STRUCT_POOL = 80, BULLET_POOL = 320, SOLDIER_POOL = 50, AMP_GAP = 0.12, GOLD = vmath.vector4(1, 0.85, 0.35, 1), STREAK = 1.4, HIT_BUDGET = 6 }   -- 每秒 10 发 × 5 门 × 两队，子弹池加大   -- STREAK：子弹发光尾迹长（格）；HIT_BUDGET：每帧最多几个命中闪光
+local CROWN_SLIDE = 0.45               -- 皇冠换主时的滑动时长（加速再减速，用户 2026-10-26）
+local GIANT_POP = 0.4                  -- 巨球释放时的膨胀弹跳时长
+local CRUSH_GAP = 0.06                 -- 巨球碾格音效最小间隔
+local PLACE_TITLE = { "1ST PLACE", "2ND PLACE", "3RD PLACE", "4TH PLACE" }
+local STATUS_COLS = 4                  -- 状态行最多排 4 队；多于 4 队（1 打 8）只留份额条
+-- 加速拖尾（2026-10-31 用户：参考图是"画出球最近 N 个位置"——要跟真实轨迹弯、拐弯甩尾，球和尾巴之间不能有边界）：
+-- 池里 RIBBON_POOL 条带，每条 RIBBON_N 颗"小球"（红边一层 + 白芯一层分开画：红边全在球下面、白芯全在球上面，于是红边连成轮廓、白芯连成亮带，
+-- 球本身就是第 0 颗，中间无缝）；按时间取最近 RIBBON_T 秒的轨迹插值；一帧跳超过 RIBBON_JUMP（传送/重生）清历史
+local RIBBON_POOL, RIBBON_N, RIBBON_T = 6, 16, 0.13
+local SHARD_POOL, FLIP_FLASH_T = 24, 0.22   -- 换色闪白+碎片（用户 2026-10-31）：粒子池轮用；白→新色时长
+local BOOM_POOL, BOMB_SND_GAP = 8, 0.08       -- 炸弹连带爆点火星粒子池 / 爆炸音最小间隔（2026-10-31 替代护盾）
+local SHARD_NEUTRAL = vmath.vector4(0.7, 0.7, 0.78, 1)
+
+--- 按设备像素取整的格距：FIT 缩放 k = min(w/1080, h/1920)，格距取整数设备像素再换回设计单位
+local function device_cell()
+	local ok, w, h = pcall(window.get_size)
+	if not ok or not w or w <= 0 or not h or h <= 0 then return C.CELL, 3 end
+	local k = math.min(w / 1080, h / 1920)
+	local pitch_px = math.max(2, math.floor(C.CELL * k + 0.5))      -- 格距取整物理像素：格子贴齐无缝
+	local line_px = math.max(2, math.floor(3.3 * k + 0.5))          -- 软线宽（贴图横截面 .25/1/1/.25，实心约 2 px）
+	return pitch_px / k, line_px / k
+end
+
+local S = { visible = false, match = nil, time = 0, cam = { k = 1, x = 0, y = 0, win = 0 } }   -- cam：镜头（长坡接力迷宫 view 关：裁剪窗缩到 win px、棋盘位移 x/y 跟着玩家的球，格子不放大，2026-11-02）
+local clear_fire_fx, fire_aim_fx, fire_hit_fx   -- 火焰演出（定义在特效段，clear_beams / sync_sounds 先用到）
+local hide_result   -- 结算页关闭（含演出清理），定义在结算段；start_match 先用到所以前置声明
+local start_match, set_showcase   -- 前置声明：展示驱动重开要用 start_match；start_match 用 set_showcase
+local cd_rng = require("games.clashdoz.cd_rng")
+local SETTINGS = { sound = true }
+local finish_match   -- 前置声明：局终处理（结算/发币/榜）
+
+local function load_settings() local d = sys.load(sys.get_save_file("clashdoz", "settings")); if d then SETTINGS.sound = d.sound ~= false end end
+local function save_settings() sys.save(sys.get_save_file("clashdoz", "settings"), { sound = SETTINGS.sound }) end
+--- 音效：sound.play 走 URL（可带 gain/speed）
+-- 调试包真机日志（2026-10-31 用户 iPhone 上"点完炸弹后技能全失灵"，devicectl --console 进游戏即断）：只 debug 引擎，追加写 clashdoz/dbg.log，devicectl 拉目录看
+local DBG = sys.get_engine_info().is_debug
+local function dbg_log(line)
+	if not DBG then return end
+	pcall(function() local f = io.open(sys.get_save_file("clashdoz", "dbg.log"), "a"); if f then f:write(string.format("%.2f %s\n", S.time or 0, line)); f:close() end end)
+end
+
+local function snd(name, gain, speed)
+	if not SETTINGS.sound or (S.match and S.match.showcase) then return end   -- 封面展示模式不出声
+	pcall(sound.play, msg.url("#snd_" .. name), { gain = gain or 1, speed = speed or 1 })
+end
+-- 对战背景音乐（用户 2026-10-26 给的 Four Color Ball；2026-10-29 又给三首：Four Color Ball 第二版、Pixel Pulse 两版）：
+-- 四首每局换一首（随机起点、顺序轮，不连播同一首），开局起、局终 1 s 淡出、回封面停、声音开关联动
+local BGM_GAIN = 0.5   -- 实际音量 = 组件 gain(1.0) × 这里；原 0.4×0.4=0.16 太小，网页外放被音效盖住听不见（2026-10-29 实测比音效峰值低 25 dB）
+local BGM_TRACKS = { "#snd_bgm", "#snd_bgm_four_color_2", "#snd_bgm_pixel_pulse_1", "#snd_bgm_pixel_pulse_2" }
+local function bgm_url() return msg.url(BGM_TRACKS[S.bgm_idx or 1]) end
+local function bgm_cancel_fade() if S.bgm_fade then pcall(timer.cancel, S.bgm_fade); S.bgm_fade = nil end end
+local function bgm_stop() bgm_cancel_fade(); for _, t in ipairs(BGM_TRACKS) do pcall(sound.stop, msg.url(t)) end; S.bgm_on = false end
+local function bgm_start()
+	if not SETTINGS.sound then return end
+	bgm_stop()
+	if not S.bgm_idx then S.bgm_idx = math.random(#BGM_TRACKS) else S.bgm_idx = S.bgm_idx % #BGM_TRACKS + 1 end
+	pcall(sound.play, bgm_url(), { gain = BGM_GAIN })
+	pcall(sound.set_gain, bgm_url(), BGM_GAIN)
+	S.bgm_on = true
+end
+local function bgm_resume()   -- 声音开关重新打开：接着放当前这首，不换曲
+	if not SETTINGS.sound or not S.bgm_idx then return bgm_start() end
+	bgm_stop(); pcall(sound.play, bgm_url(), { gain = BGM_GAIN }); pcall(sound.set_gain, bgm_url(), BGM_GAIN); S.bgm_on = true
+end
+local function bgm_fade_out(dur)
+	if not S.bgm_on then return end
+	S.bgm_on = false
+	bgm_cancel_fade()
+	local steps, k, u = 10, 0, bgm_url()
+	S.bgm_fade = timer.delay(dur / steps, true, function(_, h)
+		k = k + 1
+		pcall(sound.set_gain, u, BGM_GAIN * math.max(0, 1 - k / steps))
+		if k >= steps then pcall(timer.cancel, h); S.bgm_fade = nil; if not S.bgm_on then pcall(sound.stop, u) end end
+	end)
+end
+local function shade(c, k, a) return vmath.vector4(c.x * k, c.y * k, c.z * k, a or 1) end
+local function v3(x, y) return vmath.vector3(x, y, 0) end
+
+-- ---------------------------------------------------------------- 节点工具
+local function box(parent, x, y, w, h, color, anim)
+	local n = gui.new_box_node(v3(x, y), v3(w, h))
+	if anim then gui.set_texture(n, ATLAS); gui.play_flipbook(n, hash(anim)) else gui.set_color(n, color or WHITE) end
+	if anim and color then gui.set_color(n, color) end
+	gui.set_parent(n, parent, false)
+	return n
+end
+-- pixelfx（github.com/patch-gg/pixelfx，MIT）序列帧特效，图集 clashdoz_fx（用户 2026-11-02：传送阵 / 星星要动态粒子感，球被收走要有明显演出 + 声音）：
+--   fx_portal 传送阵（void-orb 涡旋，循环）、fx_star 终点（power-star 金星，循环）、fx_suck 被吸走（charge-up 雷电汇聚，一次）、fx_burst 到终点爆闪（plasma-explosion，一次）
+-- （收在一张表里：gui_script 顶层 local 已逼近 Lua 5.1 主函数 200 个的上限，2026-11-02 bob 报 "more than 200 local variables"）
+local FX = { atlas = "clashdoz_fx", portal = 190, star = 150, suck = 220, burst = 320, hold = 0.55 }   -- hold：踩到传送阵后定住这么久放"吸走"演出，再切盘
+local function fx_node(parent, x, y, size, anim, add, on_done)
+	local n = gui.new_box_node(v3(x, y), v3(size, size))
+	gui.set_texture(n, FX.atlas)
+	if add then gui.set_blend_mode(n, gui.BLEND_ADD) end
+	gui.set_parent(n, parent, false)
+	gui.play_flipbook(n, hash(anim), on_done and function() on_done(n) end or nil)
+	return n
+end
+local function text(parent, x, y, s, scale, color, pivot, font)
+	local n = gui.new_text_node(v3(x, y), s or "")
+	gui.set_font(n, font or "game_font"); gui.set_scale(n, vmath.vector3(scale, scale, 1)); gui.set_color(n, color or WHITE)
+	gui.set_line_break(n, false)
+	if pivot then gui.set_pivot(n, pivot) end
+	gui.set_parent(n, parent, false)
+	return n
+end
+local function button(parent, x, y, w, h, color, scale)
+	local n = box(parent, x, y, w, h, color)
+	return { node = n, label = text(n, 0, 0, "", scale, WHITE) }
+end
+local function set_text(n, s) if gui.get_text(n) ~= s then gui.set_text(n, s) end end
+local function hit(node, action) return gui.is_enabled(node) and gui.pick_node(node, action.x, action.y) end
+--- 一次性特效节点：动画完自删
+local function fx_fade(n, dur, delay, easing) gui.animate(n, "color.w", 0, easing or gui.EASING_INQUAD, dur, delay or 0, function() pcall(gui.delete_node, n) end) end
+
+--- 触点（action.x/y）→ 棋盘格坐标（原型 sim 的 x,y 单位 = 格；越界返回 nil）
+local function touch_to_cell(ax, ay)
+	local fx, fy = layout.touch_fit(ax, ay)
+	local cam = S.cam   -- 镜头：棋盘节点放大 k 倍并位移 (x, y)，先还原回棋盘本地坐标
+	local cx = ((fx - 540 - cam.x) / cam.k + HALF_W) / CELL
+	local cy = ((fy - 960 - BOARD_CY - cam.y) / cam.k + HALF_H) / CELL
+	if cx < 0 or cy < 0 or cx >= GW or cy >= GH then return nil end
+	return cx, cy
+end
+
+local function cell_local(i, j) return (i - 0.5) * CELL - HALF_W, (j - 0.5) * CELL - HALF_H end
+local function ball_local(b) return b.x * CELL - HALF_W, b.y * CELL - HALF_H end
+-- 球 = 三层（用户 2026-11-01 二改：白芯要留，外圈用几层队色描清楚；"队色球心"版像个白球，否掉）：
+--   p.node 最外深队色描边 ×BALL_OUTLINE → p.disc 饱和队色粗环 ×1 → p.core 白芯 ×BALL_CORE
+--   原来的加色 ball_light 删掉：队色叠队色把外圈洗成淡青白，正是"外圈颜色太浅分不清"的原因
+--   粗环/描边都比格子深（用户：环和格子同色就像白球在背景上转），RING_K / OUTLINE_K 是相对队色的明度
+--   三改（深队色实心）被否 → 四改定案（用户 2026-11-01 晚）：白色亮芯 + 一圈不太宽的深队色环，没有描边（节点留着 set_visible(false) 只当父节点）；拖尾带恢复原样
+local BALL_OUTLINE, BALL_CORE = 1.18, 0.85   -- 用户 2026-11-01：环太宽、白芯太小 → 白芯放大，环只留薄薄一层
+local RING_K, OUTLINE_K = 0.6, 0.4
+local function ball_ring_color(body) return vmath.vector4(body.x * RING_K, body.y * RING_K, body.z * RING_K, body.w) end
+local function ball_outline_color(body) return vmath.vector4(body.x * OUTLINE_K, body.y * OUTLINE_K, body.z * OUTLINE_K, body.w) end
+
+-- ---------------------------------------------------------------- 加速拖尾带
+local function ribbon_hide(rb)
+	for i = 1, RIBBON_N do gui.set_enabled(rb.rims[i], false); gui.set_enabled(rb.cores[i], false) end
+	rb.hist = {}; rb.owner = nil
+end
+local function ribbon_release(p)
+	if p.ribbon then ribbon_hide(p.ribbon); p.ribbon = nil end
+end
+local function ribbon_release_all()
+	for t = 1, #TEAMS do for _, p in ipairs(S.U.balls[t]) do p.ribbon = nil end end
+	for _, rb in ipairs(S.U.ribbons or {}) do ribbon_hide(rb) end
+end
+local function ribbon_acquire(p)
+	if p.ribbon then return p.ribbon end
+	for _, rb in ipairs(S.U.ribbons) do if not rb.owner then rb.owner = p; rb.hist = {}; p.ribbon = rb; return rb end end
+	return nil   -- 池满（两队以上同时加速且都分身）：多出来的球没有尾巴
+end
+--- 记一帧位置并重画：第 i 颗在 now - i*RIBBON_T/(N-1) 时刻的轨迹插值点，大小 (1 - i/N) 线性收尖
+local function ribbon_draw(rb, x, y, size, color, core_color)
+	local h = rb.hist
+	local last = h[#h]
+	if last and ((last.x - x) ^ 2 + (last.y - y) ^ 2) > (CELL * 3) ^ 2 then rb.hist = {}; h = rb.hist end   -- 传送/重生：清掉
+	h[#h + 1] = { x = x, y = y, t = S.time }
+	while #h > 2 and h[2].t < S.time - RIBBON_T - 0.05 do table.remove(h, 1) end
+	local step = RIBBON_T / (RIBBON_N - 1)
+	local j = #h   -- 从最新往回扫
+	for i = 1, RIBBON_N do
+		local ti = S.time - (i - 1) * step
+		while j > 1 and h[j - 1].t >= ti do j = j - 1 end
+		local px, py
+		if j <= 1 then px, py = h[1].x, h[1].y
+		else
+			local a, b = h[j - 1], h[j]
+			local f = (b.t - a.t) > 0 and math.max(0, math.min(1, (ti - a.t) / (b.t - a.t))) or 1
+			px, py = a.x + (b.x - a.x) * f, a.y + (b.y - a.y) * f
+		end
+		local k = 1 - (i - 1) / RIBBON_N
+		local d = size * k
+		local rim, core = rb.rims[i], rb.cores[i]
+		gui.set_enabled(rim, true); gui.set_position(rim, v3(px, py)); gui.set_size(rim, v3(d, d)); gui.set_color(rim, color)
+		gui.set_enabled(core, true); gui.set_position(core, v3(px, py)); gui.set_size(core, v3(d, d)); gui.set_color(core, core_color)
+	end
+end
+
+
+-- ---------------------------------------------------------------- 圆形技能钮（对战 2～3 个 / 试验场 8 个共用）
+-- { node 圆底, ring 冷却环(pie), icon, lv 等级字, cd 剩余秒字, d 直径 }
+local function skill_button(parent, x, y, d)
+	local b = {}
+	b.d = d
+	b.ring = gui.new_pie_node(v3(x, y), v3(d + RING_PAD * 2, d + RING_PAD * 2, 0))
+	gui.set_parent(b.ring, parent, false)
+	gui.set_outer_bounds(b.ring, gui.PIEBOUNDS_ELLIPSE); gui.set_perimeter_vertices(b.ring, 72)
+	gui.set_inner_radius(b.ring, d / 2 + RING_PAD - RING_W)
+	gui.set_rotation(b.ring, vmath.quat_rotation_z(math.pi / 2))   -- 从 12 点钟开始
+	gui.set_color(b.ring, TRACK)
+	-- 球体 = 用户给的霓虹技能球贴图 orb_<id>（2026-10-28，自带发光环与图标）；等级 = 1/2/3 胶囊贴图 lvl_n 压在球下沿
+	b.node = box(parent, x, y, d, d, WHITE, "orb_fire")
+	b.badge = box(b.node, 0, -d * 0.42, d * 0.36, d * 0.36 * 0.67, WHITE, "lvl_1")
+	b.cd = text(b.node, 0, 0, "", d / 200 * 0.75, WHITE)
+	return b
+end
+local function place_skill_button(b, x, y, d)
+	b.d = d
+	gui.set_position(b.ring, v3(x, y)); gui.set_size(b.ring, v3(d + RING_PAD * 2, d + RING_PAD * 2, 0)); gui.set_inner_radius(b.ring, d / 2 + RING_PAD - RING_W)
+	gui.set_position(b.node, v3(x, y)); gui.set_size(b.node, v3(d, d, 0))
+	gui.set_position(b.badge, v3(0, -d * 0.42)); gui.set_size(b.badge, v3(d * 0.36, d * 0.36 * 0.67, 0))
+	gui.set_scale(b.cd, vmath.vector3(d / 200 * 0.75, d / 200 * 0.75, 1))
+end
+local function enable_skill_button(b, on) gui.set_enabled(b.ring, on); gui.set_enabled(b.node, on) end
+
+-- ---------------------------------------------------------------- 建界面（init 一次，之后每局只刷新）
+local function build(root)
+	local U = {}
+	-- 镜头裁剪窗（zoom 关：棋盘放大后只露这一窗；不放大时不裁剪）+ 棋盘底 + 1024 格
+	U.cam_clip = box(root, 0, BOARD_CY, BOARD_W + 16, BOARD_W + 16, vmath.vector4(0.04, 0.04, 0.1, 1))
+	U.board = box(U.cam_clip, 0, 0, BOARD_W + 16, BOARD_W + 16, vmath.vector4(0.04, 0.04, 0.1, 1))
+	-- 格子节点池 32×32 个 + 格线池 33 对：每局 layout_board(n) 按这局的格数摆（道具关 16×16 只用 256 个，格子大一倍）
+	U.cell_nodes = {}
+	for k = 1, math.max(STRIDE * STRIDE, C.BUILD.ARENA.w * C.BUILD.ARENA.h) do local n = box(U.board, 0, 0, CELL, CELL, TRACK); gui.set_enabled(n, false); U.cell_nodes[k] = n end
+	U.cells = {}
+	-- 格线：盖在格子上的独立软边线（用户 2026-10-27：格子 + 一根线分开画）。贴图横截面 .25/1/1/.25，
+	-- 硬线在显示缩放（系统再放大 1.09×）下会 2/3 px 交替，软线放大后每根墨量只差 ±1%
+	U.lines = {}
+	for n = 0, math.max(STRIDE, C.BUILD.ARENA.h) do
+		U.lines[#U.lines + 1] = box(U.board, 0, 0, LINE_W, 1, LINE_COLOR, "gridline_v")
+		U.lines[#U.lines + 1] = box(U.board, 0, 0, 1, LINE_W, LINE_COLOR, "gridline_h")
+	end
+	-- 光束层（在格子上、球下）
+	U.beam_layer = box(U.board, 0, 0, 1, 1, NO_LIGHT); gui.set_visible(U.beam_layer, false)
+	-- 整盘闪光（格子上、球下）
+	U.flash = box(U.board, 0, 0, BOARD_W, BOARD_W, vmath.vector4(1, 1, 1, 0))
+	-- 关卡装置层（格子上、球下；每局 start_match 里建传送阵/加速装置节点挂这里）+ 过关目标标记（2026-11-01 用户：三种过关方式）
+	U.device_layer = box(U.board, 0, 0, 1, 1, NO_LIGHT); gui.set_visible(U.device_layer, false)
+	U.devices = {}
+	U.zone_fill = box(U.board, 0, 0, CELL, CELL, vmath.vector4(1, 1, 1, 0.2)); gui.set_enabled(U.zone_fill, false)   -- 目标区：白色半透明罩呼吸闪
+	U.zone_frame = box(U.board, 0, 0, CELL, CELL, GOLD_TEXT, "rr_line"); gui.set_slice9(U.zone_frame, vmath.vector4(16, 16, 16, 16)); gui.set_enabled(U.zone_frame, false)
+	U.star_ring = box(U.board, 0, 0, CELL * 3, CELL * 3, vmath.vector4(1, 0.85, 0.3, 0.8), "ring"); gui.set_enabled(U.star_ring, false)
+	U.star = box(U.board, 0, 0, CELL * 3.2, CELL * 3.2, WHITE, "star"); gui.set_enabled(U.star, false)
+	-- 球池：每队 MAX_BALLS_PER_TEAM 个（本体 + 加色光）；巨球附件只给前 3 个球省节点
+	-- 加速拖尾池：红边层先建（在所有球下面）
+	U.ribbons = {}
+	for r = 1, RIBBON_POOL do
+		local rb = { rims = {}, cores = {}, hist = {}, owner = nil }
+		for i = 1, RIBBON_N do rb.rims[i] = box(U.board, 0, 0, BALL_PX, BALL_PX, WHITE, "ball"); gui.set_enabled(rb.rims[i], false) end
+		U.ribbons[r] = rb
+	end
+	U.balls = {}
+	for t = 1, #TEAMS do
+		U.balls[t] = {}
+		for k = 1, C.MAX_BALLS_PER_TEAM do
+			local rich = k <= 3
+			local tail
+			if rich then
+				tail = box(U.board, 0, 0, 1, 1, NO_LIGHT, "tail")   -- 巨球彗尾
+				gui.set_blend_mode(tail, gui.BLEND_ADD); gui.set_pivot(tail, gui.PIVOT_W); gui.set_enabled(tail, false)
+			end
+			local b = box(U.board, 0, 0, BALL_PX * BALL_OUTLINE, BALL_PX * BALL_OUTLINE, ball_outline_color(TEAMS[t].color), "ball")   -- 描边节点（当前不画，只当父节点）
+			gui.set_visible(b, false)
+			local halo, ring, trail
+			if rich then
+				halo = box(b, 0, 0, BALL_PX * 2.8, BALL_PX * 2.8, NO_LIGHT, "halo"); gui.set_enabled(halo, false)
+			end
+			local disc = box(b, 0, 0, BALL_PX, BALL_PX, ball_ring_color(TEAMS[t].color), "ball")   -- 深队色粗环
+			local core = box(b, 0, 0, BALL_PX * BALL_CORE, BALL_PX * BALL_CORE, WHITE, "ball_core")   -- 白色亮芯
+			if rich then
+				ring = box(b, 0, 0, BALL_PX * 1.25, BALL_PX * 1.25, WHITE, "ring"); gui.set_enabled(ring, false)
+				local okp, tr = pcall(gui.new_particlefx_node, v3(0, 0), "giant_trail")
+				if okp and tr then gui.set_parent(tr, b, false); trail = tr end
+			end
+			gui.set_enabled(b, false)
+			U.balls[t][k] = { node = b, disc = disc, core = core, halo = halo, ring = ring, tail = tail, trail = trail, visible = false, trail_on = false }
+		end
+	end
+	-- 加速拖尾池：白芯层后建（在所有球上面，第 0 颗正好盖住球自己的芯，接缝消失）
+	for r = 1, RIBBON_POOL do
+		local rb = U.ribbons[r]
+		for i = 1, RIBBON_N do rb.cores[i] = box(U.board, 0, 0, BALL_PX, BALL_PX, WHITE, "ball_core"); gui.set_enabled(rb.cores[i], false) end
+	end
+	-- 道具关节点池（2026-11-03）：装置（环底 + 芯 + 炮管 + ×n 字）/ 士兵 / 子弹；每帧 BD.sync 按 sim 状态摆，不用时全藏
+	U.structs = {}
+	for k = 1, BD.STRUCT_POOL do
+		local base = box(U.board, 0, 0, CELL * 2.9, CELL * 2.9, WHITE, "ball")          -- 深队色底盘（炮台占 3×3 格）
+		local ring = box(base, 0, 0, CELL * 2.9, CELL * 2.9, WHITE, "ring")             -- 亮边
+		local core = box(base, 0, 0, CELL * 1.5, CELL * 1.5, WHITE, "ball")              -- 炮塔
+		local barrel = box(base, 0, 0, CELL * 2.2, CELL * 0.7, WHITE); gui.set_pivot(barrel, gui.PIVOT_W)
+		local label = text(base, 0, 0, "", 0.5, WHITE)
+		local hpbg = box(base, 0, 0, CELL * 1.8, 8, vmath.vector4(0, 0, 0, 0.6)); local hpfill = box(hpbg, 0, 0, CELL * 1.8, 8, vmath.vector4(0.4, 1, 0.5, 1)); gui.set_pivot(hpfill, gui.PIVOT_W)
+		gui.set_enabled(hpbg, false)
+		gui.set_enabled(base, false)
+		U.structs[k] = { base = base, ring = ring, core = core, barrel = barrel, label = label, hpbg = hpbg, hpfill = hpfill }
+	end
+	U.soldiers = {}
+	for k = 1, BD.SOLDIER_POOL do local n = box(U.board, 0, 0, CELL * 0.75, CELL * 0.75, WHITE, "ball"); gui.set_enabled(n, false); U.soldiers[k] = n end
+	-- 放置预览（按住拖出朝向，用户 2026-11-03 晚）：脚印半透明方块 + 朝向箭头
+	U.place_fp = box(U.board, 0, 0, CELL * 2, CELL * 2, vmath.vector4(1, 1, 1, 0.22)); gui.set_enabled(U.place_fp, false)
+	U.place_arrow = box(U.board, 0, 0, CELL * 3, CELL * 0.35, vmath.vector4(1, 1, 1, 0.9), "tail"); gui.set_pivot(U.place_arrow, gui.PIVOT_W); gui.set_blend_mode(U.place_arrow, gui.BLEND_ADD); gui.set_enabled(U.place_arrow, false)
+	-- 子弹：发光尾迹（加色、pivot W、朝来向）+ 白芯
+	U.bullets = {}
+	for k = 1, BD.BULLET_POOL do
+		local tail = box(U.board, 0, 0, CELL * BD.STREAK, CELL * 0.9, WHITE, "tail"); gui.set_blend_mode(tail, gui.BLEND_ADD); gui.set_pivot(tail, gui.PIVOT_W); gui.set_enabled(tail, false)
+		U.bullets[k] = tail
+	end
+	for k = 1, BD.BULLET_POOL do local n = box(U.board, 0, 0, CELL * 0.7, CELL * 0.7, WHITE, "ball_core"); gui.set_enabled(n, false); U.bullets[k] = { tail = U.bullets[k], core = n } end
+	-- 换色碎片粒子池（画在球之上）
+	U.shards, U.shard_next = {}, 1
+	for i = 1, SHARD_POOL do
+		local okp, n = pcall(gui.new_particlefx_node, v3(0, 0), "shards")
+		if okp and n then gui.set_parent(n, U.board, false); U.shards[#U.shards + 1] = n end
+	end
+	-- 炸弹爆点火星粒子池
+	U.booms, U.boom_next = {}, 1
+	for i = 1, BOOM_POOL do
+		local okp, n = pcall(gui.new_particlefx_node, v3(0, 0), "boom")
+		if okp and n then gui.set_parent(n, U.board, false); U.booms[#U.booms + 1] = n end
+	end
+	-- 传送瞄准中的限距环（一/二级 10/16 格；用户 2026-10-28：点远了没反应以为传送坏了）
+	U.range_ring = box(U.board, 0, 0, BALL_PX, BALL_PX, vmath.vector4(0.85, 0.6, 1, 0.55), "ring"); gui.set_enabled(U.range_ring, false)
+	-- 玩家被冻住：整盘冰色罩 + FROZEN
+	U.frozen = box(U.board, 0, 0, BOARD_W, BOARD_W, vmath.vector4(0.6, 0.85, 1, 0.18))
+	U.frozen_text = text(U.board, 0, HALF_H - 60, T("FROZEN"), 1.6, ICE)
+	gui.set_enabled(U.frozen, false); gui.set_enabled(U.frozen_text, false)
+	-- 计时器 / 份额条 / 皇冠
+	U.timer = text(root, 0, TIMER_Y, "", TIMER_SCALE)
+	U.bar, U.bar_text = {}, {}
+	for t = 1, #TEAMS do
+		U.bar[t] = box(root, -HALF, BAR_Y, 0, BAR_H, TEAMS[t].color); gui.set_pivot(U.bar[t], gui.PIVOT_W)
+		U.bar_text[t] = text(root, 0, BAR_Y, "", 0.55)
+	end
+	U.bar_neutral = box(root, -HALF, BAR_Y, 0, BAR_H, NEUTRAL); gui.set_pivot(U.bar_neutral, gui.PIVOT_W)
+	U.crown = box(root, 0, BAR_Y + CROWN_LIFT, 66, 48, nil, "crown")
+	-- 四队状态：只有队名（2026-10-30 用户：底下不写特技，看颜色就够）
+	U.status = {}
+	for t = 1, STATUS_COLS do
+		local x = -360 + (t - 1) * 240
+		local st = {}
+		st.name = text(root, x, STATUS_Y, "", 0.62, TEAMS[t].color)
+		U.status[t] = st
+	end
+	-- 技能钮池：8 个（对战用前 2～3 个放大，试验场 8 个两排）
+	U.sk = {}
+	for k = 1, #C.SKILL_IDS do U.sk[k] = skill_button(root, 0, BUTTON_Y, BTN_D); enable_skill_button(U.sk[k], false) end
+	U.lock = text(root, 0, BUTTON_Y, "", 0.5, MUTED); gui.set_line_break(U.lock, true); gui.set_size(U.lock, v3(200, 120)); gui.set_enabled(U.lock, false)
+	-- 过关目标行：染区 / 竞速关顶上不画份额条，改成这一行金字（占地关仍是份额条 + 皇冠）
+	U.goal_text = text(root, 0, BAR_Y, "", 0.85, GOLD_TEXT); gui.set_enabled(U.goal_text, false)
+	-- 试验场专用：RESET（计时器左边）
+	U.labreset = button(root, -330, TIMER_Y, 220, 80, PANEL_LIT, 0.6)
+	gui.set_enabled(U.labreset.node, false)
+	return U
+end
+
+--- 底栏布局：对战 n 个大圆钮居中一排（第 3 位没开画锁）；试验场 8 个小圆钮两排。按安全区整体上移。
+local function layout_buttons(U, m)
+	local screen_bottom = -(960 + layout.extra()) + math.max(layout.safe_bottom(), 0) + 20
+	if m.showcase or m.preview then for k = 1, #C.SKILL_IDS do enable_skill_button(U.sk[k], false) end; gui.set_enabled(U.lock, false); return end   -- 展示 / 预览：底栏不画（预览底下是等级胶囊）
+	if m.sim.track then for k = 1, #C.SKILL_IDS do enable_skill_button(U.sk[k], false) end; gui.set_enabled(U.lock, false); return end   -- 跑道关禁技能：底栏不画
+	local n = math.max(#m.sim.teams[PLAYER].skills, math.min(m.slots or C.SLOTS_DEFAULT, C.SLOTS_MAX))
+	local show_lock = not m.lab and not m.sim.build and (m.slots or C.SLOTS_DEFAULT) < C.SLOTS_MAX and #m.sim.teams[PLAYER].skills <= (m.slots or C.SLOTS_DEFAULT)   -- 道具关不卖第 3 位
+	local total = n + (show_lock and 1 or 0)
+	local lift = math.max(0, screen_bottom - (BUTTON_Y - BTN_D / 2 - RING_PAD))
+	local y = BUTTON_Y + lift
+	local x0 = -(total - 1) * BTN_GAP / 2
+	for k = 1, #C.SKILL_IDS do
+		if k <= n then place_skill_button(U.sk[k], x0 + (k - 1) * BTN_GAP, y, BTN_D); enable_skill_button(U.sk[k], not m.demo)
+		else enable_skill_button(U.sk[k], false) end
+	end
+	gui.set_enabled(U.lock, show_lock and not m.demo)
+	if show_lock then
+		gui.set_position(U.lock, v3(x0 + n * BTN_GAP, y))
+		set_text(U.lock, T("LOCKED") .. "\n" .. tostring(profile.PRICES.slot))
+	end
+end
+
+--- 按这局的每边格数 n 摆格子和格线（GRID / CELL 是整个文件共用的上值，改了下面 cell_local / touch_to_cell 全跟着变；棋盘总宽不变）
+local function layout_board(w, h)
+	h = h or w
+	GW, GH, GRID = w, h, w
+	-- 格距：方盘 = 32 格盘的格距 × 32/w；竖长场地按能放下的高度算（上沿 505 在队名行下面、下沿 -600 在底栏钮上面）
+	local avail_h = 1105 * (S.cell_base * STRIDE / C.BOARD_SIZE)
+	CELL = math.min(S.cell_base * STRIDE / w, avail_h / h)
+	BW, BH = w * CELL, h * CELL; HALF_W, HALF_H = BW / 2, BH / 2
+	BOARD_CY = (h > w) and (505 * (S.cell_base * STRIDE / C.BOARD_SIZE) - BH / 2) or 10
+	local U = S.U
+	gui.set_position(U.cam_clip, v3(0, BOARD_CY)); gui.set_size(U.cam_clip, v3(BW + 16, BH + 16)); gui.set_size(U.board, v3(BW + 16, BH + 16))
+	gui.set_size(U.flash, v3(BW, BH)); gui.set_size(U.frozen, v3(BW, BH)); gui.set_position(U.frozen_text, v3(0, HALF_H - 60))
+	U.cells = {}
+	local k = 0
+	for j = 1, GH do
+		for i = 1, GW do
+			k = k + 1
+			local node = U.cell_nodes[k]
+			gui.set_position(node, v3(cell_local(i, j))); gui.set_size(node, v3(CELL, CELL)); gui.set_enabled(node, true)
+			U.cells[sim.cell_index(i, j)] = node
+		end
+	end
+	for m = k + 1, #U.cell_nodes do gui.set_enabled(U.cell_nodes[m], false) end
+	local nl = #U.lines / 2 - 1
+	for n2 = 0, nl do
+		local v, hz = U.lines[n2 * 2 + 1], U.lines[n2 * 2 + 2]
+		local on_v, on_h = GRID_LINES and n2 <= GW, GRID_LINES and n2 <= GH
+		gui.set_enabled(v, on_v); gui.set_enabled(hz, on_h)
+		if on_v then gui.set_position(v, v3(n2 * CELL - HALF_W, 0)); gui.set_size(v, v3(LINE_W, BH + LINE_W)) end
+		if on_h then gui.set_position(hz, v3(0, n2 * CELL - HALF_H)); gui.set_size(hz, v3(BW + LINE_W, LINE_W)) end
+	end
+end
+
+-- ---------------------------------------------------------------- 一局
+local TRACK_COLOR = vmath.vector4(0.24, 0.27, 0.38, 1)   -- 跑道格兜底色（cell_color 不带坐标时用）；实际 repaint_all 按格位画彩虹
+-- 跑道格彩虹（用户 2026-11-01：单色不行，要彩虹格子才明显）：沿对角线色相每 TRACK_RAINBOW_N 格循环一圈，饱和度/明度压低让球和星星仍清楚
+local TRACK_RAINBOW_N, TRACK_S, TRACK_V = 18, 0.55, 0.78
+local function hsv(h, sat, val)
+	local i = math.floor(h * 6) % 6
+	local f = h * 6 - math.floor(h * 6)
+	local p, q, t = val * (1 - sat), val * (1 - sat * f), val * (1 - sat * (1 - f))
+	if i == 0 then return vmath.vector4(val, t, p, 1) elseif i == 1 then return vmath.vector4(q, val, p, 1) elseif i == 2 then return vmath.vector4(p, val, t, 1)
+	elseif i == 3 then return vmath.vector4(p, q, val, 1) elseif i == 4 then return vmath.vector4(t, p, val, 1) end
+	return vmath.vector4(val, p, q, 1)
+end
+local function track_color(i, j) return hsv(((i + j - 2) % TRACK_RAINBOW_N) / TRACK_RAINBOW_N, TRACK_S, TRACK_V) end
+local function cell_color(v) if v == 0 then return NEUTRAL elseif v == C.TRACK then return TRACK_COLOR end return TEAMS[v].color end
+--- 跑道接力：现在画的是玩家所在的那一盘
+local function view_stage(s) return s.stages and (s.teams[PLAYER].stage or 1) or 1 end
+local function view_grid(s) return s.stages and s.stages[view_stage(s)].grid or s.grid end
+-- ---------------------------------------------------------------- 镜头（用户 2026-11-02：棋盘本身很小、跑道很长、底下滚动）
+-- view 关（用户二改：球和格子都不要放大）：裁剪窗缩成 view×view 格、棋盘原大在窗里位移，让玩家的球居中（夹在棋盘边内，不露底），每帧平滑追；切盘 / 开局直接跳到位
+-- 终结慢镜头（用户 2026-11-03：竞速到星星 / 染区最后一格的那一下，镜头拉近、所有东西慢下来，慢镜头结束过关放特效）
+-- 常量在这儿（cam.update 要用），函数在 CDN 后面补（要用 keep_fx / fx_node）
+local CLIMAX = { zoom = 2.2, k = 0.2, r = 3.5, max = 3.0, ease = 5, zoom_t = 0.8 }   -- 放大倍率 / 慢放时间倍率 / 触发距离（格）/ 慢放最多几秒没结束就取消 / 镜头缓动 / 定格推镜头用时
+-- 三段（用户 2026-11-03 二改：先把球停下来，再把镜头拉近，然后演完这个动作，最后结束）：freeze 全停 + 推镜头 zoom_t 秒 → play 0.2 倍慢放到结束 → 过关演出
+local cam = {}
+function cam.apply()
+	local c = S.cam
+	gui.set_scale(S.U.board, vmath.vector3(c.k, c.k, 1)); gui.set_position(S.U.board, v3(c.x, c.y))
+end
+function cam.on() return S.cam.win > 0 end
+function cam.target(m)
+	local c = S.cam
+	local b = m.sim.teams[PLAYER].balls[1]
+	local lim = ((BW + 16) * c.k - c.win) / 2
+	local bx, by = ball_local(b)
+	return math.max(-lim, math.min(lim, -bx * c.k)), math.max(-lim, math.min(lim, -by * c.k))
+end
+function cam.setup(m)
+	local c = S.cam
+	local view = (not m.showcase and not m.demo) and m.sim.view or nil
+	c.k = 1
+	c.win = view and (view * CELL + 16) or 0
+	local size = c.win > 0 and c.win or nil
+	gui.set_size(S.U.cam_clip, size and v3(size, size) or v3(BW + 16, BH + 16))
+	gui.set_clipping_mode(S.U.cam_clip, c.win > 0 and gui.CLIPPING_MODE_STENCIL or gui.CLIPPING_MODE_NONE)
+	if c.win > 0 then c.x, c.y = cam.target(m) else c.x, c.y = 0, 0 end
+	cam.apply()
+end
+function cam.update(m, dt)
+	local c = S.cam
+	if m.stage_hold then return end   -- 吸走演出期间镜头不动（球已在新盘，画面还是旧盘）
+	local cl = m.climax or m.climax_hold   -- 终结慢镜头 / 过关演出：对准目标放大 CLIMAX.zoom 倍
+	if cl then
+		local kz = CLIMAX.zoom
+		local tx, ty = -cl.lx * kz, -cl.ly * kz   -- 目标永远居中，不夹棋盘边界（角落的星星也在画面正中，框外露底色）
+		if cl.phase == "freeze" then   -- 定格段：按进度平滑推到位（球是停住的，只有镜头在动）
+			local p = math.min(1, (S.time - cl.t0) / CLIMAX.zoom_t); p = p * p * (3 - 2 * p)
+			c.k, c.x, c.y = cl.k0 + (kz - cl.k0) * p, cl.x0 + (tx - cl.x0) * p, cl.y0 + (ty - cl.y0) * p
+		else
+			local a = 1 - math.exp(-CLIMAX.ease * dt)
+			c.k, c.x, c.y = c.k + (kz - c.k) * a, c.x + (tx - c.x) * a, c.y + (ty - c.y) * a
+		end
+		cam.apply(); return
+	end
+	if cam.on() then
+		local tx, ty = cam.target(m)
+		local a = 1 - math.exp(-7 * dt)
+		c.x, c.y = c.x + (tx - c.x) * a, c.y + (ty - c.y) * a
+		cam.apply(); return
+	end
+	if c.k ~= 1 then   -- 慢镜头取消（没结束）：退回原大
+		local a = 1 - math.exp(-CLIMAX.ease * dt)
+		c.k, c.x, c.y = c.k + (1 - c.k) * a, c.x * (1 - a), c.y * (1 - a)
+		if math.abs(c.k - 1) < 0.005 then c.k, c.x, c.y = 1, 0, 0; gui.set_clipping_mode(S.U.cam_clip, gui.CLIPPING_MODE_NONE) end
+		cam.apply()
+	end
+end
+
+local function repaint_all()
+	local s = S.match.sim
+	local grid = view_grid(s)
+	for i = 1, GW do
+		for j = 1, GH do
+			local index = sim.cell_index(i, j)
+			local cell, v = S.U.cells[index], grid[i][j]
+			gui.cancel_animations(cell, gui.PROP_COLOR); gui.cancel_animations(cell, gui.PROP_SCALE); gui.set_scale(cell, vmath.vector3(1, 1, 1))
+			gui.set_enabled(cell, v ~= false)   -- 空洞 = 棋盘形状之外，不画
+			if v == C.TRACK then gui.set_color(cell, track_color(i, j)) elseif v ~= false then gui.set_color(cell, cell_color(v)) end
+		end
+	end
+	local bc = s.level and s.level.board or { 0.04, 0.04, 0.1 }
+	gui.set_color(S.U.board, vmath.vector4(bc[1], bc[2], bc[3], 1)); gui.set_color(S.U.cam_clip, vmath.vector4(bc[1], bc[2], bc[3], 1))
+	s.changed = {}; s.events = {}; s.flips = {}
+end
+
+local function clear_beams()
+	for _, n in ipairs(S.fx_nodes or {}) do pcall(gui.delete_node, n) end
+	S.fx_nodes = {}
+	clear_fire_fx()
+end
+
+local function set_coin_text() if S.coin_text then set_text(S.coin_text, tostring(coin.get_balance())) end end
+
+-- ---------------------------------------------------------------- 关卡目标与装置（2026-11-01 用户：三种过关方式 + 传送阵 / 加速装置）
+local DEVICE_TINT = { portal = SKILL_TINT.teleport, boost = SKILL_TINT.accel }
+local function clear_devices()
+	for _, n in ipairs(S.U.devices or {}) do pcall(gui.delete_node, n) end
+	S.U.devices = {}
+end
+--- 传送阵：紫色环慢转 + 中心紫光呼吸；加速装置：青色环忽大忽小 + 中心青光
+local function make_device(kind, i, j)
+	local U = S.U
+	local x, y = cell_local(i, j)
+	if kind == "portal" then   -- 传送阵：pixelfx void-orb 涡旋（黑洞 + 被吸进去的光屑，循环）
+		U.devices[#U.devices + 1] = fx_node(U.device_layer, x, y, FX.portal, "fx_portal", false)
+		return
+	end
+	local tint = DEVICE_TINT[kind]
+	local ring = box(U.device_layer, x, y, CELL * 2.6, CELL * 2.6, tint, "ring")
+	local core = box(U.device_layer, x, y, CELL * 1.8, CELL * 1.8, vmath.vector4(tint.x, tint.y, tint.z, 0.7), "flare"); gui.set_blend_mode(core, gui.BLEND_ADD)
+	if kind == "portal" then
+		local inner = box(U.device_layer, x, y, CELL * 1.6, CELL * 1.6, vmath.vector4(tint.x, tint.y, tint.z, 0.85), "ring")
+		gui.animate(ring, gui.PROP_EULER, vmath.vector3(0, 0, 360), gui.EASING_LINEAR, 4.0, 0, nil, gui.PLAYBACK_LOOP_FORWARD)
+		gui.animate(inner, gui.PROP_EULER, vmath.vector3(0, 0, -360), gui.EASING_LINEAR, 2.5, 0, nil, gui.PLAYBACK_LOOP_FORWARD)
+		gui.animate(core, "color.w", 0.25, gui.EASING_INOUTSINE, 0.8, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
+		U.devices[#U.devices + 1] = inner
+	else
+		gui.set_size(ring, v3(CELL * 2.2, CELL * 2.2))
+		gui.animate(ring, gui.PROP_SCALE, vmath.vector3(1.25, 1.25, 1), gui.EASING_INOUTSINE, 0.45, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
+		gui.animate(core, "color.w", 0.3, gui.EASING_INOUTSINE, 0.45, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
+	end
+	U.devices[#U.devices + 1] = ring; U.devices[#U.devices + 1] = core
+end
+--- 每局开头：按 sim 的 goal / devices 摆目标标记和装置；非占地关隐藏份额条/皇冠/队名，顶上换成目标行
+local function setup_goal_ui(m)
+	local U, s = S.U, m.sim
+	clear_devices()
+	local view = view_stage(s)
+	local st = s.stages and s.stages[view]
+	local dev = st and st.devices or s.devices
+	for _, pr in ipairs(dev and dev.portals or {}) do make_device("portal", pr[1][1], pr[1][2]); make_device("portal", pr[2][1], pr[2][2]) end
+	for _, b in ipairs(dev and dev.boosts or {}) do make_device("boost", b[1], b[2]) end
+	if st then for _, e in ipairs(st.exits) do make_device("portal", e[1], e[2]) end end   -- 本盘出口（分道盘每道一个；迷宫关死胡同盘的口退回岔口）：传送阵样式
+	local g = s.goal or { kind = "area" }
+	local last_stage = (not s.stages) or view == (s.goal_stage or #s.stages)
+	for _, n in ipairs({ U.zone_fill, U.zone_frame, U.star, U.star_ring }) do gui.cancel_animations(n, gui.PROP_SCALE); gui.cancel_animations(n, "color.w"); gui.set_enabled(n, false) end
+	gui.set_enabled(U.goal_text, false)
+	if m.showcase or m.demo then return end
+	if g.kind == "zone" and g.rect then
+		local x0, y0 = cell_local(g.rect[1], g.rect[2]); local x1, y1 = cell_local(g.rect[3], g.rect[4])
+		local cx, cy, w, h = (x0 + x1) / 2, (y0 + y1) / 2, (g.rect[3] - g.rect[1] + 1) * CELL, (g.rect[4] - g.rect[2] + 1) * CELL
+		gui.set_position(U.zone_fill, v3(cx, cy)); gui.set_size(U.zone_fill, v3(w, h)); gui.set_enabled(U.zone_fill, true)
+		gui.set_color(U.zone_fill, vmath.vector4(1, 1, 1, 0.08)); gui.animate(U.zone_fill, "color.w", 0.38, gui.EASING_INOUTSINE, 0.55, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
+		gui.set_position(U.zone_frame, v3(cx, cy)); gui.set_size(U.zone_frame, v3(w + 10, h + 10)); gui.set_enabled(U.zone_frame, true)
+		gui.set_scale(U.zone_frame, vmath.vector3(1, 1, 1)); gui.set_color(U.zone_frame, GOLD_TEXT)
+		gui.animate(U.zone_frame, "color.w", 0.45, gui.EASING_INOUTSINE, 0.55, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
+	elseif g.kind == "race" and g.at and last_stage then
+		local x, y = cell_local(g.at[1], g.at[2])
+		U.devices[#U.devices + 1] = fx_node(U.device_layer, x, y, FX.star, "fx_star", false)   -- 终点：pixelfx power-star（金星 + 光芒闪烁，循环）；旧的静态五角星 U.star 不再用
+	end
+	if g.kind ~= "area" then   -- 顶上：份额条/皇冠/队名收起，换目标行
+		for t = 1, #TEAMS do gui.set_enabled(U.bar[t], false); gui.set_enabled(U.bar_text[t], false) end
+		gui.set_enabled(U.bar_neutral, false); gui.set_enabled(U.crown, false)
+		for t = 1, STATUS_COLS do gui.set_enabled(U.status[t].name, false) end
+		gui.set_enabled(U.goal_text, true)
+	end
+end
+-- 开局倒计时（用户 2026-11-02：开始的时候显示一下 3、2、1、GO；原开局说明板用户说完全不需要，已删）：开局棋盘中央每 step 秒弹一个数字（放大弹入 + 光环扩散 + tick 音渐高），
+-- 期间 sim 不走、不吃操作；GO 弹出的同时开打。节点都挂 root（不受小窗镜头影响），记进 fx_nodes 换局时清掉
+local function keep_fx(n) S.fx_nodes[#S.fx_nodes + 1] = n; return n end
+local CDN = { step = 0.7, go = 0.6, go_color = vmath.vector4(0.5, 1, 0.6, 1) }
+function CDN.pop(label, color, scale, last)
+	local root = gui.get_node("root")
+	local ring = keep_fx(box(root, 0, BOARD_CY, 140, 140, color, "ring"))
+	gui.set_blend_mode(ring, gui.BLEND_ADD)
+	gui.animate(ring, gui.PROP_SIZE, v3(720, 720), gui.EASING_OUTQUAD, CDN.step)
+	fx_fade(ring, CDN.step, 0, gui.EASING_OUTQUAD)
+	local t = keep_fx(text(root, 0, BOARD_CY, label, scale, color, nil, "title_font"))
+	gui.set_scale(t, vmath.vector3(scale * 2.2, scale * 2.2, 1))
+	gui.animate(t, gui.PROP_SCALE, vmath.vector3(scale, scale, 1), gui.EASING_OUTBACK, 0.28)
+	fx_fade(t, 0.25, (last and CDN.go or CDN.step) - 0.25)
+end
+function CDN.start(m) m.cdn_t0 = S.time; m.cdn_shown = 0 end
+function CDN.active(m) return m.cdn_t0 ~= nil end
+function CDN.update(m)
+	if not m.cdn_t0 then return end
+	local k = math.floor((S.time - m.cdn_t0) / CDN.step) + 1   -- 第几个数字（1..3 → 显示 3..1）
+	if k > 3 then m.cdn_t0 = nil; CDN.pop(T("GO"), CDN.go_color, 2.0, true); snd("boost"); return end
+	if k > m.cdn_shown then m.cdn_shown = k; CDN.pop(tostring(4 - k), GOLD_TEXT, 2.6); snd("tick", 1, 0.85 + 0.12 * k) end
+end
+
+--- 终结慢镜头的目标格（0-based 中心坐标）。必须是"一定会发生"（用户 2026-11-03：判断出这球一定会撞到那个地方才放，放了之后玩家再点也不改球）：
+---   竞速 = 主球在目标盘，前瞻 r 格内不碰墙直接进星星（sim.will_reach_star）；染区 = sim.zone_final_hit（只剩一格、己方球第一下撞到的就是它、别队球 / 火焰来不及先把目标区变回去）
+function CLIMAX.target(m)
+	local s = m.sim
+	local team = s.teams[PLAYER]
+	if not s.goal or s.goal.kind == "area" then return nil end
+	if s.goal.kind == "race" then
+		if not s.goal.at then return nil end
+		if s.stages and team.stage ~= (s.goal_stage or #s.stages) then return nil end
+		local b = team.balls[1]
+		if b and sim.will_reach_star(s, team, b, CLIMAX.r) then return s.goal.at[1] - 0.5, s.goal.at[2] - 0.5 end
+		return nil
+	end
+	local li, lj = sim.zone_final_hit(s, PLAYER, CLIMAX.r)   -- 只剩一格、己方球一定先撞到它、别队的球 / 火焰来不及把目标区变回去
+	if li then return li - 0.5, lj - 0.5 end
+	return nil
+end
+function CLIMAX.start(m, tx, ty)
+	local lx, ly = tx * CELL - HALF_W, ty * CELL - HALF_H
+	m.climax = { t0 = S.time, lx = lx, ly = ly, phase = "freeze", k0 = S.cam.k, x0 = S.cam.x, y0 = S.cam.y }
+	gui.set_clipping_mode(S.U.cam_clip, gui.CLIPPING_MODE_STENCIL)   -- 放大后棋盘不许溢出棋盘框
+	local ring = keep_fx(box(S.U.board, lx, ly, CELL * 7, CELL * 7, GOLD_TEXT, "ring")); gui.set_blend_mode(ring, gui.BLEND_ADD)   -- 目标处金环收拢 + 呼吸
+	gui.animate(ring, gui.PROP_SIZE, v3(CELL * 2.4, CELL * 2.4), gui.EASING_OUTCUBIC, 0.8)
+	gui.animate(ring, "color.w", 0.4, gui.EASING_INOUTSINE, 0.5, 0.4, nil, gui.PLAYBACK_LOOP_PINGPONG)
+	m.climax.ring = ring
+	snd("timestop", 0.7, 0.8); pcall(haptic.tap)
+end
+--- 慢镜头收场：删聚焦环；hold = true 时镜头留在放大位（过关演出用），否则 cam.update 慢慢退回
+function CLIMAX.stop(m, hold)
+	local c = m.climax
+	if not c then return end
+	if c.ring then pcall(gui.delete_node, c.ring) end
+	m.climax = nil
+	if hold then m.climax_hold = { lx = c.lx, ly = c.ly } end
+end
+--- 每帧：没开着就看该不该开；开着：定格段返回 0、慢放段返回 k；慢放超过 max 秒还没结束就取消。返回这一帧的时间倍率
+function CLIMAX.update(m)
+	local s = m.sim
+	if m.climax then
+		local cl = m.climax
+		if cl.phase == "freeze" then   -- 全停（倍率 0：sim 不步进），镜头推到位后进慢放
+			if S.time - cl.t0 >= CLIMAX.zoom_t then cl.phase = "play"; cl.t1 = S.time; snd("warp", 0.5, 0.7) end
+			return 0
+		end
+		if S.time - cl.t1 > CLIMAX.max and not s.over then CLIMAX.stop(m); return 1 end
+		return CLIMAX.k
+	end
+	if s.over or m.showcase or m.demo or m.lab or not m.level or CDN.active(m) or m.stage_hold then return 1 end
+	local tx, ty = CLIMAX.target(m)
+	if tx then CLIMAX.start(m, tx, ty); return CLIMAX.k end
+	return 1
+end
+
+-- ---------------------------------------------------------------- 封面展示模式（用户 2026-10-28：封面动画必须就是游戏里的画面）
+-- 游戏本体在封面中间开一局 solo：红球带 8 种三级技能按 SHOW 顺序放一遍，占到 SHOW_FILL 回到开头；
+-- HUD / 按钮 / 底全隐藏，root 缩放到 opts.scale、棋盘中心摆到 opts.y；不吃输入（封面按钮在下面接）；不出声
+local SHOW = { "split", "lightning", "accel", "giant", "fire", "teleport", "bomb", "freeze" }
+local SHOW_GAP, SHOW_FILL, SHOW_MAX, SHOW_FIRST = 2.4, 0.72, 40, 1.2
+local HUD_IDS = { "btn_back", "btn_sound", "level_text", "bg" }
+function set_showcase(m, opts)
+	local root = gui.get_node("root")
+	local on = m.showcase == true
+	for _, id in ipairs(HUD_IDS) do gui.set_enabled(gui.get_node(id), not on) end
+	gui.set_visible(root, not on)   -- root 是一块深色底：展示模式只画子节点
+	gui.set_clipping_mode(S.U.board, on and gui.CLIPPING_MODE_STENCIL or gui.CLIPPING_MODE_NONE)   -- 展示模式特效不许画出棋盘（会飘到标题上）
+	gui.set_enabled(S.coin_icon, not on); gui.set_enabled(S.coin_text, not on)
+	for t = 1, STATUS_COLS do if on then gui.set_enabled(S.U.status[t].name, false) end end
+	gui.set_enabled(S.U.timer, not on); gui.set_enabled(S.U.crown, not on); gui.set_enabled(S.U.bar_neutral, not on)
+	for t = 1, #TEAMS do gui.set_enabled(S.U.bar[t], not on and t <= m.sim.n); gui.set_enabled(S.U.bar_text[t], not on and t <= m.sim.n) end
+	if on then
+		-- 用户 2026-10-28：只露正中 n×n（solo 布局其余是空洞），格子按 opts.scale 稍放大，n 由封面按设备撑满算；棋盘节点缩成 n 格大当裁剪框
+		local k, n = opts.scale or 1, opts.n or 16
+		gui.set_scale(root, vmath.vector3(k, k, 1))
+		gui.set_size(S.U.board, v3(n * CELL + 16, n * CELL + 16)); gui.set_size(S.U.cam_clip, v3(n * CELL + 16, n * CELL + 16))
+		S.root_pos = vmath.vector3(540, 960 + (opts.y or 0) - BOARD_CY * k, 0)
+		gui.set_position(root, S.root_pos)
+		-- 8 种三级技能全带（copy_skills 只收 SLOTS_MAX 个）
+		local team = m.sim.teams[PLAYER]
+		team.skills = {}
+		for i, id in ipairs(SHOW) do team.skills[i] = { id = id, level = 3 } end
+		m.show_i, m.show_next, m.turn_next, m.show_t = 1, SHOW_FIRST, 0.8, 0
+		m.show_rng = cd_rng.new(m.seed * 31 + 3)
+	else
+		gui.set_scale(root, vmath.vector3(1, 1, 1))
+		gui.set_size(S.U.board, v3(BW + 16, BH + 16)); gui.set_size(S.U.cam_clip, v3(BW + 16, BH + 16))
+		S.root_pos = S.root_home
+		gui.set_position(root, S.root_pos)
+	end
+end
+--- 离球远、周围白格多的格（格中心坐标）
+local function far_neutral(s, r)
+	local b = s.teams[PLAYER].balls[1]
+	local best, bs
+	for _ = 1, 30 do
+		local i, j = cd_rng.range(r, 3, GRID - 2), cd_rng.range(r, 3, GRID - 2)
+		if s.grid[i][j] == 0 then
+			local dx, dy = i - 0.5 - b.x, j - 0.5 - b.y
+			local score = math.sqrt(dx * dx + dy * dy) + cd_rng.next(r) * 3
+			if not bs or score > bs then best, bs = { i - 0.5, j - 0.5 }, score end
+		end
+	end
+	return best
+end
+--- 展示驱动：按顺序放招、往白格多的方向转、占够了重开（返回 true = 已重开）
+local function showcase_drive(m, dt)
+	local s = m.sim
+	m.show_t = m.show_t + dt
+	if m.show_i <= #SHOW and m.show_t >= m.show_next then
+		local id = SHOW[m.show_i]
+		local x, y
+		if id == "fire" or id == "teleport" then local p = far_neutral(s, m.show_rng); if p then x, y = p[1], p[2] end end
+		if sim.command(s, PLAYER, { type = "cast", slot = m.show_i, x = x, y = y }) then m.show_i = m.show_i + 1; m.show_next = m.show_t + SHOW_GAP end
+	end
+	if m.show_t >= m.turn_next then
+		local p = far_neutral(s, m.show_rng)
+		if p then sim.command(s, PLAYER, { type = "turn", x = p[1], y = p[2] }) end
+		m.turn_next = m.show_t + 1.6
+	end
+	local filled = s.counts[PLAYER] / s.total
+	if filled >= SHOW_FILL or m.show_t >= SHOW_MAX or (m.show_i > #SHOW and m.show_t >= m.show_next + 3) then
+		start_match({ showcase = true, scale = m.show_scale, y = m.show_y, n = m.show_n }); return true
+	end
+	return false
+end
+
+start_match = function(opts)
+	opts = opts or {}
+	hide_result(); scoreboard_ui.close(true); S.result = nil   -- 上一局结果必须清：multitouch 分支拿 S.result.shown 判"结算页开着"，不清的话真机第二局所有按下全被吞（2026-11-01 用户：玩好一局后技能全点不了）
+	clear_beams()
+	local seed = os.time() + math.floor((socket and socket.gettime and socket.gettime() or 0) * 1000) % 100000
+	local layout_name = opts.layout or C.DEFAULT_LAYOUT
+	local L = opts.level and levels.get(opts.level) or opts.level_tbl or nil   -- level_tbl：直接给关卡表（技能预览用 levels.PREVIEW）
+	-- 带进场的技能 / 对手配置由 controller（经准备页）传入；没传就裸打（演示局、调试直达）
+	local loadout = opts.loadout
+	if opts.debug_giant and sys.get_engine_info().is_debug then loadout = { { id = opts.debug_card or "giant", level = opts.debug_level or 3 } } end
+	if opts.showcase then layout_name = "solo"; loadout = {} end   -- 封面展示：solo 布局（全白 + 正中 4 格），技能在下面直接塞满
+	local m = { sim = sim.new(seed, { layout = layout_name, level = L, loadout = loadout, enemies = opts.enemies, lab = opts.lab, solo_n = opts.n }), seed = seed, layout = opts.lab and "lab" or (L and "level" or layout_name),
+				level = opts.level, ais = {}, acc = 0, last_capture = -1, last_second = C.ROUND_TIME + 1, finished = false, demo = opts.demo,
+				slowmo = 0, shake_until = 0, slots = opts.slots, debug_giant = opts.debug_giant, autopilot = opts.autopilot, lab = opts.lab, eager = opts.eager, showcase = opts.showcase, show_scale = opts.scale, show_y = opts.y, show_n = opts.n,
+				preview = opts.preview }
+	set_text(gui.get_node("level_text"), opts.preview and T(C.def(opts.preview.id).name) or (opts.lab and T("TEST LAB") or (opts.level and ("LV." .. opts.level) or "")))
+	local policy = { eager = opts.eager or 0.6 }
+	for t = 1, m.sim.n do   -- 演示 / 预览：玩家的球也交给 AI 走（预览里 AI 不放技能，招由 FX.pv_drive 放）
+		if (t ~= PLAYER or opts.demo or opts.preview or opts.autopilot) and not opts.showcase then m.ais[#m.ais + 1] = ai.new(t, seed + t * 7919, opts.preview and { eager = 0 } or policy) end
+	end
+	if opts.preview then m.pv_rng = cd_rng.new(seed * 7 + 1); m.pv_t, m.pv_next = 0, 1.2 end
+	gui.set_enabled(S.U.labreset.node, opts.lab == true)
+	S.match = m
+	layout_buttons(S.U, m)
+	if not opts.showcase and not opts.preview then bgm_start() end
+	m.crown_leader, m.crown_anim_until, m.giant_pop, m.last_crush, m.shock_pop, m.snow_pop = nil, 0, {}, -1, {}, {}
+	gui.set_position(gui.get_node("root"), S.root_pos)
+	gui.cancel_animations(S.U.crown, gui.PROP_POSITION)
+	-- 状态行：≤ 4 队才显示（1 打 8 只留份额条）；份额条/球只对在场的队启用
+	local n = m.sim.n
+	for t = 1, STATUS_COLS do
+		local st = S.U.status[t]
+		gui.set_enabled(st.name, n <= STATUS_COLS and t <= n)
+	end
+	for t = 1, #TEAMS do gui.set_enabled(S.U.bar[t], t <= n); gui.set_enabled(S.U.bar_text[t], t <= n) end
+	S.targeting = nil; S.place = nil; S.aim_st = nil
+	layout_board(m.sim.W or STRIDE, m.sim.H or STRIDE)   -- 球关 32×32 / 道具关 16×16 / 1v1 场地 24×48
+	repaint_all()
+	for t = 1, #TEAMS do for _, p in ipairs(S.U.balls[t]) do gui.set_enabled(p.node, false); p.visible = false end end
+	set_coin_text()
+	set_showcase(m, opts)   -- 最后做：上面会把状态行/份额条/按钮打开，展示模式要全藏
+	if opts.showcase then layout_buttons(S.U, m) end
+	setup_goal_ui(m)   -- 再最后：非占地关把份额条收掉换目标行、摆装置（要在 set_showcase 之后，它会把份额条打开）
+	cam.setup(m)   -- 镜头：zoom 关放大棋盘、对准玩家的球
+	m.cdn_t0 = nil; S.hold = nil
+	if opts.level and not opts.demo and not opts.showcase then CDN.start(m) end   -- 关卡：开局 3 2 1 GO
+end
+
+-- ---------------------------------------------------------------- 技能演出
+--- 球（格坐标 bx, by）被吸进 (tx, ty)：影子球飞向目标缩没 + 雷电汇聚（pixelfx charge-up）+ suck 音；真球由调用方藏起来
+local function suck_fx(bx, by, tx, ty)
+	local x, y = tx * CELL - HALF_W, ty * CELL - HALF_H
+	local ghost = keep_fx(box(S.U.board, bx * CELL - HALF_W, by * CELL - HALF_H, BALL_PX, BALL_PX, TEAMS[PLAYER].color, "ball"))
+	gui.animate(ghost, gui.PROP_POSITION, v3(x, y), gui.EASING_INQUAD, 0.3)
+	gui.animate(ghost, gui.PROP_SCALE, vmath.vector3(0.05, 0.05, 1), gui.EASING_INQUAD, 0.42, 0, function() pcall(gui.delete_node, ghost) end)
+	keep_fx(fx_node(S.U.board, x, y, FX.suck, "fx_suck", true, function(n) pcall(gui.delete_node, n) end))
+	snd("suck", 1.0, 1.0); pcall(haptic.tap)
+end
+local function team_tint(team_id) return vmath.lerp(0.35, TEAMS[team_id].color, WHITE) end
+
+-- 火焰（原炸弹演出，改橙红）：点下去一根光柱从天顶打到落点 + 落点准星环呼吸；FIRE_DELAY 后落地：光柱收束、爆炸环、圈内格子闪白、小屏震
+fire_aim_fx = function(e)
+	local tint = FIRE_TINT
+	local tx, ty = e.x * CELL - HALF_W, e.y * CELL - HALF_H
+	local col = box(S.U.beam_layer, tx, ty, HALF_H - ty + 700, CELL * 1.4, tint, "beam")
+	gui.set_blend_mode(col, gui.BLEND_ADD); gui.set_pivot(col, gui.PIVOT_W); gui.set_rotation(col, vmath.quat_rotation_z(math.pi / 2))
+	gui.set_color(col, vmath.vector4(tint.x, tint.y, tint.z, 0)); gui.animate(col, "color.w", 1, gui.EASING_OUTQUAD, 0.1)
+	local r = (e.radius or 2) * 2 * CELL
+	local ring = box(S.U.board, tx, ty, r, r, vmath.vector4(1, 0.6, 0.2, 0.95), "ring")
+	gui.animate(ring, gui.PROP_SCALE, vmath.vector3(1.15, 1.15, 1), gui.EASING_INOUTSINE, 0.18, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
+	local spot = box(S.U.board, tx, ty, CELL * 2.2, CELL * 2.2, tint, "flare"); gui.set_blend_mode(spot, gui.BLEND_ADD)
+	S.fire_fx[#S.fire_fx + 1] = { team = e.team, nodes = { col, ring, spot } }
+end
+fire_hit_fx = function(e)
+	local tx, ty = e.x * CELL - HALF_W, e.y * CELL - HALF_H
+	for k = #S.fire_fx, 1, -1 do
+		local fx = S.fire_fx[k]
+		if fx.team == e.team then
+			for _, n in ipairs(fx.nodes) do gui.cancel_animations(n, gui.PROP_SCALE); fx_fade(n, 0.25, 0, gui.EASING_OUTQUAD) end
+			table.remove(S.fire_fx, k)
+		end
+	end
+	local r = (e.radius or 2) * 2 * CELL
+	local wave = box(S.U.board, tx, ty, r, r, WHITE, "ring")
+	gui.set_scale(wave, vmath.vector3(0.4, 0.4, 1))
+	gui.animate(wave, gui.PROP_SCALE, vmath.vector3(1.6, 1.6, 1), gui.EASING_OUTQUAD, 0.45); fx_fade(wave, 0.45)
+	local glow = box(S.U.board, tx, ty, r * 1.6, r * 1.6, vmath.vector4(1, 0.5, 0.15, 0.85), "halo"); fx_fade(glow, 0.5, 0, gui.EASING_OUTQUAD)
+	local flare = box(S.U.board, tx, ty, CELL * 5, CELL * 5, vmath.vector4(1, 0.8, 0.4, 1), "flare"); gui.set_blend_mode(flare, gui.BLEND_ADD)
+	gui.animate(flare, gui.PROP_SCALE, vmath.vector3(0.1, 0.1, 1), gui.EASING_INQUAD, 0.35, 0, function() pcall(gui.delete_node, flare) end)
+end
+clear_fire_fx = function()
+	for _, fx in ipairs(S.fire_fx or {}) do for _, n in ipairs(fx.nodes) do pcall(gui.delete_node, n) end end
+	S.fire_fx = {}
+end
+
+--- 冰冻波：队色→冰色的环从主球扩到 max_r，alpha 1 → 0.05（用户：越飞越透明但不能全透明）
+local function freeze_wave_fx(e)
+	local x, y = e.x * CELL - HALF_W, e.y * CELL - HALF_H
+	local dur = (e.max_r or 46) / C.WAVE_SPEED
+	local target = (e.max_r or 46) * 2 * CELL / BALL_PX
+	local tint = vmath.lerp(0.5, TEAMS[e.team].color, ICE)
+	local wave = box(S.U.board, x, y, BALL_PX, BALL_PX, tint, "ring")
+	gui.animate(wave, gui.PROP_SCALE, vmath.vector3(target, target, 1), gui.EASING_LINEAR, dur)
+	gui.animate(wave, "color.w", 0.05, gui.EASING_OUTQUAD, dur, 0, function() pcall(gui.delete_node, wave) end)
+	local glow = box(S.U.board, x, y, BALL_PX * 1.6, BALL_PX * 1.6, ICE, "halo"); gui.set_blend_mode(glow, gui.BLEND_ADD)
+	gui.animate(glow, gui.PROP_SCALE, vmath.vector3(target * 0.6, target * 0.6, 1), gui.EASING_LINEAR, dur)
+	gui.animate(glow, "color.w", 0, gui.EASING_OUTQUAD, dur * 0.8, 0, function() pcall(gui.delete_node, glow) end)
+	if e.level >= 3 then
+		gui.cancel_animations(S.U.flash, "color.w")
+		gui.set_color(S.U.flash, vmath.vector4(ICE.x, ICE.y, ICE.z, 0.35)); gui.animate(S.U.flash, "color.w", 0, gui.EASING_OUTQUAD, dur)
+	end
+end
+
+--- 闪电：按 sim 给的方向/长度/宽度画加色光柱 + 球心闪光
+local function lightning_fx(e)
+	local tint = vmath.lerp(0.3, TEAMS[e.team].color, BOLT)
+	local ox, oy = (e.i - 0.5) * CELL - HALF_W, (e.j - 0.5) * CELL - HALF_H
+	local w = (e.width or 1) * CELL
+	for k, d in ipairs(e.dirs or {}) do
+		-- 长度只画到棋盘边（用户 2026-11-01：光束伸出棋盘）：lens 是打到的格数，正向含球所在格、反向不含；都从球心起画，到最后一格外沿正好 n∓0.5 格
+		local n = e.lens and e.lens[k] or GRID
+		local len = (n + (k % 2 == 0 and 0.5 or -0.5)) * CELL
+		-- 偏移：2 格宽往 +i/+j 方向偏半格（和 sim 的 offsets {0,1} 一致）
+		local off = (e.width == 2) and CELL / 2 or 0
+		local ray = box(S.U.beam_layer, ox + (d[1] == 0 and off or 0), oy + (d[1] ~= 0 and off or 0), len, w * 1.15, tint, "beam")
+		gui.set_blend_mode(ray, gui.BLEND_ADD); gui.set_pivot(ray, gui.PIVOT_W)
+		gui.set_rotation(ray, vmath.quat_rotation_z(math.atan2(d[2], d[1])))
+		fx_fade(ray, 0.45, 0.05)
+		-- 白芯
+		local core = box(S.U.beam_layer, gui.get_position(ray).x, gui.get_position(ray).y, len, w * 0.4, WHITE, "beam")
+		gui.set_blend_mode(core, gui.BLEND_ADD); gui.set_pivot(core, gui.PIVOT_W); gui.set_rotation(core, vmath.quat_rotation_z(math.atan2(d[2], d[1])))
+		fx_fade(core, 0.25)
+	end
+	local head = box(S.U.beam_layer, ox, oy, 120 + 30 * (e.level or 1), 120 + 30 * (e.level or 1), tint, "flare"); gui.set_blend_mode(head, gui.BLEND_ADD)
+	gui.animate(head, gui.PROP_SCALE, vmath.vector3(0.2, 0.2, 1), gui.EASING_INQUAD, 0.4, 0, function() pcall(gui.delete_node, head) end)
+end
+
+--- 传送：原位球缩小淡出 + 落点白闪 + 落点环
+local function teleport_fx(e)
+	local c = TEAMS[e.team].color
+	local fx, fy = e.from_x * CELL - HALF_W, e.from_y * CELL - HALF_H
+	local tx, ty = e.x * CELL - HALF_W, e.y * CELL - HALF_H
+	local ghost = box(S.U.board, fx, fy, BALL_PX, BALL_PX, c, "ball")
+	gui.animate(ghost, gui.PROP_SCALE, vmath.vector3(0.05, 0.05, 1), gui.EASING_INQUAD, 0.25); fx_fade(ghost, 0.25)
+	local ring1 = box(S.U.board, fx, fy, BALL_PX, BALL_PX, SKILL_TINT.teleport, "ring")
+	gui.animate(ring1, gui.PROP_SCALE, vmath.vector3(0.1, 0.1, 1), gui.EASING_INQUAD, 0.25); fx_fade(ring1, 0.25)
+	local flare = box(S.U.board, tx, ty, CELL * 4, CELL * 4, WHITE, "flare"); gui.set_blend_mode(flare, gui.BLEND_ADD)
+	gui.animate(flare, gui.PROP_SCALE, vmath.vector3(0.1, 0.1, 1), gui.EASING_INQUAD, 0.35, 0, function() pcall(gui.delete_node, flare) end)
+	local ring2 = box(S.U.board, tx, ty, BALL_PX, BALL_PX, SKILL_TINT.teleport, "ring")
+	gui.animate(ring2, gui.PROP_SCALE, vmath.vector3(4, 4, 1), gui.EASING_OUTQUAD, 0.4); fx_fade(ring2, 0.4)
+end
+
+local function ring_burst(e, color, scale, dur)
+	local x, y = e.x * CELL - HALF_W, e.y * CELL - HALF_H
+	local r = box(S.U.board, x, y, BALL_PX, BALL_PX, color, "ring")
+	gui.animate(r, gui.PROP_SCALE, vmath.vector3(scale, scale, 1), gui.EASING_OUTQUAD, dur); fx_fade(r, dur)
+end
+
+-- ---------------------------------------------------------------- 2026-11-04 晚四个新技能的演出（挂在 FX 表里：顶层 local 已到 200 上限）
+--- 分裂球弹出一颗小球：撞点一小团队色闪光
+function FX.shard_pop(e)
+	local x, y = e.x * CELL - HALF_W, e.y * CELL - HALF_H
+	local fl = box(S.U.board, x, y, CELL * 2.2, CELL * 2.2, vmath.lerp(0.5, TEAMS[e.team].color, WHITE), "flare"); gui.set_blend_mode(fl, gui.BLEND_ADD)
+	gui.animate(fl, gui.PROP_SCALE, vmath.vector3(0.1, 0.1, 1), gui.EASING_INQUAD, 0.25, 0, function() pcall(gui.delete_node, fl) end)
+end
+-- 等离子球（2026-11-05 夜二改，用户："巨离子球也采用巨球那种思路：一个球、外面一个圆环、旁边散落的东西——但周围放小小的闪电"）：
+--   球身 = 普通队色球（按 sim 半径放大 = 撞击范围，长一圈只闪白）；队色光晕 + 白环（巨球同款节点）；周围 3 + 2n 道短闪电噼啪跳（FX.plasma_sync）
+--   颜色只用队色 + 白（等离子专用 alpha 混合池，不加色）；玻璃球贴图 / 紫色 / 紫队禁发（上一版）全部撤销
+--- 长一圈：球闪白一下 + 队色环 + 队色 zap-hit 电火花 + "滋啪"（圈数越多越尖）——不改球大小，大小只跟 sim 半径
+function FX.plasma_grow(m, e)
+	local x, y = e.x * CELL - HALF_W, e.y * CELL - HALF_H
+	local col = TEAMS[e.team].color
+	local z = fx_node(S.U.beam_layer, x, y, CELL * (2.6 + 0.3 * (e.n or 1)), "fx_zap", false, function(n) pcall(gui.delete_node, n) end)   -- 普通混合：加色会跟底下格子混出第三种颜色
+	gui.set_color(z, vmath.lerp(0.45, col, WHITE))
+	ring_burst(e, vmath.lerp(0.4, col, WHITE), 1.8 + 0.3 * (e.n or 1), 0.3)
+	m.snow_pop[e.team] = { t = S.time, flash = true }
+	if e.team == PLAYER then snd("plasma_grow", 0.6, 1 + 0.08 * (e.n or 1)); pcall(haptic.tap) end
+end
+--- 炸开（用户："球本身爆炸，爆炸完了以后核心缩小"）：球上播去色的 plasma-explosion（fx_burst_w，乘队色 → 红白 / 蓝白），每帧跟着球；
+--- 球身先维持原大小闪白 0.15 s，再 0.3 s 缩回（ball sync 读 m.snow_pop[t].burst）；染到的格 flash_cells 闪白顶起；我方放电声 + 震屏
+function FX.plasma_burst(m, e)
+	local x, y = e.x * CELL - HALF_W, e.y * CELL - HALF_H
+	local p = S.U.balls[e.team] and S.U.balls[e.team][1]
+	local d = CELL * (2 * (e.radius or 1.2) + 3.5)
+	local fx = gui.new_box_node(v3(x, y), v3(d, d)); gui.set_texture(fx, "clashdoz_orb"); gui.set_parent(fx, S.U.beam_layer, false)   -- 普通混合，红白 / 蓝白不混色
+	gui.set_color(fx, vmath.lerp(0.3, TEAMS[e.team].color, WHITE))
+	gui.play_flipbook(fx, hash("fx_burst_w"), function() if p and p.burst_fx == fx then p.burst_fx = nil end; pcall(gui.delete_node, fx) end)
+	if p then p.burst_fx = fx end   -- ball sync 每帧把它挪到球上（不另放停在撞点的环：球滚开后像两颗球）
+	m.flash_cells[e.team] = true
+	m.snow_pop[e.team] = { t = S.time, burst = true, from = p and p.last_sc or 1 }
+	if e.team == PLAYER and not m.showcase then
+		m.shake_until = math.max(m.shake_until or 0, S.time + 0.2 + 0.04 * (e.level or 1))
+		snd("plasma_burst", 0.9, 1.05 - 0.05 * (e.level or 1)); pcall(haptic.heavy, 1)
+	end
+end
+--- 每帧（FX.shock_sync 末尾调用）：等离子球周围的小闪电（用户 2026-11-05 夜二改：照巨球"球 + 环 + 周围散落"的思路，散的是小闪电）
+---   主球外 6 + 3n 道小电弧（n = 已长圈数）：从白环外沿某点往外劈 0.4～0.75 R，3 段折线侧向抖、一半末端分叉；每道活 0.08～0.16 s 就换地方重劈 = 噼啪跳动（用户 2026-11-05 夜：再多一点、再短一点）
+---   两层：队色偏白的宽底 + 白细芯（只用队色 + 白）；自己的池、普通 alpha 混合——冲击波那套 bolt 是加色的，红叠在蓝格上会变紫（用户："颜色不停变化"）
+FX.PBOLT_POOL = 480
+function FX.plasma_sync(m, s)
+	local U = S.U
+	if not U.pbolts then
+		U.pbolts = {}
+		U.plasma_layer = box(U.board, 0, 0, 1, 1, NO_LIGHT); gui.set_visible(U.plasma_layer, false)   -- 建在球池之后 → 画在球上面（beam_layer 在球下面，闪电根部会被球盖住）
+		for _ = 1, FX.PBOLT_POOL do
+			local n = box(U.plasma_layer, 0, 0, 1, 1, WHITE, "beam"); gui.set_pivot(n, gui.PIVOT_W); gui.set_enabled(n, false); U.pbolts[#U.pbolts + 1] = n
+		end
+	end
+	local ub = 0
+	local function bolt(x0, y0, x1, y1, h, color)
+		if ub >= #U.pbolts then return end
+		ub = ub + 1
+		local n = U.pbolts[ub]; local dx, dy = x1 - x0, y1 - y0
+		gui.set_enabled(n, true); gui.set_position(n, v3(x0, y0)); gui.set_size(n, v3(math.sqrt(dx * dx + dy * dy) + 2, h))
+		gui.set_rotation(n, vmath.quat_rotation_z(math.atan2(dy, dx))); gui.set_color(n, color)
+	end
+	local function h(i, f) return (math.sin(i * 12.9898 + f * 78.233) * 43758.5453) % 1 end   -- 便宜的确定性随机：同一节拍内形状不变
+	local function polyline(pts, w1, c1, w2, c2)   -- 两层折线：宽底 + 白芯
+		for k = 2, #pts do bolt(pts[k - 1][1], pts[k - 1][2], pts[k][1], pts[k][2], w1, c1) end
+		for k = 2, #pts do bolt(pts[k - 1][1], pts[k - 1][2], pts[k][1], pts[k][2], w2, c2) end
+	end
+	for t, team in ipairs(s.teams) do
+		local b = team.balls[1]; local p = U.balls[t] and U.balls[t][1]
+		if (team.snow_left or 0) > 0 and b and p and p.visible and (team.giant_left or 0) <= 0 and not sim.is_frozen(s, team) and (b.stun_left or 0) <= 0 then
+			local col = TEAMS[t].color
+			local n = team.snow_n or 0
+			local Rpx = sim.ball_radius(team, b) / C.BALL_RADIUS * BALL_PX * 0.5   -- 球半径（像素）= 撞击范围
+			local x, y = b.x * CELL - HALF_W, b.y * CELL - HALF_H
+			local base = vmath.lerp(0.55, col, WHITE)
+			for i = 1, 6 + 3 * n do
+				local life = 0.08 + 0.08 * h(i, t)                      -- 每道闪电自己的节拍
+				local slot = math.floor(S.time / life + h(i + 50, t))
+				local seed = slot * 7 + i * 131 + t * 17
+				local a = h(seed, 1) * 2 * math.pi                       -- 从球面哪个角度劈出去
+				local len = Rpx * (0.4 + 0.35 * h(seed, 2))
+				local fade = 0.6 + 0.4 * h(seed, 3)
+				local ca, sa = math.cos(a), math.sin(a)
+				local r0 = Rpx * 1.2   -- 白环（1.25 R）外沿
+				local pts = { { x + ca * r0, y + sa * r0 } }
+				for k = 1, 3 do
+					local d = r0 + len * k / 3
+					local side = (h(seed, 10 + k) - 0.5) * len * (k < 3 and 0.7 or 0.25)
+					pts[k + 1] = { x + ca * d - sa * side, y + sa * d + ca * side }
+				end
+				local w1, w2 = math.max(3, Rpx * 0.22), math.max(2, Rpx * 0.08)
+				local c1, c2 = vmath.vector4(base.x, base.y, base.z, 0.85 * fade), vmath.vector4(1, 1, 1, fade)
+				polyline(pts, w1, c1, w2, c2)
+				if h(seed, 4) > 0.5 then   -- 分叉：从第 2 个拐点岔一条短的
+					local fa = a + (h(seed, 5) - 0.5) * 1.6
+					local fl = len * 0.5
+					local fx, fy = pts[2][1], pts[2][2]
+					polyline({ { fx, fy }, { fx + math.cos(fa) * fl * 0.5 + (h(seed, 6) - 0.5) * fl * 0.3, fy + math.sin(fa) * fl * 0.5 }, { fx + math.cos(fa) * fl, fy + math.sin(fa) * fl } }, w1 * 0.7, c1, w2, c2)
+				end
+			end
+		end
+	end
+	for k = ub + 1, #U.pbolts do gui.set_enabled(U.pbolts[k], false) end
+end
+--- 冲击波（2026-11-05 二改：弧只吃第一排）：放的瞬间只在球心闪一下；弧本身每帧按 sim 里还活着的射线段画（FX.shock_sync）
+function FX.shock(m, e)
+	local tint = vmath.lerp(0.35, TEAMS[e.team].color, SKILL_TINT.shock)
+	local ox, oy = e.x * CELL - HALF_W, e.y * CELL - HALF_H
+	m.shock_pop[e.team] = S.time   -- 球本体闪白 + 弹一下（ball sync）
+	-- pixelfx thunderclap 雷击爆闪盖在球上（加色），朝波的方向转
+	local clap = fx_node(S.U.beam_layer, ox, oy, CELL * 7, "fx_clap", true, function(n) pcall(gui.delete_node, n) end)
+	gui.set_rotation(clap, vmath.quat_rotation_z(math.atan2(e.dy or 0, e.dx or 1) - math.pi / 2))
+	local head = box(S.U.beam_layer, ox, oy, CELL * 5, CELL * 5, WHITE, "flare"); gui.set_blend_mode(head, gui.BLEND_ADD)
+	gui.animate(head, gui.PROP_SCALE, vmath.vector3(0.2, 0.2, 1), gui.EASING_INQUAD, 0.35, 0, function() pcall(gui.delete_node, head) end)
+	ring_burst(e, BOLT, 4, 0.35)
+	if e.team == PLAYER then m.shake_until = S.time + SHAKE_T * 0.8; pcall(haptic.heavy, 1) end
+end
+--- 弧射线吃掉一格：pixelfx zap-hit 电火花（每帧限 hit_budget 个）
+function FX.shock_hit(m, e)
+	if (m.hit_budget or 0) <= 0 then return end
+	m.hit_budget = m.hit_budget - 1
+	fx_node(S.U.beam_layer, e.x * CELL - HALF_W, e.y * CELL - HALF_H, CELL * 3.2, "fx_zap", true, function(n) pcall(gui.delete_node, n) end)
+end
+--- 每帧（用户 2026-11-05：波要闪电样式）：s.shocks 里每道波的活射线合并成连续的角度段——
+---   每段一条淡的队色扇环当底光（饼图池 FX.ARC_POOL），前沿是沿弧每 ~1.1 格取一点、径向随机抖 ±0.35 格连成的锯齿折线（beam 池 FX.BOLT_POOL，两层：宽淡 + 细白），每帧重抖 = 噼啪闪烁
+FX.ARC_POOL, FX.BOLT_POOL = 24, 220
+function FX.shock_sync(m)
+	local U, s = S.U, m.sim
+	if not U.arcs then
+		U.arcs, U.bolts = {}, {}
+		for _ = 1, FX.ARC_POOL do
+			local n = gui.new_pie_node(v3(0, 0), v3(2, 2)); gui.set_parent(n, U.beam_layer, false)
+			gui.set_blend_mode(n, gui.BLEND_ADD); gui.set_outer_bounds(n, gui.PIEBOUNDS_ELLIPSE); gui.set_perimeter_vertices(n, 48)
+			gui.set_enabled(n, false); U.arcs[#U.arcs + 1] = n
+		end
+		for _ = 1, FX.BOLT_POOL do
+			local n = box(U.beam_layer, 0, 0, 1, 1, BOLT, "beam"); gui.set_blend_mode(n, gui.BLEND_ADD); gui.set_pivot(n, gui.PIVOT_W)
+			gui.set_enabled(n, false); U.bolts[#U.bolts + 1] = n
+		end
+	end
+	local used, ub = 0, 0
+	local function bolt(x0, y0, x1, y1, h, color)
+		if ub >= #U.bolts then return end
+		ub = ub + 1
+		local n = U.bolts[ub]
+		local dx, dy = x1 - x0, y1 - y0
+		gui.set_enabled(n, true); gui.set_position(n, v3(x0, y0)); gui.set_size(n, v3(math.sqrt(dx * dx + dy * dy) + 2, h))
+		gui.set_rotation(n, vmath.quat_rotation_z(math.atan2(dy, dx))); gui.set_color(n, color)
+	end
+	for _, w in ipairs(s.shocks or {}) do
+		local tint = vmath.lerp(0.35, TEAMS[w.team].color, SKILL_TINT.shock)
+		local ox, oy = w.x * CELL - HALF_W, w.y * CELL - HALF_H
+		local da = 2 * w.half / w.n
+		local R = math.max(0.6, w.r)
+		local i = 1
+		while i <= w.n do
+			if w.rays[i] then
+				local j = i
+				while j < w.n and w.rays[j + 1] do j = j + 1 end
+				local a_start, a_end = sim.shock_ray_angle(w, i) - da / 2, sim.shock_ray_angle(w, j) + da / 2
+				if used < #U.arcs then   -- 底光扇环
+					used = used + 1
+					local n = U.arcs[used]
+					gui.set_enabled(n, true); gui.set_position(n, v3(ox, oy)); gui.set_size(n, v3(2 * R * CELL, 2 * R * CELL))
+					gui.set_rotation(n, vmath.quat_rotation_z(a_start)); gui.set_fill_angle(n, math.deg(a_end - a_start))
+					gui.set_inner_radius(n, math.max(0, (R - 1.4) * CELL)); gui.set_color(n, vmath.vector4(tint.x, tint.y, tint.z, 0.28))
+				end
+				-- 闪电折线前沿
+				local steps = math.max(2, math.ceil((a_end - a_start) * R / 1.1))
+				local px, py
+				for k = 0, steps do
+					local a = a_start + (a_end - a_start) * k / steps
+					local rr = R + ((k == 0 or k == steps) and 0 or (math.random() - 0.5) * 0.7)   -- 两端不抖，接着扇环边
+					local x, y = ox + math.cos(a) * rr * CELL, oy + math.sin(a) * rr * CELL
+					if px then
+						bolt(px, py, x, y, CELL * 0.75, vmath.vector4(tint.x, tint.y, tint.z, 0.55))
+						bolt(px, py, x, y, CELL * 0.28, vmath.vector4(1, 1, 1, 0.95))
+					end
+					px, py = x, y
+				end
+				i = j + 1
+			else
+				i = i + 1
+			end
+		end
+	end
+	-- 链电：白色锯齿链 球 → 第 1 颗 → … → 链头（还在飞）；每段每 ~1 格一个点、垂直抖 ±0.3 格、每帧重抖；两层（淡蓝宽 + 白细）
+	local function zigzag(x0, y0, x1, y1, color_glow)
+		local dx, dy = x1 - x0, y1 - y0
+		local len = math.sqrt(dx * dx + dy * dy)
+		if len < 1e-3 then return end
+		local nx, ny = -dy / len, dx / len
+		local steps = math.max(1, math.ceil(len / CELL))
+		local px, py = x0, y0
+		for q = 1, steps do
+			local t = q / steps
+			local jit = (q == steps) and 0 or (math.random() - 0.5) * 0.6 * CELL
+			local x, y = x0 + dx * t + nx * jit, y0 + dy * t + ny * jit
+			bolt(px, py, x, y, CELL * 0.6, color_glow)
+			bolt(px, py, x, y, CELL * 0.22, vmath.vector4(1, 1, 1, 1))
+			px, py = x, y
+		end
+	end
+	for _, c in ipairs(s.chains or {}) do
+		local glow = vmath.vector4(0.7, 0.85, 1, 0.6)
+		local me = s.teams[c.team].balls[1]
+		local px, py = (me and me.x or c.x0) * CELL - HALF_W, (me and me.y or c.y0) * CELL - HALF_H   -- 链从我的球当前位置拉出去（球跑了链跟着拉长）
+		for _, h in ipairs(c.hits) do
+			local x, y = h.ball.x * CELL - HALF_W, h.ball.y * CELL - HALF_H
+			zigzag(px, py, x, y, glow); px, py = x, y
+		end
+		if c.k <= #c.targets then zigzag(px, py, c.hx * CELL - HALF_W, c.hy * CELL - HALF_H, glow) end   -- 飞行中的链头
+	end
+	FX.plasma_sync(m, s)
+	for k = used + 1, #U.arcs do gui.set_enabled(U.arcs[k], false) end
+	for k = ub + 1, #U.bolts do gui.set_enabled(U.bolts[k], false) end
+end
+
+--- 道具关每帧：装置 / 士兵 / 子弹按 sim 状态摆到池节点上；不是道具关就把池全藏
+function BD.sync(m)
+	local s, U = m.sim, S.U
+	local b = s.build
+	if not b then
+		if U.build_shown then
+			for _, p in ipairs(U.structs) do gui.set_enabled(p.base, false) end
+			for _, n in ipairs(U.soldiers) do gui.set_enabled(n, false) end
+			for _, p in ipairs(U.bullets) do gui.set_enabled(p.tail, false); gui.set_enabled(p.core, false) end
+			U.dmg_tinted = nil
+			U.build_shown = false
+		end
+		return
+	end
+	U.build_shown = true
+	for k, p in ipairs(U.structs) do
+		local st = b.structs[k]
+		if st then
+			local col = TEAMS[st.team].color
+			local x, y = cell_local(st.i, st.j)
+			gui.set_enabled(p.base, true); gui.set_position(p.base, v3(x, y))
+			local SZ = C.BUILD.CANNON_SIZE
+			gui.set_position(p.base, v3(st.x * CELL - HALF_W, st.y * CELL - HALF_H))   -- 装置几何中心（2×2 的在格线上）
+			-- 血条（原版炮 100 / 门 300 血）：掉过血才显示，挂在装置上方；球关炮台改显示剩余寿命（金色）
+			local hurt = (st.hp_max or 0) > 0 and st.hp < st.hp_max
+			if st.kind == "turret" then
+				local frozen = sim.is_frozen(s, s.teams[st.team])
+				local body = frozen and FROZEN or col
+				local d = CELL * 1.5
+				gui.set_size(p.base, v3(d, d)); gui.set_size(p.ring, v3(d, d)); gui.set_size(p.core, v3(d * 0.42, d * 0.42))
+				gui.set_color(p.base, shade(body, 0.45)); gui.set_scale(p.base, vmath.vector3(1, 1, 1))
+				gui.set_enabled(p.ring, true); gui.set_color(p.ring, vmath.lerp(0.35, body, WHITE))
+				gui.set_color(p.core, vmath.lerp(0.25, body, WHITE)); gui.set_scale(p.core, vmath.vector3(1, 1, 1))
+				gui.set_enabled(p.barrel, true); gui.set_pivot(p.barrel, gui.PIVOT_W); gui.set_position(p.barrel, v3(0, 0))
+				gui.set_rotation(p.barrel, vmath.quat_rotation_z(st.angle)); gui.set_color(p.barrel, vmath.lerp(0.7, body, WHITE))
+				local kick = math.max(0, 1 - (st.fire_t or 1) * C.SKILLS.turret.rate[st.level])
+				local k2 = kick > 0.8 and (kick - 0.8) / 0.2 or 0
+				gui.set_size(p.barrel, v3(d * (0.95 - 0.15 * k2), d * 0.3))
+				if k2 > 0 then gui.set_color(p.core, WHITE) end
+				gui.set_enabled(p.label, false)
+				gui.set_enabled(p.hpbg, true)   -- 剩余寿命条
+				local wbar = CELL * 1.6
+				gui.set_size(p.hpbg, v3(wbar, 6)); gui.set_position(p.hpbg, v3(0, d * 0.65))
+				local fr = math.max(0, (st.left or 0) / (st.dur or 1))
+				gui.set_position(p.hpfill, v3(-wbar / 2, 0)); gui.set_size(p.hpfill, v3(wbar * fr, 6)); gui.set_color(p.hpfill, BD.GOLD)
+			else
+			gui.set_enabled(p.hpbg, hurt)
+			if hurt then
+				local wbar = CELL * (st.kind == "cannon" and SZ * 0.9 or C.BUILD.GATE_LEN * 0.8)
+				gui.set_size(p.hpbg, v3(wbar, 7)); gui.set_position(p.hpbg, v3(0, CELL * (st.kind == "cannon" and SZ * 0.62 or 0.75)))
+				local fr = math.max(0, st.hp / st.hp_max)
+				gui.set_position(p.hpfill, v3(-wbar / 2, 0)); gui.set_size(p.hpfill, v3(wbar * fr, 7)); gui.set_color(p.hpfill, fr > 0.5 and vmath.vector4(0.4, 1, 0.5, 1) or vmath.vector4(1, 0.5, 0.3, 1))
+			end
+			if st.kind == "cannon" then
+				local frozen = sim.is_frozen(s, s.teams[st.team])
+				local body = frozen and FROZEN or col
+				local aiming = S.aim_st == st.id
+				gui.set_size(p.base, v3(CELL * SZ * 0.95, CELL * SZ * 0.95)); gui.set_size(p.ring, v3(CELL * SZ * 0.95, CELL * SZ * 0.95)); gui.set_size(p.core, v3(CELL * SZ * 0.42, CELL * SZ * 0.42))
+				gui.set_color(p.base, shade(body, 0.45)); gui.set_scale(p.base, vmath.vector3(1, 1, 1))
+				gui.set_enabled(p.ring, true); gui.set_color(p.ring, aiming and vmath.lerp(0.5 + 0.5 * math.sin(S.time * 10), body, WHITE) or vmath.lerp(0.35, body, WHITE))
+				gui.set_color(p.core, vmath.lerp(0.25, body, WHITE))
+				gui.set_enabled(p.barrel, true); gui.set_pivot(p.barrel, gui.PIVOT_W); gui.set_position(p.barrel, v3(0, 0)); gui.set_scale(p.core, vmath.vector3(1, 1, 1))
+				gui.set_rotation(p.barrel, vmath.quat_rotation_z(st.angle)); gui.set_color(p.barrel, vmath.lerp(0.7, body, WHITE))
+				local kick = math.max(0, 1 - (st.fire_t or 1) * C.ITEMS.cannon.rate[st.level])   -- 刚开火：炮管缩一下再伸出来 + 炮口亮
+				local k2 = kick > 0.8 and (kick - 0.8) / 0.2 or 0
+				gui.set_size(p.barrel, v3(CELL * SZ * (0.75 - 0.12 * k2), CELL * SZ * 0.24))
+				if k2 > 0 then gui.set_color(p.core, WHITE) end
+				gui.set_enabled(p.label, false)
+			else   -- 放大器：1×4 的金色门（原版 MultiplierGate）：底盘拉成一条横 / 竖的门框，炮管节点当门梁，中间 ×n
+				local pz = 0.5 + 0.5 * math.sin(S.time * 5 + k)
+				local n = C.BUILD.GATE_LEN
+				local cx = (st.cells and #st.cells > 0) and ((st.cells[1][1] + st.cells[#st.cells][1]) / 2) or st.i   -- 门的几何中心
+				local cy = (st.cells and #st.cells > 0) and ((st.cells[1][2] + st.cells[#st.cells][2]) / 2) or st.j
+				gui.set_position(p.base, v3(cell_local(cx, cy)))
+				gui.set_size(p.base, v3(CELL, CELL)); gui.set_size(p.core, v3(CELL * 0.8, CELL * 0.8))
+				gui.set_color(p.base, vmath.vector4(BD.GOLD.x, BD.GOLD.y, BD.GOLD.z, 0.001)); gui.set_scale(p.base, vmath.vector3(1, 1, 1))
+				gui.set_enabled(p.ring, false)
+				gui.set_enabled(p.barrel, true); gui.set_pivot(p.barrel, gui.PIVOT_CENTER); gui.set_position(p.barrel, v3(0, 0))
+				gui.set_rotation(p.barrel, vmath.quat_rotation_z(st.horiz and 0 or math.pi / 2))
+				gui.set_size(p.barrel, v3(CELL * n, CELL * 0.5)); gui.set_color(p.barrel, vmath.vector4(BD.GOLD.x, BD.GOLD.y, BD.GOLD.z, 0.55 + 0.35 * pz))
+				gui.set_color(p.core, vmath.vector4(col.x, col.y, col.z, 0.95)); gui.set_scale(p.core, vmath.vector3(0.75, 0.75, 1))
+				gui.set_enabled(p.label, true); set_text(p.label, "x" .. tostring(st.mult)); gui.set_color(p.label, WHITE); gui.set_scale(p.label, vmath.vector3(0.5 * CELL / 30, 0.5 * CELL / 30, 1))
+			end
+			end
+		elseif gui.is_enabled(p.base) then gui.set_enabled(p.base, false) end
+	end
+	for k, n in ipairs(U.soldiers) do
+		local so = b.soldiers[k]
+		if so then
+			local col = TEAMS[so.team].color
+			gui.set_enabled(n, true); gui.set_position(n, v3(ball_local(so))); gui.set_size(n, v3(CELL * 0.5, CELL * 0.5))
+			local bob = 1 + 0.15 * math.sin(S.time * 16 + k * 2)
+			gui.set_scale(n, vmath.vector3(bob, 2 - bob, 1)); gui.set_color(n, vmath.lerp(0.3, col, WHITE))
+		elseif gui.is_enabled(n) then gui.set_enabled(n, false) end
+	end
+	-- 打过但还没翻的格：往攻击方颜色靠一半（原版 isInTheMiddleOfColors）；翻了 / 清零就还原
+	local tinted = U.dmg_tinted or {}
+	local now_t = {}
+	for idx, d in pairs(b.dmg) do
+		local t = b.dmg_team[idx]
+		if t and d > 0 then
+			now_t[idx] = true
+			local cell = U.cells[idx]
+			if cell then
+				local i, j = (idx - 1) % STRIDE + 1, math.floor((idx - 1) / STRIDE) + 1
+				local k = 0.5 * math.min(1, d / (C.BUILD.CELL_HP or 1))
+				gui.cancel_animations(cell, gui.PROP_COLOR); gui.set_color(cell, vmath.lerp(k, cell_color(s.grid[i][j]), TEAMS[t].color))
+			end
+		end
+	end
+	for idx in pairs(tinted) do
+		if not now_t[idx] then local cell = U.cells[idx]; if cell then local i, j = (idx - 1) % STRIDE + 1, math.floor((idx - 1) / STRIDE) + 1; gui.cancel_animations(cell, gui.PROP_COLOR); gui.set_color(cell, cell_color(s.grid[i][j])) end end
+	end
+	U.dmg_tinted = now_t
+	for k, p in ipairs(U.bullets) do
+		local bl = b.bullets[k]
+		if bl then
+			local col = TEAMS[bl.team].color
+			local x, y = ball_local(bl)
+			gui.set_enabled(p.core, true); gui.set_position(p.core, v3(x, y)); gui.set_size(p.core, v3(CELL * 0.42, CELL * 0.42)); gui.set_color(p.core, vmath.lerp(0.55, col, WHITE))
+			gui.set_enabled(p.tail, true); gui.set_position(p.tail, v3(x, y)); gui.set_size(p.tail, v3(CELL * 1.2, CELL * 0.55)); gui.set_rotation(p.tail, vmath.quat_rotation_z(math.atan2(bl.dy, bl.dx) + math.pi))
+			local fade = math.min(1, (bl.left or 1) / 0.3)   -- 快消失时尾迹淡出
+			gui.set_color(p.tail, vmath.vector4(col.x, col.y, col.z, 0.85 * fade))
+		elseif gui.is_enabled(p.core) then gui.set_enabled(p.core, false); gui.set_enabled(p.tail, false) end
+	end
+end
+--- 道具关事件：放置 / 放大 / 出兵 / 占领 / 没了 → 环 + 音
+function BD.event(m, e)
+	local gain = e.team == PLAYER and 1 or AI_GAIN
+	local col = TEAMS[e.team] and TEAMS[e.team].color or WHITE
+	if e.build == "place" then
+		ring_burst(e, e.kind == "amp" and BD.GOLD or col, 3, 0.4); snd("drop", 0.7 * gain, e.kind == "amp" and 1.3 or 0.9)
+		if e.team == PLAYER then pcall(haptic.tap) end
+	elseif e.build == "amp" then
+		if S.time - (m.last_amp or -1) >= BD.AMP_GAP then ring_burst(e, BD.GOLD, 2.2, 0.3); snd("clone", 0.35 * gain, 1.4); m.last_amp = S.time end
+	elseif e.build == "hurt" then
+		if e.team == PLAYER and (m.hurt_budget or 0) > 0 then m.hurt_budget = m.hurt_budget - 1; snd("crush", 0.25, 1.6) end
+	elseif e.build == "aim" then
+		if e.team == PLAYER then snd("turn", 0.6); pcall(haptic.tap) end
+	elseif e.build == "march" then
+		ring_burst(e, col, 2.5, 0.4); snd("pick", 0.6 * gain, 0.8)
+	elseif e.build == "capture" then
+		ring_burst(e, col, 6, 0.6); snd("steal", 0.9 * gain, 1.0)
+		if e.team == PLAYER or e.from == PLAYER then m.shake_until = S.time + SHAKE_T * 0.7; pcall(haptic.tap) end
+	elseif e.build == "die" then
+		if e.kind == "amp" then ring_burst(e, BD.GOLD, 2.5, 0.35); snd("drop", 0.5 * gain, 0.6)
+		else ring_burst(e, col, 1.2, 0.25) end
+	elseif e.build == "hit" then   -- 子弹命中：一小团白光（每帧限量；我方命中声走 s.changed 的 capture 音）
+		if (m.hit_budget or 0) > 0 then
+			m.hit_budget = m.hit_budget - 1
+			local fl = box(S.U.board, e.x * CELL - HALF_W, e.y * CELL - HALF_H, CELL * 1.6, CELL * 1.6, vmath.lerp(0.6, col, WHITE), "flare"); gui.set_blend_mode(fl, gui.BLEND_ADD)
+			gui.animate(fl, gui.PROP_SCALE, vmath.vector3(0.2, 0.2, 1), gui.EASING_INQUAD, 0.18, 0, function() pcall(gui.delete_node, fl) end)
+		end
+	end
+end
+
+--- 炸弹连带爆点（2026-10-31 替代护盾）：撞击格中心一团橙白火光 + 冲击环 + 径向火星粒子；连带格本身的闪白/碎片走 s.flips；我方震屏 + 轻震动
+local function bomb_hit_fx(m, e)
+	local cell = S.U.cells[sim.cell_index(e.i, e.j)]; if not cell then return end
+	local pos = gui.get_position(cell); local x, y = pos.x, pos.y
+	local d = CELL * (2.5 + 0.5 * (e.level or 1))
+	local flare = box(S.U.board, x, y, d, d, vmath.vector4(1, 0.8, 0.45, 1), "flare"); gui.set_blend_mode(flare, gui.BLEND_ADD)
+	gui.animate(flare, gui.PROP_SCALE, vmath.vector3(0.1, 0.1, 1), gui.EASING_INQUAD, 0.3, 0, function() pcall(gui.delete_node, flare) end)
+	local ring = box(S.U.board, x, y, CELL, CELL, SKILL_TINT.bomb, "ring")
+	local rs = 2.5 + (e.level or 1)
+	gui.animate(ring, gui.PROP_SCALE, vmath.vector3(rs, rs, 1), gui.EASING_OUTQUAD, 0.35); fx_fade(ring, 0.35)
+	if S.U.booms and #S.U.booms > 0 then
+		local n = S.U.booms[S.U.boom_next]; S.U.boom_next = S.U.boom_next % #S.U.booms + 1
+		gui.set_position(n, v3(x, y)); gui.set_color(n, vmath.vector4(1, 0.72, 0.3, 1)); pcall(gui.play_particlefx, n)
+	end
+	if e.team == PLAYER and not m.showcase then
+		m.shake_until = math.max(m.shake_until or 0, S.time + 0.15 + 0.03 * (e.level or 1))
+		if S.time - (m.bomb_snd or -1) > BOMB_SND_GAP then m.bomb_snd = S.time; snd("bomb", 0.5, 1.4); pcall(haptic.tap) end
+	end
+end
+
+local function skill_fx(m, e)
+	local s = m.sim
+	if e.skill == "fire" then
+		if e.phase == "aim" then fire_aim_fx(e) else fire_hit_fx(e); m.flash_cells[e.team] = true; if e.team == PLAYER then m.shake_until = math.max(m.shake_until or 0, S.time + 0.15) end end
+	elseif e.skill == "freeze" then freeze_wave_fx(e)
+	elseif e.skill == "lightning" then lightning_fx(e); if e.team == PLAYER and e.level >= 2 then m.shake_until = S.time + SHAKE_T * 0.6 end
+	elseif e.skill == "teleport" then teleport_fx(e)
+	elseif e.skill == "split" then ring_burst(e, TEAMS[e.team].color, 3, 0.5)
+	elseif e.skill == "accel" then ring_burst(e, SKILL_TINT.accel, 6, 0.5)
+	elseif e.skill == "bomb" then if e.phase == "hit" then bomb_hit_fx(m, e) else ring_burst(e, SKILL_TINT.bomb, 4, 0.6) end
+	elseif e.skill == "shatter" then
+		if e.phase == "spawn" then FX.shard_pop(e) else ring_burst(e, SKILL_TINT.shatter, 3, 0.45) end
+	elseif e.skill == "shock" then
+		if e.phase == "push" then ring_burst(e, SKILL_TINT.shock, 2.5, 0.3)
+		elseif e.phase == "hit" then FX.shock_hit(m, e)
+		else FX.shock(m, e) end
+	elseif e.skill == "chain" then
+		if e.phase == "hit" then
+			FX.shock_hit(m, e); snd("laser", (e.team == PLAYER and 0.45 or 0.25), 1.9 + 0.08 * (e.k or 1))   -- 每颗一声脆电击，越往后越尖
+			if e.team == PLAYER then pcall(haptic.tap) end
+		else ring_burst(e, BOLT, 3, 0.3); if e.team == PLAYER then m.shake_until = S.time + SHAKE_T * 0.4 end end
+	elseif e.skill == "snowball" then   -- 等离子球（id 沿用 snowball）
+		if e.phase == "grow" then FX.plasma_grow(m, e)
+		elseif e.phase == "burst" then FX.plasma_burst(m, e)
+		else ring_burst(e, vmath.lerp(0.4, TEAMS[e.team].color, WHITE), 3, 0.45) end
+	elseif e.skill == "giant" then
+		m.giant_pop[e.team] = S.time
+		if e.team == PLAYER then pcall(haptic.heavy, 2); m.shake_until = S.time + SHAKE_T; if e.level >= 3 then m.slowmo = SLOWMO_T end end
+		ring_burst(e, TEAMS[e.team].color, 9, 0.6)
+		local c = TEAMS[e.team].color
+		gui.cancel_animations(S.U.flash, "color.w")
+		gui.set_color(S.U.flash, vmath.vector4(c.x, c.y, c.z, 0.35)); gui.animate(S.U.flash, "color.w", 0, gui.EASING_OUTQUAD, 0.45)
+	end
+end
+
+-- ---------------------------------------------------------------- 每帧同步
+--- 吸走演出结束后真正切盘：整盘闪白重画成下一盘、镜头跳到新位置、棋盘弹一下 + warp 音
+local function stage_switch_now(m)
+	repaint_all(); setup_goal_ui(m)
+	gui.cancel_animations(S.U.flash, "color.w"); gui.set_color(S.U.flash, vmath.vector4(1, 1, 1, 0.7)); gui.animate(S.U.flash, "color.w", 0, gui.EASING_OUTQUAD, 0.5)
+	local k = S.cam.k
+	if cam.on() then S.cam.x, S.cam.y = cam.target(m); cam.apply() end   -- 镜头直接跳到新盘的球上（闪白盖着）
+	gui.cancel_animations(S.U.board, gui.PROP_SCALE); gui.set_scale(S.U.board, vmath.vector3(0.92 * k, 0.92 * k, 1)); gui.animate(S.U.board, gui.PROP_SCALE, vmath.vector3(k, k, 1), gui.EASING_OUTBACK, 0.45)
+	snd("warp", 0.9, 0.9)
+end
+local function sync_events(m)
+	local s = m.sim
+	m.flash_cells = {}
+	m.hit_budget = BD.HIT_BUDGET; m.hurt_budget = 1
+	for _, e in ipairs(s.events) do
+		if e.device == "stage" then   -- 跑道接力切盘：玩家 → 先定住 STAGE_HOLD 放"被吸走"演出（sim 暂停、真球藏起），到时 stage_switch_now 整盘闪白重画成下一盘；别队 → 原地一圈紫环消失
+			if e.team == PLAYER then
+				m.stage_hold = S.time + FX.hold
+				suck_fx(e.x, e.y, math.floor(e.x) + 0.5, math.floor(e.y) + 0.5)
+			else
+				ring_burst(e, DEVICE_TINT.portal, 3, 0.45); snd("warp", 0.4 * AI_GAIN, 1.1)
+			end
+		elseif e.device then   -- 关卡装置：传送阵两头各一圈紫环 + warp 音；加速装置一圈青环 + boost 音
+			local gain = e.team == PLAYER and 1 or AI_GAIN
+			if e.device == "portal" then
+				ring_burst(e, DEVICE_TINT.portal, 3, 0.45); ring_burst({ x = e.to_x, y = e.to_y }, DEVICE_TINT.portal, 3, 0.45)
+				snd("warp", 0.6 * gain, 1.1)
+			else
+				ring_burst(e, DEVICE_TINT.boost, 4, 0.4); snd("boost", 0.4 * gain, 1.4)
+			end
+		elseif e.build then BD.event(m, e)   -- 道具关：放置 / 放大 / 出兵 / 占领 / 没了
+		elseif e.skill then
+			local gain = e.team == PLAYER and 1 or AI_GAIN
+			if e.skill == "fire" and e.phase == "aim" then snd("laser", 0.35 * gain, 1.7)
+			elseif e.phase and not (e.skill == "fire" and e.phase == "hit") then   -- 阶段事件（炸点 / 分裂 / 长大 / 撞球 / 弧命中）不放释放音；炸点音在 bomb_hit_fx 里限频播
+			else local sd = SKILL_SND[e.skill]; if sd then snd(sd[1], sd[2] * gain, sd[3] + ((e.level or 1) - 1) * 0.05) end end
+			skill_fx(m, e)
+		end
+	end
+	local crushed = false
+	for _, index in ipairs(s.changed) do
+		local i = (index - 1) % STRIDE + 1
+		local j = math.floor((index - 1) / STRIDE) + 1
+		local owner = s.grid[i][j]
+		local ot = owner and owner > 0 and s.teams[owner]
+		if ot and (ot.giant_left or 0) > 0 then crushed = true end
+		if owner == PLAYER and S.time - m.last_capture >= CAPTURE_GAP and (s.teams[PLAYER].giant_left or 0) <= 0 then
+			snd("capture", 0.35, 0.9 + math.random() * 0.4)
+			m.last_capture = S.time
+		end
+	end
+	if crushed and S.time - m.last_crush >= CRUSH_GAP then
+		snd("crush", 0.6, 0.85 + math.random() * 0.3)
+		m.last_crush = S.time
+	end
+	local second = math.ceil(s.time_left)
+	if second ~= m.last_second and second > 0 and second <= C.FINAL_RUSH_TIME then snd("tick") end
+	m.last_second = second
+end
+
+local function sync_visuals(m)
+	local s, U = m.sim, S.U
+	for _, index in ipairs(s.changed) do
+		local i = (index - 1) % STRIDE + 1
+		local j = math.floor((index - 1) / STRIDE) + 1
+		local owner = s.grid[i][j]
+		local cell = U.cells[index]
+		gui.cancel_animations(cell, gui.PROP_COLOR)
+		local target = cell_color(owner)
+		local ot = owner and owner > 0 and s.teams[owner]
+		if (ot and (ot.giant_left or 0) > 0) or (m.flash_cells and owner and m.flash_cells[owner]) then   -- 巨球碾过 / 火焰落地：闪白 + 顶起来再弹回
+			gui.set_color(cell, WHITE)
+			gui.animate(cell, gui.PROP_COLOR, target, gui.EASING_OUTQUAD, 0.4)
+			gui.cancel_animations(cell, gui.PROP_SCALE)
+			gui.set_scale(cell, vmath.vector3(1.7, 1.7, 1))
+			gui.animate(cell, gui.PROP_SCALE, vmath.vector3(1, 1, 1), gui.EASING_OUTBACK, 0.55)
+		else
+			gui.set_color(cell, target)
+		end
+	end
+	-- 我方换色的格：闪白再落到自己的颜色 + 原色碎片（用户 2026-10-31）；巨球/火焰那套顶起动画照旧叠加
+	local shard_budget = (s.mode == "build" or #s.flips > 20) and 2 or 6   -- 每帧最多放几团碎片（道具关子弹一帧染一片 / 冲击波圆弧一帧翻几十格，池子轮太快会撞 gui.max_particlefx_count 128：网页 2026-11-03、11-05 实测报 buffer full）
+	for _, f in ipairs(s.flips) do
+		if f.to == PLAYER then
+			local cell = U.cells[f.idx]
+			local i = (f.idx - 1) % STRIDE + 1
+			local j = math.floor((f.idx - 1) / STRIDE) + 1
+			gui.cancel_animations(cell, gui.PROP_COLOR)
+			gui.set_color(cell, WHITE)
+			gui.animate(cell, gui.PROP_COLOR, cell_color(s.grid[i][j]), gui.EASING_INQUAD, FLIP_FLASH_T)
+			if #U.shards > 0 and shard_budget > 0 then
+				shard_budget = shard_budget - 1
+				local n = U.shards[U.shard_next]; U.shard_next = U.shard_next % #U.shards + 1
+				local pos = gui.get_position(cell)
+				gui.set_position(n, pos); gui.set_color(n, (f.from or 0) == 0 and SHARD_NEUTRAL or cell_color(f.from))   -- 碎片 = 被打掉那格的原色；中立白格用浅灰，白底上才看得见
+				pcall(gui.play_particlefx, n)
+			end
+		end
+	end
+	s.changed = {}; s.events = {}; s.flips = {}
+	for t, team in ipairs(s.teams) do
+		local frozen = sim.is_frozen(s, team)
+		local accel = (team.accel_left or 0) > 0
+		local bombing = (team.bomb_left or 0) > 0
+		local pulse = 0.5 + 0.5 * math.sin(S.time * 4 + t * 1.7)
+		local color = TEAMS[t].color
+		local slowed = (team.slow_left or 0) > 0
+		local on_view = ((not s.stages) or team.stage == view_stage(s)) and not (t == PLAYER and (m.stage_hold or m.finish_hide))   -- 跑道接力：不在玩家这一盘的队不画；玩家球被吸走 / 到终点期间藏起（影子球在演）
+		for k, p in ipairs(U.balls[t]) do
+			local b = team.balls[k]
+			if b and on_view then
+				local giant = (team.giant_left or 0) > 0   -- 巨球作用全部球（含分身副球，2026-10-30）；三级穿透只主球
+				local stunned = (b.stun_left or 0) > 0   -- 被链电劈 / 被冲击波撞：原地停、灰白（2026-11-04 晚）
+				local sc = accel and 1.3 or 1.0
+				local body = (frozen or stunned) and FROZEN or (slowed and vmath.lerp(0.5, color, SLOWED) or color)
+				if not giant then   -- 滚雪球：按 sim 半径放大（分裂小球照常大小）
+					local rk = sim.ball_radius(team, b) / C.BALL_RADIUS
+					if rk > 1.001 then sc = rk * (accel and 1.1 or 1); body = vmath.lerp(0.2, body, WHITE) end
+				end
+				local snowing = k == 1 and (team.snow_left or 0) > 0 and not giant   -- 等离子球在场（巨球同时在场时让位给巨球演出）
+				local snow_flash = 0   -- 长一圈 / 炸开瞬间的闪白量（球身乘纯队色 + 这个量的白）
+				if k == 1 and m.snow_pop and m.snow_pop[t] then   -- 长一圈：弹一下；炸开：先维持大球闪白 0.15 s，再 0.3 s 缩回原大小（用户：爆炸完了核心缩小）
+					local sp = m.snow_pop[t]; local age = S.time - sp.t
+					if sp.burst then
+						if age < 0.15 then sc = sp.from; snow_flash = 1 - age / 0.15; body = vmath.lerp(snow_flash, body, WHITE)
+						elseif age < 0.45 then local u = (age - 0.15) / 0.3; sc = sp.from + (sc - sp.from) * u * u
+						else m.snow_pop[t] = nil end
+					elseif age < 0.2 then snow_flash = 1 - age / 0.2; body = vmath.lerp(snow_flash, body, WHITE)   -- 长一圈只闪白，大小只跟 sim 半径（用户：别一会大一会小）
+					else m.snow_pop[t] = nil end
+				end
+				if k == 1 then p.last_sc = sc end
+				if k == 1 and m.shock_pop then   -- 放冲击波：主球闪白 + 弹大一下（0.35 s）
+					local sp = S.time - (m.shock_pop[t] or -10)
+					if sp < 0.35 then local f = 1 - sp / 0.35; body = vmath.lerp(f, body, WHITE); sc = sc * (1 + 0.7 * math.sin(math.pi * sp / 0.35)) end
+				end
+				if giant then
+					local since = S.time - (m.giant_pop[t] or -10)
+					local pop = since < GIANT_POP and (1 + 0.6 * math.sin(math.pi * since / GIANT_POP)) or 1
+					sc = (sim.ball_radius(team, b) / C.BALL_RADIUS) * pop
+					local flash = 0.5 + 0.5 * math.sin(S.time * 14)
+					body = vmath.lerp(0.25 * flash, color, WHITE)   -- 巨球期粗环快闪
+				end
+				if not p.visible then
+					gui.set_enabled(p.node, true); p.visible = true
+					if b.temp then   -- 分身新球：从 0 弹出来
+						gui.cancel_animations(p.node, gui.PROP_SCALE); gui.set_scale(p.node, vmath.vector3(0.01, 0.01, 1))
+						gui.animate(p.node, gui.PROP_SCALE, vmath.vector3(sc, sc, 1), gui.EASING_OUTBACK, 0.35)
+						p.pop_until = S.time + 0.35
+					end
+				end
+				local x, y = ball_local(b)
+				gui.set_position(p.node, v3(x, y))
+				if p.burst_fx then pcall(gui.set_position, p.burst_fx, v3(x, y)) end   -- 等离子球炸开的爆炸贴图跟着球走
+				if S.time >= (p.pop_until or 0) then gui.set_scale(p.node, vmath.vector3(sc, sc, 1)) end
+				gui.set_color(p.node, ball_outline_color(body)); gui.set_color(p.disc, ball_ring_color(body)); gui.set_color(p.core, WHITE)
+				if p.halo then
+					if giant then
+						gui.set_enabled(p.halo, true); gui.set_enabled(p.ring, true); gui.set_enabled(p.tail, true); ribbon_release(p)
+						local hp = 0.5 + 0.5 * math.sin(S.time * 6 + k)
+						gui.set_color(p.halo, vmath.vector4(color.x, color.y, color.z, 0.72 + 0.18 * hp))
+						gui.set_scale(p.halo, vmath.vector3(1 + 0.12 * hp, 1 + 0.12 * hp, 1))
+						-- 二级起外圈闪电能量环：冰白快闪、忽大忽小；三级更亮
+						if team.giant_level >= 2 then
+							local zap = 0.5 + 0.5 * math.sin(S.time * 25 + k * 3)
+							gui.set_color(p.ring, vmath.lerp(zap, BOLT, WHITE)); gui.set_scale(p.ring, vmath.vector3(1.05 + 0.15 * zap, 1.05 + 0.15 * zap, 1))
+							gui.set_color(p.halo, vmath.vector4(1, 1, 1, (team.giant_level >= 3 and k == 1 and 0.5 or 0.3) + 0.3 * zap))   -- 穿透的主球更亮
+						else
+							gui.set_color(p.ring, vmath.vector4(1, 1, 1, 0.95)); gui.set_scale(p.ring, vmath.vector3(1, 1, 1))
+						end
+						local ang = math.atan2(b.dy, b.dx) + math.pi
+						gui.set_position(p.tail, v3(x, y)); gui.set_rotation(p.tail, vmath.quat_rotation_z(ang))
+						gui.set_size(p.tail, v3(CELL * 6, BALL_PX * sc * 1.1)); gui.set_color(p.tail, vmath.vector4(color.x, color.y, color.z, 0.95))
+					elseif bombing and k == 1 then   -- 炸弹在场：主球外圈橙红快闪（点着的引信）
+						gui.set_enabled(p.halo, false); gui.set_enabled(p.tail, false); gui.set_enabled(p.ring, true)
+						local zap = 0.5 + 0.5 * math.sin(S.time * 18)
+						gui.set_color(p.ring, vmath.lerp(zap, SKILL_TINT.bomb, WHITE)); gui.set_scale(p.ring, vmath.vector3(1.2 + 0.12 * zap, 1.2 + 0.12 * zap, 1))
+					elseif snowing then   -- 等离子球（巨球同款思路，用户 2026-11-05 夜二改）：偏白队色光晕快闪 + 白环；周围小闪电在 FX.plasma_sync 画
+						gui.set_enabled(p.halo, true); gui.set_enabled(p.tail, false); gui.set_enabled(p.ring, true); ribbon_release(p)
+						local zap = 0.5 + 0.5 * math.sin(S.time * 22 + t)
+						local hc = vmath.lerp(0.35, color, WHITE)
+						gui.set_color(p.halo, vmath.vector4(hc.x, hc.y, hc.z, 0.5 + 0.2 * zap)); gui.set_scale(p.halo, vmath.vector3(0.9 + 0.08 * zap, 0.9 + 0.08 * zap, 1))
+						gui.set_color(p.ring, vmath.lerp(0.3 * zap, WHITE, color)); gui.set_scale(p.ring, vmath.vector3(1.02 + 0.06 * zap, 1.02 + 0.06 * zap, 1))
+					elseif stunned then   -- 被劈停住：电笼——球小幅抖、外圈电火花快闪放大
+						gui.set_enabled(p.halo, true); gui.set_enabled(p.tail, false); gui.set_enabled(p.ring, true)
+						local zap = 0.5 + 0.5 * math.sin(S.time * 30 + k)
+						gui.set_position(p.node, v3(x + (math.random() - 0.5) * 4, y + (math.random() - 0.5) * 4))
+						gui.set_color(p.ring, vmath.lerp(zap, BOLT, WHITE)); gui.set_scale(p.ring, vmath.vector3(1.35 + 0.25 * zap, 1.35 + 0.25 * zap, 1))
+						gui.set_color(p.halo, vmath.vector4(0.75, 0.9, 1, 0.25 + 0.25 * zap)); gui.set_scale(p.halo, vmath.vector3(1.1, 1.1, 1))
+						p.was_stunned = true
+					else
+						gui.set_enabled(p.halo, false); gui.set_enabled(p.ring, false); gui.set_enabled(p.tail, false)
+						if p.was_stunned then   -- 刚解除：炸一下电火花
+							p.was_stunned = nil
+							fx_node(S.U.beam_layer, x, y, CELL * 3, "fx_zap", true, function(n) pcall(gui.delete_node, n) end)
+						end
+					end
+				end
+				if p.trail then
+					if giant and not p.trail_on then pcall(gui.play_particlefx, p.trail); p.trail_on = true
+					elseif not giant and p.trail_on then pcall(gui.stop_particlefx, p.trail); p.trail_on = false end
+				end
+				if p.tail and not giant then   -- 加速拖尾带（只给前 3 个球；巨球时让位给彗尾）
+					if accel and not frozen then
+						local rb = ribbon_acquire(p)
+						if rb then ribbon_draw(rb, x, y, BALL_PX * sc, body, vmath.lerp(0.82, body, WHITE)) end
+					else
+						ribbon_release(p)
+					end
+				end
+			elseif p.visible then
+				-- 副球消失：在原位留一个缩小淡出的影子（用户 2026-10-27：要看得出它没了）
+				local gp = gui.get_position(p.node)
+				local ghost = box(U.board, gp.x, gp.y, BALL_PX, BALL_PX, color, "ball")
+				gui.animate(ghost, gui.PROP_SCALE, vmath.vector3(0.05, 0.05, 1), gui.EASING_INQUAD, 0.3); fx_fade(ghost, 0.3)
+				gui.set_enabled(p.node, false); p.visible = false; if p.tail then gui.set_enabled(p.tail, false) end; ribbon_release(p)
+				if p.trail and p.trail_on then pcall(gui.stop_particlefx, p.trail); p.trail_on = false end
+				if p.burst_fx then pcall(gui.delete_node, p.burst_fx); p.burst_fx = nil end
+			end
+		end
+	end
+	-- 传送瞄准：主球外画限距环（三级不限不画）
+	local tsk = S.targeting and s.teams[PLAYER].skills[S.targeting]
+	local rng_cells = tsk and tsk.id == "teleport" and SKILLS.teleport.range[tsk.level] or nil
+	if rng_cells and rng_cells < GRID then
+		local mb = s.teams[PLAYER].balls[1]
+		local x, y = ball_local(mb)
+		gui.set_enabled(U.range_ring, true); gui.set_position(U.range_ring, v3(x, y))
+		local sc = rng_cells * 2 * CELL / BALL_PX
+		gui.set_scale(U.range_ring, vmath.vector3(sc, sc, 1))
+		gui.set_color(U.range_ring, vmath.vector4(0.85, 0.6, 1, 0.45 + 0.2 * math.sin(S.time * 6)))
+	else gui.set_enabled(U.range_ring, false) end
+	-- 玩家被冻住：整盘冰罩
+	local me_frozen = sim.is_frozen(s, s.teams[PLAYER])
+	gui.set_enabled(U.frozen, me_frozen); gui.set_enabled(U.frozen_text, me_frozen)
+end
+
+local function update_top(m)
+	local s, U = m.sim, S.U
+	local seconds = math.ceil(s.time_left)
+	gui.set_enabled(U.timer, not s.untimed and not m.showcase)   -- 染区关不计时：顶上不画倒计时
+	set_text(U.timer, s.untimed and "" or tostring(seconds))
+	gui.set_color(U.timer, seconds <= C.FINAL_RUSH_TIME and WARNING or WHITE)
+	local g = s.goal
+	if g and g.kind ~= "area" and not m.showcase then   -- 染区：目标行写进度；竞速：目标行写提示。份额条/皇冠在 setup_goal_ui 里已收
+		if g.kind == "zone" then set_text(U.goal_text, string.format("%s  %d / %d", T("PAINT THE ZONE"), g.owned[PLAYER] or 0, g.total))
+		elseif s.maze then set_text(U.goal_text, T(view_stage(s) == s.goal_stage and "REACH THE STAR" or "REACH THE PORTAL"))   -- 迷宫关盘号没意义（有死胡同）
+		elseif s.stages and #s.stages > 1 then   -- 单盘赛道不写 STAGE 1 / 1
+			local k, n = view_stage(s), #s.stages
+			set_text(U.goal_text, string.format(T("STAGE %d / %d"), k, n) .. "  ·  " .. T(k < n and "REACH THE PORTAL" or "REACH THE STAR"))
+		else set_text(U.goal_text, T("REACH THE STAR")) end
+		return
+	end
+	local total = s.total or (GRID * GRID)
+	local leader = sim.ranking(s)[1]
+	local x = -HALF
+	for t = 1, s.n do
+		local pct = s.counts[t] / total * 100
+		local w = BOARD_W * pct / 100
+		gui.set_position(U.bar[t], v3(x, BAR_Y)); gui.set_size(U.bar[t], v3(w, BAR_H))
+		set_text(U.bar_text[t], w > 70 and string.format("%d%%", math.floor(pct + 0.5)) or "")
+		gui.set_position(U.bar_text[t], v3(x + w / 2, BAR_Y))
+		if t == leader then
+			local target = v3(x + w / 2, BAR_Y + CROWN_LIFT)
+			if m.crown_leader ~= t then   -- 换主：加速再减速滑过去
+				m.crown_leader = t
+				m.crown_anim_until = S.time + CROWN_SLIDE
+				gui.cancel_animations(U.crown, gui.PROP_POSITION)
+				gui.animate(U.crown, gui.PROP_POSITION, target, gui.EASING_INOUTQUAD, CROWN_SLIDE)
+				gui.animate(U.crown, gui.PROP_SCALE, vmath.vector3(1.25, 1.25, 1), gui.EASING_OUTQUAD, CROWN_SLIDE / 2, 0, function()
+					gui.animate(U.crown, gui.PROP_SCALE, vmath.vector3(1, 1, 1), gui.EASING_INQUAD, CROWN_SLIDE / 2)
+				end)
+			elseif S.time >= m.crown_anim_until then
+				gui.set_position(U.crown, target)
+			end
+		end
+		x = x + w
+		local st = U.status[t]
+		if st and s.n <= STATUS_COLS then
+			-- 用户 2026-10-28：队名/效果跟着自己那段份额条的中心走（和段里的百分数同一竖线），贴边夹在棋盘内
+			m.name_x = m.name_x or {}; m.name_x[t] = x - w / 2
+			set_text(st.name, t == PLAYER and T("YOU") or T(TEAMS[t].name))
+		end
+	end
+	local neutral_w = BOARD_W * (s.counts[0] or 0) / total
+	gui.set_position(U.bar_neutral, v3(x, BAR_Y)); gui.set_size(U.bar_neutral, v3(neutral_w, BAR_H))
+	-- 队名摆到各自段中心；左到右推开保证相邻 ≥ NAME_GAP，再整体不出棋盘右边、回头不出左边
+	if s.n <= STATUS_COLS and m.name_x then
+		local cx = m.name_x
+		for t = 1, s.n do cx[t] = math.max(cx[t], -HALF + NAME_GAP / 2); if t > 1 then cx[t] = math.max(cx[t], cx[t - 1] + NAME_GAP) end end
+		for t = s.n, 1, -1 do cx[t] = math.min(cx[t], HALF - NAME_GAP / 2); if t < s.n then cx[t] = math.min(cx[t], cx[t + 1] - NAME_GAP) end end
+		for t = 1, s.n do local st = U.status[t]; if st then gui.set_position(st.name, v3(cx[t], STATUS_Y)) end end
+	end
+end
+
+--- 技能钮状态：冷却环 fill = 已恢复比例（放的一刻清空、慢慢画满）；就绪亮、冷却暗、瞄准中队色高亮；中间显示剩余秒
+local function update_buttons(m)
+	local s, U = m.sim, S.U
+	local team = s.teams[PLAYER]
+	local frozen = sim.is_frozen(s, team)
+	if S.targeting and not sim.can_cast(s, team, S.targeting) then S.targeting = nil end
+	for k, b in ipairs(U.sk) do
+		local sk = team.skills[k]
+		if gui.is_enabled(b.node) and not sk then   -- 空位：暗圆 + EMPTY
+			gui.play_flipbook(b.node, "skill_btn"); gui.set_color(b.node, shade(PANEL, 1, 0.5)); gui.set_color(b.ring, vmath.vector4(TRACK.x, TRACK.y, TRACK.z, 0.6)); gui.set_fill_angle(b.ring, -360)
+			gui.set_enabled(b.badge, false); set_text(b.cd, T("EMPTY")); gui.set_color(b.cd, MUTED); gui.set_scale(b.cd, vmath.vector3(b.d / 200 * 0.5, b.d / 200 * 0.5, 1))
+			b.was_ready = nil
+		elseif gui.is_enabled(b.node) then
+			gui.set_enabled(b.badge, true); gui.set_color(b.cd, WHITE); gui.set_scale(b.cd, vmath.vector3(b.d / 200 * 0.75, b.d / 200 * 0.75, 1))
+			local total = sim.skill_cd(PLAYER, sk.id, sk.level)
+			local left = team.cd[sk.id] or 0
+			local frac = 1 - math.max(0, math.min(1, left / total))
+			local ready = sim.can_cast(s, team, k)
+			gui.set_fill_angle(b.ring, -360 * frac)
+			local tint = SKILL_TINT[sk.id] or WHITE
+			gui.play_flipbook(b.node, "orb_" .. sk.id); gui.play_flipbook(b.badge, "lvl_" .. sk.level)
+			if S.targeting == k then   -- 瞄准中：球提亮呼吸、环白
+				local pz = 0.5 + 0.5 * math.sin(S.time * 8)
+				gui.set_color(b.node, vmath.vector4(1.15 + 0.25 * pz, 1.15 + 0.25 * pz, 1.15 + 0.25 * pz, 1)); gui.set_color(b.ring, WHITE)
+			elseif ready then
+				gui.set_color(b.node, WHITE); gui.set_color(b.ring, tint)
+			else   -- 冷却中：球压暗
+				gui.set_color(b.node, vmath.vector4(0.38, 0.38, 0.45, frozen and 0.6 or 1)); gui.set_color(b.ring, vmath.vector4(tint.x, tint.y, tint.z, 0.55))
+			end
+			gui.set_color(b.badge, ready and WHITE or vmath.vector4(0.6, 0.6, 0.65, 1))
+			set_text(b.cd, (left > 0 and not frozen) and string.format("%.0f", math.ceil(left)) or "")
+			-- 刚就绪：弹一下
+			if ready and b.was_ready == false then
+				gui.cancel_animations(b.node, gui.PROP_SCALE); gui.set_scale(b.node, vmath.vector3(1.15, 1.15, 1))
+				gui.animate(b.node, gui.PROP_SCALE, vmath.vector3(1, 1, 1), gui.EASING_OUTBACK, 0.3)
+				if not m.demo and not m.lab then snd("pick", 0.3, 1.4) end
+			end
+			b.was_ready = ready
+		end
+	end
+	if m.lab then set_text(U.labreset.label, T("RESET")) end
+end
+
+-- ---------------------------------------------------------------- 提示
+local function toast(s)
+	if S.toast then pcall(gui.delete_node, S.toast) end
+	local bg = box(gui.get_node("root"), 0, 300, 760, 120, vmath.vector4(0, 0, 0, 0))
+	text(bg, 0, 0, s, 0.9, WHITE)
+	gui.animate(bg, "color.w", 0.8, gui.EASING_OUTQUAD, 0.2)
+	gui.animate(bg, "color.w", 0, gui.EASING_INQUAD, 0.4, 1.4, function() pcall(gui.delete_node, bg); if S.toast == bg then S.toast = nil end end)
+	S.toast = bg
+end
+
+-- ---------------------------------------------------------------- 玩家指令
+local function send(cmd)
+	local m = S.match
+	if not m or m.demo then return end
+	local ok = sim.command(m.sim, PLAYER, cmd)
+	if DBG and cmd.type == "cast" then dbg_log(string.format("cast slot=%s ok=%s x=%s y=%s", tostring(cmd.slot), tostring(ok), tostring(cmd.x), tostring(cmd.y))) end
+	if ok then
+		if cmd.type == "turn" then snd("turn", 0.5) end
+		return true
+	end
+	return false
+end
+
+--- 点了第 k 位技能钮：要目标的进/退瞄准态，其余立刻放
+local function tap_skill(k)
+	local m = S.match; local s = m.sim; local team = s.teams[PLAYER]
+	S.aim_st = nil
+	local sk = team.skills[k]
+	if DBG then dbg_log(string.format("tap slot=%d id=%s lv=%s cd=%.2f frozen=%s over=%s targeting=%s", k, sk and sk.id or "nil", sk and tostring(sk.level) or "-", sk and (team.cd[sk.id] or 0) or -1, tostring(sim.is_frozen(s, team)), tostring(s.over), tostring(S.targeting))) end
+	if not sk then return end
+	if not sim.can_cast(s, team, k) then snd("turn", 0.3, 0.7); return end
+	if C.def(sk.id).target then   -- 技能表 / 道具表同一套（道具三样都要点棋盘）
+		-- 用户 2026-10-29：网页上鼠标点传送"没反应"——鼠标习惯双击，第二下按原逻辑会把瞄准取消；0.45 s 内再按同一钮当同一次点击
+		if S.targeting == k and S.time - (S.target_t or -1) < 0.45 then return end
+		S.targeting = S.targeting ~= k and k or nil
+		S.target_t = S.time
+		snd("pick", 0.6)
+	else
+		S.targeting = nil
+		if send({ type = "cast", slot = k }) then pcall(haptic.tap) end
+	end
+end
+
+--- 放置拖拽：手指位置 → 相对按下点的格偏移（设计坐标 y 向上 = 棋盘 y 向上）
+function BD.drag_vec(pl)
+	local fx0, fy0 = layout.touch_fit(pl.x0, pl.y0)
+	local fx1, fy1 = layout.touch_fit(pl.x, pl.y)
+	return (fx1 - fx0) / CELL, (fy1 - fy0) / CELL
+end
+--- 抬手：拖够 0.8 格就带朝向放，不够就自动朝敌人；放不上保持选中
+function BD.finish_place(m)
+	local pl = S.place; if not pl then return end
+	S.place = nil
+	gui.set_enabled(S.U.place_fp, false); gui.set_enabled(S.U.place_arrow, false)
+	if not m or m.sim.over then return end
+	local dx, dy = BD.drag_vec(pl)
+	local cmd = { type = "cast", slot = pl.slot, x = pl.cx, y = pl.cy }
+	if dx * dx + dy * dy >= 0.64 then cmd.ax, cmd.ay = dx, dy end
+	if send(cmd) then pcall(haptic.tap); S.targeting = nil else snd("turn", 0.3, 0.7) end
+end
+--- 每帧：拖拽中画脚印 + 朝向箭头
+function BD.update_place(m)
+	local pl = S.place; local U = S.U
+	if not pl then return end
+	local i, j = math.floor(pl.cx) + 1, math.floor(pl.cy) + 1
+	local sx, sy = sim.struct_center(pl.kind, i, j)
+	local x, y = sx * CELL - HALF_W, sy * CELL - HALF_H
+	local n = pl.kind == "cannon" and C.BUILD.CANNON_SIZE or 1
+	gui.set_enabled(U.place_fp, true); gui.set_position(U.place_fp, v3(x, y)); gui.set_size(U.place_fp, v3(CELL * n, CELL * (pl.kind == "amp" and 1 or n)))
+	local okp = sim.can_place(m.sim, PLAYER, pl.kind, i, j)
+	gui.set_color(U.place_fp, okp and vmath.vector4(1, 1, 1, 0.28) or vmath.vector4(1, 0.3, 0.3, 0.35))
+	local dx, dy = BD.drag_vec(pl)
+	local len = math.sqrt(dx * dx + dy * dy)
+	if len >= 0.8 then
+		gui.set_enabled(U.place_arrow, true); gui.set_position(U.place_arrow, v3(x, y))
+		gui.set_rotation(U.place_arrow, vmath.quat_rotation_z(math.atan2(dy, dx)))
+		gui.set_size(U.place_arrow, v3(CELL * math.min(5, 1.5 + len), CELL * 0.4))
+	else gui.set_enabled(U.place_arrow, false) end
+end
+
+-- ---------------------------------------------------------------- 局终：名次 → 本地榜 / 服务端榜（分数 = 格子数）/ 发币 → 结算页
+local function player_place(s)
+	if s.goal and s.goal.kind ~= "area" then return sim.cleared(s, PLAYER) and 1 or 2 end   -- 竞速 / 染区：达成目标才算第一，到时没达成 = 输（哪怕格多）
+	for k, t in ipairs(sim.ranking(s)) do if t == PLAYER then return k end end
+	return s.n
+end
+
+-- 结算页上的技能点演出：赢页出现 0.6 s 后 "+N SKILL POINTS" 弹出来；结算页关掉时一起删
+local function result_extra_clear()
+	for _, n in ipairs(S.result_extra or {}) do pcall(gui.delete_node, n) end
+	S.result_extra = {}
+end
+hide_result = function() result_extra_clear(); result_ui.hide(S) end
+-- 必须在 result_ui.show 之后调用：节点先挂 root 定位，再 set_parent(nil, true) 提到顶层，画在结算页黑幕之上
+local function result_extra_show(R)
+	result_extra_clear()
+	local pts = R.points or 0
+	if pts <= 0 then return end
+	local root = gui.get_node("root")
+	-- 用户 2026-11-05 夜：照金币那行的样子——⚡ 图标 + 大号 "+N"，整组按字宽居中，放在金币行（root −30，金币底 −91）下面；
+	-- 按钮列用 result_ui 的 btn_shift 让开（CLOSE 顶边从 −155 到 −285）
+	local y, ic, gap = -170, 100, 30
+	local t = text(root, 0, y, "+" .. pts, 2.2, GOLD_TEXT, gui.PIVOT_W)
+	local okw, w = pcall(function() return resource.get_text_metrics(gui.get_font_resource(gui.get_font(t)), gui.get_text(t)).width end)
+	w = ((okw and tonumber(w)) or 60) * 2.2
+	local left = -(ic + gap + w) / 2
+	local icon = box(root, left + ic / 2, y, ic, ic, nil, "sp")
+	gui.set_position(t, v3(left + ic + gap, y))
+	for _, n in ipairs({ icon, t }) do gui.set_parent(n, nil, true); S.result_extra[#S.result_extra + 1] = n end
+	gui.set_scale(icon, vmath.vector3(0.1, 0.1, 1)); gui.animate(icon, gui.PROP_SCALE, vmath.vector3(1, 1, 1), gui.EASING_OUTBACK, 0.4, 1.2, function() snd("pick") end)
+	gui.set_color(t, vmath.vector4(GOLD_TEXT.x, GOLD_TEXT.y, GOLD_TEXT.z, 0)); gui.animate(t, "color.w", 1, gui.EASING_OUTQUAD, 0.3, 1.3)
+end
+
+--- 结算页：PLAY 重开、RANKING 开榜、CLOSE 回封面
+local function show_result(m)
+	local R = S.result
+	if not R or S.match ~= m or not S.visible then return end
+	R.shown = true
+	local ctx = { score = R.cells, rank_local = R.local_rec and R.local_rec.local_rank, rank_week = R.rank and R.rank.rank_week, rank_all = R.rank and R.rank.rank_all }
+	local function open_ranking()
+		scoreboard_ui.open({ game = "clashdoz", font = "game_font", name_font = "name_font", local_list = cd_scores.list(), this_game = ctx,
+							 local_detail = function(e) return T(PLACE_TITLE[e.cleared] or "4TH PLACE") end })
+	end
+	local close_btn = { text = "CLOSE", color = "grey", on_tap = function() hide_result(); msg.post("#controller", "back_to_cover") end }
+	if R.level then   -- 关卡结算：第一名 LEVEL CLEAR + NEXT；否则 fail 页名次 + RETRY
+		if R.place == 1 then
+			result_ui.show(S, { mode = "win", title = "LEVEL CLEAR", reward = R.reward or 0, hud_node = S.coin_icon, hud_text_node = S.coin_text, button = "NEXT", sound = SETTINGS.sound,
+								btn_shift = (R.points or 0) > 0 and 130 or 0,   -- 有技能点那行时按钮列往下让（用户 2026-11-05 夜：CLOSE 离得太近）
+								on_primary = function() hide_result(); msg.post("#controller", "next_level") end, extra = { close_btn } })
+			result_extra_show(R)
+		else
+			result_ui.show(S, { mode = "fail", title = "FAILED", button = "RETRY", sound = SETTINGS.sound,   -- 2026-10-30 用户：不写第几名，只有第一名算赢，其余都是输
+								on_primary = function() hide_result(); msg.post("#controller", "retry_level") end, extra = { close_btn } })
+		end
+		return
+	end
+	result_ui.show(S, { mode = (R.place == 1 or R.ranked) and "win" or "fail", title = R.place == 1 and "VICTORY" or "FAILED", reward = R.reward or 0, hud_node = S.coin_icon, hud_text_node = S.coin_text, button = "PLAY", sound = SETTINGS.sound,
+						on_primary = function() hide_result(); if m.lab then start_match({ lab = true }) else msg.post("#controller", "start_game", { layout = m.layout }) end end,   -- 再来一局重走准备页；试验场直接重开
+						extra = R.ranked and { { text = "RANKING", icon = "flag", color = "blue", on_tap = open_ranking }, close_btn } or { close_btn } })
+end
+
+finish_match = function(m)
+	m.finished = true
+	local s = m.sim
+	local place = player_place(s)
+	bgm_fade_out(1.0)
+	local race_win = place == 1 and s.goal and s.goal.kind == "race" and s.goal.at and not m.showcase and not m.demo
+	local zone_win = place == 1 and s.goal and s.goal.kind == "zone" and not m.showcase and not m.demo and m.level
+	CLIMAX.stop(m, place == 1)   -- 慢镜头到此为止；赢了镜头留在放大位看过关演出
+	local hold = m.climax_hold
+	if zone_win then   -- 染满最后一格（用户 2026-11-03）：那一格等离子爆闪 + 金环扩散 + goal 音；没经过慢镜头（最后一格是远处被火焰 / 闪电染的）就在目标区中心放
+		local lx, ly
+		if hold then lx, ly = hold.lx, hold.ly
+		else local r = s.goal.rect or { 16, 16, 17, 17 }; lx, ly = ((r[1] + r[3]) / 2 - 0.5) * CELL - HALF_W, ((r[2] + r[4]) / 2 - 0.5) * CELL - HALF_H end
+		keep_fx(fx_node(S.U.board, lx, ly, FX.burst / (hold and 1.4 or 1), "fx_burst", true, function(n) pcall(gui.delete_node, n) end))
+		local ring = keep_fx(box(S.U.board, lx, ly, CELL, CELL, GOLD_TEXT, "ring")); gui.set_blend_mode(ring, gui.BLEND_ADD)
+		gui.animate(ring, gui.PROP_SIZE, v3(CELL * 16, CELL * 16), gui.EASING_OUTQUAD, 0.9); fx_fade(ring, 0.9, 0, gui.EASING_OUTQUAD)
+		gui.cancel_animations(S.U.flash, "color.w"); gui.set_color(S.U.flash, vmath.vector4(1, 1, 1, 0.5)); gui.animate(S.U.flash, "color.w", 0, gui.EASING_OUTQUAD, 0.6)
+		snd("goal", 1.0, 1.0); pcall(haptic.tap)
+	elseif race_win then   -- 到星星（用户 2026-11-02）：球被吸进星星（雷电汇聚）→ 等离子爆闪 + goal 音；结算页晚 0.8 s 出
+		local pb = s.teams[PLAYER].balls[1]
+		local tx, ty = s.goal.at[1] - 0.5, s.goal.at[2] - 0.5
+		m.finish_hide = true
+		suck_fx(pb.x, pb.y, tx, ty)
+		timer.delay(0.45, false, function()
+			if S.match ~= m or not S.visible then return end
+			keep_fx(fx_node(S.U.board, tx * CELL - HALF_W, ty * CELL - HALF_H, FX.burst / (hold and 1.4 or 1), "fx_burst", true, function(n) pcall(gui.delete_node, n) end))
+			snd("goal", 1.0, 1.0); pcall(haptic.tap)
+		end)
+	else snd(place == 1 and "win" or "lose") end
+	local result_delay = (race_win or zone_win) and 1.8 or 1.0
+	if m.preview then   -- 技能预览：占满了就重开一局
+		timer.delay(1.5, false, function() if S.match == m and S.visible and S.preview then FX.pv_start(S.preview.id, S.preview.level) end end)
+		return
+	end
+	if m.demo then   -- 演示：不发币不记榜，2 s 后自动再开一局
+		timer.delay(2.0, false, function() if S.match == m and S.visible and S.demo then start_match({ demo = true, layout = m.layout, loadout = m.demo_loadout, enemies = m.demo_enemies }) end end)
+		return
+	end
+	if m.autopilot then   -- 商店截图 / 录像自动驾驶：不发币不写档案，2 s 后让 controller 再开一局
+		timer.delay(2.0, false, function() if S.match == m and S.visible then msg.post("#controller", "start_game", { autoplay = true }) end end)
+		return
+	end
+	local cells = s.counts[PLAYER]
+	local R = { place = place, cells = cells, reward = nil, rank = nil, shown = false, t0 = S.time, ranked = (m.layout == "quad") }   -- 试验场 layout = "lab"：只看名次
+	S.result = R
+	if m.level then   -- 关卡：第一名过关（进度 + 发币走 controller/game_progress.set_level），否则失败重试
+		R.level = m.level
+		if place == 1 then
+			local progressing = (m.level == game_progress.get_level("clashdoz"))
+			msg.post("#controller", "level_cleared")
+			R.reward = progressing and earn.expected(5) or 0
+			if not m.debug_giant then   -- 调试直达不写正式档案
+				local okd, r = pcall(profile.on_win, m.level)   -- 技能点：首胜 1 点、Boss 关首胜 2 点、重打 0（2026-11-05 夜）；0 → 结算页不显示
+				R.points = okd and r and r.points or 0
+			end
+		else
+			R.reward = 0
+		end
+		timer.delay(result_delay, false, function() if not R.shown and S.match == m and S.visible then show_result(m) end end)
+		return
+	end
+	if not R.ranked then   -- 试玩布局（1 打 1 / 1 打 8）：只看名次，不发币不记榜
+		R.reward = 0
+		timer.delay(1.0, false, function() if not R.shown and S.match == m and S.visible then show_result(m) end end)
+		return
+	end
+	R.local_rec = cd_scores.record(cells, place)
+	pcall(function() require("shared.cloud_save").mark_dirty() end)
+	scores.submit("clashdoz", cells, place, nil, function(d) if type(d) == "table" and d.ok then R.rank = d end end)
+	earn.report("clashdoz", "match_end", 5 - place, 0, function(amount)
+		R.reward = tonumber(amount) or 0
+		if not R.shown and S.time - R.t0 >= 1.0 then show_result(m) end
+	end)
+	timer.delay(1.0, false, function()
+		if R.shown or S.match ~= m or not S.visible then return end
+		if R.reward ~= nil then show_result(m)
+		else timer.delay(1.0, false, function() if not R.shown and S.match == m and S.visible then show_result(m) end end) end
+	end)
+end
+
+-- ---------------------------------------------------------------- How to Play 演示（四队全 AI 的真实对局 + 底部说明条 + 步骤点 + NEXT/CLOSE 胶囊）
+local DEMO_STEPS = {
+	{ caption = "Tap the board to steer your ball and paint enemy cells" },
+	{ caption = "Tap a skill button to cast it - fire and teleport need a second tap on the board" },
+	{ caption = "The ring around a button refills as the skill recharges" },
+	{ caption = "Win levels to earn skill points and level up your skills" },
+}
+local DEMO_CAPTION_W, DEMO_CAPTION_H, DEMO_CAPTION_SCALE = 1000, 150, 0.95
+
+local function demo_caption(txt)
+	local ui = S.demo_ui; if not ui or not ui.caption then return end
+	local n = ui.caption
+	local sc = DEMO_CAPTION_SCALE
+	local okf, font_res = pcall(gui.get_font_resource, gui.get_font(n))
+	for _ = 1, 6 do
+		local ok, mt = okf and pcall(resource.get_text_metrics, font_res, txt, { width = ui.caption_w / sc, line_break = true, leading = 1, tracking = 0 })
+		if not ok or not mt or mt.height * sc <= DEMO_CAPTION_H then break end
+		sc = sc - 0.1
+	end
+	gui.set_size(n, vmath.vector3(ui.caption_w / sc, DEMO_CAPTION_H / sc, 0))
+	gui.set_scale(n, vmath.vector3(sc, sc, 1))
+	gui.set_text(n, txt)
+end
+
+local function demo_clear_ui()
+	local ui = S.demo_ui; if not ui then return end
+	if ui.pill then ui.pill.delete() end
+	for _, n in ipairs({ ui.caption_bg, ui.caption, ui.pill and ui.pill.root }) do if n then pcall(gui.delete_node, n) end end
+	for _, d in ipairs(ui.dots or {}) do pcall(gui.delete_node, d) end
+	S.demo_ui = nil
+end
+
+local function demo_show_step(i)
+	local ui = S.demo_ui; if not ui then return end
+	S.demo_step = i
+	demo_caption(T(DEMO_STEPS[i].caption))
+	for j, d in ipairs(ui.dots) do gui.set_color(d, vmath.vector4(0.95, 0.8, 0.45, j == i and 1 or 0.35)) end
+	ui.pill.set_text(i >= #DEMO_STEPS and T("CLOSE") or T("NEXT|step"))
+end
+
+local function demo_build_ui()
+	demo_clear_ui()
+	local root = gui.get_node("root")
+	local ui = { dots = {} }
+	S.demo_ui = ui
+	local bar_w = math.max(1080, layout.width())
+	ui.caption_w = math.min(DEMO_CAPTION_W, layout.width() - 80)
+	ui.caption_bg = box(root, 0, -650, bar_w, 190, vmath.vector4(0, 0, 0, 0.55))
+	ui.caption = text(root, 0, -640, "", DEMO_CAPTION_SCALE, WHITE)
+	gui.set_line_break(ui.caption, true)
+	local n = #DEMO_STEPS
+	for i = 1, n do ui.dots[i] = box(root, (i - (n + 1) / 2) * 32, -765, 18, 18, vmath.vector4(1, 1, 1, 0.35)) end
+	ui.pill = pill_btn.new(root, { atlas = ATLAS, color = "purple", icon = "next", text = T("NEXT|step"), x = 0, y = -850, min_w = 260 })
+	demo_show_step(1)
+end
+
+local function demo_close()
+	S.demo = false
+	demo_clear_ui()
+	S.match = nil
+	msg.post("#controller", "back_to_cover")
+end
+
+-- ---------------------------------------------------------------- 生命周期
+function init(self)
+	if DBG then sys.set_error_handler(function(src, msg, tb) dbg_log("LUA ERROR " .. tostring(src) .. ": " .. tostring(msg) .. "\n" .. tostring(tb)) end) end
+	gui.set_render_order(3)
+	msg.post(".", "acquire_input_focus")
+	gui.set_enabled(gui.get_node("root"), false)
+	load_settings()
+	gui.play_flipbook(gui.get_node("btn_sound"), SETTINGS.sound and "btn_unmute" or "btn_mute")
+	local root = gui.get_node("root")
+	layout.fill(gui.get_node("bg"))
+	local extra = layout.extra()
+	local top_shift = 0
+	layout.snap_edges({ "btn_back", "btn_sound" })
+	if extra > 0 or layout.safe_top() > 0 then
+		top_shift = extra - layout.safe_top() + 28
+		for _, id in ipairs({ "btn_back", "btn_sound", "level_text" }) do
+			local n = gui.get_node(id); local p = gui.get_position(n); p.y = p.y + top_shift; gui.set_position(n, p)
+		end
+	end
+	if top_shift < 40 then TIMER_Y, TIMER_SCALE = 712, 1.7 end   -- iPad / 16:9：金币栏（782，下沿约 757）贴得近，计时器缩一点挤在皇冠上沿 671 和金币之间
+	-- 金币 HUD（顶栏居中，LV.N 下面）
+	local hud_y = 782 + top_shift
+	S.coin_icon = box(root, -50, hud_y, 58, 59, nil, "coin_gold")
+	S.coin_text = text(root, -10, hud_y, tostring(coin.get_balance()), 1.05, vmath.vector4(1, 0.96, 0.85, 1), gui.PIVOT_W)
+	CELL, LINE_W = device_cell()
+	BOARD_W = GRID * CELL; HALF = BOARD_W / 2
+	S.cell_base = CELL   -- 32 格盘的格距；道具关 16 格 = 两倍
+	S.root_pos = gui.get_position(root); S.root_home = S.root_pos
+	S.U = build(root)
+	layout_board(STRIDE, STRIDE)
+	S.fx_nodes = {}; S.fire_fx = {}
+	math.randomseed(os.time())
+end
+
+function update(self, dt)
+	result_ui.update(S, dt)
+	local m = S.match
+	if not m or not S.visible then return end
+	S.time = S.time + dt
+	local s = m.sim
+	local scale = (m.slowmo or 0) > 0 and SLOWMO_K or 1   -- 三级巨球释放：短慢动作
+	m.slowmo = math.max(0, (m.slowmo or 0) - dt)
+	if m.showcase and showcase_drive(m, dt) then return end   -- 封面展示：放招 / 转向 / 重开
+	if m.preview then FX.pv_drive(m, dt) end   -- 技能预览：每隔几秒替玩家放这招
+	m = S.match; s = m.sim
+	CDN.update(m)
+	scale = math.min(scale, CLIMAX.update(m))   -- 终结慢镜头
+	if m.stage_hold and S.time >= m.stage_hold then m.stage_hold = nil; stage_switch_now(m) end   -- 吸走演出放完 → 切盘
+	if S.hold and not s.over and not CDN.active(m) and not m.stage_hold and not m.climax and not m.climax_hold and S.time - S.hold.t0 >= C.HOLD_STEER_T then   -- 按住拖动：每帧朝手指转
+		local hx, hy = touch_to_cell(S.hold.x, S.hold.y)
+		if hx then sim.command(s, PLAYER, { type = "steer", x = hx, y = hy, dt = dt }) end
+	end
+	if not s.over and not CDN.active(m) and not m.stage_hold then
+		m.acc = m.acc + math.min(dt, 0.25) * scale
+		while m.acc >= C.FIXED_DT and not s.over do
+			for _, bot in ipairs(m.ais) do ai.update(bot, s, C.FIXED_DT) end
+			sim.step(s, C.FIXED_DT)
+			m.acc = m.acc - C.FIXED_DT
+		end
+		if s.over and not m.finished then finish_match(m) end
+	end
+	sync_events(m)
+	sync_visuals(m)
+	BD.sync(m)
+	FX.shock_sync(m)
+	BD.update_place(m)
+	cam.update(m, dt)
+	update_top(m)
+	update_buttons(m)
+	local root = gui.get_node("root")
+	if m.showcase then m.shake_until = 0 end
+	if S.time < (m.shake_until or 0) then   -- 屏震
+		local k = (m.shake_until - S.time) / SHAKE_T * 9
+		gui.set_position(root, S.root_pos + v3((math.random() - 0.5) * 2 * k, (math.random() - 0.5) * 2 * k))
+	elseif m.shaken then gui.set_position(root, S.root_pos); m.shaken = false end
+	if S.time < (m.shake_until or 0) then m.shaken = true end
+end
+
+function final(self) msg.post(".", "release_input_focus") end
+
+-- ---------------------------------------------------------------- 技能预览（用户 2026-11-05 夜："每个卡里加一个预览，点了到另一个页面完整看这招的动画"）
+--   真实小局（levels.PREVIEW：方盘 4 队、不计时、电脑不带技能），玩家的球 AI 走、不放招；FX.pv_drive 每 PV_GAP 秒清掉冷却替玩家放一次（火焰 / 传送落在远处敌格）；
+--   底下一条字幕（技能球 + 名字 + 等级）和 Lv.1 / 2 / 3 三颗胶囊（点了换级重开）；BACK 回收藏页；占满了自动重开
+FX.PV_GAP = 6.0
+FX.PV_ENEMIES = { [2] = { skills = {} }, [3] = { skills = {} }, [4] = { skills = {} } }
+--- 离球远的非己方格（格中心坐标）：火焰 / 传送的落点
+function FX.pv_target(s, r)
+	local b = s.teams[PLAYER].balls[1]
+	local best, bs
+	for _ = 1, 40 do
+		local i, j = cd_rng.range(r, 2, GRID - 1), cd_rng.range(r, 2, GRID - 1)
+		local v = s.grid[i] and s.grid[i][j]
+		if v and v ~= PLAYER and v ~= C.TRACK then
+			local dx, dy = i - 0.5 - b.x, j - 0.5 - b.y
+			local score = math.sqrt(dx * dx + dy * dy) + cd_rng.next(r) * 3
+			if not bs or score > bs then best, bs = { i - 0.5, j - 0.5 }, score end
+		end
+	end
+	return best
+end
+function FX.pv_drive(m, dt)
+	local s = m.sim
+	if s.over then return end
+	m.pv_t = (m.pv_t or 0) + dt
+	if m.pv_t < (m.pv_next or 1.2) then return end
+	local team = s.teams[PLAYER]
+	local sk = team.skills[1]
+	if not sk then return end
+	team.cd[sk.id] = 0
+	local x, y
+	if C.SKILLS[sk.id].target then local p = FX.pv_target(s, m.pv_rng); if p then x, y = p[1], p[2] end end
+	if sim.command(s, PLAYER, { type = "cast", slot = 1, x = x, y = y }) then m.pv_next = m.pv_t + FX.PV_GAP else m.pv_next = m.pv_t + 0.5 end   -- 放不出（等离子球还在场 / 被冻）过半秒再试
+end
+function FX.pv_clear_ui()
+	for _, b in ipairs(S.pv_pills or {}) do pcall(b.delete) end
+	for _, n in ipairs(S.pv_ui or {}) do pcall(gui.delete_node, n) end
+	S.pv_ui, S.pv_pills = nil, nil
+end
+function FX.pv_build_ui()
+	FX.pv_clear_ui()
+	local root = gui.get_node("root")
+	local pv = S.preview
+	local ui, pills = {}, {}
+	local bar_w = math.max(1080, layout.width())
+	ui[#ui + 1] = box(root, 0, -650, bar_w, 150, vmath.vector4(0, 0, 0, 0.55))
+	local label = text(root, 0, -650, T(C.def(pv.id).name) .. "   " .. string.format(T("Lv.%d"), pv.level), 0.95, WHITE, gui.PIVOT_W)
+	local okw, w = pcall(function() return resource.get_text_metrics(gui.get_font_resource(gui.get_font(label)), gui.get_text(label)).width end)
+	w = ((okw and tonumber(w)) or 300) * 0.95
+	local od, gap = 104, 26
+	local left = -(od + gap + w) / 2
+	ui[#ui + 1] = box(root, left + od / 2, -650, od, od, nil, "orb_" .. pv.id)
+	gui.set_position(label, v3(left + od + gap, -650)); ui[#ui + 1] = label
+	for lv = 1, 3 do
+		local b = pill_btn.new(root, { atlas = ATLAS, color = lv == pv.level and "green" or "grey", text = string.format(T("Lv.%d"), lv), x = (lv - 2) * 300, y = -850, min_w = 240 })
+		pills[lv] = b
+	end
+	S.pv_ui, S.pv_pills = ui, pills
+end
+function FX.pv_start(id, lv)
+	S.preview = { id = id, level = lv }
+	start_match({ preview = S.preview, level_tbl = levels.PREVIEW, loadout = { { id = id, level = lv } }, enemies = FX.PV_ENEMIES })
+	FX.pv_build_ui()
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("start_match") then
+		S.visible = true
+		gui.set_enabled(gui.get_node("root"), true)
+		local ok, err = pcall(start_match, { layout = message.layout, level = message.level, debug_giant = message.debug_giant, debug_card = message.debug_card, debug_level = message.debug_level, lab = message.lab,
+											  loadout = message.loadout, enemies = message.enemies, eager = message.eager, slots = message.slots,
+											  showcase = message.showcase, scale = message.scale, y = message.y, n = message.n })
+		if not ok then print("[clashdoz] start_match error: " .. tostring(err)) end
+	elseif message_id == hash("start_demo") then   -- How to Play：四队全 AI 的真实对局 + 字幕
+		S.visible = true
+		S.demo = true
+		gui.set_enabled(gui.get_node("root"), true)
+		msg.post(".", "acquire_input_focus")
+		local ok, err = pcall(function()
+			local lo, en = { { id = "lightning", level = 2 }, { id = "fire", level = 2 } }, levels.enemies(4, levels.TRIAL_PLAN, 7)
+			start_match({ demo = true, loadout = lo, enemies = en, eager = 0.7 })
+			S.match.demo_loadout, S.match.demo_enemies = lo, en
+			demo_build_ui()
+		end)
+		if not ok then print("[clashdoz] start_demo error: " .. tostring(err)) end
+	elseif message_id == hash("preview_skill") then   -- 收藏页点卡上的预览钮（用户 2026-11-05 夜）
+		S.visible = true
+		gui.set_enabled(gui.get_node("root"), true)
+		msg.post(".", "acquire_input_focus")
+		local ok, err = pcall(FX.pv_start, message.id, message.level or 1)
+		if not ok then print("[clashdoz] preview_skill error: " .. tostring(err)) end
+	elseif message_id == hash("debug_result") then   -- 结算页预览（网页 &result=win，仅 debug 引擎）
+		if S.match then
+			S.result = { place = 1, cells = 600, reward = earn.expected(10), rank = nil, shown = false, t0 = S.time, ranked = true, level = 1, points = 3 }
+			show_result(S.match)
+		end
+	elseif message_id == hash("hide") then
+		if S.toast then pcall(gui.delete_node, S.toast); S.toast = nil end
+		if S.demo then S.demo = false; demo_clear_ui() end
+		if S.preview then S.preview = nil; FX.pv_clear_ui() end
+		for t = 1, #TEAMS do for _, p in ipairs(S.U.balls[t]) do if p.trail and p.trail_on then pcall(gui.stop_particlefx, p.trail); p.trail_on = false end; if p.burst_fx then pcall(gui.delete_node, p.burst_fx); p.burst_fx = nil end end end
+		ribbon_release_all()
+		bgm_stop()
+		if S.match and S.match.showcase then set_showcase({ showcase = false, sim = S.match.sim, lab = false }, {}) end
+		gui.set_position(gui.get_node("root"), S.root_pos)
+		S.cam.k, S.cam.x, S.cam.y, S.cam.win = 1, 0, 0, 0; cam.apply(); gui.set_clipping_mode(S.U.cam_clip, gui.CLIPPING_MODE_NONE); gui.set_size(S.U.cam_clip, v3(BW + 16, BH + 16))   -- 镜头复位
+		S.visible = false
+		S.match = nil
+		S.targeting = nil; S.place = nil; S.aim_st = nil
+		clear_beams()
+		hide_result(); scoreboard_ui.close(true)
+		gui.set_enabled(gui.get_node("root"), false)
+	end
+end
+
+-- 同一帧同一位置的按下只处理一次（"touch" 与 "multitouch" 会各报一遍同一根手指）
+local function press_dup(a)
+	local key = tostring(S.time) .. ":" .. math.floor(a.x) .. ":" .. math.floor(a.y)
+	if S.last_press == key then return true end
+	S.last_press = key
+	return false
+end
+
+--- 对局里的一次按下（a 有 x, y）：试验场 RESET / 技能钮 / 锁位提示 / 棋盘转向或瞄准落点
+local function match_press(m, a)
+	local s = m.sim
+	local team = s.teams[PLAYER]
+	local U = S.U
+	if CDN.active(m) then return end   -- 倒计时中不吃操作
+	if m.climax or m.climax_hold then return end   -- 终结慢镜头已定：最后一击不改，玩家输入一律不理（用户 2026-11-03）
+	if m.lab and hit(U.labreset.node, a) then start_match({ lab = true }); return end   -- 试验场：RESET 换一组随机技能重开（结束后也能按）
+	if s.over then return end
+	for k = 1, #U.sk do
+		if hit(U.sk[k].node, a) then tap_skill(k); return end
+	end
+	if gui.is_enabled(U.lock) and gui.pick_node(U.lock, a.x, a.y) then toast(T("UNLOCK THE 3RD SLOT BEFORE THE MATCH")); return end
+	local cx, cy = touch_to_cell(a.x, a.y)
+	if cx then
+		if S.targeting then
+			local tsk = team.skills[S.targeting]
+			if tsk and tsk.id == "teleport" then   -- 点远了：沿着点的方向缩到限距内（用户 2026-10-28：第二次传送常"没反应"，其实是点出了 10 格）
+				local mb = team.balls[1]
+				local dx, dy = cx - mb.x, cy - mb.y
+				local dist, lim = math.sqrt(dx * dx + dy * dy), SKILLS.teleport.range[tsk.level] * 0.98
+				if dist > lim and dist > 1e-6 then cx, cy = mb.x + dx / dist * lim, mb.y + dy / dist * lim end
+				cx = math.max(0.5, math.min(GRID - 0.5, cx)); cy = math.max(0.5, math.min(GRID - 0.5, cy))
+			end
+			if s.mode == "build" and tsk and (tsk.id == "cannon" or tsk.id == "amp") then   -- 大炮 / 门：按下记落点，拖出朝向，抬手才放（BD.finish_place）
+				S.place = { slot = S.targeting, cx = cx, cy = cy, id = a.id or 0, x0 = a.x, y0 = a.y, x = a.x, y = a.y, kind = tsk.id }
+				return
+			end
+			if send({ type = "cast", slot = S.targeting, x = cx, y = cy }) then pcall(haptic.tap); S.targeting = nil
+			else snd("turn", 0.3, 0.7) end   -- 没放上：保持选中（用户 2026-11-03 晚：放不上就取消选中不好）
+		elseif s.mode == "build" then   -- 道具关没有球：点自己的炮 → 进瞄准态，再点一点炮口转过去；点空地 → 提示一次（每局）
+			local st = s.build.by_cell[sim.cell_index(math.floor(cx) + 1, math.floor(cy) + 1)]
+			if st and st.kind == "cannon" and st.team == PLAYER then
+				if S.aim_st == st.id then S.aim_st = nil else S.aim_st = st.id; snd("pick", 0.6) end
+				return
+			end
+			if S.aim_st then
+				local mine; for _, v in ipairs(s.build.structs) do if v.id == S.aim_st then mine = v end end
+				S.aim_st = nil
+				if mine and send({ type = "aim", x = mine.x, y = mine.y, tx = cx, ty = cy }) then return end
+			end
+			if not m.build_hint_shown then m.build_hint_shown = true; toast(T("Tap a tool, then tap the board to place it")) end
+			snd("turn", 0.3, 0.7)
+		else   -- 点一下 = 急转（有冷却）；手指不抬就进入"按住转向"（update 里每帧 steer，不占冷却）
+			local ok = send({ type = "turn", x = cx, y = cy })
+			if not ok and not s.over then   -- 冷却没到：落点一圈淡灰环，让人知道这下没吃（用户 2026-11-03）
+				local ring = keep_fx(box(S.U.board, cx * CELL - HALF_W, cy * CELL - HALF_H, CELL * 1.6, CELL * 1.6, vmath.vector4(0.75, 0.78, 0.9, 0.45), "ring"))
+				gui.animate(ring, gui.PROP_SIZE, v3(CELL * 3.2, CELL * 3.2), gui.EASING_OUTQUAD, 0.35); fx_fade(ring, 0.35, 0, gui.EASING_OUTQUAD)
+			end
+			S.hold = { id = a.id or 0, x = a.x, y = a.y, t0 = S.time }
+		end
+	end
+end
+
+function on_input(self, action_id, action)
+	if not S.visible then return false end
+	if S.match and S.match.showcase then return false end   -- 封面展示：输入交给封面
+	-- 多点触控（用户 2026-10-28：一根手指点棋盘控球的同时，另一根要能点技能钮）：
+	-- "touch" 只报第一根手指，第二根按下会被吞；这里按 action.touch 逐根处理按下。真机只要收到过一次就改走这条路。
+	if action_id == hash("multitouch") then
+		local m = S.match
+		if not m or m.demo or scoreboard_ui.is_open() or (S.result and S.result.shown) then return false end
+		S.multitouch = true
+		for _, t in ipairs(action.touch or {}) do
+			if t.pressed and not press_dup(t) then match_press(m, t)
+			elseif S.place and (t.id or 0) == S.place.id then   -- 放置拖拽中的那根手指：跟着动 / 抬手放下
+				if t.released then S.place.x, S.place.y = t.x, t.y; BD.finish_place(m) else S.place.x, S.place.y = t.x, t.y end
+			elseif S.hold and (t.id or 0) == S.hold.id then   -- 按住的那根手指：跟着动 / 抬起结束
+				if t.released then S.hold = nil else S.hold.x, S.hold.y = t.x, t.y end
+			end
+		end
+		return true
+	end
+	if action_id ~= hash("touch") then return false end
+	if scoreboard_ui.is_open() then scoreboard_ui.on_input(action); return true end
+	if result_ui.on_input(S, action) then return true end
+	if S.preview then   -- 技能预览：BACK 回收藏页、底下 Lv.1/2/3 胶囊切级、声音开关，其余吞掉
+		if action.released then
+			if gui.pick_node(gui.get_node("btn_back"), action.x, action.y) then msg.post("#controller", "preview_back")
+			elseif gui.pick_node(gui.get_node("btn_sound"), action.x, action.y) then
+				SETTINGS.sound = not SETTINGS.sound; save_settings()
+				gui.play_flipbook(gui.get_node("btn_sound"), SETTINGS.sound and "btn_unmute" or "btn_mute")
+			else
+				for lv, b in ipairs(S.pv_pills or {}) do
+					if gui.pick_node(b.root, action.x, action.y) then
+						if lv ~= S.preview.level then snd("pick", 0.5); pcall(FX.pv_start, S.preview.id, lv) end
+						break
+					end
+				end
+			end
+		end
+		return true
+	end
+	if S.demo then   -- 演示模式：只响应 BACK 退出 + 底部 NEXT/CLOSE + 声音开关，其余吞掉
+		if action.released then
+			if gui.pick_node(gui.get_node("btn_back"), action.x, action.y) then demo_close()
+			elseif S.demo_ui and S.demo_ui.pill and gui.pick_node(S.demo_ui.pill.root, action.x, action.y) then
+				if (S.demo_step or 0) >= #DEMO_STEPS then demo_close() else demo_show_step(S.demo_step + 1) end
+			elseif gui.pick_node(gui.get_node("btn_sound"), action.x, action.y) then
+				SETTINGS.sound = not SETTINGS.sound; save_settings()
+				gui.play_flipbook(gui.get_node("btn_sound"), SETTINGS.sound and "btn_unmute" or "btn_mute")
+				if SETTINGS.sound then bgm_start() else bgm_stop() end
+			end
+		end
+		return true
+	end
+	if action.released then
+		if gui.pick_node(gui.get_node("btn_back"), action.x, action.y) then msg.post("#controller", "back_to_cover"); return true end
+		if gui.pick_node(gui.get_node("btn_sound"), action.x, action.y) then
+			SETTINGS.sound = not SETTINGS.sound; save_settings()
+			gui.play_flipbook(gui.get_node("btn_sound"), SETTINGS.sound and "btn_unmute" or "btn_mute")
+			if SETTINGS.sound and S.match and not S.match.sim.over then bgm_resume() else bgm_stop() end
+			return true
+		end
+	end
+	local m = S.match
+	if not m or m.demo then return true end
+	if S.place and not S.multitouch and not action.pressed then   -- 放置拖拽：跟着动 / 抬手放下
+		S.place.x, S.place.y = action.x, action.y
+		if action.released then BD.finish_place(m) end
+		return true
+	end
+	if S.hold and not S.multitouch and not action.pressed then   -- 按住的手指：跟着动 / 抬起结束
+		if action.released then S.hold = nil else S.hold.x, S.hold.y = action.x, action.y end
+		return true
+	end
+	if not action.pressed then return true end
+	-- 真机收到过 multitouch 后，按下一律走 multitouch 分支（"touch" 只代表第一根手指）；同帧同点去重防双发
+	if not S.multitouch and not press_dup(action) then match_press(m, action) end
+	return true   -- 游戏层可见后一律吃掉输入（封面模板铁律）
+end
+
+-- 让 tools/i18n_extract.py 看到动态拼出来的键（队名 / 技能名 / 名次 / 过关方式）；此函数从不调用
+local function _i18n_keys()
+	T("MOST AREA WINS"); T("PAINT THE ZONE"); T("REACH THE STAR IN TIME"); T("REACH THE STAR")
+	T("Paint every cell inside the gold frame"); T("Get to the star before the timer runs out")
+	T("PORTAL: a ball that rolls onto it jumps out of the other one"); T("BOOSTER: a ball that rolls onto it gets a burst of speed"); T("TAP TO START")
+	T("STAGE %d / %d"); T("REACH THE PORTAL"); T("RELAY: roll onto an exit portal to jump to the next board - the star is on the last one")
+	T("MAZE: some portals are dead ends - the portal at the end brings you back, try another way")
+	return T("RED"), T("BLUE"), T("GREEN"), T("YELLOW"), T("PURPLE"), T("ORANGE"), T("CYAN"), T("PINK"), T("LIME"), T("BROWN"),
+		   T("1ST PLACE"), T("2ND PLACE"), T("3RD PLACE"), T("4TH PLACE"), T("NEXT|step"), T("CLOSE"),
+		   T("FREEZE"), T("SPLIT"), T("ACCEL"), T("BOMB"), T("GIANT"), T("FIRE"), T("LIGHTNING"), T("TELEPORT"),
+		   T("Tap the board to steer your ball and paint enemy cells"), T("Tap a skill button to cast it - fire and teleport need a second tap on the board"),
+		   T("The ring around a button refills as the skill recharges"), T("Win levels to earn skill points and level up your skills"),
+		   T("FROZEN"), T("SLOWED"), T("LOCKED"), T("UNLOCK THE 3RD SLOT BEFORE THE MATCH"), T("SKILL POINTS"), T("TEST LAB"), T("RESET"), T("YOU"), T("EMPTY"),
+		   T("CANNON"), T("AMPLIFIER"), T("SOLDIERS"), T("Tap a tool, then tap the board to place it"), T("TURRET"), T("SHATTER"), T("SHOCKWAVE"), T("CHAIN LIGHTNING"), T("PLASMA")
+end

@@ -1,0 +1,82 @@
+animations {
+  id: "fx_burst_w"
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_00.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_01.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_02.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_03.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_04.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_05.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_06.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_07.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_08.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_09.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_10.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_11.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_12.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_13.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_14.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_15.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_16.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_17.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_18.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_19.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_20.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_21.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_22.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_23.png"
+  }
+  images {
+    image: "/assets/images/clashdoz_orb/fx_burst_w_24.png"
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 30
+}
+margin: 2
+extrude_borders: 2

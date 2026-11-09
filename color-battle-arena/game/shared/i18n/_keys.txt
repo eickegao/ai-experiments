@@ -1,0 +1,389 @@
+$5 Gift Card!
+%d / 12 letters  ·  %d words  ·  par %d
+%d PLAYERS
+%d cats in the wrong place  -1 heart
+%d moves
+%d moves left
+%d regions
+%s points
+-1 life
+1 cat in the wrong place  -1 heart
+1 per\ncolor
+1 per\nrow & col
+1ST PLACE
+2ND PLACE
+3RD PLACE
+4 free cells · build A to K by suit
+4TH PLACE
+A box stops the light
+A cat lights up its whole row and column
+A groove bends the light 90°
+A number tells how many cats touch it
+A tile with tiles on both sides can't be picked
+ACCEL
+ALL CLEAR
+ALL TIME
+AMAZING!
+AMPLIFIER
+ATTACK THE ENEMY TERRITORY NEXT TO IT
+All 4 rules together
+All cats found!
+Already found
+Already guessed
+Already lit - no cat can sit here.
+Amazing
+BACK TO HOME
+BALLS
+BLUE
+BOMB
+BOOSTER: a ball that rolls onto it gets a burst of speed
+BRAG
+BROWN
+Bad letters
+Bao Xin
+Beat my %s level %d!
+Beat this %s level!
+Beginner
+Black Ball
+Blocked on both sides - free its left or right first
+Board filling up!\nTry a special ball!
+Bomb
+Bombs clear space!
+Both sides\nblocked
+CANNON
+CHAIN LIGHTNING
+CHOOSE PLAYERS
+CHOOSE YOUR LORD
+CLEARS A 3x3 BLOCK
+CLEARS A CROSS
+CLEARS A DIAGONAL X
+CLOSE
+COMBO
+COMBO x%d
+COMING SOON
+CYAN
+Cannot share this level
+Cannot share this replay
+Cao Cao
+Change
+Checking in...
+Choose Your Avatar
+Choose a game
+Choose difficulty
+Choose how many players you want to play with.
+Clear
+Clear %d balls in a line%s
+Clear %d/%d balls%s
+Clear %d/%d%s
+Clear the whole board to win!
+Coin packs coming soon
+Coins
+Collection
+Coming Soon!
+Coming soon
+Complete a row to clear it and lower the stack.
+Continue  ·  %d / %d
+Couldn't save — check your connection
+Country
+Country Ranking
+Covered - clear the tile on top first
+Create four groups of four!
+DEL
+DONE
+Day %d
+Day %d checked in! Come back tomorrow
+Delete
+Deselect
+Done!
+Dong Zhuo
+Double-tap to place a pup - single tap to mark X
+EMPTY
+END TURN
+ENTER
+Each level has a goal -\ncheck it at the top\nof the screen.\n\nComplete the goal\nto clear the level!
+Easy
+Ends in %s
+Enter a name
+Erase
+Erase the cell to add notes
+FAILED
+FIRE
+FREEZE
+FROZEN
+Fill the 9×9 grid
+First letter is fixed
+Free\ntile
+GENERATING MAP...
+GIANT
+GO
+GREEN
+Game too long to share
+Genius
+Get every block under the green line before time runs out!
+Get to the star before the timer runs out
+Global Rank
+Gongsun Zan
+Good
+Good day!
+Great
+Guess the 5-letter word
+HOME
+HOW TO PLAY
+Hammer
+Han Fu
+Hard
+Hint
+Hints
+How it works
+Items
+Keep away from cats
+Kong Rong
+Kong Zhou
+LEVEL %d
+LEVEL CLEAR
+LEVEL MODE
+LIGHTNING
+LIME
+LOCKED
+LOSE
+LV.%d
+Last Week's Result
+Level %d
+Light every square to win!
+Link copied
+Link words around the box
+Liu Bei
+Liu Biao
+Liu Dai
+Liu Yan
+Loading...
+Lv.%d
+MAX
+MAZE: some portals are dead ends - the portal at the end brings you back, try another way
+MORE LEVELS COMING SOON!
+MOST AREA WINS
+MOVE A BALL TO MAKE 5
+MY BEST
+Ma Teng
+Make a move first
+Match\n2 tiles
+Match 3 to merge!
+Medium
+Merging charges up energy!
+Missing center letter
+Mistakes
+Mistakes remaining:
+NEXT
+NEXT 3 BALLS PREVIEW
+NEXT|step
+NO
+NOT ENOUGH COINS
+NOT ENOUGH SKILL POINTS
+Name
+New
+No cat right next to a dog
+No connection
+No games yet
+No hints left
+No room - use an item!
+No scores yet this week
+No scores yet this week — play to be first!
+No scores yet — play to be first!
+Nope
+Not a word
+Not charged yet
+Not enough coins
+Not enough coins!
+Not enough free cells to move %d cards
+Not enough free cells to move %d cards (max %d)
+Not enough letters
+Not in word list
+Notes
+Nothing to share yet
+ON FIRE!
+ORANGE
+One away...
+One pup per colour
+One pup per row & column
+Only 4 words
+PAINT THE ZONE
+PAUSED
+PINK
+PLASMA
+PLAY
+PLAY IT MYSELF
+PLAY THIS MAP?
+PORTAL: a ball that rolls onto it jumps out of the other one
+PURPLE
+Paint every cell inside the gold frame
+Pangram!
+Pencil
+Personal Rank
+Pick %d cards to bring into battle
+Play one game today to check in
+Play this board?
+Player
+Please update PlayDoz to open this link
+Points
+Pups can't touch
+Pups can't touch - not even diagonally!
+QUIT
+Qiao Mao
+RANKING
+RANKS
+REACH THE PORTAL
+REACH THE STAR
+REACH THE STAR IN TIME
+RED
+RELAY: roll onto an exit portal to jump to the next board - the star is on the last one
+RESET
+RESUME
+RETRY
+Rainbow Ball
+Random %d-Player Map
+Reduce to %d balls or less (now %d)%s
+Replay ended early
+Run complete!  %d / 8
+SAVE A BALL FOR LATER
+SHARE
+SHARED
+SHARED LV.%d
+SHATTER
+SHOCKWAVE
+SKILL POINTS
+SKIP
+SLOWED
+SOLDIERS
+SPLIT
+STAGE %d / %d
+START
+SWAP TO COMPLETE THE LINE
+Same side!
+Score %d/%d%s
+See which country is #1!
+Select 4 words
+Select a cell first
+Share failed
+Sharing needs an internet connection
+Shuffle
+Slide to move, tap to rotate, drag the block down to drop it.
+So close! Answers revealed
+Sort 16 words into 4 groups
+Spades & hearts · 8 runs K to A
+Spell words from 7 letters
+Star
+Store
+Submit
+Sun Jian
+TAP AGAIN TO BUY
+TAP ANYWHERE
+TAP TO START
+TAP YOUR TERRITORY TO SELECT IT
+TELEPORT
+TEST LAB
+THIS GAME
+THIS WEEK
+TRY AGAIN
+TURRET
+Tao Qian
+Tap = place a cat   Tap again = remove it
+Tap TRY AGAIN
+Tap a free tile to move it into the tray
+Tap a skill button to cast it - fire and teleport need a second tap on the board
+Tap a tile to move it into the tray
+Tap a tool, then tap the board to place it
+Tap letters to spell a word
+Tap the Lion to ROAR!
+Tap the Unicorn for a rainbow!
+Tap the board to steer your ball and paint enemy cells
+Tap to Play
+That column already has a pup!
+That name isn't allowed — try another
+That number is given
+That row already has a pup!
+That spot belongs to the cat!
+That yard already has a pup!
+That's a box - it stops paws, cats go around it.
+That's a dog - no cat right next to it.
+That's a groove tile - paws turn here, no cat on it.
+That's a wall - cats go on the open squares.
+The Dragon burns everything!
+The ring around a button refills as the skill recharges
+The tray holds 4 tiles - if it fills up, you lose
+This link can't be opened
+Time
+Timer off
+Timer on
+To claim: email %s\nwith your player name and country within 7 days.
+Too close to the cat!
+Too long
+Too many shares, try later
+Too short
+Top 20 win
+Top 20 win $5 Gift Card!
+Top 20 win a gift card!
+Total Points
+Total points from all players
+Tray\nfull
+Two matching tiles in the tray clear away
+UNBELIEVABLE!
+UNDO
+UNLOCK THE 3RD SLOT BEFORE THE MATCH
+Undo
+Undo costs %d coins
+Unlock
+Unlock a card first
+Upgrade
+Use special %d/%d%s
+VICTORY
+WATCH
+WATCH AGAIN
+WATCHING A GAME
+WATCHING A REPLAY
+WEEKLY RANKING RULES
+WIN!
+Wang Kuang
+Watch
+Watch me clear %s level %d!
+Watch my Flash Linez game:
+Watch this %s replay!
+Weekly Rank
+Weekly Ranking
+Which country is #1?
+White Ball
+Win levels to earn skill points and level up your skills
+Won %d of %d  ·  Best %s
+Wrong spot!  -1 life
+YELLOW
+YES
+YOU
+YOU WIN!
+YOU WON! TERRITORY CAPTURED
+YOUR BEST
+You
+You finished %s!
+You have %d coins
+You have found %d of %d words
+You've cleared all %d levels!\nNew levels are coming soon.
+Your Turn
+Your deck is full. Tap an equipped card to remove it
+Yuan Shao
+Yuan Shu
+Yuan Yi
+Zhang Chao
+Zhang Miao
+Zhang Yang
+box stops paws\nno number
+cats light up\nrow & column
+groove turns\npaws 90°
+in progress
+never\ntouch
+no cat next\nto a dog
+number = cats\nnext to it
+stay off\ncats
+• Accounts with suspicious activity are disqualified.
+• Check in automatically by playing one game a day. Day 4 doubles and Day 7 triples the coins you earn that day.
+• Every coin you earn in any game counts as points (purchases excluded).
+• Final results are published every Tuesday. If you finish in the Top 20, email %s within 7 days with your player name and country to claim your prize.
+• The week runs Monday 00:00 to Sunday 24:00 in your local time.
+• This promotion is run by PlayDoz. Apple and Google are not sponsors and are not involved in any way.

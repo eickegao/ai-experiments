@@ -1,0 +1,4 @@
+sound: "/assets/audio/clashdoz/giant.wav"
+looping: 0
+group: "master"
+gain: 1.0

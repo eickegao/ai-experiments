@@ -1,0 +1,206 @@
+images {
+  image: "/assets/images/clashdoz/ball.png"
+}
+images {
+  image: "/assets/images/clashdoz/ball_light.png"
+}
+images {
+  image: "/assets/images/clashdoz/ball_core.png"
+}
+images {
+  image: "/assets/images/clashdoz/beam.png"
+}
+images {
+  image: "/assets/images/clashdoz/flare.png"
+}
+images {
+  image: "/assets/images/clashdoz/crown.png"
+}
+images {
+  image: "/assets/images/flashlinez/btn_back.png"
+}
+images {
+  image: "/assets/images/flashlinez/btn_mute.png"
+}
+images {
+  image: "/assets/images/flashlinez/btn_unmute.png"
+}
+images {
+  image: "/assets/images/dashboard/coin_gold.png"
+}
+images {
+  image: "/assets/images/shared/badge_red.png"
+}
+images {
+  image: "/assets/images/shared/badge_green.png"
+}
+images {
+  image: "/assets/images/pill/icon_flag.png"
+}
+images {
+  image: "/assets/images/pill/icon_next.png"
+}
+images {
+  image: "/assets/images/pill/icon_reset.png"
+}
+images {
+  image: "/assets/images/pill/icon_share.png"
+}
+images {
+  image: "/assets/images/pill/icon_undo.png"
+}
+images {
+  image: "/assets/images/pill/pill_blue_l.png"
+}
+images {
+  image: "/assets/images/pill/pill_blue_m.png"
+}
+images {
+  image: "/assets/images/pill/pill_blue_r.png"
+}
+images {
+  image: "/assets/images/pill/pill_gold_l.png"
+}
+images {
+  image: "/assets/images/pill/pill_gold_m.png"
+}
+images {
+  image: "/assets/images/pill/pill_gold_r.png"
+}
+images {
+  image: "/assets/images/pill/pill_green_l.png"
+}
+images {
+  image: "/assets/images/pill/pill_green_m.png"
+}
+images {
+  image: "/assets/images/pill/pill_green_r.png"
+}
+images {
+  image: "/assets/images/pill/pill_grey_l.png"
+}
+images {
+  image: "/assets/images/pill/pill_grey_m.png"
+}
+images {
+  image: "/assets/images/pill/pill_grey_r.png"
+}
+images {
+  image: "/assets/images/pill/pill_orange_l.png"
+}
+images {
+  image: "/assets/images/pill/pill_orange_m.png"
+}
+images {
+  image: "/assets/images/pill/pill_orange_r.png"
+}
+images {
+  image: "/assets/images/pill/pill_purple_l.png"
+}
+images {
+  image: "/assets/images/pill/pill_purple_m.png"
+}
+images {
+  image: "/assets/images/pill/pill_purple_r.png"
+}
+images {
+  image: "/assets/images/clashdoz/ring.png"
+}
+images {
+  image: "/assets/images/clashdoz/halo.png"
+}
+images {
+  image: "/assets/images/clashdoz/tail.png"
+}
+images {
+  image: "/assets/images/clashdoz/gridline_v.png"
+}
+images {
+  image: "/assets/images/clashdoz/gridline_h.png"
+}
+images {
+  image: "/assets/images/clashdoz/skill_btn.png"
+}
+images {
+  image: "/assets/images/clashdoz/orb_freeze.png"
+}
+images {
+  image: "/assets/images/clashdoz/orb_split.png"
+}
+images {
+  image: "/assets/images/clashdoz/orb_accel.png"
+}
+images {
+  image: "/assets/images/clashdoz/orb_bomb.png"
+}
+images {
+  image: "/assets/images/clashdoz/orb_giant.png"
+}
+images {
+  image: "/assets/images/clashdoz/orb_fire.png"
+}
+images {
+  image: "/assets/images/clashdoz/orb_lightning.png"
+}
+images {
+  image: "/assets/images/clashdoz/orb_teleport.png"
+}
+images {
+  image: "/assets/images/clashdoz/orb_cannon.png"
+}
+images {
+  image: "/assets/images/clashdoz/orb_amp.png"
+}
+images {
+  image: "/assets/images/clashdoz/orb_soldier.png"
+}
+images {
+  image: "/assets/images/clashdoz/orb_turret.png"
+}
+images {
+  image: "/assets/images/clashdoz/orb_shatter.png"
+}
+images {
+  image: "/assets/images/clashdoz/orb_shock.png"
+}
+images {
+  image: "/assets/images/clashdoz/orb_chain.png"
+}
+images {
+  image: "/assets/images/clashdoz/orb_snowball.png"
+}
+images {
+  image: "/assets/images/clashdoz/lvl_1.png"
+}
+images {
+  image: "/assets/images/clashdoz/lvl_2.png"
+}
+images {
+  image: "/assets/images/clashdoz/lvl_3.png"
+}
+images {
+  image: "/assets/images/clashdoz/star.png"
+}
+images {
+  image: "/assets/images/clashdoz/lock.png"
+}
+images {
+  image: "/assets/images/clashdoz/sp.png"
+}
+images {
+  image: "/assets/images/clashdoz/check.png"
+}
+images {
+  image: "/assets/images/clashdoz/info.png"
+}
+images {
+  image: "/assets/images/clashdoz/rr_fill.png"
+}
+images {
+  image: "/assets/images/clashdoz/rr_line.png"
+}
+images {
+  image: "/assets/images/clashdoz/bar_round.png"
+}
+margin: 4
+extrude_borders: 4

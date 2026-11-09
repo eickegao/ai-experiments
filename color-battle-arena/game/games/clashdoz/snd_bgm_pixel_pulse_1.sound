@@ -1,0 +1,4 @@
+sound: "/assets/audio/clashdoz/bgm_pixel_pulse_1.ogg"
+looping: 1
+group: "master"
+gain: 1.0

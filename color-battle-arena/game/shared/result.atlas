@@ -1,0 +1,123 @@
+images {
+  image: "/assets/images/result/deco_leaf_win.png"
+}
+images {
+  image: "/assets/images/result/deco_crown.png"
+}
+images {
+  image: "/assets/images/result/deco_trumpet1.png"
+}
+images {
+  image: "/assets/images/result/deco_trumpet4.png"
+}
+images {
+  image: "/assets/images/result/deco_leaf_fail.png"
+}
+images {
+  image: "/assets/images/result/deco_crown_fail.png"
+}
+images {
+  image: "/assets/images/result/deco_arrow1.png"
+}
+images {
+  image: "/assets/images/result/deco_arrow3.png"
+}
+images {
+  image: "/assets/images/result/deco_trumpet2.png"
+}
+images {
+  image: "/assets/images/result/deco_trumpet3.png"
+}
+images {
+  image: "/assets/images/result/deco_ribbon_win.png"
+}
+images {
+  image: "/assets/images/result/deco_arrow2.png"
+}
+images {
+  image: "/assets/images/result/deco_ribbon_fail.png"
+}
+images {
+  image: "/assets/images/result/fx_rays.png"
+}
+images {
+  image: "/assets/images/dashboard/coin_gold.png"
+}
+images {
+  image: "/assets/images/shared/badge_red.png"
+}
+images {
+  image: "/assets/images/shared/badge_green.png"
+}
+images {
+  image: "/assets/images/pill/pill_blue_l.png"
+}
+images {
+  image: "/assets/images/pill/pill_blue_m.png"
+}
+images {
+  image: "/assets/images/pill/pill_blue_r.png"
+}
+images {
+  image: "/assets/images/pill/pill_orange_l.png"
+}
+images {
+  image: "/assets/images/pill/pill_orange_m.png"
+}
+images {
+  image: "/assets/images/pill/pill_orange_r.png"
+}
+images {
+  image: "/assets/images/pill/pill_green_l.png"
+}
+images {
+  image: "/assets/images/pill/pill_green_m.png"
+}
+images {
+  image: "/assets/images/pill/pill_green_r.png"
+}
+images {
+  image: "/assets/images/pill/pill_purple_l.png"
+}
+images {
+  image: "/assets/images/pill/pill_purple_m.png"
+}
+images {
+  image: "/assets/images/pill/pill_purple_r.png"
+}
+images {
+  image: "/assets/images/pill/pill_gold_l.png"
+}
+images {
+  image: "/assets/images/pill/pill_gold_m.png"
+}
+images {
+  image: "/assets/images/pill/pill_gold_r.png"
+}
+images {
+  image: "/assets/images/pill/pill_grey_l.png"
+}
+images {
+  image: "/assets/images/pill/pill_grey_m.png"
+}
+images {
+  image: "/assets/images/pill/pill_grey_r.png"
+}
+images {
+  image: "/assets/images/pill/icon_next.png"
+}
+images {
+  image: "/assets/images/pill/icon_flag.png"
+}
+images {
+  image: "/assets/images/pill/icon_reset.png"
+}
+images {
+  image: "/assets/images/pill/icon_undo.png"
+}
+images {
+  image: "/assets/images/pill/icon_share.png"
+}
+margin: 0
+extrude_borders: 2
+inner_padding: 0

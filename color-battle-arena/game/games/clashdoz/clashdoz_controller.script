@@ -1,0 +1,143 @@
+-- games/clashdoz/clashdoz_controller.script
+-- CLASHDOZ 场景编排（照 mahjong_controller）：collection 内同时挂封面 / 准备页 / 玩法 GUI。
+-- 关卡制（用户 2026-10-26）：PLAY → 第 N 关（game_progress），第一名过关 → level_cleared 记进度+发币 → next_level。
+-- 2026-10-27 准备页：关卡（2026-11-02 起含第 1 关）和 1 VS 1 / 1 VS 8 试玩先到准备页（#prep）——
+--   准备页按种子随机发全桌技能（cd_levels.roll：我方也随机，用户 2026-11-03）并显示，START 发 prep_start{ level|layout, loadout, enemies, eager } 回来传给玩法页。
+--   2026-11-03 起 100 关全比面积、3～10 队；全过后 PLAY 停在最后一关的准备页。
+local game_progress = require("shared.game_progress")
+local levels = require("games.clashdoz.cd_levels")
+local profile = require("games.clashdoz.cd_profile")
+
+local GAME_KEY = "clashdoz"
+
+--- 我方技能：准备页随机发的 loadout（2026-11-03）；对决关（deck，暂不在关卡表）由关卡指定；都没有才用档案里选的
+local function match_opts(level_num, layout_name, enemies, eager, loadout)
+    local L = level_num and levels.get(level_num) or nil
+    local deck = L and L.deck or nil
+    return { level = level_num, layout = layout_name, enemies = enemies, eager = eager,
+             loadout = deck or loadout or profile.loadout(), slots = deck and math.max(profile.slots(), #deck) or profile.slots() }
+end
+
+local function start_match(self, opts)
+    msg.post("#cover", "hide"); msg.post("#prep", "hide")
+    msg.post("#game", "start_match", opts)
+end
+
+--- 进第 N 关：跑道关 / 对决关直接开（对手按 plan 生成）；其余先到准备页
+local function enter_level(self, level_num)
+    level_num = math.max(1, math.min(levels.MAX_LEVEL, level_num))
+    self.current_level_num = level_num
+    self.credited = false
+    local L = levels.get(level_num)
+    if L.track or L.deck then   -- 跑道关（单人限时、禁技能）和对决关（卡由关卡指定）没东西可看直接开（2026-11-03 起关卡表里暂时没有这两种）；其余关先到准备页看这局发到的技能和对手
+        local plan = levels.plan(level_num)
+        local loadout, enemies = levels.roll(L.n, plan, os.time(), profile.slots())
+        start_match(self, match_opts(level_num, nil, enemies, plan.eager, loadout))
+    else
+        msg.post("#cover", "hide"); msg.post("#game", "hide")
+        self.prep_args = { level = level_num, max_level = math.min(levels.MAX_LEVEL, game_progress.get_level(GAME_KEY)) }
+        msg.post("#prep", "show", self.prep_args)
+    end
+end
+
+--- 存档目录里的旗标文件：有就吃掉并返回 true（装机调试用，release 也认）
+--- 旗标文件 Library/Application Support/clashdoz/<name>：有就删掉并返回它的内容（去空白；空文件返回 true），没有返回 false
+local function consume_flag(name)
+    local path = sys.get_save_file("clashdoz", name)
+    local f = io.open(path, "r")
+    if not f then return false end
+    local body = f:read("*a") or ""
+    f:close(); os.remove(path)
+    body = body:gsub("^%s+", ""):gsub("%s+$", "")
+    return body ~= "" and body or true
+end
+
+function init(self)
+    self.current_level_num = 1
+    if consume_flag("reset_level") then game_progress.reset(GAME_KEY); print("[clashdoz.controller] progress reset to level 1 via flag file") end   -- 用户 2026-11-01：拨回第一关从头打
+    if consume_flag("reset_profile") then profile.reset_all(); print("[clashdoz.controller] profile reset (cards locked, 2 points, level 1) via flag file") end   -- 用户 2026-11-05 夜：技能全清、过的关清空从头打
+    -- 旗标 set_level 内容 = 关数：把进度拨到那一关（直接改存档文件不行——云存档开局会把本地关卡拉高到云端的；这里走 game_progress.save 会连带推云端）
+    local want = tonumber(consume_flag("set_level") or nil)
+    if want and want >= 1 and want <= levels.MAX_LEVEL then
+        local d = game_progress.load(GAME_KEY); d.level = math.floor(want); game_progress.save(GAME_KEY, d)
+        print("[clashdoz.controller] progress set to level " .. d.level .. " via flag file")
+    end
+    if sys.get_engine_info().is_debug and profile.debug_unlock_if_flagged() then print("[clashdoz.controller] debug_unlock_all via flag file") end   -- 真机全点满旗标（2026-10-31）
+end
+
+function on_message(self, message_id, message, sender)
+    if message_id == hash("start_game") and message.demo then
+        msg.post("#", "start_demo")   -- 深链 ?game=clashdoz&demo=1 直达 How to Play
+    elseif message_id == hash("start_demo") then
+        msg.post("#cover", "hide"); msg.post("#prep", "hide")
+        msg.post("#game", "start_demo")
+    elseif message_id == hash("start_game") and message.lab then   -- 试验场：直接开，不走准备页，不记任何东西
+        self.current_level_num = nil
+        msg.post("#cover", "hide"); msg.post("#prep", "hide")
+        msg.post("#game", "start_match", { lab = true })   -- 八种技能全带、不计时
+    elseif message_id == hash("start_game") and message.layout then   -- 封面试玩键：1 VS 1 / 1 VS 8，不走关卡进度，先到准备页
+        self.current_level_num = nil
+        msg.post("#cover", "hide"); msg.post("#game", "hide")
+        self.prep_args = { layout = message.layout }
+        msg.post("#prep", "show", self.prep_args)
+    elseif message_id == hash("start_game") then
+        local level_num = message.level or game_progress.get_level(GAME_KEY)
+        if level_num == 79 and sys.get_engine_info().is_debug then   -- 调试直达试验场（封面胶囊已删，冒烟脚本用）
+            self.current_level_num = nil
+            msg.post("#cover", "hide"); msg.post("#prep", "hide")
+            msg.post("#game", "start_match", { lab = true })
+            return
+        end
+        if level_num == 83 and sys.get_engine_info().is_debug then   -- 调试直达：八种技能全点满 + 3 位开，停在封面让用户自己挑卡（2026-10-31 装机测所有特殊球）
+            profile.debug_unlock_all()
+            print("[clashdoz.controller] debug_unlock_all done")
+            return
+        end
+        if message.autoplay and sys.get_engine_info().is_debug then   -- 商店截图 / 预览录像（1.2.1，2026-11-05 夜）：第 37 关式 8 队真实对局，玩家由 AI 代打、技能钮照常显示，不记进度不发币，打完自动再开
+            self.current_level_num = nil
+            local lvl = 37
+            local plan = levels.plan(lvl)
+            local _, enemies = levels.roll(levels.get(lvl).n, plan, 7, 3)
+            local o = match_opts(lvl, nil, enemies, plan.eager, { { id = "fire", level = 3 }, { id = "giant", level = 3 }, { id = "lightning", level = 3 } })
+            o.slots, o.autopilot = 3, true
+            print("[clashdoz] autoplay level=" .. lvl)   -- store_preview_record.py 等这行 "autoplay …=" 开录
+            start_match(self, o)
+            return
+        end
+        local DEBUG_CARDS = { [77] = { "giant", 3 }, [78] = { "fire", 3 }, [80] = { "teleport", 1 }, [81] = { "accel", 3 }, [82] = { "bomb", 3 }, [84] = { "turret", 2 }, [85] = { "shatter", 3 }, [86] = { "shock", 2 }, [87] = { "chain", 2 }, [88] = { "snowball", 3 } }   -- 调试直达：第 1 关只带这一张卡（冒烟截特效 / 验两步点击）；对手不带技能
+        if DEBUG_CARDS[level_num] and sys.get_engine_info().is_debug then
+            self.current_level_num = 1; self.credited = true
+            msg.post("#cover", "hide"); msg.post("#prep", "hide")
+            local card = DEBUG_CARDS[level_num]
+            msg.post("#game", "start_match", { level = 1, debug_giant = true, debug_card = card[1], debug_level = card[2] })
+            return
+        end
+        local ok, err = pcall(enter_level, self, level_num)
+        if not ok then print("[clashdoz.controller] enter_level error: " .. tostring(err)) end
+    elseif message_id == hash("prep_start") then   -- 准备页 START：带上这局随机发到的技能开局
+        if message.level then self.current_level_num = message.level; self.credited = false else self.current_level_num = nil end
+        local ok, err = pcall(start_match, self, match_opts(message.level, message.layout, message.enemies, message.eager, message.loadout))
+        if not ok then print("[clashdoz.controller] prep_start error: " .. tostring(err)) end
+    elseif message_id == hash("level_cleared") then   -- 第一名过关：记进度 + 发币（set_level 内 earn.report；同关不重复）。掉卡/技能点由玩法页直接写 cd_profile
+        if self.current_level_num and not self.credited then
+            self.credited = true
+            game_progress.set_level(GAME_KEY, self.current_level_num + 1)
+        end
+    elseif message_id == hash("next_level") then
+        if self.current_level_num then enter_level(self, self.current_level_num + 1) end
+    elseif message_id == hash("retry_level") then
+        if self.current_level_num then enter_level(self, self.current_level_num) end
+    elseif message_id == hash("preview_skill") then   -- 收藏页卡上的预览钮：到玩法页看这招（用户 2026-11-05 夜）；BACK 回收藏页
+        msg.post("#prep", "hide"); msg.post("#cover", "hide")
+        msg.post("#game", "preview_skill", { id = message.id, level = message.level })
+    elseif message_id == hash("preview_back") then
+        msg.post("#game", "hide")
+        msg.post("#prep", "show", self.prep_args or { level = game_progress.get_level(GAME_KEY), max_level = game_progress.get_level(GAME_KEY) })
+    elseif message_id == hash("debug_result") then
+        msg.post("#game", "debug_result", message)   -- 结算页预览（main.script 网页参数 result=win|fail）
+    elseif message_id == hash("cover_showcase") then   -- 封面中间的展示局（游戏本体画，2026-10-28）：封面 init / show 时发
+        msg.post("#game", "start_match", { showcase = true, scale = message.scale, y = message.y, n = message.n })
+    elseif message_id == hash("back_to_cover") then   -- 游戏内/准备页 BACK 回封面页，不回大厅
+        msg.post("#game", "hide"); msg.post("#prep", "hide"); msg.post("#cover", "show")
+    end
+end
