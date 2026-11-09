@@ -1,5 +1,7 @@
 # Chess Arena: Anthropic's strongest model vs OpenAI's strongest model
 
+English · [中文说明](README.zh.md)
+
 Two frontier LLMs play chess against each other. Every move is verified independently:
 
 - **Legality**: python-chess applies the rules. An illegal move never reaches the board. Each move gets up to 3 attempts; from the 2nd attempt the list of legal moves is included in the prompt; 3 failures forfeit the game (`--on-illegal random` plays a random legal move instead and keeps going).

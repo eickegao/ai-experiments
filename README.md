@@ -1,15 +1,16 @@
 # AI Experiments
 
+English · [中文说明](README.zh.md)
+
 A public log of the AI experiments we run for our YouTube channels. Every experiment lives in its own directory with the code, prompts, raw data and results, so you can follow along, check every claim made in a video, and reproduce the experiment yourself.
 
-- YouTube (English): **Build with AI** — https://www.youtube.com/@buildwithai2027
-- YouTube (Chinese): **独立营业中** — https://www.youtube.com/@独立营业中
-- Website: https://videodoz.com
+- YouTube: [**Build with AI**](https://www.youtube.com/@buildwithai2027) (English) · [**独立营业中**](https://www.youtube.com/@独立营业中) (Chinese)
+- Website: [videodoz.com](https://videodoz.com)
 - License: [MIT](LICENSE). Use anything here freely; a link back is appreciated.
 
 | Directory | Experiment | Status |
 |---|---|---|
-| [`chess-arena/`](chess-arena/) | Anthropic's strongest model vs OpenAI's strongest model at chess. Legality checked by python-chess, quality scored by Stockfish, two games per round with colors swapped. | Pipeline ready, match pending |
+| [`chess-arena/`](chess-arena/) ([中文](chess-arena/README.zh.md)) | Anthropic's strongest model vs OpenAI's strongest model at chess. Legality checked by python-chess, quality scored by Stockfish, two games per round with colors swapped. | Pipeline ready, match pending |
 
 ## Reproducing an experiment
 
