@@ -16,27 +16,35 @@
    },
    "result": "1-0",
    "termination": "checkmate",
-   "plies_total": 31,
+   "plies_total": 27,
    "stats": {
     "White": {
-     "moves": 16,
+     "moves": 14,
      "illegal_attempts": 0,
      "forced_random": 0,
-     "best_move_rate": 0.812,
-     "avg_loss_pawns": 0.13,
+     "best_move_rate": 0.643,
+     "top3_rate": 0.929,
+     "avg_loss_pawns": 0.114,
      "blunders_2pawns": 0,
      "avg_seconds": 0.0,
-     "tokens_out": 0
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "cost_usd": null,
+     "total_seconds": 0.6
     },
     "Black": {
-     "moves": 15,
+     "moves": 13,
      "illegal_attempts": 2,
      "forced_random": 0,
-     "best_move_rate": 0.2,
-     "avg_loss_pawns": 0.781,
-     "blunders_2pawns": 2,
+     "best_move_rate": 0.231,
+     "top3_rate": 0.385,
+     "avg_loss_pawns": 0.829,
+     "blunders_2pawns": 1,
      "avg_seconds": 0.0,
-     "tokens_out": 0
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "cost_usd": null,
+     "total_seconds": 0.0
     }
    }
   },
@@ -52,27 +60,35 @@
    },
    "result": "0-1",
    "termination": "checkmate",
-   "plies_total": 34,
+   "plies_total": 30,
    "stats": {
     "White": {
-     "moves": 17,
-     "illegal_attempts": 1,
+     "moves": 15,
+     "illegal_attempts": 2,
      "forced_random": 0,
-     "best_move_rate": 0.235,
-     "avg_loss_pawns": 0.609,
+     "best_move_rate": 0.2,
+     "top3_rate": 0.4,
+     "avg_loss_pawns": 0.656,
      "blunders_2pawns": 1,
      "avg_seconds": 0.0,
-     "tokens_out": 0
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "cost_usd": null,
+     "total_seconds": 0.0
     },
     "Black": {
-     "moves": 17,
+     "moves": 15,
      "illegal_attempts": 0,
      "forced_random": 0,
-     "best_move_rate": 0.824,
-     "avg_loss_pawns": 0.007,
+     "best_move_rate": 0.8,
+     "top3_rate": 0.933,
+     "avg_loss_pawns": 0.008,
      "blunders_2pawns": 0,
      "avg_seconds": 0.0,
-     "tokens_out": 0
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "cost_usd": null,
+     "total_seconds": 0.7
     }
    }
   }

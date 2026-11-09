@@ -10,8 +10,9 @@ import chess.svg
 
 from .engine import cp_for_chart
 
-W = 1080  # 帧宽；棋盘 880，右侧留评估条，底部留字幕 → 竖屏友好（1080×1350）
-H = 1350
+# 两种画幅：landscape 1920×1080（长视频用，默认），portrait 1080×1350（Shorts 用）
+LAYOUT = {"landscape": (1920, 1080), "portrait": (1080, 1350)}
+W, H = LAYOUT["landscape"]
 
 
 def _svg_board(board: chess.Board, last: chess.Move | None, flipped: bool) -> str:
@@ -20,7 +21,9 @@ def _svg_board(board: chess.Board, last: chess.Move | None, flipped: bool) -> st
                            colors={"square light": "#f0d9b5", "square dark": "#b58863", "square light lastmove": "#cdd26a", "square dark lastmove": "#aaa23a"})
 
 
-def frame_svg(board: chess.Board, last: chess.Move | None, caption: str, sub: str, ev: float, white_name: str, black_name: str) -> str:
+def frame_svg(board: chess.Board, last: chess.Move | None, caption: str, sub: str, ev: float, white_name: str, black_name: str, layout: str = "landscape") -> str:
+    if layout == "landscape":
+        return frame_svg_landscape(board, last, caption, sub, ev, white_name, black_name)
     bar_h = 880
     white_frac = max(0.02, min(0.98, 0.5 + ev / 20))  # ev ∈ [-10, 10] → 白方占比
     board_svg = _svg_board(board, last, flipped=False)
@@ -45,11 +48,45 @@ def frame_svg(board: chess.Board, last: chess.Move | None, caption: str, sub: st
 </svg>"""
 
 
+def frame_svg_landscape(board, last, caption, sub, ev, white_name, black_name) -> str:
+    W, H = LAYOUT["landscape"]
+    size = 960
+    board_svg = _svg_board(board, last, flipped=False)
+    import re
+    vb = re.search(r'viewBox="0 0 ([\d.]+) ([\d.]+)"', board_svg)
+    scale = size / float(vb.group(1)) if vb else 1.0
+    inner = board_svg.split(">", 1)[1].rsplit("</svg>", 1)[0]
+    white_frac = max(0.02, min(0.98, 0.5 + ev / 20))
+    x0, y0 = 60, 60
+    bx = x0 + size + 30
+    tx = bx + 90
+    # 字幕按 " · " 拆成两行，避免右栏溢出
+    sub_lines = [sub] if len(sub) < 48 else sub.split(" · ", 1)
+    sub_svg = "".join(f'<text x="{tx}" y="{760 + i * 44}" font-family="Helvetica, Arial, sans-serif" font-size="32" fill="#ffffffcc">{_esc(t)}</text>' for i, t in enumerate(sub_lines))
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{W}" height="{H}" viewBox="0 0 {W} {H}">
+<rect width="{W}" height="{H}" fill="#0d1530"/>
+<g transform="translate({x0},{y0}) scale({scale:.4f})">{inner}</g>
+<g transform="translate({bx},{y0})">
+  <rect x="0" y="0" width="40" height="{size}" fill="#222" rx="6"/>
+  <rect x="0" y="{size * (1 - white_frac):.1f}" width="40" height="{size * white_frac:.1f}" fill="#f0f0f0" rx="6"/>
+</g>
+<text x="{tx}" y="110" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#ffffff99">Black</text>
+<text x="{tx}" y="160" font-family="Helvetica, Arial, sans-serif" font-size="44" font-weight="700" fill="#ffffff">{_esc(black_name)}</text>
+<text x="{tx}" y="930" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#ffffff99">White</text>
+<text x="{tx}" y="980" font-family="Helvetica, Arial, sans-serif" font-size="44" font-weight="700" fill="#ffffff">{_esc(white_name)}</text>
+<text x="{tx}" y="500" font-family="Menlo, monospace" font-size="120" font-weight="700" fill="#ffc94a">{_esc(caption)}</text>
+<text x="{tx}" y="600" font-family="Menlo, monospace" font-size="52" fill="#ffffff">Stockfish {ev:+.1f}</text>
+{sub_svg}
+</svg>"""
+
+
 def _esc(s: str) -> str:
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
-def render_game(json_path: str, fps_hold: float = 1.6) -> dict:
+def render_game(json_path: str, fps_hold: float = 1.6, layout: str = "landscape") -> dict:
+    global W, H
+    W, H = LAYOUT[layout]
     data = json.load(open(json_path, encoding="utf-8"))
     out_dir = os.path.dirname(json_path)
     name = data["name"]
@@ -60,7 +97,7 @@ def render_game(json_path: str, fps_hold: float = 1.6) -> dict:
     paths = []
 
     def emit(i, caption, sub, ev, last):
-        svg = frame_svg(board, last, caption, sub, ev, wn, bn)
+        svg = frame_svg(board, last, caption, sub, ev, wn, bn, layout)
         p = os.path.join(frames_dir, f"{i:04d}.png")
         subprocess.run(["rsvg-convert", "-w", str(W), "-h", str(H), "-o", p], input=svg.encode(), check=True)
         paths.append(p)
@@ -86,7 +123,7 @@ def render_game(json_path: str, fps_hold: float = 1.6) -> dict:
         if board.is_checkmate():
             key.append({"ply": p["ply"], "type": "mate", "text": f"{p['side']} delivers checkmate with {p['san']}"})
         num = f"{p['move_no']}." if p["side"] == "White" else f"{p['move_no']}..."
-        emit(p["ply"], f"{num} {p['san']}", f"Stockfish eval {ev:+.1f}  ·  best {p['best_move'] or '-'}{tag}", ev, mv)
+        emit(p["ply"], f"{num} {p['san']}", f"best {p['best_move'] or '-'}{tag}", ev, mv)
 
     # 结束帧
     emit(len(paths), data["result"], data["termination"], cp_for_chart(data["plies"][-1]["eval_after"]) if data["plies"] and data["plies"][-1].get("san") else 0.0, None)

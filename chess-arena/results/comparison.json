@@ -1,0 +1,58 @@
+{
+ "dryrun_low": {
+  "Stockfish (50 ms)": {
+   "moves": 29,
+   "illegal": 0,
+   "top1": 0.724,
+   "top3": 0.931,
+   "loss": 0.059,
+   "blunders": 0,
+   "secs": 1.2999999999999998,
+   "cost": null,
+   "cost_known": false,
+   "score": 2.0,
+   "secs_per_move": 0.0
+  },
+  "Random": {
+   "moves": 28,
+   "illegal": 4,
+   "top1": 0.214,
+   "top3": 0.393,
+   "loss": 0.736,
+   "blunders": 2,
+   "secs": 0.0,
+   "cost": null,
+   "cost_known": false,
+   "score": 0.0,
+   "secs_per_move": 0.0
+  }
+ },
+ "dryrun_high": {
+  "Stockfish (50 ms)": {
+   "moves": 28,
+   "illegal": 0,
+   "top1": 0.607,
+   "top3": 0.857,
+   "loss": 0.16,
+   "blunders": 0,
+   "secs": 1.3,
+   "cost": null,
+   "cost_known": false,
+   "score": 2.0,
+   "secs_per_move": 0.0
+  },
+  "Random": {
+   "moves": 27,
+   "illegal": 4,
+   "top1": 0.074,
+   "top3": 0.148,
+   "loss": 0.905,
+   "blunders": 4,
+   "secs": 0.0,
+   "cost": null,
+   "cost_known": false,
+   "score": 0.0,
+   "secs_per_move": 0.0
+  }
+ }
+}

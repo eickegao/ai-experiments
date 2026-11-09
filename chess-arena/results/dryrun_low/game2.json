@@ -1,6 +1,6 @@
 {
  "name": "game2",
- "started_utc": "2026-11-09T01:14:44.191598+00:00",
+ "started_utc": "2026-11-09T01:41:01.732192+00:00",
  "white": {
   "name": "Random",
   "model": "random"
@@ -11,40 +11,49 @@
  },
  "result": "0-1",
  "termination": "checkmate",
- "plies_total": 34,
+ "plies_total": 30,
  "verifier": {
   "legality": "python-chess 1.11.2",
   "eval": "Stockfish 19 depth 10"
  },
+ "effort": null,
  "rules": {
   "max_attempts": 3,
   "on_illegal": "random",
-  "max_plies": 80,
+  "max_plies": 60,
   "adjudicate_cp": 800
  },
  "stats": {
   "White": {
-   "moves": 17,
-   "illegal_attempts": 1,
+   "moves": 15,
+   "illegal_attempts": 2,
    "forced_random": 0,
-   "best_move_rate": 0.235,
-   "avg_loss_pawns": 0.609,
+   "best_move_rate": 0.2,
+   "top3_rate": 0.4,
+   "avg_loss_pawns": 0.656,
    "blunders_2pawns": 1,
    "avg_seconds": 0.0,
-   "tokens_out": 0
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": null,
+   "total_seconds": 0.0
   },
   "Black": {
-   "moves": 17,
+   "moves": 15,
    "illegal_attempts": 0,
    "forced_random": 0,
-   "best_move_rate": 0.824,
-   "avg_loss_pawns": 0.007,
+   "best_move_rate": 0.8,
+   "top3_rate": 0.933,
+   "avg_loss_pawns": 0.008,
    "blunders_2pawns": 0,
    "avg_seconds": 0.0,
-   "tokens_out": 0
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": null,
+   "total_seconds": 0.7
   }
  },
- "final_fen": "rnb1k2r/ppp2ppp/8/4p1P1/P6P/4bPK1/5q2/1R6 w kq - 2 18",
+ "final_fen": "r1b1k1nr/pppp1ppp/n7/4p3/5P2/2b1PqP1/7P/3BK1R1 w kq - 0 16",
  "plies": [
   {
    "ply": 1,
@@ -55,18 +64,34 @@
    "fen": "rnbqkbnr/pppppppp/8/8/8/5P2/PPPPP1PP/RNBQKBNR b KQkq - 0 1",
    "forced_random": false,
    "eval_before": {
-    "cp": 36,
+    "cp": 27,
     "mate": null,
-    "best": "e4"
+    "best": "e4",
+    "top3": [
+     "e4",
+     "Nf3",
+     "d4"
+    ]
    },
    "eval_after": {
-    "cp": -68,
+    "cp": -52,
     "mate": null,
-    "best": "e5"
+    "best": "d5",
+    "top3": [
+     "d5",
+     "e6",
+     "e5"
+    ]
    },
-   "loss_pawns": 1.04,
+   "loss_pawns": 0.79,
    "was_best": false,
    "best_move": "e4",
+   "in_top3": false,
+   "top3": [
+    "e4",
+    "Nf3",
+    "d4"
+   ],
    "check": false,
    "capture": false,
    "attempts": [
@@ -91,18 +116,34 @@
    "fen": "rnbqkbnr/pppp1ppp/8/4p3/8/5P2/PPPPP1PP/RNBQKBNR w KQkq - 0 2",
    "forced_random": false,
    "eval_before": {
-    "cp": -68,
+    "cp": -52,
     "mate": null,
-    "best": "e5"
+    "best": "d5",
+    "top3": [
+     "d5",
+     "e6",
+     "e5"
+    ]
    },
    "eval_after": {
-    "cp": -68,
+    "cp": -72,
     "mate": null,
-    "best": "e4"
+    "best": "Nc3",
+    "top3": [
+     "Nc3",
+     "e4",
+     "e3"
+    ]
    },
-   "loss_pawns": -0.0,
-   "was_best": true,
-   "best_move": "e5",
+   "loss_pawns": -0.2,
+   "was_best": false,
+   "best_move": "d5",
+   "in_top3": true,
+   "top3": [
+    "d5",
+    "e6",
+    "e5"
+   ],
    "check": false,
    "capture": false,
    "attempts": [
@@ -127,18 +168,34 @@
    "fen": "rnbqkbnr/pppp1ppp/8/4p3/3P4/5P2/PPP1P1PP/RNBQKBNR b KQkq - 0 2",
    "forced_random": false,
    "eval_before": {
-    "cp": -68,
+    "cp": -72,
     "mate": null,
-    "best": "e4"
+    "best": "Nc3",
+    "top3": [
+     "Nc3",
+     "e4",
+     "e3"
+    ]
    },
    "eval_after": {
-    "cp": -93,
+    "cp": -108,
     "mate": null,
-    "best": "Qh4+"
+    "best": "Qh4+",
+    "top3": [
+     "Qh4+",
+     "exd4",
+     "d5"
+    ]
    },
-   "loss_pawns": 0.25,
+   "loss_pawns": 0.36,
    "was_best": false,
-   "best_move": "e4",
+   "best_move": "Nc3",
+   "in_top3": false,
+   "top3": [
+    "Nc3",
+    "e4",
+    "e3"
+   ],
    "check": false,
    "capture": false,
    "attempts": [
@@ -163,18 +220,33 @@
    "fen": "rnb1kbnr/pppp1ppp/8/4p3/3P3q/5P2/PPP1P1PP/RNBQKBNR w KQkq - 1 3",
    "forced_random": false,
    "eval_before": {
-    "cp": -93,
+    "cp": -108,
     "mate": null,
-    "best": "Qh4+"
+    "best": "Qh4+",
+    "top3": [
+     "Qh4+",
+     "exd4",
+     "d5"
+    ]
    },
    "eval_after": {
-    "cp": -100,
+    "cp": -114,
     "mate": null,
-    "best": "g3"
+    "best": "g3",
+    "top3": [
+     "g3",
+     "Kd2"
+    ]
    },
-   "loss_pawns": -0.07,
+   "loss_pawns": -0.06,
    "was_best": true,
    "best_move": "Qh4+",
+   "in_top3": true,
+   "top3": [
+    "Qh4+",
+    "exd4",
+    "d5"
+   ],
    "check": true,
    "capture": false,
    "attempts": [
@@ -199,18 +271,32 @@
    "fen": "rnb1kbnr/pppp1ppp/8/4p3/3P3q/5PP1/PPP1P2P/RNBQKBNR b KQkq - 0 3",
    "forced_random": false,
    "eval_before": {
-    "cp": -100,
+    "cp": -114,
     "mate": null,
-    "best": "g3"
+    "best": "g3",
+    "top3": [
+     "g3",
+     "Kd2"
+    ]
    },
    "eval_after": {
-    "cp": -91,
+    "cp": -116,
     "mate": null,
-    "best": "Qxd4"
+    "best": "Qxd4",
+    "top3": [
+     "Qxd4",
+     "Qe7",
+     "Qf6"
+    ]
    },
-   "loss_pawns": -0.09,
+   "loss_pawns": 0.02,
    "was_best": true,
    "best_move": "g3",
+   "in_top3": true,
+   "top3": [
+    "g3",
+    "Kd2"
+   ],
    "check": false,
    "capture": false,
    "attempts": [
@@ -235,18 +321,34 @@
    "fen": "rnb1kbnr/pppp1ppp/8/4p3/3q4/5PP1/PPP1P2P/RNBQKBNR w KQkq - 0 4",
    "forced_random": false,
    "eval_before": {
-    "cp": -91,
+    "cp": -116,
     "mate": null,
-    "best": "Qxd4"
+    "best": "Qxd4",
+    "top3": [
+     "Qxd4",
+     "Qe7",
+     "Qf6"
+    ]
    },
    "eval_after": {
-    "cp": -106,
+    "cp": -104,
     "mate": null,
-    "best": "Qxd4"
+    "best": "Qxd4",
+    "top3": [
+     "Qxd4",
+     "Nc3",
+     "e4"
+    ]
    },
-   "loss_pawns": -0.15,
+   "loss_pawns": 0.12,
    "was_best": true,
    "best_move": "Qxd4",
+   "in_top3": true,
+   "top3": [
+    "Qxd4",
+    "Qe7",
+    "Qf6"
+   ],
    "check": false,
    "capture": true,
    "attempts": [
@@ -271,18 +373,34 @@
    "fen": "rnb1kbnr/pppp1ppp/8/4p3/3q4/4PPP1/PPP4P/RNBQKBNR b KQkq - 0 4",
    "forced_random": false,
    "eval_before": {
-    "cp": -106,
+    "cp": -104,
     "mate": null,
-    "best": "Qxd4"
+    "best": "Qxd4",
+    "top3": [
+     "Qxd4",
+     "Nc3",
+     "e4"
+    ]
    },
    "eval_after": {
-    "cp": -284,
+    "cp": -251,
     "mate": null,
-    "best": "Qxd1+"
+    "best": "Qxd1+",
+    "top3": [
+     "Qxd1+",
+     "Bb4+",
+     "Qb6"
+    ]
    },
-   "loss_pawns": 1.78,
+   "loss_pawns": 1.47,
    "was_best": false,
    "best_move": "Qxd4",
+   "in_top3": false,
+   "top3": [
+    "Qxd4",
+    "Nc3",
+    "e4"
+   ],
    "check": false,
    "capture": false,
    "attempts": [
@@ -316,18 +434,33 @@
    "fen": "rnb1kbnr/pppp1ppp/8/4p3/8/4PPP1/PPP4P/RNBqKBNR w KQkq - 0 5",
    "forced_random": false,
    "eval_before": {
-    "cp": -284,
+    "cp": -251,
     "mate": null,
-    "best": "Qxd1+"
+    "best": "Qxd1+",
+    "top3": [
+     "Qxd1+",
+     "Bb4+",
+     "Qb6"
+    ]
    },
    "eval_after": {
-    "cp": -272,
+    "cp": -280,
     "mate": null,
-    "best": "Kxd1"
+    "best": "Kxd1",
+    "top3": [
+     "Kxd1",
+     "Kf2"
+    ]
    },
-   "loss_pawns": 0.12,
+   "loss_pawns": -0.29,
    "was_best": true,
    "best_move": "Qxd1+",
+   "in_top3": true,
+   "top3": [
+    "Qxd1+",
+    "Bb4+",
+    "Qb6"
+   ],
    "check": true,
    "capture": true,
    "attempts": [
@@ -352,18 +485,32 @@
    "fen": "rnb1kbnr/pppp1ppp/8/4p3/8/4PPP1/PPP2K1P/RNBq1BNR b kq - 1 5",
    "forced_random": false,
    "eval_before": {
-    "cp": -272,
+    "cp": -280,
     "mate": null,
-    "best": "Kxd1"
+    "best": "Kxd1",
+    "top3": [
+     "Kxd1",
+     "Kf2"
+    ]
    },
    "eval_after": {
-    "cp": -1068,
+    "cp": -1041,
     "mate": null,
-    "best": "Qxc1"
+    "best": "Qxc1",
+    "top3": [
+     "Qxc1",
+     "Qxc2+",
+     "Qxf1+"
+    ]
    },
-   "loss_pawns": 7.28,
+   "loss_pawns": 7.2,
    "was_best": false,
    "best_move": "Kxd1",
+   "in_top3": true,
+   "top3": [
+    "Kxd1",
+    "Kf2"
+   ],
    "check": false,
    "capture": false,
    "attempts": [
@@ -388,18 +535,34 @@
    "fen": "rnb1kbnr/pppp1ppp/8/4p3/8/4PPP1/PPP2K1P/RNq2BNR w kq - 0 6",
    "forced_random": false,
    "eval_before": {
-    "cp": -1068,
+    "cp": -1041,
     "mate": null,
-    "best": "Qxc1"
+    "best": "Qxc1",
+    "top3": [
+     "Qxc1",
+     "Qxc2+",
+     "Qxf1+"
+    ]
    },
    "eval_after": {
-    "cp": -1103,
+    "cp": -1080,
     "mate": null,
-    "best": "Ne2"
+    "best": "Ne2",
+    "top3": [
+     "Ne2",
+     "b4",
+     "h4"
+    ]
    },
    "loss_pawns": -0.0,
    "was_best": true,
    "best_move": "Qxc1",
+   "in_top3": true,
+   "top3": [
+    "Qxc1",
+    "Qxc2+",
+    "Qxf1+"
+   ],
    "check": false,
    "capture": true,
    "attempts": [
@@ -424,18 +587,34 @@
    "fen": "rnb1kbnr/pppp1ppp/8/4p3/8/N3PPP1/PPP2K1P/R1q2BNR b kq - 1 6",
    "forced_random": false,
    "eval_before": {
-    "cp": -1103,
+    "cp": -1080,
     "mate": null,
-    "best": "Ne2"
+    "best": "Ne2",
+    "top3": [
+     "Ne2",
+     "b4",
+     "h4"
+    ]
    },
    "eval_after": {
-    "cp": -1142,
+    "cp": -1150,
     "mate": null,
-    "best": "Qxa1"
+    "best": "Qxa1",
+    "top3": [
+     "Qxa1",
+     "Qxb2",
+     "Qd2+"
+    ]
    },
    "loss_pawns": 0.0,
    "was_best": false,
    "best_move": "Ne2",
+   "in_top3": false,
+   "top3": [
+    "Ne2",
+    "b4",
+    "h4"
+   ],
    "check": false,
    "capture": false,
    "attempts": [
@@ -460,18 +639,34 @@
    "fen": "rnb1kbnr/pppp1ppp/8/4p3/8/N3PPP1/PPP2K1P/q4BNR w kq - 0 7",
    "forced_random": false,
    "eval_before": {
-    "cp": -1142,
+    "cp": -1150,
     "mate": null,
-    "best": "Qxa1"
+    "best": "Qxa1",
+    "top3": [
+     "Qxa1",
+     "Qxb2",
+     "Qd2+"
+    ]
    },
    "eval_after": {
-    "cp": -1180,
+    "cp": -1163,
     "mate": null,
-    "best": "Nc4"
+    "best": "Nb5",
+    "top3": [
+     "Nb5",
+     "Nc4",
+     "b4"
+    ]
    },
    "loss_pawns": -0.0,
    "was_best": true,
    "best_move": "Qxa1",
+   "in_top3": true,
+   "top3": [
+    "Qxa1",
+    "Qxb2",
+    "Qd2+"
+   ],
    "check": false,
    "capture": true,
    "attempts": [
@@ -496,18 +691,34 @@
    "fen": "rnb1kbnr/pppp1ppp/8/4p3/2P5/N3PPP1/PP3K1P/q4BNR b kq - 0 7",
    "forced_random": false,
    "eval_before": {
-    "cp": -1180,
+    "cp": -1163,
     "mate": null,
-    "best": "Nc4"
+    "best": "Nb5",
+    "top3": [
+     "Nb5",
+     "Nc4",
+     "b4"
+    ]
    },
    "eval_after": {
-    "cp": -1342,
+    "cp": -1339,
     "mate": null,
-    "best": "Bxa3"
+    "best": "Qxb2+",
+    "top3": [
+     "Qxb2+",
+     "Bxa3",
+     "Na6"
+    ]
    },
    "loss_pawns": 0.0,
    "was_best": false,
-   "best_move": "Nc4",
+   "best_move": "Nb5",
+   "in_top3": false,
+   "top3": [
+    "Nb5",
+    "Nc4",
+    "b4"
+   ],
    "check": false,
    "capture": false,
    "attempts": [
@@ -532,18 +743,34 @@
    "fen": "rnb1kbnr/pppp1ppp/8/4p3/2P5/N3PPP1/Pq3K1P/5BNR w kq - 0 8",
    "forced_random": false,
    "eval_before": {
-    "cp": -1342,
+    "cp": -1339,
     "mate": null,
-    "best": "Bxa3"
+    "best": "Qxb2+",
+    "top3": [
+     "Qxb2+",
+     "Bxa3",
+     "Na6"
+    ]
    },
    "eval_after": {
-    "cp": -1512,
+    "cp": -1535,
     "mate": null,
-    "best": "Ne2"
+    "best": "Ne2",
+    "top3": [
+     "Ne2",
+     "Be2",
+     "Nc2"
+    ]
    },
    "loss_pawns": -0.0,
-   "was_best": false,
-   "best_move": "Bxa3",
+   "was_best": true,
+   "best_move": "Qxb2+",
+   "in_top3": true,
+   "top3": [
+    "Qxb2+",
+    "Bxa3",
+    "Na6"
+   ],
    "check": true,
    "capture": true,
    "attempts": [
@@ -568,18 +795,34 @@
    "fen": "rnb1kbnr/pppp1ppp/8/4p3/2P5/N3PPP1/Pq2BK1P/6NR b kq - 1 8",
    "forced_random": false,
    "eval_before": {
-    "cp": -1512,
+    "cp": -1535,
     "mate": null,
-    "best": "Ne2"
+    "best": "Ne2",
+    "top3": [
+     "Ne2",
+     "Be2",
+     "Nc2"
+    ]
    },
    "eval_after": {
-    "cp": -1604,
+    "cp": -1588,
     "mate": null,
-    "best": "Bxa3"
+    "best": "Qxa3",
+    "top3": [
+     "Qxa3",
+     "Bxa3",
+     "c6"
+    ]
    },
    "loss_pawns": 0.0,
    "was_best": false,
    "best_move": "Ne2",
+   "in_top3": true,
+   "top3": [
+    "Ne2",
+    "Be2",
+    "Nc2"
+   ],
    "check": false,
    "capture": false,
    "attempts": [
@@ -599,30 +842,46 @@
    "ply": 16,
    "move_no": 8,
    "side": "Black",
-   "san": "Bxa3",
-   "uci": "f8a3",
-   "fen": "rnb1k1nr/pppp1ppp/8/4p3/2P5/b3PPP1/Pq2BK1P/6NR w kq - 0 9",
+   "san": "Qxa3",
+   "uci": "b2a3",
+   "fen": "rnb1kbnr/pppp1ppp/8/4p3/2P5/q3PPP1/P3BK1P/6NR w kq - 0 9",
    "forced_random": false,
    "eval_before": {
-    "cp": -1604,
+    "cp": -1588,
     "mate": null,
-    "best": "Bxa3"
+    "best": "Qxa3",
+    "top3": [
+     "Qxa3",
+     "Bxa3",
+     "c6"
+    ]
    },
    "eval_after": {
-    "cp": -1616,
+    "cp": -1590,
     "mate": null,
-    "best": "g4"
+    "best": "h4",
+    "top3": [
+     "h4",
+     "g4",
+     "Nh3"
+    ]
    },
    "loss_pawns": -0.0,
    "was_best": true,
-   "best_move": "Bxa3",
+   "best_move": "Qxa3",
+   "in_top3": true,
+   "top3": [
+    "Qxa3",
+    "Bxa3",
+    "c6"
+   ],
    "check": false,
    "capture": true,
    "attempts": [
     {
      "n": 1,
-     "raw": "MOVE: Bxa3",
-     "parsed": "Bxa3",
+     "raw": "MOVE: Qxa3",
+     "parsed": "Qxa3",
      "seconds": 0.05,
      "usage": {},
      "error": null,
@@ -635,30 +894,46 @@
    "ply": 17,
    "move_no": 9,
    "side": "White",
-   "san": "g4",
-   "uci": "g3g4",
-   "fen": "rnb1k1nr/pppp1ppp/8/4p3/2P3P1/b3PP2/Pq2BK1P/6NR b kq - 0 9",
+   "san": "Bd1",
+   "uci": "e2d1",
+   "fen": "rnb1kbnr/pppp1ppp/8/4p3/2P5/q3PPP1/P4K1P/3B2NR b kq - 1 9",
    "forced_random": false,
    "eval_before": {
-    "cp": -1616,
+    "cp": -1590,
     "mate": null,
-    "best": "g4"
+    "best": "h4",
+    "top3": [
+     "h4",
+     "g4",
+     "Nh3"
+    ]
    },
    "eval_after": {
-    "cp": -1614,
+    "cp": -1727,
     "mate": null,
-    "best": "d5"
+    "best": "Qxa2+",
+    "top3": [
+     "Qxa2+",
+     "Qb2+",
+     "Bc5"
+    ]
    },
    "loss_pawns": 0.0,
-   "was_best": true,
-   "best_move": "g4",
+   "was_best": false,
+   "best_move": "h4",
+   "in_top3": false,
+   "top3": [
+    "h4",
+    "g4",
+    "Nh3"
+   ],
    "check": false,
    "capture": false,
    "attempts": [
     {
      "n": 1,
-     "raw": "MOVE: g4",
-     "parsed": "g4",
+     "raw": "MOVE: Bd1",
+     "parsed": "Bd1",
      "seconds": 0.0,
      "usage": {},
      "error": null,
@@ -671,30 +946,46 @@
    "ply": 18,
    "move_no": 9,
    "side": "Black",
-   "san": "d5",
-   "uci": "d7d5",
-   "fen": "rnb1k1nr/ppp2ppp/8/3pp3/2P3P1/b3PP2/Pq2BK1P/6NR w kq - 0 10",
+   "san": "Qxa2+",
+   "uci": "a3a2",
+   "fen": "rnb1kbnr/pppp1ppp/8/4p3/2P5/4PPP1/q4K1P/3B2NR w kq - 0 10",
    "forced_random": false,
    "eval_before": {
-    "cp": -1614,
+    "cp": -1727,
     "mate": null,
-    "best": "d5"
+    "best": "Qxa2+",
+    "top3": [
+     "Qxa2+",
+     "Qb2+",
+     "Bc5"
+    ]
    },
    "eval_after": {
-    "cp": -1629,
+    "cp": -1673,
     "mate": null,
-    "best": "Kg3"
+    "best": "Be2",
+    "top3": [
+     "Be2",
+     "Ne2",
+     "Kf1"
+    ]
    },
    "loss_pawns": -0.0,
    "was_best": true,
-   "best_move": "d5",
-   "check": false,
-   "capture": false,
+   "best_move": "Qxa2+",
+   "in_top3": true,
+   "top3": [
+    "Qxa2+",
+    "Qb2+",
+    "Bc5"
+   ],
+   "check": true,
+   "capture": true,
    "attempts": [
     {
      "n": 1,
-     "raw": "MOVE: d5",
-     "parsed": "d5",
+     "raw": "MOVE: Qxa2+",
+     "parsed": "Qxa2+",
      "seconds": 0.05,
      "usage": {},
      "error": null,
@@ -707,30 +998,46 @@
    "ply": 19,
    "move_no": 10,
    "side": "White",
-   "san": "cxd5",
-   "uci": "c4d5",
-   "fen": "rnb1k1nr/ppp2ppp/8/3Pp3/6P1/b3PP2/Pq2BK1P/6NR b kq - 0 10",
+   "san": "Ne2",
+   "uci": "g1e2",
+   "fen": "rnb1kbnr/pppp1ppp/8/4p3/2P5/4PPP1/q3NK1P/3B3R b kq - 1 10",
    "forced_random": false,
    "eval_before": {
-    "cp": -1629,
+    "cp": -1673,
     "mate": null,
-    "best": "Kg3"
+    "best": "Be2",
+    "top3": [
+     "Be2",
+     "Ne2",
+     "Kf1"
+    ]
    },
    "eval_after": {
-    "cp": -1715,
+    "cp": -1738,
     "mate": null,
-    "best": "Bc5"
+    "best": "Bc5",
+    "top3": [
+     "Bc5",
+     "Na6",
+     "Qxc4"
+    ]
    },
    "loss_pawns": 0.0,
    "was_best": false,
-   "best_move": "Kg3",
+   "best_move": "Be2",
+   "in_top3": true,
+   "top3": [
+    "Be2",
+    "Ne2",
+    "Kf1"
+   ],
    "check": false,
-   "capture": true,
+   "capture": false,
    "attempts": [
     {
      "n": 1,
-     "raw": "MOVE: cxd5",
-     "parsed": "cxd5",
+     "raw": "MOVE: Ne2",
+     "parsed": "Ne2",
      "seconds": 0.0,
      "usage": {},
      "error": null,
@@ -743,30 +1050,46 @@
    "ply": 20,
    "move_no": 10,
    "side": "Black",
-   "san": "Bc5",
-   "uci": "a3c5",
-   "fen": "rnb1k1nr/ppp2ppp/8/2bPp3/6P1/4PP2/Pq2BK1P/6NR w kq - 1 11",
+   "san": "Qxc4",
+   "uci": "a2c4",
+   "fen": "rnb1kbnr/pppp1ppp/8/4p3/2q5/4PPP1/4NK1P/3B3R w kq - 0 11",
    "forced_random": false,
    "eval_before": {
-    "cp": -1715,
+    "cp": -1738,
     "mate": null,
-    "best": "Bc5"
+    "best": "Bc5",
+    "top3": [
+     "Bc5",
+     "Na6",
+     "Qxc4"
+    ]
    },
    "eval_after": {
-    "cp": -1753,
+    "cp": -1690,
     "mate": null,
-    "best": "Kf1"
+    "best": "g4",
+    "top3": [
+     "g4",
+     "h4",
+     "Re1"
+    ]
    },
    "loss_pawns": -0.0,
-   "was_best": true,
+   "was_best": false,
    "best_move": "Bc5",
+   "in_top3": true,
+   "top3": [
+    "Bc5",
+    "Na6",
+    "Qxc4"
+   ],
    "check": false,
-   "capture": false,
+   "capture": true,
    "attempts": [
     {
      "n": 1,
-     "raw": "MOVE: Bc5",
-     "parsed": "Bc5",
+     "raw": "MOVE: Qxc4",
+     "parsed": "Qxc4",
      "seconds": 0.05,
      "usage": {},
      "error": null,
@@ -779,30 +1102,46 @@
    "ply": 21,
    "move_no": 11,
    "side": "White",
-   "san": "Kg2",
-   "uci": "f2g2",
-   "fen": "rnb1k1nr/ppp2ppp/8/2bPp3/6P1/4PP2/Pq2B1KP/6NR b kq - 2 11",
+   "san": "Kf1",
+   "uci": "f2f1",
+   "fen": "rnb1kbnr/pppp1ppp/8/4p3/2q5/4PPP1/4N2P/3B1K1R b kq - 1 11",
    "forced_random": false,
    "eval_before": {
-    "cp": -1753,
+    "cp": -1690,
     "mate": null,
-    "best": "Kf1"
+    "best": "g4",
+    "top3": [
+     "g4",
+     "h4",
+     "Re1"
+    ]
    },
    "eval_after": {
-    "cp": -1699,
+    "cp": -1773,
     "mate": null,
-    "best": "Bxe3"
+    "best": "b5",
+    "top3": [
+     "b5",
+     "Qd5",
+     "d5"
+    ]
    },
    "loss_pawns": 0.0,
    "was_best": false,
-   "best_move": "Kf1",
+   "best_move": "g4",
+   "in_top3": false,
+   "top3": [
+    "g4",
+    "h4",
+    "Re1"
+   ],
    "check": false,
    "capture": false,
    "attempts": [
     {
      "n": 1,
-     "raw": "MOVE: Kg2",
-     "parsed": "Kg2",
+     "raw": "MOVE: Kf1",
+     "parsed": "Kf1",
      "seconds": 0.0,
      "usage": {},
      "error": null,
@@ -815,30 +1154,46 @@
    "ply": 22,
    "move_no": 11,
    "side": "Black",
-   "san": "Bxe3",
-   "uci": "c5e3",
-   "fen": "rnb1k1nr/ppp2ppp/8/3Pp3/6P1/4bP2/Pq2B1KP/6NR w kq - 0 12",
+   "san": "Na6",
+   "uci": "b8a6",
+   "fen": "r1b1kbnr/pppp1ppp/n7/4p3/2q5/4PPP1/4N2P/3B1K1R w kq - 2 12",
    "forced_random": false,
    "eval_before": {
-    "cp": -1699,
+    "cp": -1773,
     "mate": null,
-    "best": "Bxe3"
+    "best": "b5",
+    "top3": [
+     "b5",
+     "Qd5",
+     "d5"
+    ]
    },
    "eval_after": {
-    "cp": -1854,
+    "cp": -1723,
     "mate": null,
-    "best": "g5"
+    "best": "e4",
+    "top3": [
+     "e4",
+     "g4",
+     "h4"
+    ]
    },
    "loss_pawns": -0.0,
-   "was_best": true,
-   "best_move": "Bxe3",
+   "was_best": false,
+   "best_move": "b5",
+   "in_top3": false,
+   "top3": [
+    "b5",
+    "Qd5",
+    "d5"
+   ],
    "check": false,
-   "capture": true,
+   "capture": false,
    "attempts": [
     {
      "n": 1,
-     "raw": "MOVE: Bxe3",
-     "parsed": "Bxe3",
+     "raw": "MOVE: Na6",
+     "parsed": "Na6",
      "seconds": 0.05,
      "usage": {},
      "error": null,
@@ -851,30 +1206,46 @@
    "ply": 23,
    "move_no": 12,
    "side": "White",
-   "san": "h4",
-   "uci": "h2h4",
-   "fen": "rnb1k1nr/ppp2ppp/8/3Pp3/6PP/4bP2/Pq2B1K1/6NR b kq - 0 12",
+   "san": "f4",
+   "uci": "f3f4",
+   "fen": "r1b1kbnr/pppp1ppp/n7/4p3/2q2P2/4P1P1/4N2P/3B1K1R b kq - 0 12",
    "forced_random": false,
    "eval_before": {
-    "cp": -1854,
+    "cp": -1723,
     "mate": null,
-    "best": "g5"
+    "best": "e4",
+    "top3": [
+     "e4",
+     "g4",
+     "h4"
+    ]
    },
    "eval_after": {
-    "cp": -1812,
+    "cp": -1960,
     "mate": null,
-    "best": "Nf6"
+    "best": "Qd5",
+    "top3": [
+     "Qd5",
+     "Qc6",
+     "exf4"
+    ]
    },
    "loss_pawns": 0.0,
    "was_best": false,
-   "best_move": "g5",
+   "best_move": "e4",
+   "in_top3": false,
+   "top3": [
+    "e4",
+    "g4",
+    "h4"
+   ],
    "check": false,
    "capture": false,
    "attempts": [
     {
      "n": 1,
-     "raw": "MOVE: h4",
-     "parsed": "h4",
+     "raw": "MOVE: f4",
+     "parsed": "f4",
      "seconds": 0.0,
      "usage": {},
      "error": null,
@@ -887,30 +1258,46 @@
    "ply": 24,
    "move_no": 12,
    "side": "Black",
-   "san": "Ne7",
-   "uci": "g8e7",
-   "fen": "rnb1k2r/ppp1nppp/8/3Pp3/6PP/4bP2/Pq2B1K1/6NR w kq - 1 13",
+   "san": "Qd5",
+   "uci": "c4d5",
+   "fen": "r1b1kbnr/pppp1ppp/n7/3qp3/5P2/4P1P1/4N2P/3B1K1R w kq - 1 13",
    "forced_random": false,
    "eval_before": {
-    "cp": -1812,
+    "cp": -1960,
     "mate": null,
-    "best": "Nf6"
+    "best": "Qd5",
+    "top3": [
+     "Qd5",
+     "Qc6",
+     "exf4"
+    ]
    },
    "eval_after": {
-    "cp": -1905,
+    "cp": -1932,
     "mate": null,
-    "best": "h5"
+    "best": "h3",
+    "top3": [
+     "h3",
+     "Kf2",
+     "h4"
+    ]
    },
    "loss_pawns": -0.0,
-   "was_best": false,
-   "best_move": "Nf6",
+   "was_best": true,
+   "best_move": "Qd5",
+   "in_top3": true,
+   "top3": [
+    "Qd5",
+    "Qc6",
+    "exf4"
+   ],
    "check": false,
    "capture": false,
    "attempts": [
     {
      "n": 1,
-     "raw": "MOVE: Ne7",
-     "parsed": "Ne7",
+     "raw": "MOVE: Qd5",
+     "parsed": "Qd5",
      "seconds": 0.05,
      "usage": {},
      "error": null,
@@ -923,30 +1310,46 @@
    "ply": 25,
    "move_no": 13,
    "side": "White",
-   "san": "a4",
-   "uci": "a2a4",
-   "fen": "rnb1k2r/ppp1nppp/8/3Pp3/P5PP/4bP2/1q2B1K1/6NR b kq - 0 13",
+   "san": "Rg1",
+   "uci": "h1g1",
+   "fen": "r1b1kbnr/pppp1ppp/n7/3qp3/5P2/4P1P1/4N2P/3B1KR1 b kq - 2 13",
    "forced_random": false,
    "eval_before": {
-    "cp": -1905,
+    "cp": -1932,
     "mate": null,
-    "best": "h5"
+    "best": "h3",
+    "top3": [
+     "h3",
+     "Kf2",
+     "h4"
+    ]
    },
    "eval_after": {
-    "cp": -1872,
-    "mate": null,
-    "best": "Qa2"
+    "cp": null,
+    "mate": -3,
+    "best": "Qf3+",
+    "top3": [
+     "Qf3+",
+     "Bb4",
+     "Qxd1+"
+    ]
    },
    "loss_pawns": 0.0,
    "was_best": false,
-   "best_move": "h5",
+   "best_move": "h3",
+   "in_top3": false,
+   "top3": [
+    "h3",
+    "Kf2",
+    "h4"
+   ],
    "check": false,
    "capture": false,
    "attempts": [
     {
      "n": 1,
-     "raw": "MOVE: a4",
-     "parsed": "a4",
+     "raw": "MOVE: Rg1",
+     "parsed": "Rg1",
      "seconds": 0.0,
      "usage": {},
      "error": null,
@@ -959,30 +1362,44 @@
    "ply": 26,
    "move_no": 13,
    "side": "Black",
-   "san": "Nxd5",
-   "uci": "e7d5",
-   "fen": "rnb1k2r/ppp2ppp/8/3np3/P5PP/4bP2/1q2B1K1/6NR w kq - 0 14",
+   "san": "Qf3+",
+   "uci": "d5f3",
+   "fen": "r1b1kbnr/pppp1ppp/n7/4p3/5P2/4PqP1/4N2P/3B1KR1 w kq - 3 14",
    "forced_random": false,
    "eval_before": {
-    "cp": -1872,
-    "mate": null,
-    "best": "Qa2"
+    "cp": null,
+    "mate": -3,
+    "best": "Qf3+",
+    "top3": [
+     "Qf3+",
+     "Bb4",
+     "Qxd1+"
+    ]
    },
    "eval_after": {
-    "cp": -1951,
-    "mate": null,
-    "best": "Rh2"
+    "cp": null,
+    "mate": -2,
+    "best": "Ke1",
+    "top3": [
+     "Ke1"
+    ]
    },
    "loss_pawns": -0.0,
-   "was_best": false,
-   "best_move": "Qa2",
-   "check": false,
-   "capture": true,
+   "was_best": true,
+   "best_move": "Qf3+",
+   "in_top3": true,
+   "top3": [
+    "Qf3+",
+    "Bb4",
+    "Qxd1+"
+   ],
+   "check": true,
+   "capture": false,
    "attempts": [
     {
      "n": 1,
-     "raw": "MOVE: Nxd5",
-     "parsed": "Nxd5",
+     "raw": "MOVE: Qf3+",
+     "parsed": "Qf3+",
      "seconds": 0.05,
      "usage": {},
      "error": null,
@@ -995,30 +1412,42 @@
    "ply": 27,
    "move_no": 14,
    "side": "White",
-   "san": "g5",
-   "uci": "g4g5",
-   "fen": "rnb1k2r/ppp2ppp/8/3np1P1/P6P/4bP2/1q2B1K1/6NR b kq - 0 14",
+   "san": "Ke1",
+   "uci": "f1e1",
+   "fen": "r1b1kbnr/pppp1ppp/n7/4p3/5P2/4PqP1/4N2P/3BK1R1 b kq - 4 14",
    "forced_random": false,
    "eval_before": {
-    "cp": -1951,
-    "mate": null,
-    "best": "Rh2"
+    "cp": null,
+    "mate": -2,
+    "best": "Ke1",
+    "top3": [
+     "Ke1"
+    ]
    },
    "eval_after": {
-    "cp": -2257,
-    "mate": null,
-    "best": "Nf4+"
+    "cp": null,
+    "mate": -2,
+    "best": "Bb4+",
+    "top3": [
+     "Bb4+",
+     "Qxe3",
+     "exf4"
+    ]
    },
    "loss_pawns": 0.0,
-   "was_best": false,
-   "best_move": "Rh2",
+   "was_best": true,
+   "best_move": "Ke1",
+   "in_top3": true,
+   "top3": [
+    "Ke1"
+   ],
    "check": false,
    "capture": false,
    "attempts": [
     {
      "n": 1,
-     "raw": "MOVE: g5",
-     "parsed": "g5",
+     "raw": "MOVE: Ke1",
+     "parsed": "Ke1",
      "seconds": 0.0,
      "usage": {},
      "error": null,
@@ -1031,66 +1460,101 @@
    "ply": 28,
    "move_no": 14,
    "side": "Black",
-   "san": "Nf4+",
-   "uci": "d5f4",
-   "fen": "rnb1k2r/ppp2ppp/8/4p1P1/P4n1P/4bP2/1q2B1K1/6NR w kq - 1 15",
+   "san": "Bb4+",
+   "uci": "f8b4",
+   "fen": "r1b1k1nr/pppp1ppp/n7/4p3/1b3P2/4PqP1/4N2P/3BK1R1 w kq - 5 15",
    "forced_random": false,
    "eval_before": {
-    "cp": -2257,
-    "mate": null,
-    "best": "Nf4+"
+    "cp": null,
+    "mate": -2,
+    "best": "Bb4+",
+    "top3": [
+     "Bb4+",
+     "Qxe3",
+     "exf4"
+    ]
    },
    "eval_after": {
     "cp": null,
-    "mate": -3,
-    "best": "Kg3"
+    "mate": -1,
+    "best": "Nc3",
+    "top3": [
+     "Nc3"
+    ]
    },
    "loss_pawns": -0.0,
    "was_best": true,
-   "best_move": "Nf4+",
+   "best_move": "Bb4+",
+   "in_top3": true,
+   "top3": [
+    "Bb4+",
+    "Qxe3",
+    "exf4"
+   ],
    "check": true,
    "capture": false,
    "attempts": [
     {
      "n": 1,
-     "raw": "MOVE: Nf4+",
-     "parsed": "Nf4+",
-     "seconds": 0.05,
+     "raw": "MOVE: Bb4+",
+     "parsed": "Bb4+",
+     "seconds": 0.0,
      "usage": {},
      "error": null,
      "legal": true
     }
    ],
-   "seconds": 0.05
+   "seconds": 0.0
   },
   {
    "ply": 29,
    "move_no": 15,
    "side": "White",
-   "san": "Kg3",
-   "uci": "g2g3",
-   "fen": "rnb1k2r/ppp2ppp/8/4p1P1/P4n1P/4bPK1/1q2B3/6NR b kq - 2 15",
+   "san": "Nc3",
+   "uci": "e2c3",
+   "fen": "r1b1k1nr/pppp1ppp/n7/4p3/1b3P2/2N1PqP1/7P/3BK1R1 b kq - 6 15",
    "forced_random": false,
    "eval_before": {
     "cp": null,
-    "mate": -3,
-    "best": "Kg3"
+    "mate": -1,
+    "best": "Nc3",
+    "top3": [
+     "Nc3"
+    ]
    },
    "eval_after": {
     "cp": null,
-    "mate": -3,
-    "best": "Nxe2+"
+    "mate": -1,
+    "best": "Bxc3#",
+    "top3": [
+     "Bxc3#",
+     "Qxe3+",
+     "Qc6"
+    ]
    },
    "loss_pawns": 0.0,
    "was_best": true,
-   "best_move": "Kg3",
+   "best_move": "Nc3",
+   "in_top3": true,
+   "top3": [
+    "Nc3"
+   ],
    "check": false,
    "capture": false,
    "attempts": [
     {
      "n": 1,
-     "raw": "MOVE: Kg3",
-     "parsed": "Kg3",
+     "raw": "I'll play MOVE: Qh9",
+     "parsed": "Qh9",
+     "seconds": 0.0,
+     "usage": {},
+     "error": null,
+     "legal": false
+    },
+    {
+     "n": 2,
+     "raw": "MOVE: Nc3",
+     "parsed": "Nc3",
      "seconds": 0.0,
      "usage": {},
      "error": null,
@@ -1103,158 +1567,19 @@
    "ply": 30,
    "move_no": 15,
    "side": "Black",
-   "san": "Nxe2+",
-   "uci": "f4e2",
-   "fen": "rnb1k2r/ppp2ppp/8/4p1P1/P6P/4bPK1/1q2n3/6NR w kq - 0 16",
-   "forced_random": false,
-   "eval_before": {
-    "cp": null,
-    "mate": -3,
-    "best": "Nxe2+"
-   },
-   "eval_after": {
-    "cp": null,
-    "mate": -2,
-    "best": "Nxe2"
-   },
-   "loss_pawns": -0.0,
-   "was_best": true,
-   "best_move": "Nxe2+",
-   "check": true,
-   "capture": true,
-   "attempts": [
-    {
-     "n": 1,
-     "raw": "MOVE: Nxe2+",
-     "parsed": "Nxe2+",
-     "seconds": 0.05,
-     "usage": {},
-     "error": null,
-     "legal": true
-    }
-   ],
-   "seconds": 0.05
-  },
-  {
-   "ply": 31,
-   "move_no": 16,
-   "side": "White",
-   "san": "Nxe2",
-   "uci": "g1e2",
-   "fen": "rnb1k2r/ppp2ppp/8/4p1P1/P6P/4bPK1/1q2N3/7R b kq - 0 16",
-   "forced_random": false,
-   "eval_before": {
-    "cp": null,
-    "mate": -2,
-    "best": "Nxe2"
-   },
-   "eval_after": {
-    "cp": null,
-    "mate": -2,
-    "best": "Qxe2"
-   },
-   "loss_pawns": 0.0,
-   "was_best": true,
-   "best_move": "Nxe2",
-   "check": false,
-   "capture": true,
-   "attempts": [
-    {
-     "n": 1,
-     "raw": "MOVE: Nxe2",
-     "parsed": "Nxe2",
-     "seconds": 0.0,
-     "usage": {},
-     "error": null,
-     "legal": true
-    }
-   ],
-   "seconds": 0.0
-  },
-  {
-   "ply": 32,
-   "move_no": 16,
-   "side": "Black",
-   "san": "Qxe2",
-   "uci": "b2e2",
-   "fen": "rnb1k2r/ppp2ppp/8/4p1P1/P6P/4bPK1/4q3/7R w kq - 0 17",
-   "forced_random": false,
-   "eval_before": {
-    "cp": null,
-    "mate": -2,
-    "best": "Qxe2"
-   },
-   "eval_after": {
-    "cp": null,
-    "mate": -1,
-    "best": "f4"
-   },
-   "loss_pawns": -0.0,
-   "was_best": true,
-   "best_move": "Qxe2",
-   "check": false,
-   "capture": true,
-   "attempts": [
-    {
-     "n": 1,
-     "raw": "MOVE: Qxe2",
-     "parsed": "Qxe2",
-     "seconds": 0.01,
-     "usage": {},
-     "error": null,
-     "legal": true
-    }
-   ],
-   "seconds": 0.01
-  },
-  {
-   "ply": 33,
-   "move_no": 17,
-   "side": "White",
-   "san": "Rb1",
-   "uci": "h1b1",
-   "fen": "rnb1k2r/ppp2ppp/8/4p1P1/P6P/4bPK1/4q3/1R6 b kq - 1 17",
+   "san": "Bxc3#",
+   "uci": "b4c3",
+   "fen": "r1b1k1nr/pppp1ppp/n7/4p3/5P2/2b1PqP1/7P/3BK1R1 w kq - 0 16",
    "forced_random": false,
    "eval_before": {
     "cp": null,
     "mate": -1,
-    "best": "f4"
-   },
-   "eval_after": {
-    "cp": null,
-    "mate": -1,
-    "best": "Qf2#"
-   },
-   "loss_pawns": 0.0,
-   "was_best": false,
-   "best_move": "f4",
-   "check": false,
-   "capture": false,
-   "attempts": [
-    {
-     "n": 1,
-     "raw": "MOVE: Rb1",
-     "parsed": "Rb1",
-     "seconds": 0.0,
-     "usage": {},
-     "error": null,
-     "legal": true
-    }
-   ],
-   "seconds": 0.0
-  },
-  {
-   "ply": 34,
-   "move_no": 17,
-   "side": "Black",
-   "san": "Qf2#",
-   "uci": "e2f2",
-   "fen": "rnb1k2r/ppp2ppp/8/4p1P1/P6P/4bPK1/5q2/1R6 w kq - 2 18",
-   "forced_random": false,
-   "eval_before": {
-    "cp": null,
-    "mate": -1,
-    "best": "Qf2#"
+    "best": "Bxc3#",
+    "top3": [
+     "Bxc3#",
+     "Qxe3+",
+     "Qc6"
+    ]
    },
    "eval_after": {
     "cp": null,
@@ -1264,14 +1589,20 @@
    },
    "loss_pawns": -0.0,
    "was_best": true,
-   "best_move": "Qf2#",
+   "best_move": "Bxc3#",
+   "in_top3": true,
+   "top3": [
+    "Bxc3#",
+    "Qxe3+",
+    "Qc6"
+   ],
    "check": true,
-   "capture": false,
+   "capture": true,
    "attempts": [
     {
      "n": 1,
-     "raw": "MOVE: Qf2#",
-     "parsed": "Qf2#",
+     "raw": "MOVE: Bxc3#",
+     "parsed": "Bxc3#",
      "seconds": 0.0,
      "usage": {},
      "error": null,

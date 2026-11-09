@@ -1,0 +1,22 @@
+[
+ {
+  "ply": 7,
+  "type": "illegal",
+  "text": "White tried ['Qh9'] before e3"
+ },
+ {
+  "ply": 9,
+  "type": "blunder",
+  "text": "White Kf2 lost 7.2 pawns (best was Kxd1)"
+ },
+ {
+  "ply": 29,
+  "type": "illegal",
+  "text": "White tried ['Qh9'] before Nc3"
+ },
+ {
+  "ply": 30,
+  "type": "mate",
+  "text": "Black delivers checkmate with Bxc3#"
+ }
+]

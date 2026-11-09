@@ -1,0 +1,64 @@
+=== game2: White = Random  |  Black = Stockfish (50 ms)  |  verifier = python-chess + Stockfish 19
+  White try 1: 'f3' ok (0.0s)
+1. f3      eval   -0.52  best e4    
+  Black try 1: 'e5' ok (0.1s)
+1... e5      eval   -0.72  best d5    
+  White try 1: 'd4' ok (0.0s)
+2. d4      eval   -1.08  best Nc3   
+  Black try 1: 'Qh4+' ok (0.1s)
+2... Qh4+    eval   -1.14  best Qh4+  
+  White try 1: 'g3' ok (0.0s)
+3. g3      eval   -1.16  best g3    
+  Black try 1: 'Qxd4' ok (0.1s)
+3... Qxd4    eval   -1.04  best Qxd4  
+  White try 1: 'Qh9' ILLEGAL (0.0s)
+  White try 2: 'e3' ok (0.0s)
+4. e3      eval   -2.51  best Qxd4   mistake
+  Black try 1: 'Qxd1+' ok (0.1s)
+4... Qxd1+   eval   -2.80  best Qxd1+ 
+  White try 1: 'Kf2' ok (0.0s)
+5. Kf2     eval  -10.41  best Kxd1   BLUNDER
+  Black try 1: 'Qxc1' ok (0.1s)
+5... Qxc1    eval  -10.80  best Qxc1  
+  White try 1: 'Na3' ok (0.0s)
+6. Na3     eval  -11.50  best Ne2   
+  Black try 1: 'Qxa1' ok (0.1s)
+6... Qxa1    eval  -11.63  best Qxa1  
+  White try 1: 'c4' ok (0.0s)
+7. c4      eval  -13.39  best Nb5   
+  Black try 1: 'Qxb2+' ok (0.1s)
+7... Qxb2+   eval  -15.35  best Qxb2+ 
+  White try 1: 'Be2' ok (0.0s)
+8. Be2     eval  -15.88  best Ne2   
+  Black try 1: 'Qxa3' ok (0.0s)
+8... Qxa3    eval  -15.90  best Qxa3  
+  White try 1: 'Bd1' ok (0.0s)
+9. Bd1     eval  -17.27  best h4    
+  Black try 1: 'Qxa2+' ok (0.1s)
+9... Qxa2+   eval  -16.73  best Qxa2+ 
+  White try 1: 'Ne2' ok (0.0s)
+10. Ne2     eval  -17.38  best Be2   
+  Black try 1: 'Qxc4' ok (0.1s)
+10... Qxc4    eval  -16.90  best Bc5   
+  White try 1: 'Kf1' ok (0.0s)
+11. Kf1     eval  -17.73  best g4    
+  Black try 1: 'Na6' ok (0.1s)
+11... Na6     eval  -17.23  best b5    
+  White try 1: 'f4' ok (0.0s)
+12. f4      eval  -19.60  best e4    
+  Black try 1: 'Qd5' ok (0.1s)
+12... Qd5     eval  -19.32  best Qd5   
+  White try 1: 'Rg1' ok (0.0s)
+13. Rg1     eval     M-3  best h3    
+  Black try 1: 'Qf3+' ok (0.1s)
+13... Qf3+    eval     M-2  best Qf3+  
+  White try 1: 'Ke1' ok (0.0s)
+14. Ke1     eval     M-2  best Ke1   
+  Black try 1: 'Bb4+' ok (0.0s)
+14... Bb4+    eval     M-1  best Bb4+  
+  White try 1: 'Qh9' ILLEGAL (0.0s)
+  White try 2: 'Nc3' ok (0.0s)
+15. Nc3     eval     M-1  best Nc3   
+  Black try 1: 'Bxc3#' ok (0.0s)
+15... Bxc3#   eval     0-1  best Bxc3# 
+=== Result 0-1: checkmate

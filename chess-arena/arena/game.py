@@ -11,6 +11,7 @@ import chess
 import chess.pgn
 
 from .engine import Engine, cp_for_chart
+from .prices import cost_usd
 from .players import Player
 
 
@@ -91,7 +92,7 @@ class Game:
                 "ply": len(self.board.move_stack), "move_no": (len(self.board.move_stack) + 1) // 2, "side": side,
                 "san": san, "uci": move.uci(), "fen": self.board.fen(), "forced_random": forced,
                 "eval_before": before, "eval_after": after, "loss_pawns": round(loss, 2),
-                "was_best": san == best_before, "best_move": best_before,
+                "was_best": san == best_before, "best_move": best_before, "in_top3": san in (before.get("top3") or []), "top3": before.get("top3") or [],
                 "check": self.board.is_check(), "capture": "x" in san,
                 "attempts": attempts, "seconds": round(sum(a["seconds"] for a in attempts), 2),
             }
@@ -151,21 +152,27 @@ class Game:
             print(game, file=f)
 
         def side_stats(side: str) -> dict:
+            player = self.white if side == "White" else self.black
             ps = [p for p in self.plies if p["side"] == side and p.get("san")]
             illegal = sum(len(p["attempts"]) - 1 for p in self.plies if p["side"] == side)
             return {
                 "moves": len(ps), "illegal_attempts": illegal, "forced_random": sum(p["forced_random"] for p in ps),
                 "best_move_rate": round(sum(p["was_best"] for p in ps) / len(ps), 3) if ps else None,
+                "top3_rate": round(sum(p["in_top3"] for p in ps) / len(ps), 3) if ps else None,
                 "avg_loss_pawns": round(sum(max(0, p["loss_pawns"]) for p in ps) / len(ps), 3) if ps else None,
                 "blunders_2pawns": sum(p["loss_pawns"] >= 2 for p in ps),
                 "avg_seconds": round(sum(p["seconds"] for p in ps) / len(ps), 1) if ps else None,
-                "tokens_out": sum(a["usage"].get("output", 0) for p in ps for a in p["attempts"]),
+                "tokens_in": sum(a["usage"].get("input", 0) for p in self.plies if p["side"] == side for a in p["attempts"]),
+                "tokens_out": sum(a["usage"].get("output", 0) for p in self.plies if p["side"] == side for a in p["attempts"]),
+                "cost_usd": cost_usd(player.model, self.plies, side),
+                "total_seconds": round(sum(a["seconds"] for p in self.plies if p["side"] == side for a in p["attempts"]), 1),
             }
 
         data = {
             "name": self.name, "started_utc": started.isoformat(), "white": {"name": self.white.name, "model": self.white.model},
             "black": {"name": self.black.name, "model": self.black.model}, "result": result, "termination": reason,
             "plies_total": len([p for p in self.plies if p.get("san")]), "verifier": {"legality": f"python-chess {chess.__version__}", "eval": f"{self.engine.version} depth {self.engine.depth}"},
+            "effort": getattr(self.white, "effort", None) or getattr(self.black, "effort", None),
             "rules": {"max_attempts": self.max_attempts, "on_illegal": self.on_illegal, "max_plies": self.max_plies, "adjudicate_cp": self.adjudicate_cp},
             "stats": {"White": side_stats("White"), "Black": side_stats("Black")}, "final_fen": self.board.fen(), "plies": self.plies,
         }

@@ -1,0 +1,11 @@
+[Event "AI Chess Arena"]
+[Site "API"]
+[Date "2026.11.09"]
+[Round "game2"]
+[White "Random"]
+[Black "Stockfish (50 ms)"]
+[Result "0-1"]
+[Termination "checkmate"]
+[Annotator "python-chess (legality) + Stockfish 19 depth 10 (eval)"]
+
+1. Nc3 { [%eval +0.02] } 1... d5 { [%eval -0.01] } 2. a4 { [%eval -0.67] } 2... d4 { [%eval -0.54] } 3. h4 { [%eval -6.23] } 3... dxc3 { [%eval -5.92] } 4. e3 { [%eval -7.17] } 4... cxd2+ { [%eval -7.28] } 5. Bxd2 { [%eval -6.97] } 5... Nf6 { [%eval -6.62] } 6. b4 { [%eval -7.64] } 6... a5 { [%eval -7.52] } 7. Qe2 { [%eval -8.28] } 7... axb4 { [%eval -7.88] } 8. f4 { [%eval -8.53] illegal attempts: 1 } 8... e6 { [%eval -8.15] } 9. Qa6 { [%eval -10.77] } 9... bxa6 { [%eval -10.60] } 10. g3 { [%eval -11.28] illegal attempts: 1 } 10... Qe7 { [%eval -11.32] } 11. a5 { [%eval -11.88] } 11... c6 { [%eval -11.25] } 12. Ra2 { [%eval -11.69] } 12... c5 { [%eval -10.87] } 13. Bh3 { [%eval -11.71] illegal attempts: 1 } 13... Ra7 { [%eval -11.37] } 14. Rb2 { [%eval -11.89] } 14... Rd7 { [%eval -12.16] } 15. Ra2 { [%eval -12.76] } 15... Qd6 { [%eval -12.28] } 16. Bg4 { [%eval -26.05] } 16... Qxd2+ { [%eval M-5] } 17. Kf1 { [%eval M-5] } 17... Nxg4 { [%eval M-4] } 18. Rb2 { [%eval M-1] } 18... Nxe3# { [%eval ] } 0-1

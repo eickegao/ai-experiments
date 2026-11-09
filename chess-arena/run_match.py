@@ -58,7 +58,7 @@ def summarize(out_dir: str, games: list[dict], a_name: str, b_name: str) -> None
         else:
             score[w] += 0.5; score[b] += 0.5
         rows.append(g)
-    lines = [f"# AI Chess Arena · {a_name} vs {b_name}", "",
+    lines = [f"# AI Chess Arena · {a_name} vs {b_name} · effort={games[0].get('effort')}", "",
              f"Verifier: {games[0]['verifier']['legality']} for legality, {games[0]['verifier']['eval']} for evaluation.",
              f"Rules: {games[0]['rules']['max_attempts']} attempts per move, on failure = {games[0]['rules']['on_illegal']}; "
              f"move cap {games[0]['rules']['max_plies'] // 2}, then Stockfish adjudication at ±{games[0]['rules']['adjudicate_cp'] / 100:.0f} pawns.", "",
@@ -66,12 +66,12 @@ def summarize(out_dir: str, games: list[dict], a_name: str, b_name: str) -> None
              "| Game | White | Black | Result | Termination | Plies |", "|---|---|---|---|---|---|"]
     for g in rows:
         lines.append(f"| {g['name']} | {g['white']['name']} | {g['black']['name']} | {g['result']} | {g['termination']} | {g['plies_total']} |")
-    lines += ["", "## Per-side stats", "", "| Game | Side | Player | Moves | Illegal attempts | Best-move rate | Avg loss (pawns) | Blunders (≥2) | Avg s/move | Output tokens |", "|---|---|---|---|---|---|---|---|---|---|"]
+    lines += ["", "## Per-side stats", "", "| Game | Side | Player | Moves | Illegal attempts | Top-1 rate | Top-3 rate | Avg loss (pawns) | Blunders (≥2) | Avg s/move | Tokens in/out | Cost USD |", "|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for g in rows:
         for side in ("White", "Black"):
             s = g["stats"][side]
             who = g["white"]["name"] if side == "White" else g["black"]["name"]
-            lines.append(f"| {g['name']} | {side} | {who} | {s['moves']} | {s['illegal_attempts']} | {s['best_move_rate']} | {s['avg_loss_pawns']} | {s['blunders_2pawns']} | {s['avg_seconds']} | {s['tokens_out']} |")
+            lines.append(f"| {g['name']} | {side} | {who} | {s['moves']} | {s['illegal_attempts']} | {s['best_move_rate']} | {s['top3_rate']} | {s['avg_loss_pawns']} | {s['blunders_2pawns']} | {s['avg_seconds']} | {s['tokens_in']}/{s['tokens_out']} | {s['cost_usd']} |")
     lines += ["", "Files per game: `<game>.pgn` (with [%eval] comments), `<game>.json` (every prompt reply, attempt, eval), `<game>.log`, `<game>_replay.mp4`, `<game>_eval.png`, `<game>_key_moments.json`, `frames/<game>/*.png`."]
     open(os.path.join(out_dir, "summary.md"), "w", encoding="utf-8").write("\n".join(lines) + "\n")
     json.dump({"score": score, "games": [{k: g[k] for k in ("name", "white", "black", "result", "termination", "plies_total", "stats")} for g in rows]},
@@ -92,12 +92,13 @@ def main():
     ap.add_argument("--stockfish", default=None, help="stockfish 可执行文件路径")
     ap.add_argument("--out", default=None)
     ap.add_argument("--render-only", default=None, help="只对已有结果目录重新生成帧/视频/图")
+    ap.add_argument("--layout", choices=["landscape", "portrait"], default="landscape", help="素材画幅：横屏 1920×1080（默认）或竖屏 1080×1350")
     a = ap.parse_args()
     load_env()
 
     if a.render_only:
         for j in sorted(glob.glob(os.path.join(a.render_only, "game*.json"))):
-            print(render_game(j))
+            print(render_game(j, layout=a.layout))
         return
 
     engine = Engine(a.stockfish, a.depth)
@@ -113,7 +114,7 @@ def main():
             white, black = (A, B) if i % 2 == 1 else (B, A)
             g = Game(white, black, engine, out_dir, f"game{i}", a.attempts, a.on_illegal, a.max_moves * 2).play()
             games.append(g)
-            r = render_game(os.path.join(out_dir, f"game{i}.json"))
+            r = render_game(os.path.join(out_dir, f"game{i}.json"), layout=a.layout)
             print(f"  素材：{r['frames']} 帧，{r['replay']}，{r['chart']}，关键时刻 {len(r['key_moments'])} 个")
     finally:
         engine.close()

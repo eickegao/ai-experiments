@@ -1,0 +1,1456 @@
+{
+ "name": "game1",
+ "started_utc": "2026-11-09T01:40:52.785159+00:00",
+ "white": {
+  "name": "Stockfish (50 ms)",
+  "model": "stockfish-50ms"
+ },
+ "black": {
+  "name": "Random",
+  "model": "random"
+ },
+ "result": "1-0",
+ "termination": "checkmate",
+ "plies_total": 27,
+ "verifier": {
+  "legality": "python-chess 1.11.2",
+  "eval": "Stockfish 19 depth 10"
+ },
+ "effort": null,
+ "rules": {
+  "max_attempts": 3,
+  "on_illegal": "random",
+  "max_plies": 60,
+  "adjudicate_cp": 800
+ },
+ "stats": {
+  "White": {
+   "moves": 14,
+   "illegal_attempts": 0,
+   "forced_random": 0,
+   "best_move_rate": 0.643,
+   "top3_rate": 0.929,
+   "avg_loss_pawns": 0.114,
+   "blunders_2pawns": 0,
+   "avg_seconds": 0.0,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": null,
+   "total_seconds": 0.6
+  },
+  "Black": {
+   "moves": 13,
+   "illegal_attempts": 2,
+   "forced_random": 0,
+   "best_move_rate": 0.231,
+   "top3_rate": 0.385,
+   "avg_loss_pawns": 0.829,
+   "blunders_2pawns": 1,
+   "avg_seconds": 0.0,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": null,
+   "total_seconds": 0.0
+  }
+ },
+ "final_fen": "rnb2b1r/p1p2P2/6Qn/1p2k2p/5P2/2N1B3/PPP1B1PP/R3K2R b KQ - 0 14",
+ "plies": [
+  {
+   "ply": 1,
+   "move_no": 1,
+   "side": "White",
+   "san": "e4",
+   "uci": "e2e4",
+   "fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 31,
+    "mate": null,
+    "best": "e4",
+    "top3": [
+     "e4",
+     "d4",
+     "Nf3"
+    ]
+   },
+   "eval_after": {
+    "cp": 29,
+    "mate": null,
+    "best": "e5",
+    "top3": [
+     "e5",
+     "c5",
+     "c6"
+    ]
+   },
+   "loss_pawns": 0.02,
+   "was_best": true,
+   "best_move": "e4",
+   "in_top3": true,
+   "top3": [
+    "e4",
+    "d4",
+    "Nf3"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: e4",
+     "parsed": "e4",
+     "seconds": 0.05,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.05
+  },
+  {
+   "ply": 2,
+   "move_no": 1,
+   "side": "Black",
+   "san": "g5",
+   "uci": "g7g5",
+   "fen": "rnbqkbnr/pppppp1p/8/6p1/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 29,
+    "mate": null,
+    "best": "e5",
+    "top3": [
+     "e5",
+     "c5",
+     "c6"
+    ]
+   },
+   "eval_after": {
+    "cp": 182,
+    "mate": null,
+    "best": "d4",
+    "top3": [
+     "d4",
+     "Nc3",
+     "Ne2"
+    ]
+   },
+   "loss_pawns": 1.53,
+   "was_best": false,
+   "best_move": "e5",
+   "in_top3": false,
+   "top3": [
+    "e5",
+    "c5",
+    "c6"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: g5",
+     "parsed": "g5",
+     "seconds": 0.0,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.0
+  },
+  {
+   "ply": 3,
+   "move_no": 2,
+   "side": "White",
+   "san": "d4",
+   "uci": "d2d4",
+   "fen": "rnbqkbnr/pppppp1p/8/6p1/3PP3/8/PPP2PPP/RNBQKBNR b KQkq - 0 2",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 182,
+    "mate": null,
+    "best": "d4",
+    "top3": [
+     "d4",
+     "Nc3",
+     "Ne2"
+    ]
+   },
+   "eval_after": {
+    "cp": 208,
+    "mate": null,
+    "best": "h6",
+    "top3": [
+     "h6",
+     "d5",
+     "e6"
+    ]
+   },
+   "loss_pawns": -0.26,
+   "was_best": true,
+   "best_move": "d4",
+   "in_top3": true,
+   "top3": [
+    "d4",
+    "Nc3",
+    "Ne2"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: d4",
+     "parsed": "d4",
+     "seconds": 0.05,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.05
+  },
+  {
+   "ply": 4,
+   "move_no": 2,
+   "side": "Black",
+   "san": "e5",
+   "uci": "e7e5",
+   "fen": "rnbqkbnr/pppp1p1p/8/4p1p1/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 208,
+    "mate": null,
+    "best": "h6",
+    "top3": [
+     "h6",
+     "d5",
+     "e6"
+    ]
+   },
+   "eval_after": {
+    "cp": 284,
+    "mate": null,
+    "best": "Nc3",
+    "top3": [
+     "Nc3",
+     "Nf3",
+     "dxe5"
+    ]
+   },
+   "loss_pawns": 0.76,
+   "was_best": false,
+   "best_move": "h6",
+   "in_top3": false,
+   "top3": [
+    "h6",
+    "d5",
+    "e6"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "I'll play MOVE: Qh9",
+     "parsed": "Qh9",
+     "seconds": 0.0,
+     "usage": {},
+     "error": null,
+     "legal": false
+    },
+    {
+     "n": 2,
+     "raw": "MOVE: e5",
+     "parsed": "e5",
+     "seconds": 0.0,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.0
+  },
+  {
+   "ply": 5,
+   "move_no": 3,
+   "side": "White",
+   "san": "Nf3",
+   "uci": "g1f3",
+   "fen": "rnbqkbnr/pppp1p1p/8/4p1p1/3PP3/5N2/PPP2PPP/RNBQKB1R b KQkq - 1 3",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 284,
+    "mate": null,
+    "best": "Nc3",
+    "top3": [
+     "Nc3",
+     "Nf3",
+     "dxe5"
+    ]
+   },
+   "eval_after": {
+    "cp": 309,
+    "mate": null,
+    "best": "h6",
+    "top3": [
+     "h6",
+     "d6",
+     "Be7"
+    ]
+   },
+   "loss_pawns": -0.25,
+   "was_best": false,
+   "best_move": "Nc3",
+   "in_top3": true,
+   "top3": [
+    "Nc3",
+    "Nf3",
+    "dxe5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: Nf3",
+     "parsed": "Nf3",
+     "seconds": 0.05,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.05
+  },
+  {
+   "ply": 6,
+   "move_no": 3,
+   "side": "Black",
+   "san": "d5",
+   "uci": "d7d5",
+   "fen": "rnbqkbnr/ppp2p1p/8/3pp1p1/3PP3/5N2/PPP2PPP/RNBQKB1R w KQkq - 0 4",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 309,
+    "mate": null,
+    "best": "h6",
+    "top3": [
+     "h6",
+     "d6",
+     "Be7"
+    ]
+   },
+   "eval_after": {
+    "cp": 470,
+    "mate": null,
+    "best": "Nc3",
+    "top3": [
+     "Nc3",
+     "Bxg5",
+     "exd5"
+    ]
+   },
+   "loss_pawns": 1.61,
+   "was_best": false,
+   "best_move": "h6",
+   "in_top3": false,
+   "top3": [
+    "h6",
+    "d6",
+    "Be7"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: d5",
+     "parsed": "d5",
+     "seconds": 0.0,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.0
+  },
+  {
+   "ply": 7,
+   "move_no": 4,
+   "side": "White",
+   "san": "Nxe5",
+   "uci": "f3e5",
+   "fen": "rnbqkbnr/ppp2p1p/8/3pN1p1/3PP3/8/PPP2PPP/RNBQKB1R b KQkq - 0 4",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 470,
+    "mate": null,
+    "best": "Nc3",
+    "top3": [
+     "Nc3",
+     "Bxg5",
+     "exd5"
+    ]
+   },
+   "eval_after": {
+    "cp": 398,
+    "mate": null,
+    "best": "Nd7",
+    "top3": [
+     "Nd7",
+     "Bb4+",
+     "Be6"
+    ]
+   },
+   "loss_pawns": 0.72,
+   "was_best": false,
+   "best_move": "Nc3",
+   "in_top3": false,
+   "top3": [
+    "Nc3",
+    "Bxg5",
+    "exd5"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: Nxe5",
+     "parsed": "Nxe5",
+     "seconds": 0.05,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.05
+  },
+  {
+   "ply": 8,
+   "move_no": 4,
+   "side": "Black",
+   "san": "h5",
+   "uci": "h7h5",
+   "fen": "rnbqkbnr/ppp2p2/8/3pN1pp/3PP3/8/PPP2PPP/RNBQKB1R w KQkq - 0 5",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 398,
+    "mate": null,
+    "best": "Nd7",
+    "top3": [
+     "Nd7",
+     "Bb4+",
+     "Be6"
+    ]
+   },
+   "eval_after": {
+    "cp": 487,
+    "mate": null,
+    "best": "Nc3",
+    "top3": [
+     "Nc3",
+     "exd5",
+     "Be3"
+    ]
+   },
+   "loss_pawns": 0.89,
+   "was_best": false,
+   "best_move": "Nd7",
+   "in_top3": false,
+   "top3": [
+    "Nd7",
+    "Bb4+",
+    "Be6"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: h5",
+     "parsed": "h5",
+     "seconds": 0.0,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.0
+  },
+  {
+   "ply": 9,
+   "move_no": 5,
+   "side": "White",
+   "san": "exd5",
+   "uci": "e4d5",
+   "fen": "rnbqkbnr/ppp2p2/8/3PN1pp/3P4/8/PPP2PPP/RNBQKB1R b KQkq - 0 5",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 487,
+    "mate": null,
+    "best": "Nc3",
+    "top3": [
+     "Nc3",
+     "exd5",
+     "Be3"
+    ]
+   },
+   "eval_after": {
+    "cp": 435,
+    "mate": null,
+    "best": "Qxd5",
+    "top3": [
+     "Qxd5",
+     "Nd7",
+     "Bg7"
+    ]
+   },
+   "loss_pawns": 0.52,
+   "was_best": false,
+   "best_move": "Nc3",
+   "in_top3": true,
+   "top3": [
+    "Nc3",
+    "exd5",
+    "Be3"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: exd5",
+     "parsed": "exd5",
+     "seconds": 0.05,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.05
+  },
+  {
+   "ply": 10,
+   "move_no": 5,
+   "side": "Black",
+   "san": "Qe7",
+   "uci": "d8e7",
+   "fen": "rnb1kbnr/ppp1qp2/8/3PN1pp/3P4/8/PPP2PPP/RNBQKB1R w KQkq - 1 6",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 435,
+    "mate": null,
+    "best": "Qxd5",
+    "top3": [
+     "Qxd5",
+     "Nd7",
+     "Bg7"
+    ]
+   },
+   "eval_after": {
+    "cp": 623,
+    "mate": null,
+    "best": "Bb5+",
+    "top3": [
+     "Bb5+",
+     "Qe2",
+     "Be2"
+    ]
+   },
+   "loss_pawns": 1.88,
+   "was_best": false,
+   "best_move": "Qxd5",
+   "in_top3": false,
+   "top3": [
+    "Qxd5",
+    "Nd7",
+    "Bg7"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: Qe7",
+     "parsed": "Qe7",
+     "seconds": 0.0,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.0
+  },
+  {
+   "ply": 11,
+   "move_no": 6,
+   "side": "White",
+   "san": "Be2",
+   "uci": "f1e2",
+   "fen": "rnb1kbnr/ppp1qp2/8/3PN1pp/3P4/8/PPP1BPPP/RNBQK2R b KQkq - 2 6",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 623,
+    "mate": null,
+    "best": "Bb5+",
+    "top3": [
+     "Bb5+",
+     "Qe2",
+     "Be2"
+    ]
+   },
+   "eval_after": {
+    "cp": 592,
+    "mate": null,
+    "best": "Bg4",
+    "top3": [
+     "Bg4",
+     "Nd7",
+     "a6"
+    ]
+   },
+   "loss_pawns": 0.31,
+   "was_best": false,
+   "best_move": "Bb5+",
+   "in_top3": true,
+   "top3": [
+    "Bb5+",
+    "Qe2",
+    "Be2"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: Be2",
+     "parsed": "Be2",
+     "seconds": 0.05,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.05
+  },
+  {
+   "ply": 12,
+   "move_no": 6,
+   "side": "Black",
+   "san": "Qe6",
+   "uci": "e7e6",
+   "fen": "rnb1kbnr/ppp2p2/4q3/3PN1pp/3P4/8/PPP1BPPP/RNBQK2R w KQkq - 3 7",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 592,
+    "mate": null,
+    "best": "Bg4",
+    "top3": [
+     "Bg4",
+     "Nd7",
+     "a6"
+    ]
+   },
+   "eval_after": {
+    "cp": 1011,
+    "mate": null,
+    "best": "dxe6",
+    "top3": [
+     "dxe6",
+     "Bb5+",
+     "Bxh5"
+    ]
+   },
+   "loss_pawns": 4.08,
+   "was_best": false,
+   "best_move": "Bg4",
+   "in_top3": false,
+   "top3": [
+    "Bg4",
+    "Nd7",
+    "a6"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: Qe6",
+     "parsed": "Qe6",
+     "seconds": 0.0,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.0
+  },
+  {
+   "ply": 13,
+   "move_no": 7,
+   "side": "White",
+   "san": "dxe6",
+   "uci": "d5e6",
+   "fen": "rnb1kbnr/ppp2p2/4P3/4N1pp/3P4/8/PPP1BPPP/RNBQK2R b KQkq - 0 7",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 1011,
+    "mate": null,
+    "best": "dxe6",
+    "top3": [
+     "dxe6",
+     "Bb5+",
+     "Bxh5"
+    ]
+   },
+   "eval_after": {
+    "cp": 997,
+    "mate": null,
+    "best": "Bxe6",
+    "top3": [
+     "Bxe6",
+     "Bb4+",
+     "f6"
+    ]
+   },
+   "loss_pawns": 0.03,
+   "was_best": true,
+   "best_move": "dxe6",
+   "in_top3": true,
+   "top3": [
+    "dxe6",
+    "Bb5+",
+    "Bxh5"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: dxe6",
+     "parsed": "dxe6",
+     "seconds": 0.05,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.05
+  },
+  {
+   "ply": 14,
+   "move_no": 7,
+   "side": "Black",
+   "san": "Nh6",
+   "uci": "g8h6",
+   "fen": "rnb1kb1r/ppp2p2/4P2n/4N1pp/3P4/8/PPP1BPPP/RNBQK2R w KQkq - 1 8",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 997,
+    "mate": null,
+    "best": "Bxe6",
+    "top3": [
+     "Bxe6",
+     "Bb4+",
+     "f6"
+    ]
+   },
+   "eval_after": {
+    "cp": 1135,
+    "mate": null,
+    "best": "exf7+",
+    "top3": [
+     "exf7+",
+     "d5",
+     "Bb5+"
+    ]
+   },
+   "loss_pawns": 0.03,
+   "was_best": false,
+   "best_move": "Bxe6",
+   "in_top3": false,
+   "top3": [
+    "Bxe6",
+    "Bb4+",
+    "f6"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: Nh6",
+     "parsed": "Nh6",
+     "seconds": 0.0,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.0
+  },
+  {
+   "ply": 15,
+   "move_no": 8,
+   "side": "White",
+   "san": "exf7+",
+   "uci": "e6f7",
+   "fen": "rnb1kb1r/ppp2P2/7n/4N1pp/3P4/8/PPP1BPPP/RNBQK2R b KQkq - 0 8",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 1135,
+    "mate": null,
+    "best": "exf7+",
+    "top3": [
+     "exf7+",
+     "d5",
+     "Bb5+"
+    ]
+   },
+   "eval_after": {
+    "cp": 1222,
+    "mate": null,
+    "best": "Nxf7",
+    "top3": [
+     "Nxf7",
+     "Ke7",
+     "Kd8"
+    ]
+   },
+   "loss_pawns": 0.0,
+   "was_best": true,
+   "best_move": "exf7+",
+   "in_top3": true,
+   "top3": [
+    "exf7+",
+    "d5",
+    "Bb5+"
+   ],
+   "check": true,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: exf7+",
+     "parsed": "exf7+",
+     "seconds": 0.05,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.05
+  },
+  {
+   "ply": 16,
+   "move_no": 8,
+   "side": "Black",
+   "san": "Ke7",
+   "uci": "e8e7",
+   "fen": "rnb2b1r/ppp1kP2/7n/4N1pp/3P4/8/PPP1BPPP/RNBQK2R w KQ - 1 9",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 1222,
+    "mate": null,
+    "best": "Nxf7",
+    "top3": [
+     "Nxf7",
+     "Ke7",
+     "Kd8"
+    ]
+   },
+   "eval_after": {
+    "cp": 1368,
+    "mate": null,
+    "best": "Bxg5+",
+    "top3": [
+     "Bxg5+",
+     "Bc4",
+     "Qd3"
+    ]
+   },
+   "loss_pawns": -0.0,
+   "was_best": false,
+   "best_move": "Nxf7",
+   "in_top3": true,
+   "top3": [
+    "Nxf7",
+    "Ke7",
+    "Kd8"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: Ke7",
+     "parsed": "Ke7",
+     "seconds": 0.0,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.0
+  },
+  {
+   "ply": 17,
+   "move_no": 9,
+   "side": "White",
+   "san": "Bxg5+",
+   "uci": "c1g5",
+   "fen": "rnb2b1r/ppp1kP2/7n/4N1Bp/3P4/8/PPP1BPPP/RN1QK2R b KQ - 0 9",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 1368,
+    "mate": null,
+    "best": "Bxg5+",
+    "top3": [
+     "Bxg5+",
+     "Bc4",
+     "Qd3"
+    ]
+   },
+   "eval_after": {
+    "cp": 1360,
+    "mate": null,
+    "best": "Kd6",
+    "top3": [
+     "Kd6",
+     "Ke6"
+    ]
+   },
+   "loss_pawns": 0.0,
+   "was_best": true,
+   "best_move": "Bxg5+",
+   "in_top3": true,
+   "top3": [
+    "Bxg5+",
+    "Bc4",
+    "Qd3"
+   ],
+   "check": true,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: Bxg5+",
+     "parsed": "Bxg5+",
+     "seconds": 0.05,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.05
+  },
+  {
+   "ply": 18,
+   "move_no": 9,
+   "side": "Black",
+   "san": "Ke6",
+   "uci": "e7e6",
+   "fen": "rnb2b1r/ppp2P2/4k2n/4N1Bp/3P4/8/PPP1BPPP/RN1QK2R w KQ - 1 10",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 1360,
+    "mate": null,
+    "best": "Kd6",
+    "top3": [
+     "Kd6",
+     "Ke6"
+    ]
+   },
+   "eval_after": {
+    "cp": 1569,
+    "mate": null,
+    "best": "Bc4+",
+    "top3": [
+     "Bc4+",
+     "Qd3",
+     "Bxh5"
+    ]
+   },
+   "loss_pawns": -0.0,
+   "was_best": false,
+   "best_move": "Kd6",
+   "in_top3": true,
+   "top3": [
+    "Kd6",
+    "Ke6"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: Ke6",
+     "parsed": "Ke6",
+     "seconds": 0.0,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.0
+  },
+  {
+   "ply": 19,
+   "move_no": 10,
+   "side": "White",
+   "san": "Qd3",
+   "uci": "d1d3",
+   "fen": "rnb2b1r/ppp2P2/4k2n/4N1Bp/3P4/3Q4/PPP1BPPP/RN2K2R b KQ - 2 10",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 1569,
+    "mate": null,
+    "best": "Bc4+",
+    "top3": [
+     "Bc4+",
+     "Qd3",
+     "Bxh5"
+    ]
+   },
+   "eval_after": {
+    "cp": 1996,
+    "mate": null,
+    "best": "Bb4+",
+    "top3": [
+     "Bb4+",
+     "Kd6",
+     "Ng4"
+    ]
+   },
+   "loss_pawns": 0.0,
+   "was_best": false,
+   "best_move": "Bc4+",
+   "in_top3": true,
+   "top3": [
+    "Bc4+",
+    "Qd3",
+    "Bxh5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: Qd3",
+     "parsed": "Qd3",
+     "seconds": 0.05,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.05
+  },
+  {
+   "ply": 20,
+   "move_no": 10,
+   "side": "Black",
+   "san": "b5",
+   "uci": "b7b5",
+   "fen": "rnb2b1r/p1p2P2/4k2n/1p2N1Bp/3P4/3Q4/PPP1BPPP/RN2K2R w KQ - 0 11",
+   "forced_random": false,
+   "eval_before": {
+    "cp": 1996,
+    "mate": null,
+    "best": "Bb4+",
+    "top3": [
+     "Bb4+",
+     "Kd6",
+     "Ng4"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": 4,
+    "best": "Qg6+",
+    "top3": [
+     "Qg6+",
+     "Nc3",
+     "Qxb5"
+    ]
+   },
+   "loss_pawns": -0.0,
+   "was_best": false,
+   "best_move": "Bb4+",
+   "in_top3": false,
+   "top3": [
+    "Bb4+",
+    "Kd6",
+    "Ng4"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: b5",
+     "parsed": "b5",
+     "seconds": 0.0,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.0
+  },
+  {
+   "ply": 21,
+   "move_no": 11,
+   "side": "White",
+   "san": "Qg6+",
+   "uci": "d3g6",
+   "fen": "rnb2b1r/p1p2P2/4k1Qn/1p2N1Bp/3P4/8/PPP1BPPP/RN2K2R b KQ - 1 11",
+   "forced_random": false,
+   "eval_before": {
+    "cp": null,
+    "mate": 4,
+    "best": "Qg6+",
+    "top3": [
+     "Qg6+",
+     "Nc3",
+     "Qxb5"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": 3,
+    "best": "Kd5",
+    "top3": [
+     "Kd5"
+    ]
+   },
+   "loss_pawns": 0.0,
+   "was_best": true,
+   "best_move": "Qg6+",
+   "in_top3": true,
+   "top3": [
+    "Qg6+",
+    "Nc3",
+    "Qxb5"
+   ],
+   "check": true,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: Qg6+",
+     "parsed": "Qg6+",
+     "seconds": 0.05,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.05
+  },
+  {
+   "ply": 22,
+   "move_no": 11,
+   "side": "Black",
+   "san": "Kd5",
+   "uci": "e6d5",
+   "fen": "rnb2b1r/p1p2P2/6Qn/1p1kN1Bp/3P4/8/PPP1BPPP/RN2K2R w KQ - 2 12",
+   "forced_random": false,
+   "eval_before": {
+    "cp": null,
+    "mate": 3,
+    "best": "Kd5",
+    "top3": [
+     "Kd5"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": 3,
+    "best": "Nc3+",
+    "top3": [
+     "Nc3+",
+     "c4+",
+     "Bc4+"
+    ]
+   },
+   "loss_pawns": -0.0,
+   "was_best": true,
+   "best_move": "Kd5",
+   "in_top3": true,
+   "top3": [
+    "Kd5"
+   ],
+   "check": false,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "I'll play MOVE: Qh9",
+     "parsed": "Qh9",
+     "seconds": 0.0,
+     "usage": {},
+     "error": null,
+     "legal": false
+    },
+    {
+     "n": 2,
+     "raw": "MOVE: Kd5",
+     "parsed": "Kd5",
+     "seconds": 0.0,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.0
+  },
+  {
+   "ply": 23,
+   "move_no": 12,
+   "side": "White",
+   "san": "Nc3+",
+   "uci": "b1c3",
+   "fen": "rnb2b1r/p1p2P2/6Qn/1p1kN1Bp/3P4/2N5/PPP1BPPP/R3K2R b KQ - 3 12",
+   "forced_random": false,
+   "eval_before": {
+    "cp": null,
+    "mate": 3,
+    "best": "Nc3+",
+    "top3": [
+     "Nc3+",
+     "c4+",
+     "Bc4+"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": 2,
+    "best": "Kxd4",
+    "top3": [
+     "Kxd4"
+    ]
+   },
+   "loss_pawns": 0.0,
+   "was_best": true,
+   "best_move": "Nc3+",
+   "in_top3": true,
+   "top3": [
+    "Nc3+",
+    "c4+",
+    "Bc4+"
+   ],
+   "check": true,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: Nc3+",
+     "parsed": "Nc3+",
+     "seconds": 0.05,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.05
+  },
+  {
+   "ply": 24,
+   "move_no": 12,
+   "side": "Black",
+   "san": "Kxd4",
+   "uci": "d5d4",
+   "fen": "rnb2b1r/p1p2P2/6Qn/1p2N1Bp/3k4/2N5/PPP1BPPP/R3K2R w KQ - 0 13",
+   "forced_random": false,
+   "eval_before": {
+    "cp": null,
+    "mate": 2,
+    "best": "Kxd4",
+    "top3": [
+     "Kxd4"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": 2,
+    "best": "Be3+",
+    "top3": [
+     "Be3+",
+     "Rd1+",
+     "O-O-O+"
+    ]
+   },
+   "loss_pawns": -0.0,
+   "was_best": true,
+   "best_move": "Kxd4",
+   "in_top3": true,
+   "top3": [
+    "Kxd4"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: Kxd4",
+     "parsed": "Kxd4",
+     "seconds": 0.0,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.0
+  },
+  {
+   "ply": 25,
+   "move_no": 13,
+   "side": "White",
+   "san": "Be3+",
+   "uci": "g5e3",
+   "fen": "rnb2b1r/p1p2P2/6Qn/1p2N2p/3k4/2N1B3/PPP1BPPP/R3K2R b KQ - 1 13",
+   "forced_random": false,
+   "eval_before": {
+    "cp": null,
+    "mate": 2,
+    "best": "Be3+",
+    "top3": [
+     "Be3+",
+     "Rd1+",
+     "O-O-O+"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": 1,
+    "best": "Kxe5",
+    "top3": [
+     "Kxe5"
+    ]
+   },
+   "loss_pawns": 0.0,
+   "was_best": true,
+   "best_move": "Be3+",
+   "in_top3": true,
+   "top3": [
+    "Be3+",
+    "Rd1+",
+    "O-O-O+"
+   ],
+   "check": true,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: Be3+",
+     "parsed": "Be3+",
+     "seconds": 0.01,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.01
+  },
+  {
+   "ply": 26,
+   "move_no": 13,
+   "side": "Black",
+   "san": "Kxe5",
+   "uci": "d4e5",
+   "fen": "rnb2b1r/p1p2P2/6Qn/1p2k2p/8/2N1B3/PPP1BPPP/R3K2R w KQ - 0 14",
+   "forced_random": false,
+   "eval_before": {
+    "cp": null,
+    "mate": 1,
+    "best": "Kxe5",
+    "top3": [
+     "Kxe5"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": 1,
+    "best": "f4#",
+    "top3": [
+     "f4#",
+     "Bxh5",
+     "Bxb5"
+    ]
+   },
+   "loss_pawns": -0.0,
+   "was_best": true,
+   "best_move": "Kxe5",
+   "in_top3": true,
+   "top3": [
+    "Kxe5"
+   ],
+   "check": false,
+   "capture": true,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: Kxe5",
+     "parsed": "Kxe5",
+     "seconds": 0.0,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.0
+  },
+  {
+   "ply": 27,
+   "move_no": 14,
+   "side": "White",
+   "san": "f4#",
+   "uci": "f2f4",
+   "fen": "rnb2b1r/p1p2P2/6Qn/1p2k2p/5P2/2N1B3/PPP1B1PP/R3K2R b KQ - 0 14",
+   "forced_random": false,
+   "eval_before": {
+    "cp": null,
+    "mate": 1,
+    "best": "f4#",
+    "top3": [
+     "f4#",
+     "Bxh5",
+     "Bxb5"
+    ]
+   },
+   "eval_after": {
+    "cp": null,
+    "mate": null,
+    "best": null,
+    "terminal": "1-0"
+   },
+   "loss_pawns": 0.0,
+   "was_best": true,
+   "best_move": "f4#",
+   "in_top3": true,
+   "top3": [
+    "f4#",
+    "Bxh5",
+    "Bxb5"
+   ],
+   "check": true,
+   "capture": false,
+   "attempts": [
+    {
+     "n": 1,
+     "raw": "MOVE: f4#",
+     "parsed": "f4#",
+     "seconds": 0.0,
+     "usage": {},
+     "error": null,
+     "legal": true
+    }
+   ],
+   "seconds": 0.0
+  }
+ ]
+}

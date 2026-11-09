@@ -1,0 +1,41 @@
+=== game1: White = Stockfish (50 ms)  |  Black = Random  |  verifier = python-chess + Stockfish 19
+  White try 1: 'e4' ok (0.1s)
+1. e4      eval   +0.31  best e4    
+  Black try 1: 'g5' ok (0.0s)
+1... g5      eval   +1.91  best e5     mistake
+  White try 1: 'd4' ok (0.1s)
+2. d4      eval   +2.13  best Nc3   
+  Black try 1: 'Qh9' ILLEGAL (0.0s)
+  Black try 2: 'e5' ok (0.0s)
+2... e5      eval   +3.35  best Bg7    mistake
+  White try 1: 'Nf3' ok (0.1s)
+3. Nf3     eval   +2.83  best Nf3   
+  Black try 1: 'd5' ok (0.0s)
+3... d5      eval   +4.70  best h6     mistake
+  White try 1: 'Nc3' ok (0.1s)
+4. Nc3     eval   +3.96  best Nxe5  
+  Black try 1: 'a6' ok (0.0s)
+4... a6      eval   +6.37  best dxe4   BLUNDER
+  White try 1: 'exd5' ok (0.1s)
+5. exd5    eval   +5.20  best Nxd5   mistake
+  Black try 1: 'Qd7' ok (0.0s)
+5... Qd7     eval   +7.46  best Bb4    BLUNDER
+  White try 1: 'Bxg5' ok (0.1s)
+6. Bxg5    eval   +7.09  best Bxg5  
+  Black try 1: 'Qxd5' ok (0.0s)
+6... Qxd5    eval  +10.35  best f6     BLUNDER
+  White try 1: 'Nxd5' ok (0.1s)
+7. Nxd5    eval  +11.44  best Nxd5  
+  Black try 1: 'Bg7' ok (0.0s)
+7... Bg7     eval  +14.72  best e4    
+  White try 1: 'Nxc7+' ok (0.1s)
+8. Nxc7+   eval  +14.73  best dxe5  
+  Black try 1: 'Kd7' ok (0.0s)
+8... Kd7     eval      M2  best Kf8   
+  White try 1: 'dxe5+' ok (0.0s)
+9. dxe5+   eval      M1  best dxe5+ 
+  Black try 1: 'Kxc7' ok (0.0s)
+9... Kxc7    eval      M1  best Kc6   
+  White try 1: 'Qd6#' ok (0.0s)
+10. Qd6#    eval     1-0  best Qd6#  
+=== Result 1-0: checkmate

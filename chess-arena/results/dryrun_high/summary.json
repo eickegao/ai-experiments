@@ -1,0 +1,96 @@
+{
+ "score": {
+  "Stockfish (50 ms)": 2.0,
+  "Random": 0.0
+ },
+ "games": [
+  {
+   "name": "game1",
+   "white": {
+    "name": "Stockfish (50 ms)",
+    "model": "stockfish-50ms"
+   },
+   "black": {
+    "name": "Random",
+    "model": "random"
+   },
+   "result": "1-0",
+   "termination": "checkmate",
+   "plies_total": 19,
+   "stats": {
+    "White": {
+     "moves": 10,
+     "illegal_attempts": 0,
+     "forced_random": 0,
+     "best_move_rate": 0.6,
+     "top3_rate": 0.9,
+     "avg_loss_pawns": 0.28,
+     "blunders_2pawns": 0,
+     "avg_seconds": 0.0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "cost_usd": null,
+     "total_seconds": 0.4
+    },
+    "Black": {
+     "moves": 9,
+     "illegal_attempts": 1,
+     "forced_random": 0,
+     "best_move_rate": 0.0,
+     "top3_rate": 0.222,
+     "avg_loss_pawns": 1.363,
+     "blunders_2pawns": 3,
+     "avg_seconds": 0.0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "cost_usd": null,
+     "total_seconds": 0.0
+    }
+   }
+  },
+  {
+   "name": "game2",
+   "white": {
+    "name": "Random",
+    "model": "random"
+   },
+   "black": {
+    "name": "Stockfish (50 ms)",
+    "model": "stockfish-50ms"
+   },
+   "result": "0-1",
+   "termination": "checkmate",
+   "plies_total": 36,
+   "stats": {
+    "White": {
+     "moves": 18,
+     "illegal_attempts": 3,
+     "forced_random": 0,
+     "best_move_rate": 0.111,
+     "top3_rate": 0.111,
+     "avg_loss_pawns": 0.676,
+     "blunders_2pawns": 1,
+     "avg_seconds": 0.0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "cost_usd": null,
+     "total_seconds": 0.0
+    },
+    "Black": {
+     "moves": 18,
+     "illegal_attempts": 0,
+     "forced_random": 0,
+     "best_move_rate": 0.611,
+     "top3_rate": 0.833,
+     "avg_loss_pawns": 0.094,
+     "blunders_2pawns": 0,
+     "avg_seconds": 0.0,
+     "tokens_in": 0,
+     "tokens_out": 0,
+     "cost_usd": null,
+     "total_seconds": 0.9
+    }
+   }
+  }
+ ]
+}

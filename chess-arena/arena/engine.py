@@ -22,14 +22,19 @@ class Engine:
         if board.is_game_over():
             # 终局：将死按 ±100 兵记给赢家，其他终局算和
             return {"cp": None, "mate": None, "best": None, "terminal": board.result()}
-        info = self.sf.analyse(board, chess.engine.Limit(depth=self.depth))
+        infos = self.sf.analyse(board, chess.engine.Limit(depth=self.depth), multipv=3)
+        info = infos[0]
         score = info["score"].white()
-        pv = info.get("pv") or []
-        best = board.san(pv[0]) if pv else None
+        top = []
+        for i in infos:
+            pv = i.get("pv") or []
+            if pv:
+                top.append(board.san(pv[0]))
         return {
             "cp": score.score(mate_score=100000) if not score.is_mate() else None,
             "mate": score.mate(),
-            "best": best,
+            "best": top[0] if top else None,
+            "top3": top,
         }
 
     def best_san(self, board: chess.Board, ms: int) -> str:

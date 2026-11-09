@@ -1,0 +1,58 @@
+=== game1: White = Stockfish (50 ms)  |  Black = Random  |  verifier = python-chess + Stockfish 19
+  White try 1: 'e4' ok (0.1s)
+1. e4      eval   +0.29  best e4    
+  Black try 1: 'g5' ok (0.0s)
+1... g5      eval   +1.82  best e5     mistake
+  White try 1: 'd4' ok (0.1s)
+2. d4      eval   +2.08  best d4    
+  Black try 1: 'Qh9' ILLEGAL (0.0s)
+  Black try 2: 'e5' ok (0.0s)
+2... e5      eval   +2.84  best h6    
+  White try 1: 'Nf3' ok (0.0s)
+3. Nf3     eval   +3.09  best Nc3   
+  Black try 1: 'd5' ok (0.0s)
+3... d5      eval   +4.70  best h6     mistake
+  White try 1: 'Nxe5' ok (0.1s)
+4. Nxe5    eval   +3.98  best Nc3   
+  Black try 1: 'h5' ok (0.0s)
+4... h5      eval   +4.87  best Nd7   
+  White try 1: 'exd5' ok (0.1s)
+5. exd5    eval   +4.35  best Nc3   
+  Black try 1: 'Qe7' ok (0.0s)
+5... Qe7     eval   +6.23  best Qxd5   mistake
+  White try 1: 'Be2' ok (0.1s)
+6. Be2     eval   +5.92  best Bb5+  
+  Black try 1: 'Qe6' ok (0.0s)
+6... Qe6     eval  +10.11  best Bg4    BLUNDER
+  White try 1: 'dxe6' ok (0.1s)
+7. dxe6    eval   +9.97  best dxe6  
+  Black try 1: 'Nh6' ok (0.0s)
+7... Nh6     eval  +11.35  best Bxe6  
+  White try 1: 'exf7+' ok (0.1s)
+8. exf7+   eval  +12.22  best exf7+ 
+  Black try 1: 'Ke7' ok (0.0s)
+8... Ke7     eval  +13.68  best Nxf7  
+  White try 1: 'Bxg5+' ok (0.1s)
+9. Bxg5+   eval  +13.60  best Bxg5+ 
+  Black try 1: 'Ke6' ok (0.0s)
+9... Ke6     eval  +15.69  best Kd6   
+  White try 1: 'Qd3' ok (0.1s)
+10. Qd3     eval  +19.96  best Bc4+  
+  Black try 1: 'b5' ok (0.0s)
+10... b5      eval      M4  best Bb4+  
+  White try 1: 'Qg6+' ok (0.0s)
+11. Qg6+    eval      M3  best Qg6+  
+  Black try 1: 'Qh9' ILLEGAL (0.0s)
+  Black try 2: 'Kd5' ok (0.0s)
+11... Kd5     eval      M3  best Kd5   
+  White try 1: 'Nc3+' ok (0.1s)
+12. Nc3+    eval      M2  best Nc3+  
+  Black try 1: 'Kxd4' ok (0.0s)
+12... Kxd4    eval      M2  best Kxd4  
+  White try 1: 'Be3+' ok (0.0s)
+13. Be3+    eval      M1  best Be3+  
+  Black try 1: 'Kxe5' ok (0.0s)
+13... Kxe5    eval      M1  best Kxe5  
+  White try 1: 'f4#' ok (0.0s)
+14. f4#     eval     1-0  best f4#   
+=== Result 1-0: checkmate
