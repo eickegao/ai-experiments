@@ -1,9 +1,13 @@
 # AI Experiments
 
-给 YouTube 频道「独立营业中」/「Build with AI」做的 AI 实验，每个实验一个目录，代码、数据、结果全部公开，视频里的每个结论都能在这里找到依据。
+Experiments behind the YouTube channels **Build with AI** (English) and **独立营业中** (Chinese). Every experiment lives in its own directory with the code, raw data and results, so every claim made in a video can be checked here.
 
-| 目录 | 实验 | 状态 |
+| Directory | Experiment | Status |
 |---|---|---|
-| [`chess-arena/`](chess-arena/) | Anthropic 最强模型 vs OpenAI 最强模型下国际象棋，python-chess 验合法性、Stockfish 评估，两局换色 | 环境就绪，待对局 |
+| [`chess-arena/`](chess-arena/) | Anthropic's strongest model vs OpenAI's strongest model at chess. Legality checked by python-chess, quality scored by Stockfish, two games per round with colors swapped. | Pipeline ready, match pending |
 
-约定：每个实验目录自带 README（方法、怎么跑、结果）、`requirements.txt`、`.env.example`，结果放在该目录的 `results/` 下；密钥统一放仓库根目录 `.env`（`cp .env.example .env` 后填），所有实验共用；`.gitignore` 忽略任何层级的 `.env`，另有本地 pre-commit 钩子拦截看起来像密钥的内容。
+## Conventions
+
+- One directory per experiment, each with its own `README.md` (method, how to run, results), `requirements.txt`, and a `results/` folder.
+- API keys live in a single `.env` at the repo root (`cp .env.example .env` and fill it in) and are shared by all experiments. `.gitignore` ignores `.env` at every level, and a local pre-commit hook rejects anything that looks like a key.
+- Code, docs and commit messages are in English.
