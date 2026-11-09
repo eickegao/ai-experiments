@@ -51,11 +51,11 @@ local function catalog()
     for _, id in ipairs(C.SKILL_IDS) do
         local d = C.SKILLS[id]
         if d then
-            local p = {}
+            local p = {}   -- every number per level {l1, l2, l3}; the server picks the level the match is played at
             for _, key in ipairs({ "radius", "mult", "dur", "count", "window", "arc", "stun", "extra", "max", "life", "steps" }) do
-                if d[key] then p[key] = d[key][1] end
+                if type(d[key]) == "table" then p[key] = { d[key][1], d[key][2], d[key][3] } end
             end
-            out[#out + 1] = { id = id, name = d.name, cd = d.cd[1], target = d.target and true or false, params = p }
+            out[#out + 1] = { id = id, name = d.name, cd = { d.cd[1], d.cd[2], d.cd[3] }, target = d.target and true or false, params = p }
         end
     end
     return out
