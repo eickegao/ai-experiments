@@ -54,6 +54,7 @@ python3 run_match.py --render-only results/<dir> --layout portrait          # re
 | `gameN.pgn` | Standard PGN with `[%eval]` comments |
 | `gameN.json` | Every move: raw model reply, each attempt, seconds, tokens, Stockfish eval before/after, pawns lost, best move, top-3 |
 | `gameN_transcript.md` | The full exchange, verbatim: every PGN prompt sent and every model reply, with the verifier’s verdict per attempt |
+| `gameN_dialogue.mp4` + `frames_dialogue/gameN/*.png` | The same exchange as video frames: prompt left, reply right, verdict below (one frame per attempt) |
 | `gameN.log` | Live log |
 | `gameN_replay.mp4` | Replay video (1920×1080: board, eval bar, move, eval, best move, flags) |
 | `gameN_eval.png` | Evaluation curve, red dots are blunders |

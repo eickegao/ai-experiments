@@ -7,7 +7,7 @@ before prompts were stored, they are rebuilt deterministically from the move lis
 
 Usage: python3 transcript.py results/<dir>            # all games in the dir
 """
-import glob, json, os, sys
+import glob, json, os, re, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import chess
@@ -69,6 +69,8 @@ def transcript(json_path: str) -> str:
 def main():
     d = sys.argv[1]
     for j in sorted(glob.glob(os.path.join(d, "game*.json"))):
+        if not re.fullmatch(r"game\d+\.json", os.path.basename(j)):
+            continue
         md = j[:-5] + "_transcript.md"
         open(md, "w", encoding="utf-8").write(transcript(j))
         print(md)

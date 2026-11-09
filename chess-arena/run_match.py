@@ -9,7 +9,7 @@ Usage (from chess-arena/; keys in the repo-root AIExperiments/.env: ANTHROPIC_AP
 
 Output in results/<timestamp>_<a>_vs_<b>/:
   game1.pgn / game1.json / game1.log   full record (every raw reply, attempt, Stockfish eval per move)
-  game1_transcript.md                  the full PGN exchange: every prompt and every reply, verbatim
+  game1_transcript.md / game1_dialogue.mp4   the full PGN exchange, verbatim, as text and as frames
   game1_replay.mp4 / game1_eval.png / game1_key_moments.json / frames/game1/*.png   video assets
   summary.md / summary.json            round summary
 """
@@ -27,6 +27,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from arena.engine import Engine
 from arena.game import Game
 from arena.players import make_player
+from arena.dialogue import render_dialogue
 from arena.render import render_game
 from transcript import transcript
 
@@ -100,7 +101,11 @@ def main():
 
     if a.render_only:
         for j in sorted(glob.glob(os.path.join(a.render_only, "game*.json"))):
+            if not re.fullmatch(r"game\d+\.json", os.path.basename(j)):
+                continue
             print(render_game(j, layout=a.layout))
+            open(j[:-5] + "_transcript.md", "w", encoding="utf-8").write(transcript(j))
+            print(render_dialogue(j))
         return
 
     engine = Engine(a.stockfish, a.depth)
@@ -118,6 +123,7 @@ def main():
             games.append(g)
             r = render_game(os.path.join(out_dir, f"game{i}.json"), layout=a.layout)
             open(os.path.join(out_dir, f"game{i}_transcript.md"), "w", encoding="utf-8").write(transcript(os.path.join(out_dir, f"game{i}.json")))
+            print(f"  dialogue video: {render_dialogue(os.path.join(out_dir, f'game{i}.json'))}")
             print(f"  assets: {r['frames']} frames, {r['replay']}, {r['chart']}, {len(r['key_moments'])} key moments")
     finally:
         engine.close()

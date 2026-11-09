@@ -21,3 +21,22 @@
 5... a6      eval   +0.39  best a6    
   White try 1: 'Be3' ok (2.0s)
 6. Be3     eval   +0.38  best f3    
+  Black try 1: 'e5' ok (6.6s)
+6... e5      eval   +0.37  best Nc6   
+  White try 1: 'Nb3' ok (1.8s)
+7. Nb3     eval   +0.30  best Nb3   
+  Black try 1: 'Be6' ok (6.5s)
+7... Be6     eval   +0.39  best Be7   
+  White try 1: 'f3' ok (1.8s)
+8. f3      eval   +0.24  best Qd2   
+  Black try 1: 'Be7' ok (6.8s)
+8... Be7     eval   +0.27  best h5    
+  White try 1: 'Qd2' ok (1.7s)
+9. Qd2     eval   +0.23  best Qd2   
+  Black try 1: 'O-O' ok (10.7s)
+9... O-O     eval   +0.37  best h5    
+  White try 1: 'O-O-O' ok (2.5s)
+10. O-O-O   eval   +0.31  best O-O-O 
+  Black try 1: 'b5' ok (13.3s)
+10... b5      eval   +0.52  best Nbd7  
+  White try 1: 'g4' ok (2.3s)

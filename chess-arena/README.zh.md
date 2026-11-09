@@ -54,6 +54,7 @@ python3 run_match.py --render-only results/<dir> --layout portrait          # �
 | `gameN.pgn` | 标准棋谱，每步带 `[%eval]` 注释 |
 | `gameN.json` | 每一步：模型原始回复、每次尝试、耗时、token、Stockfish 评估前后、丢分、最佳着法、前 3 佳 |
 | `gameN_transcript.md` | 完整交流记录：每次发给模型的 PGN、模型的原话、验证结果，一字不改 |
+| `gameN_dialogue.mp4` + `frames_dialogue/gameN/*.png` | 同一份交流做成画面：左边提示词、右边模型原话、底部验证结果，每次尝试一帧 |
 | `gameN.log` | 实时日志 |
 | `gameN_replay.mp4` | 回放视频（1920×1080：棋盘、评估条、走法、评估、最佳着法、标记） |
 | `gameN_eval.png` | 评估曲线，红点是失误 |
