@@ -1,0 +1,164 @@
+{
+ "setup": {
+  "seed": 1001,
+  "teams": {
+   "A": {
+    "name": "Claude",
+    "full_name": "Claude (claude-fable-5-1)",
+    "model": "claude-fable-5-1",
+    "bot": false,
+    "skills": [
+     {
+      "id": "lightning",
+      "level": 3
+     },
+     {
+      "id": "split",
+      "level": 3
+     },
+     {
+      "id": "accel",
+      "level": 3
+     }
+    ]
+   },
+   "B": {
+    "name": "GPT",
+    "full_name": "GPT (gpt-6-astra)",
+    "model": "gpt-6-astra",
+    "bot": false,
+    "skills": [
+     {
+      "id": "shatter",
+      "level": 3
+     },
+     {
+      "id": "accel",
+      "level": 3
+     },
+     {
+      "id": "lightning",
+      "level": 3
+     }
+    ]
+   },
+   "C": {
+    "name": "Gemini",
+    "full_name": "Gemini (gemini-4-argon)",
+    "model": "gemini-4-argon",
+    "bot": false,
+    "skills": [
+     {
+      "id": "accel",
+      "level": 3
+     },
+     {
+      "id": "shatter",
+      "level": 3
+     },
+     {
+      "id": "lightning",
+      "level": 3
+     }
+    ]
+   },
+   "D": {
+    "name": "DeepSeek",
+    "full_name": "DeepSeek (deepseek-v4-pro)",
+    "model": "deepseek-v4-pro",
+    "bot": false,
+    "skills": [
+     {
+      "id": "fire",
+      "level": 3
+     },
+     {
+      "id": "lightning",
+      "level": 3
+     },
+     {
+      "id": "teleport",
+      "level": 3
+     }
+    ]
+   }
+  }
+ },
+ "draft": {
+  "A": {
+   "picks": [
+    "lightning",
+    "split",
+    "accel"
+   ],
+   "note": "",
+   "prompt": "Pick exactly 3 different skills from this list (every skill is at level 3, the maximum). Your opponents pick independently.\n\n- freeze: FREEZE: a wave spreads from your ball; enemy teams it reaches are slowed for 6 s. Cooldown 20 s.\n- split: SPLIT: your ball becomes 5 balls for 4 s, then the extras vanish. Cooldown 20 s.\n- accel: ACCEL: all your balls move x2 for 6 s. Cooldown 8 s.\n- bomb: BOMB: for 7 s your main ball also paints 3 neighbouring cell(s) on every bounce. Cooldown 16 s.\n- giant: GIANT: your balls get bigger for 3 s and hit more cells per bounce. Cooldown 24 s.\n- fire: FIRE: pick a point (x y); after 0.35 s a circle of radius 3 cells around it is painted your colour. Cooldown 20 s.\n- lightning: LIGHTNING: from your main ball's cell, four 1-cell-wide lines shoot to the board edges (up/down/left/right) and paint every cell they cross. Cooldown 10 s.\n- teleport: TELEPORT: pick a point (x y); your main ball jumps there instantly and paints the landing cell. Any distance. Cooldown 20 s.\n- shatter: SHATTER: for 7 s every bounce on a foreign cell spawns a small extra ball that also paints. Cooldown 15 s.\n- shock: SHOCKWAVE: an arc of 120 degrees spreads forward from your ball and paints the first non-own cell on every ray. Cooldown 10 s.\n- chain: CHAIN LIGHTNING: stuns every enemy ball on the board for 2.5 s (does not paint). Cooldown 14 s.\n- snowball: PLASMA: your main ball grows on each hit; after 5 hits the next hit paints a circle around it. Cooldown 14 s.\n\nReply with brief reasoning (under 80 words), then one last line exactly like this, using the ids as written above:\nPICK: <id>, <id>, <id>",
+   "reply": "Lightning paints up to ~62 cells every 10 s (6 casts = ~370 cells), by far the highest raw output. Split quintuples painting for 4 s every 20 s. Accel doubles my ball speed on a tight 8 s cooldown, meaning more bounces/paints almost constantly and it stacks with split. Pure painting throughput beats disruption skills here.\n\nPICK: lightning, split, accel",
+   "seconds": 3.53,
+   "usage": {
+    "input": 912,
+    "output": 139
+   },
+   "error": null,
+   "at": "2026-11-09T22:16:04+00:00",
+   "cost_usd": 0.01607
+  },
+  "B": {
+   "picks": [
+    "shatter",
+    "accel",
+    "lightning"
+   ],
+   "note": "",
+   "prompt": "Pick exactly 3 different skills from this list (every skill is at level 3, the maximum). Your opponents pick independently.\n\n- freeze: FREEZE: a wave spreads from your ball; enemy teams it reaches are slowed for 6 s. Cooldown 20 s.\n- split: SPLIT: your ball becomes 5 balls for 4 s, then the extras vanish. Cooldown 20 s.\n- accel: ACCEL: all your balls move x2 for 6 s. Cooldown 8 s.\n- bomb: BOMB: for 7 s your main ball also paints 3 neighbouring cell(s) on every bounce. Cooldown 16 s.\n- giant: GIANT: your balls get bigger for 3 s and hit more cells per bounce. Cooldown 24 s.\n- fire: FIRE: pick a point (x y); after 0.35 s a circle of radius 3 cells around it is painted your colour. Cooldown 20 s.\n- lightning: LIGHTNING: from your main ball's cell, four 1-cell-wide lines shoot to the board edges (up/down/left/right) and paint every cell they cross. Cooldown 10 s.\n- teleport: TELEPORT: pick a point (x y); your main ball jumps there instantly and paints the landing cell. Any distance. Cooldown 20 s.\n- shatter: SHATTER: for 7 s every bounce on a foreign cell spawns a small extra ball that also paints. Cooldown 15 s.\n- shock: SHOCKWAVE: an arc of 120 degrees spreads forward from your ball and paints the first non-own cell on every ray. Cooldown 10 s.\n- chain: CHAIN LIGHTNING: stuns every enemy ball on the board for 2.5 s (does not paint). Cooldown 14 s.\n- snowball: PLASMA: your main ball grows on each hit; after 5 hits the next hit paints a circle around it. Cooldown 14 s.\n\nReply with brief reasoning (under 80 words), then one last line exactly like this, using the ids as written above:\nPICK: <id>, <id>, <id>",
+   "reply": "Shatter generates extra painting balls, and accel boosts all of them while offering excellent uptime. Lightning adds reliable, board-spanning territory gains every 10 seconds, complementing the swarm’s local expansion and reaching enemy territory without travel time.\n\nPICK: shatter, accel, lightning",
+   "seconds": 19.1,
+   "usage": {
+    "input": 597,
+    "output": 480,
+    "reasoning": 418
+   },
+   "error": null,
+   "at": "2026-11-09T22:16:04+00:00",
+   "cost_usd": 0.02997
+  },
+  "C": {
+   "picks": [
+    "accel",
+    "shatter",
+    "lightning"
+   ],
+   "note": "",
+   "prompt": "Pick exactly 3 different skills from this list (every skill is at level 3, the maximum). Your opponents pick independently.\n\n- freeze: FREEZE: a wave spreads from your ball; enemy teams it reaches are slowed for 6 s. Cooldown 20 s.\n- split: SPLIT: your ball becomes 5 balls for 4 s, then the extras vanish. Cooldown 20 s.\n- accel: ACCEL: all your balls move x2 for 6 s. Cooldown 8 s.\n- bomb: BOMB: for 7 s your main ball also paints 3 neighbouring cell(s) on every bounce. Cooldown 16 s.\n- giant: GIANT: your balls get bigger for 3 s and hit more cells per bounce. Cooldown 24 s.\n- fire: FIRE: pick a point (x y); after 0.35 s a circle of radius 3 cells around it is painted your colour. Cooldown 20 s.\n- lightning: LIGHTNING: from your main ball's cell, four 1-cell-wide lines shoot to the board edges (up/down/left/right) and paint every cell they cross. Cooldown 10 s.\n- teleport: TELEPORT: pick a point (x y); your main ball jumps there instantly and paints the landing cell. Any distance. Cooldown 20 s.\n- shatter: SHATTER: for 7 s every bounce on a foreign cell spawns a small extra ball that also paints. Cooldown 15 s.\n- shock: SHOCKWAVE: an arc of 120 degrees spreads forward from your ball and paints the first non-own cell on every ray. Cooldown 10 s.\n- chain: CHAIN LIGHTNING: stuns every enemy ball on the board for 2.5 s (does not paint). Cooldown 14 s.\n- snowball: PLASMA: your main ball grows on each hit; after 5 hits the next hit paints a circle around it. Cooldown 14 s.\n\nReply with brief reasoning (under 80 words), then one last line exactly like this, using the ids as written above:\nPICK: <id>, <id>, <id>",
+   "reply": "**ACCEL** provides near-permanent double speed (6s duration on an 8s cooldown) for all balls. This synergizes powerfully with **SHATTER**, as our sped-up main ball rapidly bounces off enemy cells to spawn numerous extra balls that also inherit the 2x speed buff. Finally, **LIGHTNING** on a short 10s cooldown paints up to 63 cells across the entire board, claiming massive territory instantly and slicing enemy zones with barriers that trap their balls.\n\nPICK: accel, shatter, lightning",
+   "seconds": 22.6,
+   "usage": {
+    "input": 658,
+    "output": 1665,
+    "reasoning": 1551
+   },
+   "error": null,
+   "at": "2026-11-09T22:16:04+00:00",
+   "cost_usd": 0.01797
+  },
+  "D": {
+   "picks": [
+    "fire",
+    "lightning",
+    "teleport"
+   ],
+   "note": "only 0 valid pick(s) found; filled with fire, lightning, teleport",
+   "prompt": "Pick exactly 3 different skills from this list (every skill is at level 3, the maximum). Your opponents pick independently.\n\n- freeze: FREEZE: a wave spreads from your ball; enemy teams it reaches are slowed for 6 s. Cooldown 20 s.\n- split: SPLIT: your ball becomes 5 balls for 4 s, then the extras vanish. Cooldown 20 s.\n- accel: ACCEL: all your balls move x2 for 6 s. Cooldown 8 s.\n- bomb: BOMB: for 7 s your main ball also paints 3 neighbouring cell(s) on every bounce. Cooldown 16 s.\n- giant: GIANT: your balls get bigger for 3 s and hit more cells per bounce. Cooldown 24 s.\n- fire: FIRE: pick a point (x y); after 0.35 s a circle of radius 3 cells around it is painted your colour. Cooldown 20 s.\n- lightning: LIGHTNING: from your main ball's cell, four 1-cell-wide lines shoot to the board edges (up/down/left/right) and paint every cell they cross. Cooldown 10 s.\n- teleport: TELEPORT: pick a point (x y); your main ball jumps there instantly and paints the landing cell. Any distance. Cooldown 20 s.\n- shatter: SHATTER: for 7 s every bounce on a foreign cell spawns a small extra ball that also paints. Cooldown 15 s.\n- shock: SHOCKWAVE: an arc of 120 degrees spreads forward from your ball and paints the first non-own cell on every ray. Cooldown 10 s.\n- chain: CHAIN LIGHTNING: stuns every enemy ball on the board for 2.5 s (does not paint). Cooldown 14 s.\n- snowball: PLASMA: your main ball grows on each hit; after 5 hits the next hit paints a circle around it. Cooldown 14 s.\n\nReply with brief reasoning (under 80 words), then one last line exactly like this, using the ids as written above:\nPICK: <id>, <id>, <id>",
+   "reply": "",
+   "seconds": 62.33,
+   "usage": {
+    "input": 698,
+    "output": 6000,
+    "reasoning": 6000
+   },
+   "error": null,
+   "at": "2026-11-09T22:16:04+00:00",
+   "cost_usd": 0.01185
+  }
+ }
+}

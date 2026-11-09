@@ -146,23 +146,35 @@ class DeepSeekPlayer(Player):
     def decide(self, system, obs) -> Reply:
         import openai
 
+        # DeepSeek counts its thinking against max_tokens; at effort high a draft question used the whole 6000 budget and
+        # came back with no answer text (2026-11-09). Budget 24000, and if the answer is still empty retry once at medium.
         t0, at = time.time(), _now()
-        try:
-            r = self.client.chat.completions.create(
-                model=self.model, max_tokens=6000,
-                messages=[{"role": "system", "content": system}, {"role": "user", "content": obs}],
-                extra_body={"thinking": {"type": "enabled"}, "reasoning_effort": self.effort},
-            )
-        except openai.APIError as e:
-            return Reply("", time.time() - t0, error=f"{type(e).__name__}: {e}", prompt=obs, at=at)
-        msg = r.choices[0].message if r.choices else None
-        text = (msg.content or "") if msg else ""
-        u = r.usage
-        usage = {"input": getattr(u, "prompt_tokens", 0), "output": getattr(u, "completion_tokens", 0)} if u else {}
-        det = getattr(u, "completion_tokens_details", None)
-        if det is not None and getattr(det, "reasoning_tokens", None):
-            usage["reasoning"] = det.reasoning_tokens
-        return Reply(text, time.time() - t0, usage, prompt=obs, at=at)
+        usage: dict = {}
+        for attempt, (effort, budget) in enumerate(((self.effort, 24000), ("medium", 24000))):
+            try:
+                r = self.client.chat.completions.create(
+                    model=self.model, max_tokens=budget,
+                    messages=[{"role": "system", "content": system}, {"role": "user", "content": obs}],
+                    extra_body={"thinking": {"type": "enabled"}, "reasoning_effort": effort},
+                )
+            except openai.APIError as e:
+                return Reply("", time.time() - t0, usage, error=f"{type(e).__name__}: {e}", prompt=obs, at=at)
+            msg = r.choices[0].message if r.choices else None
+            text = (msg.content or "") if msg else ""
+            u = r.usage
+            got = {"input": getattr(u, "prompt_tokens", 0), "output": getattr(u, "completion_tokens", 0)} if u else {}
+            det = getattr(u, "completion_tokens_details", None) if u else None
+            if det is not None and getattr(det, "reasoning_tokens", None):
+                got["reasoning"] = det.reasoning_tokens
+            usage = {k: usage.get(k, 0) + v for k, v in got.items()} if usage else got   # both attempts are paid for
+            if text.strip():
+                if attempt:
+                    usage["retried_at_medium"] = True
+                return Reply(text, time.time() - t0, usage, prompt=obs, at=at)
+            finish = getattr(r.choices[0], "finish_reason", "") if r.choices else ""
+            if finish != "length":
+                break
+        return Reply("", time.time() - t0, usage, error=f"empty answer (finish_reason={finish}, reasoning tokens {usage.get('reasoning', '?')})", prompt=obs, at=at)
 
 
 class OpenRouterPlayer(Player):
