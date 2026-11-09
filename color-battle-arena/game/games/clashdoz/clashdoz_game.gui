@@ -28,14 +28,6 @@ textures {
   name: "clashdoz_orb"
   texture: "/games/clashdoz/clashdoz_orb.atlas"
 }
-textures {
-  name: "result_atlas"
-  texture: "/shared/result.atlas"
-}
-textures {
-  name: "scoreboard_atlas"
-  texture: "/shared/scoreboard.atlas"
-}
 particlefxs {
   name: "giant_trail"
   particlefx: "/games/clashdoz/giant_trail.particlefx"

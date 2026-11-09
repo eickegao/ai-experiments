@@ -1,21 +1,9 @@
--- SoloGames/clashdoz/main/main.script
--- 独立版启动器：启动即加载 clashdoz（COLOR BATTLE 网页版，2026-10-29）；
--- 收到 unload_game（合集里=回大厅）时卸载并立即重载 proxy → 回到封面。
-
-local safe_area = require("shared.safe_area")
-local abtest = require("shared.abtest")
-
-local deeplink = require("shared.deeplink")
+-- game/main/main.script — arena bootstrap: load the Color Battle collection and start a match at once.
+-- No cover, no prep page (user 2026-11-09). The controller decides what kind of match from the URL (see arena.lua).
 local PROXY = "#clashdoz_proxy"
-
-local KEY = PROXY:match("#(%w+)_proxy")
 
 function init(self)
     msg.post(".", "acquire_input_focus")
-    math.randomseed(os.time())
-    safe_area.init()
-    abtest.init()
-    self.reloading = false
     msg.post(PROXY, "load")
 end
 
@@ -23,42 +11,6 @@ function on_message(self, message_id, message, sender)
     if message_id == hash("proxy_loaded") then
         msg.post(PROXY, "init")
         msg.post(PROXY, "enable")
-        -- 网页 ?level=N 直达关卡（Universal Link 落到网页时带的参数，见 shared/deeplink.lua）
-        local link = deeplink.web_link()
-        if link and link.reset and not self.reloading_from_link then   -- ?reset=1：关卡进度清回第 1 关再进（网页测试，2026-11-03）
-            require("shared.game_progress").reset(KEY)
-            print("[web] progress reset to level 1: " .. KEY)
-            link.level = link.level or 1
-        end
-        if link and (link.level or link.blob) and not self.reloading_from_link then
-            self.reloading_from_link = true
-            msg.post(deeplink.controller_url(KEY), "start_game", { level = link.level, share = link.blob, video = link.video, ref = link.ref })
-        end
-
-    elseif message_id == hash("unload_game") then
-        -- 独立版没有大厅：卸载后重载，等价于"回封面"
-        self.reloading = true
-        msg.post(PROXY, "disable")
-        msg.post(PROXY, "final")
-        msg.post(PROXY, "unload")
-
-    elseif message_id == hash("proxy_unloaded") then
-        if self.reloading then
-            self.reloading = false
-            msg.post(PROXY, "load")
-        end
+        msg.post("/clashdoz/clashdoz#controller", "start_game", {})
     end
-end
-
--- Android 返回键：与合集行为对齐（游戏内按返回=回菜单）
-function on_input(self, action_id, action)
-    if action_id == hash("back") and action.pressed then
-        msg.post("#", "unload_game")
-        return true
-    end
-    return false
-end
-
-function final(self)
-    msg.post(".", "release_input_focus")
 end

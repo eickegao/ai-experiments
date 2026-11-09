@@ -128,7 +128,7 @@ end
 -- 对战背景音乐（用户 2026-10-26 给的 Four Color Ball；2026-10-29 又给三首：Four Color Ball 第二版、Pixel Pulse 两版）：
 -- 四首每局换一首（随机起点、顺序轮，不连播同一首），开局起、局终 1 s 淡出、回封面停、声音开关联动
 local BGM_GAIN = 0.5   -- 实际音量 = 组件 gain(1.0) × 这里；原 0.4×0.4=0.16 太小，网页外放被音效盖住听不见（2026-10-29 实测比音效峰值低 25 dB）
-local BGM_TRACKS = { "#snd_bgm", "#snd_bgm_four_color_2", "#snd_bgm_pixel_pulse_1", "#snd_bgm_pixel_pulse_2" }
+local BGM_TRACKS = { "#snd_bgm_four_color_2" }   -- arena: one track (user 2026-11-09)
 local function bgm_url() return msg.url(BGM_TRACKS[S.bgm_idx or 1]) end
 local function bgm_cancel_fade() if S.bgm_fade then pcall(timer.cancel, S.bgm_fade); S.bgm_fade = nil end end
 local function bgm_stop() bgm_cancel_fade(); for _, t in ipairs(BGM_TRACKS) do pcall(sound.stop, msg.url(t)) end; S.bgm_on = false end
