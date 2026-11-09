@@ -61,7 +61,7 @@ python3 run_match.py --render-only results/<dir> --layout portrait          # �
 | `summary.md` / `summary.json` | 本轮比分和双方统计 |
 | `../comparison.md` / `comparison.png` | 两轮对比 |
 
-成本用的单价（美元/百万 token，输入 / 输出）在 `arena/prices.py`。
+成本用的单价（美元/百万 token，输入 / 输出）在 `arena/prices.py`：两家旗舰定价相同，都是 10 / 50 美元（Anthropic 官方价格页；OpenAI developers.openai.com 价格页标准档，2026-11-08 查）。
 
 ## 结果
 

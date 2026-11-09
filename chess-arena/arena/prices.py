@@ -4,9 +4,10 @@ PRICES = {
     "claude-fable-5-1": (10.00, 50.00),
     "claude-opus-5-5": (4.00, 20.00),
     "claude-sonnet-5-5": (2.00, 10.00),
-    # OpenAI: fill in from the official price page before the match
-    "gpt-6-astra": None,
-    "gpt-6.1-terra": None,
+    # OpenAI (developers.openai.com/api/docs/pricing, standard tier, read 2026-11-08)
+    "gpt-6-astra": (10.00, 50.00),
+    "gpt-6.1-terra": (1.00, 5.00),
+    "gpt-6.1-sol": (2.00, 10.00),
 }
 
 

@@ -1,0 +1,15 @@
+output dir results/2026-11-08_2049_round1_low
+=== game1: White = Claude (claude-fable-5-1)  |  Black = OpenAI (gpt-6-astra)  |  verifier = python-chess + Stockfish 19
+  White try 1: 'e4' ok (1.0s)
+1. e4      eval   +0.34  best e4    
+  Black try 1: 'c5' ok (3.1s)
+1... c5      eval   +0.37  best c5    
+  White try 1: 'Nf3' ok (1.2s)
+2. Nf3     eval   +0.36  best Nf3   
+  Black try 1: 'd6' ok (3.1s)
+2... d6      eval   +0.26  best Nc6   
+  White try 1: 'd4' ok (1.0s)
+3. d4      eval   +0.22  best d4    
+  Black try 1: 'cxd4' ok (3.0s)
+3... cxd4    eval   +0.32  best cxd4  
+  White try 1: 'Nxd4' ok (0.9s)

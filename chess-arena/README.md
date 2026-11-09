@@ -61,7 +61,7 @@ python3 run_match.py --render-only results/<dir> --layout portrait          # re
 | `summary.md` / `summary.json` | Score and per-side stats for the round |
 | `../comparison.md` / `comparison.png` | Round-vs-round comparison |
 
-Prices used for cost (USD per million tokens, input / output) are in `arena/prices.py`.
+Prices used for cost (USD per million tokens, input / output) are in `arena/prices.py`: both flagships list at $10 / $50 (Anthropic price page; OpenAI developers.openai.com pricing, standard tier, read 2026-11-08).
 
 ## Results
 
