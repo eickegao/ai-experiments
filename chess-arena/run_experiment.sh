@@ -1,6 +1,6 @@
 #!/bin/sh
-# 完整实验：两轮，每轮两局换色。第一轮少想（effort low），第二轮多想（effort high）。
-# 用法：./run_experiment.sh [A] [B]   默认 claude vs openai
+# Full experiment: two rounds of two games with colors swapped. Round 1 thinks little (effort low), round 2 thinks hard (effort high).
+# Usage: ./run_experiment.sh [A] [B]   default claude vs openai
 set -e
 cd "$(dirname "$0")"
 A=${1:-claude}; B=${2:-openai}

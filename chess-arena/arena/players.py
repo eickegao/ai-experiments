@@ -1,7 +1,8 @@
-"""棋手：每个棋手拿到同样的局面描述，返回一步走法（SAN）和它的简短理由。
+"""Players. Every player gets the same position description and returns one move (SAN) plus a short rationale.
 
-所有棋手共用一套提示词（PROMPT），保证公平。LLM 棋手是无状态的：每一步都把完整的走法记录和 FEN 发过去，
-不依赖多轮对话，避免上下文越滚越长。第一次尝试不给合法走法列表（考真实棋力）；走出非法走法后重试时才附上列表。
+All players share one prompt (SYSTEM) for fairness. LLM players are stateless: each move is a fresh request carrying the
+full move list and FEN, so context never grows. The first attempt gets no legal-move list (it tests real chess ability);
+the list is added only when retrying after an illegal move.
 """
 from __future__ import annotations
 
@@ -55,7 +56,7 @@ def parse_move(text: str) -> str | None:
     hits = MOVE_RE.findall(text)
     if hits:
         return hits[-1].strip().rstrip(".")
-    # 兜底：最后一行像走法的 token
+    # fallback: a move-like token on the last line
     tail = text.strip().splitlines()[-1] if text.strip() else ""
     m = re.search(r"\b(O-O-O|O-O|[KQRBN]?[a-h]?[1-8]?x?[a-h][1-8](?:=[QRBN])?[+#]?)\b", tail)
     return m.group(1) if m else None
@@ -79,8 +80,8 @@ class Player:
 
 
 class ClaudePlayer(Player):
-    """Anthropic。默认 claude-fable-5-1（Anthropic 最强的公开模型）。思考常开，用 effort 控制深度。
-    不加 server-side fallback：实验要的就是这个模型本身，拒答就当一次失败尝试记录下来。"""
+    """Anthropic. Default claude-fable-5-1 (Anthropic's strongest generally available model). Thinking is always on; depth via effort.
+    No server-side fallback on purpose: the experiment is about this exact model, so a refusal is logged as a failed attempt."""
 
     def __init__(self, model: str = "claude-fable-5-1", effort: str = "high"):
         import anthropic
@@ -113,7 +114,7 @@ class ClaudePlayer(Player):
 
 
 class OpenAIPlayer(Player):
-    """OpenAI。默认 gpt-6-astra（2026-11 模型列表里的旗舰；gpt-6.1-terra 是快速版）。Responses API + reasoning effort。"""
+    """OpenAI. Default gpt-6-astra (the flagship in the Nov 2026 model list; gpt-6.1-terra is the fast variant). Responses API + reasoning effort."""
 
     def __init__(self, model: str = "gpt-6-astra", effort: str = "high"):
         import openai
@@ -144,7 +145,7 @@ class OpenAIPlayer(Player):
 
 
 class StockfishPlayer(Player):
-    """干跑/基准用：Stockfish 走子（限时）。"""
+    """For dry runs / baselines: Stockfish plays with a time limit."""
 
     def __init__(self, engine, limit_ms: int = 50):
         self.engine = engine
@@ -159,7 +160,7 @@ class StockfishPlayer(Player):
 
 
 class RandomPlayer(Player):
-    """干跑用：随机合法走法，偶尔故意走非法步测试重试逻辑。"""
+    """For dry runs: random legal moves, with an optional rate of deliberate illegal moves to exercise the retry logic."""
 
     def __init__(self, illegal_rate: float = 0.0, seed: int = 0):
         self.rng = random.Random(seed)
@@ -186,4 +187,4 @@ def make_player(spec: str, engine=None, effort: str = "high") -> Player:
         return StockfishPlayer(engine, int(arg or 50))
     if kind == "random":
         return RandomPlayer(float(arg or 0))
-    raise SystemExit(f"未知棋手 {spec!r}")
+    raise SystemExit(f"unknown player {spec!r}")

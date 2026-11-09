@@ -1,4 +1,4 @@
-"""Stockfish 封装：合法性由 python-chess 判（规则层），评估和最佳着法由 Stockfish 给（强度层）。"""
+"""Stockfish wrapper. Legality is handled by python-chess (rules); evaluation and best moves come from Stockfish (strength)."""
 from __future__ import annotations
 
 import shutil
@@ -11,16 +11,16 @@ class Engine:
     def __init__(self, path: str | None = None, depth: int = 18):
         self.path = path or shutil.which("stockfish")
         if not self.path:
-            raise SystemExit("找不到 stockfish，请 brew install stockfish 或用 --stockfish 指定路径")
+            raise SystemExit("stockfish not found: brew install stockfish, or pass --stockfish <path>")
         self.depth = depth
         self.sf = chess.engine.SimpleEngine.popen_uci(self.path)
         self.sf.configure({"Threads": 2, "Hash": 256})
         self.version = self.sf.id.get("name", "Stockfish")
 
     def analyse(self, board: chess.Board) -> dict:
-        """返回白方视角的评估（厘兵）、是否将死分数、以及最佳着法 SAN。"""
+        """Evaluation from White's point of view (centipawns), mate distance if any, best move and top-3 moves in SAN."""
         if board.is_game_over():
-            # 终局：将死按 ±100 兵记给赢家，其他终局算和
+            # terminal position: checkmate counts as ±100 pawns for the winner, other endings as a draw
             return {"cp": None, "mate": None, "best": None, "terminal": board.result()}
         infos = self.sf.analyse(board, chess.engine.Limit(depth=self.depth), multipv=3)
         info = infos[0]
@@ -46,7 +46,7 @@ class Engine:
 
 
 def cp_for_chart(a: dict) -> float:
-    """把评估压成一个可画图的数：将死按 ±100 兵算，普通评估换成兵（cp/100），截断到 ±10。"""
+    """Squash an evaluation into a plottable number: mate = ±10, otherwise cp/100 clamped to ±10."""
     if a.get("terminal"):
         return {"1-0": 10.0, "0-1": -10.0}.get(a["terminal"], 0.0)
     if a.get("mate") is not None:

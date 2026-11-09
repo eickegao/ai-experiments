@@ -1,4 +1,4 @@
-"""一局棋：轮流向两位棋手要走法，python-chess 验合法性，Stockfish 评估每一步，全部记进 JSON。"""
+"""One game: ask each player in turn for a move, validate with python-chess, score with Stockfish, log everything to JSON."""
 from __future__ import annotations
 
 import datetime as dt
@@ -85,7 +85,7 @@ class Game:
             best_before = before["best"]
             self.board.push(move)
             after = self.engine.analyse(self.board)
-            # 评估差：从走棋方视角看，这一步丢了多少（兵）
+            # pawns lost by the side that moved, from its own point of view
             sign = 1 if side == "White" else -1
             loss = sign * (cp_for_chart(before) - cp_for_chart(after))
             ply = {

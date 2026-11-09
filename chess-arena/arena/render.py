@@ -1,4 +1,4 @@
-"""视频素材：每一步的棋盘 PNG（带评估条和说明）、评估曲线图、回放 mp4、关键时刻清单。"""
+"""Video assets: one board PNG per ply (eval bar + captions), evaluation chart, replay mp4, key-moment list."""
 from __future__ import annotations
 
 import json
@@ -10,7 +10,7 @@ import chess.svg
 
 from .engine import cp_for_chart
 
-# 两种画幅：landscape 1920×1080（长视频用，默认），portrait 1080×1350（Shorts 用）
+# two formats: landscape 1920x1080 (long-form, default), portrait 1080x1350 (Shorts)
 LAYOUT = {"landscape": (1920, 1080), "portrait": (1080, 1350)}
 W, H = LAYOUT["landscape"]
 
@@ -29,8 +29,8 @@ def frame_svg(board: chess.Board, last: chess.Move | None, caption: str, sub: st
     board_svg = _svg_board(board, last, flipped=False)
     import re
     vb = re.search(r'viewBox="0 0 ([\d.]+) ([\d.]+)"', board_svg)
-    scale = 880 / float(vb.group(1)) if vb else 1.0  # chess.svg 内部坐标是 viewBox 单位，要按比例放大到 880px
-    inner = board_svg.split(">", 1)[1].rsplit("</svg>", 1)[0]  # 去掉外层 <svg>
+    scale = 880 / float(vb.group(1)) if vb else 1.0  # chess.svg draws in viewBox units; scale up to 880px
+    inner = board_svg.split(">", 1)[1].rsplit("</svg>", 1)[0]  # strip the outer <svg>
     return f"""<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{W}" height="{H}" viewBox="0 0 {W} {H}">
 <rect width="{W}" height="{H}" fill="#0d1530"/>
 <text x="60" y="78" font-family="Helvetica, Arial, sans-serif" font-size="40" font-weight="700" fill="#ffffff">{_esc(black_name)}</text>
@@ -60,7 +60,7 @@ def frame_svg_landscape(board, last, caption, sub, ev, white_name, black_name) -
     x0, y0 = 60, 60
     bx = x0 + size + 30
     tx = bx + 90
-    # 字幕按 " · " 拆成两行，避免右栏溢出
+    # split the caption on " · " so it fits the right column
     sub_lines = [sub] if len(sub) < 48 else sub.split(" · ", 1)
     sub_svg = "".join(f'<text x="{tx}" y="{760 + i * 44}" font-family="Helvetica, Arial, sans-serif" font-size="32" fill="#ffffffcc">{_esc(t)}</text>' for i, t in enumerate(sub_lines))
     return f"""<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{W}" height="{H}" viewBox="0 0 {W} {H}">
@@ -125,10 +125,10 @@ def render_game(json_path: str, fps_hold: float = 1.6, layout: str = "landscape"
         num = f"{p['move_no']}." if p["side"] == "White" else f"{p['move_no']}..."
         emit(p["ply"], f"{num} {p['san']}", f"best {p['best_move'] or '-'}{tag}", ev, mv)
 
-    # 结束帧
+    # final frame
     emit(len(paths), data["result"], data["termination"], cp_for_chart(data["plies"][-1]["eval_after"]) if data["plies"] and data["plies"][-1].get("san") else 0.0, None)
 
-    # 回放视频：每帧停 fps_hold 秒
+    # replay video: hold each frame fps_hold seconds
     mp4 = os.path.join(out_dir, f"{name}_replay.mp4")
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", f"1/{fps_hold}", "-i", os.path.join(frames_dir, "%04d.png"),
                     "-c:v", "libx264", "-pix_fmt", "yuv420p", "-r", "30", mp4], check=True)

@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""AI 国际象棋对局：两位棋手各执一次白、一次黑，所有走法由 python-chess 验合法性、Stockfish 评估。
+"""AI chess match: two players, each plays once as White and once as Black. python-chess checks legality, Stockfish scores every move.
 
-用法（在 chess-arena/ 下；密钥放仓库根目录 AIExperiments/.env：ANTHROPIC_API_KEY / OPENAI_API_KEY）：
-  python3 run_match.py                                  # Claude (claude-fable-5-1) vs OpenAI (gpt-6-astra)，两局
+Usage (from chess-arena/; keys in the repo-root AIExperiments/.env: ANTHROPIC_API_KEY / OPENAI_API_KEY):
+  python3 run_match.py                                  # Claude (claude-fable-5-1) vs OpenAI (gpt-6-astra), two games
   python3 run_match.py --a claude:claude-opus-5-5 --b openai:gpt-6.1-terra
-  python3 run_match.py --a stockfish:50 --b random:0.1 --games 2 --out results/dryrun   # 不花钱的干跑
-  python3 run_match.py --render-only results/2026-11-08_xxx                             # 只重新出图/视频
+  python3 run_match.py --a stockfish:50 --b random:0.1 --games 2 --out results/dryrun   # free pipeline test
+  python3 run_match.py --render-only results/2026-11-08_xxx                             # re-render frames/video/charts only
 
-输出到 results/<时间戳>_<a>_vs_<b>/：
-  game1.pgn / game1.json / game1.log   完整记录（每次提示的原始回复、尝试次数、每步 Stockfish 评估）
-  game1_replay.mp4 / game1_eval.png / game1_key_moments.json / frames/game1/*.png   视频素材
-  summary.md / summary.json            两局汇总
+Output in results/<timestamp>_<a>_vs_<b>/:
+  game1.pgn / game1.json / game1.log   full record (every raw reply, attempt, Stockfish eval per move)
+  game1_replay.mp4 / game1_eval.png / game1_key_moments.json / frames/game1/*.png   video assets
+  summary.md / summary.json            round summary
 """
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ from arena.render import render_game
 
 
 def load_env():
-    """密钥统一放仓库根目录 AIExperiments/.env（所有实验共用）；实验目录自己的 .env 也认，优先级更高。都不入库。"""
+    """Keys live in the repo-root AIExperiments/.env (shared by all experiments); an experiment-local .env is also read and wins. Neither is committed."""
     here = os.path.dirname(os.path.abspath(__file__))
     for p in (os.path.join(here, ".env"), os.path.join(os.path.dirname(here), ".env")):
         if os.path.exists(p):
@@ -81,18 +81,18 @@ def summarize(out_dir: str, games: list[dict], a_name: str, b_name: str) -> None
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--a", default="claude", help="棋手 A：claude[:model] | openai[:model] | stockfish[:ms] | random[:illegal_rate]")
+    ap.add_argument("--a", default="claude", help="player A: claude[:model] | openai[:model] | stockfish[:ms] | random[:illegal_rate]")
     ap.add_argument("--b", default="openai")
-    ap.add_argument("--games", type=int, default=2, help="局数，奇数局 A 执白，偶数局 B 执白")
-    ap.add_argument("--effort", default="high", help="两家模型的推理强度 low|medium|high")
-    ap.add_argument("--attempts", type=int, default=3, help="每步最多尝试次数")
-    ap.add_argument("--on-illegal", choices=["forfeit", "random"], default="forfeit", help="尝试用尽后：判负，或随机合法走法继续")
-    ap.add_argument("--max-moves", type=int, default=150, help="回合上限，到了由 Stockfish 裁定")
-    ap.add_argument("--depth", type=int, default=18, help="Stockfish 评估深度")
-    ap.add_argument("--stockfish", default=None, help="stockfish 可执行文件路径")
+    ap.add_argument("--games", type=int, default=2, help="number of games; A is White in odd games, B in even games")
+    ap.add_argument("--effort", default="high", help="reasoning effort for both models: low|medium|high")
+    ap.add_argument("--attempts", type=int, default=3, help="max attempts per move")
+    ap.add_argument("--on-illegal", choices=["forfeit", "random"], default="forfeit", help="when attempts run out: forfeit the game, or play a random legal move")
+    ap.add_argument("--max-moves", type=int, default=150, help="move cap; Stockfish adjudicates when reached")
+    ap.add_argument("--depth", type=int, default=18, help="Stockfish analysis depth")
+    ap.add_argument("--stockfish", default=None, help="path to the stockfish binary")
     ap.add_argument("--out", default=None)
-    ap.add_argument("--render-only", default=None, help="只对已有结果目录重新生成帧/视频/图")
-    ap.add_argument("--layout", choices=["landscape", "portrait"], default="landscape", help="素材画幅：横屏 1920×1080（默认）或竖屏 1080×1350")
+    ap.add_argument("--render-only", default=None, help="only re-render frames/video/charts for an existing results dir")
+    ap.add_argument("--layout", choices=["landscape", "portrait"], default="landscape", help="asset format: landscape 1920x1080 (default) or portrait 1080x1350")
     a = ap.parse_args()
     load_env()
 
@@ -106,7 +106,7 @@ def main():
     B = make_player(a.b, engine, a.effort)
     out_dir = a.out or os.path.join("results", f"{dt.datetime.now():%Y-%m-%d_%H%M}_{slug(A.model)}_vs_{slug(B.model)}")
     os.makedirs(out_dir, exist_ok=True)
-    print(f"输出目录 {out_dir}")
+    print(f"output dir {out_dir}")
 
     games = []
     try:
@@ -115,7 +115,7 @@ def main():
             g = Game(white, black, engine, out_dir, f"game{i}", a.attempts, a.on_illegal, a.max_moves * 2).play()
             games.append(g)
             r = render_game(os.path.join(out_dir, f"game{i}.json"), layout=a.layout)
-            print(f"  素材：{r['frames']} 帧，{r['replay']}，{r['chart']}，关键时刻 {len(r['key_moments'])} 个")
+            print(f"  assets: {r['frames']} frames, {r['replay']}, {r['chart']}, {len(r['key_moments'])} key moments")
     finally:
         engine.close()
     summarize(out_dir, games, A.name, B.name)

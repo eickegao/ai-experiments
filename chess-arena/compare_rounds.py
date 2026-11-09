@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""把两轮（少想 / 多想）的统计并成一张对比表和一张图：非法尝试、Top-1/Top-3 吻合率、平均丢分、每步耗时、成本。"""
+"""Merge per-round summaries (low vs high effort) into one table and one chart: illegal attempts, top-1/top-3 agreement, average loss, seconds per move, cost."""
 import json, os, sys
 
 def load(d):
@@ -54,9 +54,9 @@ def main():
             ax.tick_params(colors="#fff"); [s.set_color("#ffffff55") for s in ax.spines.values()]
         axes[0].legend(facecolor="#0d1530", labelcolor="#fff", fontsize=9)
         fig.tight_layout(); fig.savefig(os.path.join(out_dir, "comparison.png"), facecolor=fig.get_facecolor()); plt.close(fig)
-        print("图：", os.path.join(out_dir, "comparison.png"))
+        print("chart:", os.path.join(out_dir, "comparison.png"))
     except Exception as e:
-        print("画图失败：", e)
+        print("chart failed:", e)
 
 if __name__ == "__main__":
     main()

@@ -1,10 +1,10 @@
-"""每百万 token 的美元价格，用来算每局成本。来源见 README；没列的模型成本记 None。"""
+"""USD per million tokens (input, output), used for per-game cost. Models not listed get cost None."""
 PRICES = {
-    # Anthropic（platform.claude.com 价格表，2026-10）
+    # Anthropic (platform.claude.com price list, Oct 2026)
     "claude-fable-5-1": (10.00, 50.00),
     "claude-opus-5-5": (4.00, 20.00),
     "claude-sonnet-5-5": (2.00, 10.00),
-    # OpenAI：对局前在 README 里确认 gpt-6-astra 的官方价格后填入
+    # OpenAI: fill in from the official price page before the match
     "gpt-6-astra": None,
     "gpt-6.1-terra": None,
 }
