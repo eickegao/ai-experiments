@@ -1,0 +1,102 @@
+{
+ "Random#100": {
+  "name": "Random#100",
+  "model": "random",
+  "games": 1,
+  "wins": 0,
+  "places": [
+   4
+  ],
+  "cells": [
+   127
+  ],
+  "seconds": 0.0,
+  "cost_usd": 0.0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "commands": 23,
+  "rejected": 0,
+  "casts": 4,
+  "errors": 0,
+  "no_command": 1,
+  "decisions": 20,
+  "skills": [
+   "split, shock, giant"
+  ]
+ },
+ "Random#101": {
+  "name": "Random#101",
+  "model": "random",
+  "games": 1,
+  "wins": 0,
+  "places": [
+   2
+  ],
+  "cells": [
+   282
+  ],
+  "seconds": 0.0,
+  "cost_usd": 0.0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "commands": 27,
+  "rejected": 1,
+  "casts": 6,
+  "errors": 0,
+  "no_command": 0,
+  "decisions": 20,
+  "skills": [
+   "split, shock, giant"
+  ]
+ },
+ "Bot (eager 0.6) #1": {
+  "name": "Bot (eager 0.6) #1",
+  "model": "cd_ai",
+  "games": 1,
+  "wins": 0,
+  "places": [
+   3
+  ],
+  "cells": [
+   282
+  ],
+  "seconds": 0.0,
+  "cost_usd": 0.0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "commands": 0,
+  "rejected": 0,
+  "casts": 0,
+  "errors": 0,
+  "no_command": 0,
+  "decisions": 0,
+  "skills": [
+   "split, shock, giant"
+  ]
+ },
+ "Bot (eager 0.6) #2": {
+  "name": "Bot (eager 0.6) #2",
+  "model": "cd_ai",
+  "games": 1,
+  "wins": 1,
+  "places": [
+   1
+  ],
+  "cells": [
+   333
+  ],
+  "seconds": 0.0,
+  "cost_usd": 0.0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "commands": 0,
+  "rejected": 0,
+  "casts": 0,
+  "errors": 0,
+  "no_command": 0,
+  "decisions": 0,
+  "skills": [
+   "split, shock, giant"
+  ]
+ }
+}

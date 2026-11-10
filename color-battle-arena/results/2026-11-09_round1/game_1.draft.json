@@ -1,0 +1,151 @@
+{
+ "setup": {
+  "seed": 1001,
+  "teams": {
+   "A": {
+    "name": "Claude",
+    "full_name": "Claude (claude-fable-5-1)",
+    "model": "claude-fable-5-1",
+    "bot": false,
+    "skills": [
+     {
+      "id": "split",
+      "level": 3
+     },
+     {
+      "id": "shock",
+      "level": 3
+     },
+     {
+      "id": "giant",
+      "level": 3
+     }
+    ]
+   },
+   "B": {
+    "name": "GPT",
+    "full_name": "GPT (gpt-6-astra)",
+    "model": "gpt-6-astra",
+    "bot": false,
+    "skills": [
+     {
+      "id": "split",
+      "level": 3
+     },
+     {
+      "id": "shock",
+      "level": 3
+     },
+     {
+      "id": "giant",
+      "level": 3
+     }
+    ]
+   },
+   "C": {
+    "name": "Gemini",
+    "full_name": "Gemini (gemini-4-argon)",
+    "model": "gemini-4-argon",
+    "bot": false,
+    "skills": [
+     {
+      "id": "split",
+      "level": 3
+     },
+     {
+      "id": "shock",
+      "level": 3
+     },
+     {
+      "id": "giant",
+      "level": 3
+     }
+    ]
+   },
+   "D": {
+    "name": "DeepSeek",
+    "full_name": "DeepSeek (deepseek-v4-pro)",
+    "model": "deepseek-v4-pro",
+    "bot": false,
+    "skills": [
+     {
+      "id": "split",
+      "level": 3
+     },
+     {
+      "id": "shock",
+      "level": 3
+     },
+     {
+      "id": "giant",
+      "level": 3
+     }
+    ]
+   }
+  },
+  "decision_dt": 3.0,
+  "n_decisions": 20
+ },
+ "draft": {
+  "A": {
+   "picks": [
+    "split",
+    "shock",
+    "giant"
+   ],
+   "note": "fixed loadout",
+   "prompt": "",
+   "reply": "",
+   "seconds": 0,
+   "usage": {},
+   "error": null,
+   "at": "",
+   "cost_usd": 0
+  },
+  "B": {
+   "picks": [
+    "split",
+    "shock",
+    "giant"
+   ],
+   "note": "fixed loadout",
+   "prompt": "",
+   "reply": "",
+   "seconds": 0,
+   "usage": {},
+   "error": null,
+   "at": "",
+   "cost_usd": 0
+  },
+  "C": {
+   "picks": [
+    "split",
+    "shock",
+    "giant"
+   ],
+   "note": "fixed loadout",
+   "prompt": "",
+   "reply": "",
+   "seconds": 0,
+   "usage": {},
+   "error": null,
+   "at": "",
+   "cost_usd": 0
+  },
+  "D": {
+   "picks": [
+    "split",
+    "shock",
+    "giant"
+   ],
+   "note": "fixed loadout",
+   "prompt": "",
+   "reply": "",
+   "seconds": 0,
+   "usage": {},
+   "error": null,
+   "at": "",
+   "cost_usd": 0
+  }
+ }
+}
