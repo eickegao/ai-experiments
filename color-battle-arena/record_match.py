@@ -49,12 +49,14 @@ def main():
     ap.add_argument("--replay-only", action="store_true")
     ap.add_argument("--speed", type=float, default=1.0, help="replay playback speed (1 = real time)")
     ap.add_argument("--live-timeout", type=float, default=3 * 3600)
+    ap.add_argument("--headed", action="store_true", help="record with a visible Chrome window (real GPU) instead of headless SwiftShader")
+    ap.add_argument("--suffix", default="", help="output name suffix, e.g. _headed (default overwrites game_N.mp4)")
     a = ap.parse_args()
     out = HERE / a.out
     rel = os.path.relpath(out, HERE)
     logs = []
     with sync_playwright() as p:
-        browser = p.chromium.launch(channel="chrome", headless=True, args=ARGS)
+        browser = p.chromium.launch(channel="chrome", headless=not a.headed, args=ARGS)
         if not a.replay_only:
             ctx = browser.new_context(viewport={"width": 1080, "height": 1920}, device_scale_factor=1)
             page = ctx.new_page()
@@ -87,7 +89,7 @@ def main():
         browser.close()
     ok = bool(verdict and verdict.get("ok"))
     mism = [json.dumps(verdict)] if verdict and not verdict.get("ok") else []
-    mp4 = out / f"game_{a.game}.mp4"
+    mp4 = out / f"game_{a.game}{a.suffix}.mp4"
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", webm, "-r", "30", "-vf", "scale=1080:1920", "-c:v", "libx264", "-crf", "18",
                     "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(mp4)], check=True)
     for f in Path(rec_dir).glob("*.webm"):

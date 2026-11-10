@@ -80,3 +80,9 @@
 15:03:21 game 1 decision 29/30 t=  56s  A:182  B:382  C:243  D:217  lead B  wall 0.0s  A 0s | B 0s
 15:03:23 game 1 decision 30/30 t=  58s  A:193  B:375  C:242  D:214  lead B  wall 0.0s  A 0s | B 0s
 15:03:25 game 1 finished: B > C > D > A  cells A 182 B 360 C 249 D 233
+22:25:59 arena server on http://127.0.0.1:8787  players=['random', 'random', 'bot', 'bot']  out=results/dry  bundle=/Users/eicke/Projects/AIExperiments/color-battle-arena/game/build_web/Color Battle Arena
+22:25:59 open http://127.0.0.1:8787/index.html?arena=live&game=1
+22:29:27 arena server on http://127.0.0.1:8787  players=['random', 'random', 'bot', 'bot']  out=results/dry  bundle=/Users/eicke/Projects/AIExperiments/color-battle-arena/game/build_web/Color Battle Arena
+22:29:27 open http://127.0.0.1:8787/index.html?arena=live&game=1
+22:30:49 arena server on http://127.0.0.1:8787  players=['random', 'random', 'bot', 'bot']  out=results/dry  bundle=/Users/eicke/Projects/AIExperiments/color-battle-arena/game/build_web/Color Battle Arena
+22:30:49 open http://127.0.0.1:8787/index.html?arena=live&game=1
