@@ -61,6 +61,9 @@ PATCHES = {
          'loadout = message.loadout, enemies = message.enemies, eager = message.eager, slots = message.slots, arena = message.arena, seed = message.seed, bots = message.bots,'),
     ],
     # the match screen's static nodes only use the clashdoz atlases; result / scoreboard atlases belonged to the pages we dropped
+    "cd_config.lua": [
+        (r'M\.PLAYER_ONLY_SKILLS = \{ bomb = true \}', 'M.PLAYER_ONLY_SKILLS = {}   -- arena: four AI seats, nobody is "the player"; BOMB is open to all (bug found 2026-11-09: Gemini drafted it and every cast was rejected)'),
+    ],
     "clashdoz_game.gui": [
         (r'textures \{\n  name: "[^"]*"\n  texture: "/shared/result.atlas"\n\}\n', ""),
         (r'textures \{\n  name: "[^"]*"\n  texture: "/shared/scoreboard.atlas"\n\}\n', ""),

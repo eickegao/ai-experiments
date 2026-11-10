@@ -1,0 +1,37 @@
+16:40:16 arena server on http://127.0.0.1:8787  players=['claude', 'openai', 'gemini', 'deepseek@medium']  out=results/2026-11-09_arena  bundle=/Users/eicke/Projects/AIExperiments/color-battle-arena/game/build_web/Color Battle Arena
+16:40:16 open http://127.0.0.1:8787/index.html?arena=live&game=1
+16:40:42 game 1 draft A Claude (claude-fable-5-1): split, accel, lightning
+16:40:42 game 1 draft B GPT (gpt-6-astra): shatter, accel, lightning
+16:40:42 game 1 draft C Gemini (gemini-4-argon): accel, shatter, bomb
+16:40:42 game 1 draft D DeepSeek (deepseek-v4-pro): accel, lightning, teleport
+16:41:35 game 1 decision 1/30 t=   0s  A:256  B:256  C:256  D:256  lead A  wall 53.0s  A 9s | B 7s | C 13s | D 53s
+16:43:47 game 1 decision 2/30 t=   2s  A:232  B:328  C:228  D:236  lead B  wall 130.2s  A 10s | B 13s | C 11s | D 130s
+16:47:03 game 1 decision 3/30 t=   4s  A:196  B:366  C:295  D:167  lead B  wall 194.2s  A 4s | B 14s | C 18s | D 194s
+16:48:51 game 1 decision 4/30 t=   6s  A:185  B:373  C:343  D:123  lead B  wall 105.8s  A 22s | B 15s | C 9s | D 106s
+16:50:27 game 1 decision 5/30 t=   8s  A:174  B:374  C:360  D:116  lead B  wall 93.4s  A 7s | B 14s | C 8s | D 93s
+16:51:33 game 1 decision 6/30 t=  10s  A:169  B:344  C:389  D:122  lead C  wall 64.7s  A 11s | B 24s | C 12s | D 65s
+16:53:35 game 1 decision 7/30 t=  12s  A:160  B:305  C:356  D:203  lead C  wall 119.3s  A 19s | B 15s | C 16s | D 119s
+16:56:08 game 1 decision 8/30 t=  14s  A:162  B:324  C:332  D:206  lead C  wall 151.8s  A 18s | B 13s | C 11s | D 152s
+16:58:07 game 1 decision 9/30 t=  16s  A:185  B:324  C:318  D:197  lead B  wall 116.8s  A 14s | B 15s | C 9s | D 117s
+17:02:52 game 1 decision 10/30 t=  18s  A:195  B:354  C:309  D:166  lead B  wall 282.6s  A 19s | B 10s | C 7s | D 283s
+17:05:20 game 1 decision 11/30 t=  20s  A:172  B:348  C:382  D:122  lead C  wall 145.8s  A 13s | B 16s | C 15s | D 146s
+17:07:50 game 1 decision 12/30 t=  22s  A:161  B:392  C:382  D: 89  lead B  wall 147.9s  A 5s | B 14s | C 19s | D 148s
+17:09:20 game 1 decision 13/30 t=  24s  A:174  B:412  C:373  D: 65  lead B  wall 88.4s  A 3s | B 19s | C 8s | D 88s
+17:11:05 game 1 decision 14/30 t=  26s  A:200  B:333  C:415  D: 76  lead C  wall 103.1s  A 78s | B 14s | C 18s | D 103s
+17:14:35 game 1 decision 15/30 t=  28s  A:204  B:318  C:412  D: 90  lead C  wall 208.0s  A 22s | B 14s | C 16s | D 208s
+17:15:08 game 1 decision 16/30 t=  30s  A:208  B:309  C:411  D: 96  lead C  wall 30.8s  A 13s | B 12s | C 16s | D 31s
+17:18:04 game 1 decision 17/30 t=  32s  A:244  B:288  C:396  D: 96  lead C  wall 173.8s  A 11s | B 9s | C 10s | D 174s
+17:20:43 game 1 decision 18/30 t=  34s  A:238  B:359  C:319  D:108  lead B  wall 157.0s  A 15s | B 14s | C 11s | D 157s
+17:22:56 game 1 decision 19/30 t=  36s  A:215  B:415  C:290  D:104  lead B  wall 130.7s  A 25s | B 18s | C 14s | D 131s
+17:29:42 game 1 decision 20/30 t=  38s  A:195  B:412  C:316  D:101  lead B  wall 404.1s  A 45s | B 17s | C 11s | D 404s
+17:32:45 game 1 decision 21/30 t=  40s  A:170  B:376  C:369  D:109  lead B  wall 180.9s  A 21s | B 17s | C 10s | D 181s
+17:33:57 game 1 decision 22/30 t=  42s  A:160  B:311  C:445  D:108  lead C  wall 70.2s  A 10s | B 20s | C 10s | D 70s
+17:36:29 game 1 decision 23/30 t=  44s  A:199  B:295  C:356  D:174  lead C  wall 150.4s  A 25s | B 13s | C 10s | D 150s
+17:38:08 game 1 decision 24/30 t=  46s  A:237  B:284  C:311  D:192  lead C  wall 96.2s  A 14s | B 16s | C 15s | D 96s
+17:44:18 game 1 decision 25/30 t=  48s  A:244  B:282  C:291  D:207  lead C  wall 368.5s  A 34s | B 6s | C 14s | D 368s
+17:51:27 game 1 decision 26/30 t=  50s  A:241  B:310  C:257  D:216  lead B  wall 426.8s  A 10s | B 17s | C 16s | D 427s
+17:53:50 game 1 decision 27/30 t=  52s  A:246  B:389  C:228  D:161  lead B  wall 141.1s  A 3s | B 22s | C 11s | D 141s
+17:56:48 game 1 decision 28/30 t=  54s  A:208  B:435  C:279  D:102  lead B  wall 175.7s  A 19s | B 19s | C 15s | D 176s
+17:59:31 game 1 decision 29/30 t=  56s  A:204  B:421  C:314  D: 85  lead B  wall 160.7s  A 4s | B 16s | C 17s | D 161s
+18:06:04 game 1 decision 30/30 t=  58s  A:188  B:402  C:348  D: 86  lead B  wall 391.4s  A 3s | B 20s | C 18s | D 391s
+18:06:06 game 1 finished: B > C > A > D  cells A 175 B 397 C 341 D 111

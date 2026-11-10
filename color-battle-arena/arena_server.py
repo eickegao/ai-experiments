@@ -322,7 +322,7 @@ def transcript_md(rec: dict) -> str:
 
 
 def write_summary(out_dir: Path):
-    games = sorted(out_dir.glob("game_*.json"), key=lambda p: int(p.stem.split("_")[1]))
+    games = sorted((p for p in out_dir.glob("game_*.json") if p.stem.split("_")[1].isdigit()), key=lambda p: int(p.stem.split("_")[1]))
     recs = [json.loads(p.read_text()) for p in games]
     agg: dict[str, dict] = {}
     for rec in recs:

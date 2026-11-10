@@ -1,0 +1,102 @@
+{
+ "Claude (claude-fable-5-1)": {
+  "name": "Claude (claude-fable-5-1)",
+  "model": "claude-fable-5-1",
+  "games": 1,
+  "wins": 0,
+  "places": [
+   3
+  ],
+  "cells": [
+   175
+  ],
+  "seconds": 508.3,
+  "cost_usd": 2.1024,
+  "input_tokens": 64826,
+  "output_tokens": 29082,
+  "commands": 42,
+  "rejected": 2,
+  "casts": 15,
+  "errors": 0,
+  "no_command": 0,
+  "decisions": 30,
+  "skills": [
+   "split, accel, lightning"
+  ]
+ },
+ "GPT (gpt-6-astra)": {
+  "name": "GPT (gpt-6-astra)",
+  "model": "gpt-6-astra",
+  "games": 1,
+  "wins": 1,
+  "places": [
+   1
+  ],
+  "cells": [
+   397
+  ],
+  "seconds": 458.8,
+  "cost_usd": 0.8181,
+  "input_tokens": 34918,
+  "output_tokens": 9379,
+  "commands": 49,
+  "rejected": 7,
+  "casts": 16,
+  "errors": 0,
+  "no_command": 0,
+  "decisions": 30,
+  "skills": [
+   "shatter, accel, lightning"
+  ]
+ },
+ "Gemini (gemini-4-argon)": {
+  "name": "Gemini (gemini-4-argon)",
+  "model": "gemini-4-argon",
+  "games": 1,
+  "wins": 0,
+  "places": [
+   2
+  ],
+  "cells": [
+   341
+  ],
+  "seconds": 395.8,
+  "cost_usd": 0.2905,
+  "input_tokens": 35987,
+  "output_tokens": 21850,
+  "commands": 60,
+  "rejected": 27,
+  "casts": 9,
+  "errors": 0,
+  "no_command": 0,
+  "decisions": 30,
+  "skills": [
+   "accel, shatter, bomb"
+  ]
+ },
+ "DeepSeek (deepseek-v4-pro)": {
+  "name": "DeepSeek (deepseek-v4-pro)",
+  "model": "deepseek-v4-pro",
+  "games": 1,
+  "wins": 0,
+  "places": [
+   4
+  ],
+  "cells": [
+   111
+  ],
+  "seconds": 5078.5,
+  "cost_usd": 1.0861,
+  "input_tokens": 48187,
+  "output_tokens": 555160,
+  "commands": 37,
+  "rejected": 3,
+  "casts": 15,
+  "errors": 2,
+  "no_command": 1,
+  "decisions": 30,
+  "skills": [
+   "accel, lightning, teleport"
+  ]
+ }
+}

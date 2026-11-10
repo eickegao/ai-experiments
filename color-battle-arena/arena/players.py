@@ -155,7 +155,8 @@ class DeepSeekPlayer(Player):
                 r = self.client.chat.completions.create(
                     model=self.model, max_tokens=budget,
                     messages=[{"role": "system", "content": system}, {"role": "user", "content": obs}],
-                    extra_body={"thinking": {"type": "enabled"}, "reasoning_effort": effort},
+                    # effort "none" = thinking switched off (plain chat answer, seconds instead of minutes)
+                    extra_body={"thinking": {"type": "disabled"}} if effort == "none" else {"thinking": {"type": "enabled"}, "reasoning_effort": effort},
                 )
             except openai.APIError as e:
                 return Reply("", time.time() - t0, usage, error=f"{type(e).__name__}: {e}", prompt=obs, at=at)
