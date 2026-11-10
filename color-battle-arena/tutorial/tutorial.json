@@ -1177,5 +1177,12 @@
     }
    }
   }
- }
+ },
+ "strategy": [
+  "- **Teleport + Shatter (or Split).** Teleport into a SMALL pocket enclosed by one enemy colour, then cast Shatter (or Split) at once. Inside the pocket the ball flips a cell on almost every bounce; with Shatter every flip spawns another ball (1 → 2 → 4 → …), with Split you have five balls doing it. A whole region of that colour collapses within a few seconds. This is the strongest thing in the game when it lands.",
+  "- **Hit the leader, not everyone.** Look at the cell counts: aim teleports, fires, giants and shockwaves at the team that is currently first. You do not need to out-paint the whole board; knocking the leader's biggest block down is usually what makes you first.",
+  "- **Shockwave grows with distance.** The arc widens as it travels, so cast it from FAR away, pointed at a big enemy block: the rays spread out and paint a wide front. Cast right next to the enemy the arc is still narrow and paints only a few cells.",
+  "- **Giant and Fire are finishers.** Their paint cannot be answered in the last seconds: keep one charge for the final 5 s and put it into the leader's territory.",
+  "- **Accel is a multiplier, not a plan.** It only pays when something else is happening: a ball driving into enemy ground, Shatter or Split active, a Giant run."
+ ]
 }

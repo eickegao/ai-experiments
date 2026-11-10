@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Teaching material for round 2 ("我们来教"): every skill at level 3 demonstrated once in the real simulation.
 
-    python3 make_tutorial.py            # → tutorial/tutorial.json, tutorial/tutorial.md (for the models), tutorial/tutorial.zh.md (for us)
+    python3 make_tutorial.py            # → tutorial/tutorial.json + tutorial/tutorial.md (English only: fed to the models, shown in the video)
 
 Method (user 2026-11-09): take one real mid-game board (seed 1001, the game's own bots steering all four teams for 30 s),
 give team A one skill at level 3, and cast it twice from the same position:
@@ -191,9 +191,28 @@ def main():
                                 "tip": TIPS[sk][0], "tip_zh": TIPS[sk][1], "aimed": a, "unaimed": u}
         print(f"{sk:10s} aimed: instant {a['instant']:+4d} / 6 s {a['effect']:+4d}   unaimed: instant {u['instant']:+4d} / 6 s {u['effect']:+4d}   target {a['target']}")
     (OUT / "tutorial.json").write_text(json.dumps(result, ensure_ascii=False, indent=1))
-    (OUT / "tutorial.md").write_text(render(result, "en"))
-    (OUT / "tutorial.zh.md").write_text(render(result, "zh"))
-    print("→", OUT / "tutorial.md", "|", OUT / "tutorial.zh.md")
+    result["strategy"] = [ln for ln in STRATEGY if ln.startswith("- ")]
+    (OUT / "tutorial.json").write_text(json.dumps(result, ensure_ascii=False, indent=1))
+    (OUT / "tutorial.md").write_text(render(result, "en"))   # English only: this is what the models read and what the video shows (user 2026-11-09)
+    print("→", OUT / "tutorial.md")
+
+
+STRATEGY = [
+    "## Combos and strategy (our notes)",
+    "",
+    "- **Teleport + Shatter (or Split).** Teleport into a SMALL pocket enclosed by one enemy colour, then cast Shatter (or Split) at once. "
+    "Inside the pocket the ball flips a cell on almost every bounce; with Shatter every flip spawns another ball (1 → 2 → 4 → …), with Split you "
+    "have five balls doing it. A whole region of that colour collapses within a few seconds. This is the strongest thing in the game when it lands.",
+    "- **Hit the leader, not everyone.** Look at the cell counts: aim teleports, fires, giants and shockwaves at the team that is currently first. "
+    "You do not need to out-paint the whole board; knocking the leader's biggest block down is usually what makes you first.",
+    "- **Shockwave grows with distance.** The arc widens as it travels, so cast it from FAR away, pointed at a big enemy block: the rays spread "
+    "out and paint a wide front. Cast right next to the enemy the arc is still narrow and paints only a few cells.",
+    "- **Giant and Fire are finishers.** Their paint cannot be answered in the last seconds: keep one charge for the final 5 s and put it into the "
+    "leader's territory.",
+    "- **Accel is a multiplier, not a plan.** It only pays when something else is happening: a ball driving into enemy ground, Shatter or Split active, "
+    "a Giant run.",
+    "",
+]
 
 
 def render(r: dict, lang: str) -> str:
@@ -209,6 +228,8 @@ def render(r: dict, lang: str) -> str:
                 f"每个技能都在同一个真实局面上放一次：种子 {r['seed']}，开局 {r['t0']:g} 秒后，我方是 A 队（球是 '@'）。",
                 f"\"效果\" = 放招后多出的格子减去不放招也会多出的格子，分别在放招后 {r['instant']:g} 秒（即时）和 {r['watch']:g} 秒（持续）量；每个数字是同一招在这局 {'、'.join(f'{b:g}' for b in r['boards'])} 秒三个时刻各放一次的平均。",
                 "\"瞄准\" = 先把球对准敌方大块地（火焰：对手最密处；传送：敌区内的口袋）再放；\"不瞄准\" = 原地直接放。", ""]
+    if lang == "en":
+        out += STRATEGY
     for sk, s in r["skills"].items():
         a, u = s["aimed"], s["unaimed"]
         if lang == "en":

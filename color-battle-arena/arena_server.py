@@ -69,7 +69,18 @@ def skill_text(sk: dict) -> str:
                                                       w=p.get("window", ""), a=p.get("arc", ""), s=p.get("stun", ""), e=p.get("extra", ""))
 
 
-def draft_prompts(catalog: list[dict], slots: int, n_decisions: int, decision_dt: float, level: int) -> tuple[str, str]:
+def compact_tutorial(tut: dict) -> list[str]:
+    """one line per skill with the measured effects + our tips, and the combo notes: goes into every decision prompt"""
+    lines = [f"What we measured for each skill at level {tut['level']} on a real board (cells gained vs. not casting; 'aimed' = ball pointed at the enemy first):"]
+    for sk, t in tut["skills"].items():
+        a, u = t["aimed"], t["unaimed"]
+        lines.append(f"  {t['name']}: aimed {a['instant']:+d} instant / {a['effect']:+d} after {tut['watch']:g} s; unaimed {u['instant']:+d} / {u['effect']:+d}. {t['tip']}")
+    lines.append("Combos and strategy:")
+    lines += ["  " + ln[2:] for ln in tut.get("strategy", [])]
+    return lines
+
+
+def draft_prompts(catalog: list[dict], slots: int, n_decisions: int, decision_dt: float, level: int, tutorial_md: str | None = None) -> tuple[str, str]:
     system = "\n".join([
         "You are one of four AI players about to play Color Battle, a 60-second territory game on a 32x32 board.",
         "Each team has one ball that moves at 22 cells/s. It passes freely over its own colour; when it touches a cell of any",
@@ -83,6 +94,8 @@ def draft_prompts(catalog: list[dict], slots: int, n_decisions: int, decision_dt
         lines.append(f"- {sk['id']}: {skill_text(sk)} Cooldown {sk['cd']:g} s.")
     lines += ["", "Reply with brief reasoning (under 80 words), then one last line exactly like this, using the ids as written above:",
               f"PICK: {', '.join(['<id>'] * slots)}"]
+    if tutorial_md:   # round 2: study material first (user 2026-11-09)
+        lines = ["Study material. Read it before choosing:", "", tutorial_md.strip(), "", "---", ""] + lines
     return system, "\n".join(lines)
 
 
@@ -146,9 +159,9 @@ def short_name(p: Player) -> str:
 # ---------------------------------------------------------------- per-game state
 class Game:
     def __init__(self, no: int, seed: int, players: dict[int, Player], slots: int, effort: str, level: int = 3,
-                 fixed: list[str] | None = None, decision_dt: float = 2.0):
+                 fixed: list[str] | None = None, decision_dt: float = 2.0, tutorial: dict | None = None):
         self.no, self.seed, self.players, self.slots, self.level = no, seed, players, slots, level
-        self.fixed, self.decision_dt_cfg = fixed, decision_dt
+        self.fixed, self.decision_dt_cfg, self.tutorial = fixed, decision_dt, tutorial
         self.lock = threading.Lock()
         self.setup: dict | None = None
         self.catalog: list[dict] = []
@@ -170,7 +183,7 @@ class Game:
         self.catalog, self.n_decisions, self.decision_dt = catalog, n_decisions, decision_dt
         valid = [sk["id"] for sk in catalog]
         names = {sk["id"]: sk["name"] for sk in catalog}
-        system, user = draft_prompts(catalog, self.slots, n_decisions, decision_dt, self.level)
+        system, user = draft_prompts(catalog, self.slots, n_decisions, decision_dt, self.level, self.tutorial["md"] if self.tutorial else None)
         rng = random.Random(self.seed)
         teams = {}
 
@@ -201,10 +214,13 @@ class Game:
             by_id = {sk["id"]: sk for sk in catalog}
             info = [{**by_id[i], "slot": k + 1, "fixed": bool(self.fixed)} for k, i in enumerate(picks)]
             self.systems[t] = system_prompt(n_decisions, decision_dt, info)
+            if self.tutorial:
+                self.systems[t] += "\n\n" + "\n".join(compact_tutorial(self.tutorial["json"]))
             log(f"game {self.no} draft {L} {p.name}: {', '.join(picks)}" + (f"  ({note})" if note else ""))
         self.record["draft_system_prompt"], self.record["draft_user_prompt"] = system, user
         self.record["skill_level"] = self.level
         self.record["fixed_loadout"] = self.fixed
+        self.record["tutorial"] = bool(self.tutorial)
         self.setup = {"seed": self.seed, "teams": teams, "decision_dt": decision_dt, "n_decisions": n_decisions}
         if out_dir is not None:   # on disk right away, so a stopped game still leaves the draft behind
             out_dir.mkdir(parents=True, exist_ok=True)
@@ -357,9 +373,9 @@ def write_summary(out_dir: Path):
 # ---------------------------------------------------------------- http
 class Server:
     def __init__(self, specs: list[str], seeds: list[int], out: Path, bundle: Path, slots: int, effort: str, level: int = 3,
-                 fixed: list[str] | None = None, decision_dt: float = 2.0):
+                 fixed: list[str] | None = None, decision_dt: float = 2.0, tutorial: dict | None = None):
         self.specs, self.seeds, self.out, self.bundle, self.slots, self.effort, self.level = specs, seeds, out, bundle, slots, effort, level
-        self.fixed, self.decision_dt = fixed, decision_dt
+        self.fixed, self.decision_dt, self.tutorial = fixed, decision_dt, tutorial
         self.games: dict[int, Game] = {}
         self.players_cache = [make_player(s, effort, seed=100 + k, slots=slots) for k, s in enumerate(specs)]
         seen: dict[str, int] = {}
@@ -387,7 +403,7 @@ class Server:
                 seed = self.seeds[(no - 1) % len(self.seeds)] if self.seeds else 1000 + no
                 # seat rotation: player k → team (k + no - 1) mod 4
                 players = {((k + no - 1) % 4) + 1: p for k, p in enumerate(self.players_cache)}
-                self.games[no] = Game(no, seed, players, self.slots, self.effort, self.level, self.fixed, self.decision_dt)
+                self.games[no] = Game(no, seed, players, self.slots, self.effort, self.level, self.fixed, self.decision_dt, self.tutorial)
             return self.games[no]
 
 
@@ -472,11 +488,16 @@ def main():
     ap.add_argument("--level", type=int, default=3, help="skill level for every drafted skill (1-3; user 2026-11-09: max level)")
     ap.add_argument("--loadout", default="", help="comma-separated skill ids given to EVERY seat instead of a draft, e.g. split,shock,giant")
     ap.add_argument("--decision-dt", type=float, default=2.0, help="seconds of game time between decisions")
+    ap.add_argument("--tutorial", default="", help="path to tutorial/tutorial.md (make_tutorial.py): round 2, the models study it before drafting")
     a = ap.parse_args()
     specs = a.players.split(",")
     assert len(specs) == 4, "need four players"
     fixed = [x.strip() for x in a.loadout.split(",") if x.strip()] or None
-    srv = Server(specs, [int(s) for s in a.seeds.split(",") if s], (HERE / a.out), (HERE / a.bundle) if not os.path.isabs(a.bundle) else Path(a.bundle), a.slots, a.effort, a.level, fixed, a.decision_dt)
+    tutorial = None
+    if a.tutorial:
+        md = Path(a.tutorial).read_text()
+        tutorial = {"md": md, "json": json.loads(Path(a.tutorial).with_name("tutorial.json").read_text())}
+    srv = Server(specs, [int(s) for s in a.seeds.split(",") if s], (HERE / a.out), (HERE / a.bundle) if not os.path.isabs(a.bundle) else Path(a.bundle), a.slots, a.effort, a.level, fixed, a.decision_dt, tutorial)
     httpd = ThreadingHTTPServer(("127.0.0.1", a.port), make_handler(srv))
     srv.log(f"arena server on http://127.0.0.1:{a.port}  players={specs}  out={a.out}  bundle={srv.bundle}")
     srv.log(f"open http://127.0.0.1:{a.port}/index.html?arena=live&game=1")
