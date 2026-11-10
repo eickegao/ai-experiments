@@ -59,3 +59,30 @@
 20:07:30 game 2 draft C GPT (gpt-6-astra): teleport, shatter, accel
 20:07:30 game 2 draft D Gemini (gemini-4-argon): teleport, shatter, accel
 20:07:35 game 2 decision 1/20 t=   0s  A:256  B:256  C:256  D:256  lead A  wall 5.1s  B 2s | C 4s | D 5s | A 2s
+20:08:04 arena server on http://127.0.0.1:8787  players=['claude@low', 'openai@low', 'gemini@low', 'deepseek@none']  out=results/2026-11-09_round2  bundle=/Users/eicke/Projects/AIExperiments/color-battle-arena/game/build_web/Color Battle Arena
+20:08:04 open http://127.0.0.1:8787/index.html?arena=live&game=1
+20:08:23 game 2 draft A DeepSeek (deepseek-v4-pro): shatter, teleport, fire  (fixed loadout (per seat))
+20:08:23 game 2 draft B Claude (claude-fable-5-1): teleport, shatter, giant  (fixed loadout (per seat))
+20:08:23 game 2 draft C GPT (gpt-6-astra): teleport, shatter, accel  (fixed loadout (per seat))
+20:08:23 game 2 draft D Gemini (gemini-4-argon): teleport, shatter, accel  (fixed loadout (per seat))
+20:08:37 game 2 decision 1/20 t=   0s  A:256  B:256  C:256  D:256  lead A  wall 13.7s  B 3s | C 4s | D 14s | A 2s
+20:08:51 game 2 decision 2/20 t=   3s  A:265  B:190  C:256  D:313  lead D  wall 10.8s  B 2s | C 4s | D 11s | A 4s
+20:09:00 game 2 decision 3/20 t=   6s  A:263  B:102  C:312  D:347  lead D  wall 5.9s  B 3s | C 4s | D 6s | A 5s
+20:09:09 game 2 decision 4/20 t=   9s  A:322  B:130  C:292  D:280  lead A  wall 6.2s  B 3s | C 3s | D 6s | A 3s
+20:09:25 game 2 decision 5/20 t=  12s  A:367  B:137  C:252  D:268  lead A  wall 13.2s  B 3s | C 4s | D 13s | A 5s
+20:09:35 game 2 decision 6/20 t=  15s  A:361  B:144  C:246  D:273  lead A  wall 7.4s  B 2s | C 4s | D 7s | A 3s
+20:09:47 game 2 decision 7/20 t=  18s  A:249  B:182  C:337  D:256  lead C  wall 8.6s  B 2s | C 3s | D 9s | A 4s
+20:09:55 game 2 decision 8/20 t=  21s  A:262  B:201  C:354  D:207  lead C  wall 4.6s  B 4s | C 5s | D 4s | A 3s
+20:10:03 game 2 decision 9/20 t=  24s  A:309  B:178  C:251  D:286  lead A  wall 4.9s  B 2s | C 4s | D 5s | A 5s
+20:10:14 game 2 decision 10/20 t=  27s  A:317  B:119  C:155  D:433  lead D  wall 7.9s  B 3s | C 4s | D 8s | A 3s
+20:10:25 game 2 decision 11/20 t=  30s  A:282  B:118  C:142  D:482  lead D  wall 8.3s  B 2s | C 3s | D 8s | A 2s
+20:10:32 game 2 decision 12/20 t=  33s  A:154  B:156  C:335  D:379  lead D  wall 4.4s  B 2s | C 3s | D 4s | A 3s
+20:10:51 game 2 decision 13/20 t=  36s  A:101  B:268  C:425  D:230  lead C  wall 15.3s  B 2s | C 4s | D 15s | A 3s
+20:11:00 game 2 decision 14/20 t=  39s  A:106  B:296  C:407  D:215  lead C  wall 6.9s  B 2s | C 4s | D 7s | A 3s
+20:11:11 game 2 decision 15/20 t=  42s  A:162  B:214  C:345  D:303  lead C  wall 7.3s  B 4s | C 3s | D 7s | A 3s
+20:11:23 game 2 decision 16/20 t=  45s  A:193  B:176  C:150  D:505  lead D  wall 9.1s  B 2s | C 4s | D 9s | A 4s
+20:11:32 game 2 decision 17/20 t=  48s  A:180  B:301  C:232  D:311  lead D  wall 6.2s  B 2s | C 4s | D 6s | A 3s
+20:11:48 game 2 decision 18/20 t=  51s  A:145  B:344  C:421  D:114  lead C  wall 13.2s  B 3s | C 4s | D 13s | A 4s
+20:11:56 game 2 decision 19/20 t=  54s  A:137  B:331  C:462  D: 94  lead C  wall 4.7s  B 3s | C 3s | D 5s | A 3s
+20:12:06 game 2 decision 20/20 t=  57s  A:231  B:211  C:363  D:219  lead C  wall 6.7s  B 2s | C 4s | D 7s | A 3s
+20:12:09 game 2 finished: A > D > C > B  cells A 314 B 134 C 277 D 299

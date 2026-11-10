@@ -6,17 +6,17 @@
   "wins": 0,
   "places": [
    3,
-   2
+   4
   ],
   "cells": [
    201,
-   257
+   134
   ],
-  "seconds": 115.6,
-  "cost_usd": 2.4506,
-  "input_tokens": 221893,
-  "output_tokens": 4633,
-  "commands": 55,
+  "seconds": 110.30000000000001,
+  "cost_usd": 2.123,
+  "input_tokens": 190641,
+  "output_tokens": 4331,
+  "commands": 57,
   "rejected": 3,
   "casts": 17,
   "errors": 0,
@@ -38,12 +38,12 @@
   ],
   "cells": [
    290,
-   256
+   277
   ],
-  "seconds": 139.2,
-  "cost_usd": 1.3077,
-  "input_tokens": 122376,
-  "output_tokens": 1679,
+  "seconds": 142.9,
+  "cost_usd": 1.1726999999999999,
+  "input_tokens": 109101,
+  "output_tokens": 1634,
   "commands": 62,
   "rejected": 0,
   "casts": 28,
@@ -59,19 +59,19 @@
   "name": "Gemini (gemini-4-argon)",
   "model": "gemini-4-argon",
   "games": 2,
-  "wins": 2,
+  "wins": 1,
   "places": [
    1,
-   1
+   2
   ],
   "cells": [
    400,
-   410
+   299
   ],
-  "seconds": 385.29999999999995,
-  "cost_usd": 0.2829,
-  "input_tokens": 121825,
-  "output_tokens": 3915,
+  "seconds": 376.5,
+  "cost_usd": 0.25939999999999996,
+  "input_tokens": 109957,
+  "output_tokens": 3942,
   "commands": 60,
   "rejected": 0,
   "casts": 26,
@@ -87,24 +87,24 @@
   "name": "DeepSeek (deepseek-v4-pro)",
   "model": "deepseek-v4-pro",
   "games": 2,
-  "wins": 0,
+  "wins": 1,
   "places": [
    4,
-   4
+   1
   ],
   "cells": [
    133,
-   101
+   314
   ],
-  "seconds": 131.0,
-  "cost_usd": 0.1875,
-  "input_tokens": 133121,
-  "output_tokens": 4916,
-  "commands": 28,
-  "rejected": 3,
-  "casts": 7,
+  "seconds": 135.0,
+  "cost_usd": 0.16720000000000002,
+  "input_tokens": 117175,
+  "output_tokens": 4885,
+  "commands": 49,
+  "rejected": 5,
+  "casts": 16,
   "errors": 0,
-  "no_command": 17,
+  "no_command": 2,
   "decisions": 40,
   "skills": [
    "giant, fire, shatter",
