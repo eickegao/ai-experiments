@@ -103,16 +103,21 @@ def observation(snap: Snapshot, team: int, decision_no: int, n_decisions: int, l
     return "\n".join(lines)
 
 
-CMD_RE = re.compile(r"CMD\s*[:：]\s*\**\s*(TURN|CAST|WAIT)\b\s*([^\n]*)", re.IGNORECASE)
+CMD_RE = re.compile(r"CMD\s*[:：]\s*\**\s*([A-Za-z][A-Za-z ]*?)\b\s*\**\s*([-+\d][^\n]*|$)", re.IGNORECASE | re.MULTILINE)
 NUM_RE = re.compile(r"[-+]?\d+(?:\.\d+)?")
+SKILL_WORDS = {"freeze": "freeze", "split": "split", "accel": "accel", "bomb": "bomb", "giant": "giant", "fire": "fire", "lightning": "lightning",
+               "teleport": "teleport", "shatter": "shatter", "shock": "shock", "shockwave": "shock", "chain": "chain", "chain lightning": "chain",
+               "plasma": "snowball", "snowball": "snowball"}
 
 
-def parse(text: str) -> list[dict]:
+def parse(text: str, slots: list[str] | None = None) -> list[dict]:
     """Return up to two commands: {"type": "turn", "x", "y"} | {"type": "cast", "slot", "x"?, "y"?} | {"type": "wait"}.
-    Anything unparsable is dropped (and shows up as 'no valid command' in the log)."""
+    `slots` = the team's skill ids in slot order; with it, "CMD: TELEPORT 12 20" or "CMD: SHATTER" is accepted as the
+    corresponding CAST (the intent is unambiguous; DeepSeek wrote it that way all game on 2026-11-09). Anything else is
+    dropped and shows up as 'no valid command'."""
     out = []
-    for kind, rest in CMD_RE.findall(text or ""):
-        kind = kind.upper()
+    for word, rest in CMD_RE.findall(text or ""):
+        kind = word.strip().upper()
         nums = [float(n) for n in NUM_RE.findall(rest)]
         if kind == "WAIT":
             out.append({"type": "wait"})
@@ -123,6 +128,13 @@ def parse(text: str) -> list[dict]:
             if len(nums) >= 3:
                 c["x"], c["y"] = nums[1], nums[2]
             out.append(c)
+        elif slots and kind.lower() in SKILL_WORDS and SKILL_WORDS[kind.lower()] in slots:
+            c = {"type": "cast", "slot": slots.index(SKILL_WORDS[kind.lower()]) + 1, "by_name": True}
+            if len(nums) >= 2:
+                c["x"], c["y"] = nums[0], nums[1]
+            out.append(c)
+        else:
+            continue
         if len(out) == 2:
             break
     return out

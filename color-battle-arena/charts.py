@@ -16,7 +16,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
-COLOR = {"Claude": "#d97706", "GPT": "#10a37f", "Gemini": "#4285f4", "DeepSeek": "#4d6bfe", "Bot": "#888888", "Rand": "#bbbbbb"}
+COLOR = {"Claude": "#d97706", "GPT": "#10a37f", "Gemini": "#4285f4", "DeepSeek": "#8e24aa", "Bot": "#888888", "Rand": "#bbbbbb"}
 TEAM_RGB = {"A": "#ef5350", "B": "#42a5f5", "C": "#66bb6a", "D": "#ffca28"}   # the game's own seat colours
 
 

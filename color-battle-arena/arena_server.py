@@ -259,7 +259,7 @@ class Game:
         for t in llm:
             r: Reply = replies[t]
             L = LETTERS[t - 1]
-            cmds = parse(r.text) if not r.error else []
+            cmds = parse(r.text, [sk["id"] for sk in self.setup["teams"][L]["skills"]]) if not r.error else []
             for c in cmds:
                 c["text"] = fmt_cmd(c)
             out_cmds[L] = cmds
