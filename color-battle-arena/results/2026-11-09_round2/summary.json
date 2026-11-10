@@ -2,101 +2,113 @@
  "Claude (claude-fable-5-1)": {
   "name": "Claude (claude-fable-5-1)",
   "model": "claude-fable-5-1",
-  "games": 1,
+  "games": 2,
   "wins": 0,
   "places": [
-   3
+   3,
+   2
   ],
   "cells": [
-   201
+   201,
+   257
   ],
-  "seconds": 60.7,
-  "cost_usd": 1.2254,
-  "input_tokens": 110934,
-  "output_tokens": 2321,
-  "commands": 28,
-  "rejected": 2,
-  "casts": 8,
+  "seconds": 115.6,
+  "cost_usd": 2.4506,
+  "input_tokens": 221893,
+  "output_tokens": 4633,
+  "commands": 55,
+  "rejected": 3,
+  "casts": 17,
   "errors": 0,
   "no_command": 0,
-  "decisions": 20,
+  "decisions": 40,
   "skills": [
-   "shatter, teleport, giant"
+   "shatter, teleport, giant",
+   "teleport, shatter, giant"
   ]
  },
  "GPT (gpt-6-astra)": {
   "name": "GPT (gpt-6-astra)",
   "model": "gpt-6-astra",
-  "games": 1,
+  "games": 2,
   "wins": 0,
   "places": [
-   2
+   2,
+   3
   ],
   "cells": [
-   290
+   290,
+   256
   ],
-  "seconds": 70.7,
-  "cost_usd": 0.6512,
-  "input_tokens": 60838,
-  "output_tokens": 857,
-  "commands": 31,
+  "seconds": 139.2,
+  "cost_usd": 1.3077,
+  "input_tokens": 122376,
+  "output_tokens": 1679,
+  "commands": 62,
   "rejected": 0,
-  "casts": 14,
+  "casts": 28,
   "errors": 0,
   "no_command": 0,
-  "decisions": 20,
+  "decisions": 40,
   "skills": [
+   "teleport, shatter, accel",
    "teleport, shatter, accel"
   ]
  },
  "Gemini (gemini-4-argon)": {
   "name": "Gemini (gemini-4-argon)",
   "model": "gemini-4-argon",
-  "games": 1,
-  "wins": 1,
+  "games": 2,
+  "wins": 2,
   "places": [
+   1,
    1
   ],
   "cells": [
-   400
+   400,
+   410
   ],
-  "seconds": 212.1,
-  "cost_usd": 0.1414,
-  "input_tokens": 60790,
-  "output_tokens": 1977,
-  "commands": 30,
+  "seconds": 385.29999999999995,
+  "cost_usd": 0.2829,
+  "input_tokens": 121825,
+  "output_tokens": 3915,
+  "commands": 60,
   "rejected": 0,
-  "casts": 13,
+  "casts": 26,
   "errors": 0,
   "no_command": 0,
-  "decisions": 20,
+  "decisions": 40,
   "skills": [
+   "teleport, shatter, accel",
    "teleport, shatter, accel"
   ]
  },
  "DeepSeek (deepseek-v4-pro)": {
   "name": "DeepSeek (deepseek-v4-pro)",
   "model": "deepseek-v4-pro",
-  "games": 1,
+  "games": 2,
   "wins": 0,
   "places": [
+   4,
    4
   ],
   "cells": [
-   133
+   133,
+   101
   ],
-  "seconds": 67.2,
-  "cost_usd": 0.0941,
-  "input_tokens": 66090,
-  "output_tokens": 2704,
-  "commands": 23,
-  "rejected": 2,
-  "casts": 6,
+  "seconds": 131.0,
+  "cost_usd": 0.1875,
+  "input_tokens": 133121,
+  "output_tokens": 4916,
+  "commands": 28,
+  "rejected": 3,
+  "casts": 7,
   "errors": 0,
-  "no_command": 2,
-  "decisions": 20,
+  "no_command": 17,
+  "decisions": 40,
   "skills": [
-   "giant, fire, shatter"
+   "giant, fire, shatter",
+   "shatter, teleport, fire"
   ]
  }
 }

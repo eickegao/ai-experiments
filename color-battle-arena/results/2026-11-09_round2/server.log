@@ -32,3 +32,23 @@
 19:55:58 game 2 draft C GPT (gpt-6-astra): teleport, shatter, accel
 19:55:58 game 2 draft D Gemini (gemini-4-argon): teleport, shatter, accel
 19:56:04 game 2 decision 1/20 t=   0s  A:256  B:256  C:256  D:256  lead A  wall 6.1s  B 2s | C 3s | D 6s | A 3s
+19:56:12 game 2 decision 2/20 t=   3s  A:163  B:159  C:425  D:277  lead C  wall 5.1s  B 2s | C 3s | D 5s | A 3s
+19:56:22 game 2 decision 3/20 t=   6s  A: 85  B:174  C:438  D:327  lead C  wall 6.7s  B 3s | C 4s | D 7s | A 4s
+19:56:43 game 2 decision 4/20 t=   9s  A: 76  B:226  C:401  D:321  lead C  wall 18.4s  B 3s | C 3s | D 18s | A 6s
+19:56:50 game 2 decision 5/20 t=  12s  A: 86  B:222  C:406  D:310  lead C  wall 4.3s  B 3s | C 3s | D 4s | A 3s
+19:56:58 game 2 decision 6/20 t=  15s  A: 90  B:220  C:409  D:305  lead C  wall 4.3s  B 3s | C 3s | D 4s | A 3s
+19:57:08 game 2 decision 7/20 t=  18s  A: 91  B:231  C:504  D:198  lead C  wall 7.5s  B 3s | C 4s | D 8s | A 3s
+19:57:18 game 2 decision 8/20 t=  21s  A:193  B:291  C:457  D: 83  lead C  wall 7.1s  B 2s | C 4s | D 7s | A 3s
+19:57:33 game 2 decision 9/20 t=  24s  A:261  B:292  C:256  D:215  lead B  wall 11.4s  B 5s | C 4s | D 11s | A 3s
+19:57:44 game 2 decision 10/20 t=  27s  A:298  B:206  C:145  D:375  lead D  wall 8.6s  B 3s | C 4s | D 9s | A 3s
+19:57:51 game 2 decision 11/20 t=  30s  A:262  B:187  C:125  D:450  lead D  wall 3.6s  B 2s | C 3s | D 4s | A 2s
+19:57:58 game 2 decision 12/20 t=  33s  A:210  B:175  C:282  D:357  lead D  wall 4.0s  B 2s | C 3s | D 4s | A 4s
+19:58:09 game 2 decision 13/20 t=  36s  A:195  B:282  C:355  D:192  lead C  wall 8.4s  B 2s | C 3s | D 8s | A 3s
+19:58:18 game 2 decision 14/20 t=  39s  A:180  B:216  C:279  D:349  lead D  wall 5.0s  B 3s | C 3s | D 5s | A 3s
+19:58:27 game 2 decision 15/20 t=  42s  A:172  B:192  C:244  D:416  lead D  wall 6.2s  B 2s | C 4s | D 6s | A 2s
+19:58:34 game 2 decision 16/20 t=  45s  A:162  B:175  C:220  D:467  lead D  wall 4.6s  B 3s | C 3s | D 5s | A 3s
+19:58:46 game 2 decision 17/20 t=  48s  A:132  B:252  C:374  D:266  lead C  wall 8.9s  B 3s | C 3s | D 9s | A 3s
+19:58:55 game 2 decision 18/20 t=  51s  A: 91  B:358  C:496  D: 79  lead C  wall 5.3s  B 3s | C 4s | D 5s | A 3s
+19:59:04 game 2 decision 19/20 t=  54s  A: 86  B:323  C:384  D:231  lead C  wall 6.7s  B 2s | C 2s | D 7s | A 2s
+19:59:23 game 2 decision 20/20 t=  57s  A: 94  B:274  C:259  D:397  lead D  wall 15.7s  B 2s | C 2s | D 16s | A 3s
+19:59:26 game 2 finished: D > B > C > A  cells A 101 B 257 C 256 D 410
