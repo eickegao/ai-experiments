@@ -4,3 +4,9 @@ __pycache__/
 .DS_Store
 # per-ply board frames (chess) and replay frames (color battle) are large; regenerate with the replay / --render-only tools
 */results/*/frames/
+
+# dry-run recordings and partial attempts are not worth shipping
+*/results/dry*/*.mp4
+*/results/*notcounted*/*.mp4
+*/results/*/aborted*/
+*/results/*/notcounted*/*.mp4
