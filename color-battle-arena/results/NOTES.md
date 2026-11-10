@@ -8,6 +8,8 @@ DeepSeek with thinking switched off (at `high` it thought 20k+ tokens and 3-7 mi
 | `2026-11-09_round1_draft_game1_notcounted` | first attempt: models drafted from one-line descriptions, 2 s decisions, effort high, DeepSeek medium | GPT > Gemini > Claude > DeepSeek | 397 / 341 / 175 / 111 | $4.30 | 1 h 26 min |
 | `2026-11-09_round1` game 1 | **round 1, no teaching**: everyone gets the same SPLIT / SHOCKWAVE / GIANT, no draft | DeepSeek > Gemini > Claude > GPT | 274 / 264 / 248 / 238 | $0.89 | 3 min |
 | `2026-11-09_round2` game 1 | **round 2, taught**: models study `tutorial/tutorial.md`, draft 3 skills | Gemini > GPT > Claude > DeepSeek | 400 / 290 / 201 / 133 | $2.11 (Claude 1.23, GPT 0.65, Gemini 0.14, DeepSeek 0.09) | 4 min 38 s |
+| `2026-11-09_round2/notcounted_game2_parser_bug` | round 2 game 2, seats rotated, seed 1002 — NOT counted: DeepSeek wrote `CMD: TELEPORT x y` / `CMD: SHATTER` and the parser only knew `CAST slot`, so 17 of its 20 decisions did nothing | Gemini > Claude > GPT > DeepSeek | 410 / 257 / 256 / 101 | $2.12 | 3.5 min |
+| `2026-11-09_round2` game 2 | same seats, seed and skills as the uncounted game (DeepSeek shatter/teleport/fire, Claude teleport/shatter/giant, GPT & Gemini teleport/shatter/accel), parser fixed to accept skill names | **DeepSeek > Gemini > GPT > Claude** | 314 / 299 / 277 / 134 | $1.61 | 4 min |
 
 Not counted: the first attempt had a bug (BOMB was still "player only" in the engine, so Gemini's 23 bomb casts were
 rejected) and DeepSeek's draft reply was cut by the 6k token budget. Kept for the record (`*_notcounted`).
@@ -27,7 +29,10 @@ rejected) and DeepSeek's draft reply was cut by the 6k token budget. Kept for th
   recovered (133 at the end). That early double hit, plus being the only team without TELEPORT, decided its last place;
   nobody followed the tutorial's "hit the leader" advice at that moment (DeepSeek was not leading).
 - The game became a teleport war: swings of 300+ cells within 6 s (Gemini 91 → 429 between decisions 8 and 10).
-- Game 2 of this round (seats rotated, seed 1002) was run to see how much of this is chance.
+- Game 2 (seats rotated, seed 1002): first attempt not counted (parser bug above). Replayed with the same skills:
+  DeepSeek, now able to cast, won (314) with four teleport+shatter / fire plays; Gemini second (299), GPT third (277),
+  Claude last (134) — Claude's teleport+giant plan never recovered after being hit at t = 3–6 s.
+  Round 2 so far: Gemini 1 win, DeepSeek 1 win; swings of 300+ cells within 6 s in both games.
 
 ## Cell curves
 
