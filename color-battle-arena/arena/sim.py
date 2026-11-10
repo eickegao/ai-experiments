@@ -45,7 +45,7 @@ class Snapshot:
 class ColorBattle:
     """One game. `skills` is a list of (id, level) given to every team, or None for steering only."""
 
-    def __init__(self, seed: int, skills: list[tuple[str, int]] | None = None, layout: str = "quad"):
+    def __init__(self, seed: int, skills: list[tuple[str, int]] | None = None, layout: str = "quad", team1_only: bool = False):
         self.L = _lua.LuaRuntime(unpack_returned_tuples=False)
         self.L.execute(_BOOT % PLAYDOZ)
         self.sim = self.L.require("games.clashdoz.cd_sim")
@@ -57,7 +57,8 @@ class ColorBattle:
         if skills:
             lo = self._loadout(skills)
             opts["loadout"] = lo
-            opts["enemies"] = self.L.table_from({t: self.L.table(skills=self._loadout(skills)) for t in range(2, 5)})
+            if not team1_only:   # team1_only: the demo in make_tutorial.py gives the skill to team A alone
+                opts["enemies"] = self.L.table_from({t: self.L.table(skills=self._loadout(skills)) for t in range(2, 5)})
         self.s = self.sim.new(seed, self.L.table(**opts))
         self.n = int(self.s.n)
         self.tick = 0
