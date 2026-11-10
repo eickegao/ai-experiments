@@ -52,3 +52,10 @@
 19:59:04 game 2 decision 19/20 t=  54s  A: 86  B:323  C:384  D:231  lead C  wall 6.7s  B 2s | C 2s | D 7s | A 2s
 19:59:23 game 2 decision 20/20 t=  57s  A: 94  B:274  C:259  D:397  lead D  wall 15.7s  B 2s | C 2s | D 16s | A 3s
 19:59:26 game 2 finished: D > B > C > A  cells A 101 B 257 C 256 D 410
+20:06:38 arena server on http://127.0.0.1:8787  players=['claude@low', 'openai@low', 'gemini@low', 'deepseek@none']  out=results/2026-11-09_round2  bundle=/Users/eicke/Projects/AIExperiments/color-battle-arena/game/build_web/Color Battle Arena
+20:06:38 open http://127.0.0.1:8787/index.html?arena=live&game=1
+20:07:30 game 2 draft A DeepSeek (deepseek-v4-pro): shatter, teleport, accel
+20:07:30 game 2 draft B Claude (claude-fable-5-1): shatter, teleport, giant
+20:07:30 game 2 draft C GPT (gpt-6-astra): teleport, shatter, accel
+20:07:30 game 2 draft D Gemini (gemini-4-argon): teleport, shatter, accel
+20:07:35 game 2 decision 1/20 t=   0s  A:256  B:256  C:256  D:256  lead A  wall 5.1s  B 2s | C 4s | D 5s | A 2s

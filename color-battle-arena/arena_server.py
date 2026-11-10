@@ -189,6 +189,8 @@ class Game:
 
         def ask(t: int):
             p = self.players[t]
+            if isinstance(self.fixed, dict):   # per-seat loadouts (replaying a game with the skills it drafted before)
+                return t, list(self.fixed[LETTERS[t - 1]]), None, "fixed loadout (per seat)"
             if self.fixed:   # same loadout for every seat, no draft (user 2026-11-09)
                 return t, list(self.fixed), None, "fixed loadout"
             if not p.is_llm or p.vendor == "random":
@@ -488,12 +490,16 @@ def main():
     ap.add_argument("--effort", default="high")
     ap.add_argument("--level", type=int, default=3, help="skill level for every drafted skill (1-3; user 2026-11-09: max level)")
     ap.add_argument("--loadout", default="", help="comma-separated skill ids given to EVERY seat instead of a draft, e.g. split,shock,giant")
+    ap.add_argument("--seat-loadouts", default="", help="per-seat skills instead of a draft: 'A=shatter,teleport,fire;B=teleport,shatter,giant;C=...;D=...'")
     ap.add_argument("--decision-dt", type=float, default=2.0, help="seconds of game time between decisions")
     ap.add_argument("--tutorial", default="", help="path to tutorial/tutorial.md (make_tutorial.py): round 2, the models study it before drafting")
     a = ap.parse_args()
     specs = a.players.split(",")
     assert len(specs) == 4, "need four players"
     fixed = [x.strip() for x in a.loadout.split(",") if x.strip()] or None
+    if a.seat_loadouts:
+        fixed = {part.split("=")[0].strip().upper(): [x.strip() for x in part.split("=")[1].split(",") if x.strip()] for part in a.seat_loadouts.split(";") if "=" in part}
+        assert set(fixed) == set("ABCD"), "seat loadouts need A, B, C and D"
     tutorial = None
     if a.tutorial:
         md = Path(a.tutorial).read_text()
