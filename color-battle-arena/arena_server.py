@@ -145,8 +145,10 @@ def short_name(p: Player) -> str:
 
 # ---------------------------------------------------------------- per-game state
 class Game:
-    def __init__(self, no: int, seed: int, players: dict[int, Player], slots: int, effort: str, level: int = 3):
+    def __init__(self, no: int, seed: int, players: dict[int, Player], slots: int, effort: str, level: int = 3,
+                 fixed: list[str] | None = None, decision_dt: float = 2.0):
         self.no, self.seed, self.players, self.slots, self.level = no, seed, players, slots, level
+        self.fixed, self.decision_dt_cfg = fixed, decision_dt
         self.lock = threading.Lock()
         self.setup: dict | None = None
         self.catalog: list[dict] = []
@@ -161,8 +163,10 @@ class Game:
         self.done = False
 
     # ---- draft -----------------------------------------------------------------------------------------------------
-    def draft(self, catalog: list[dict], n_decisions: int, decision_dt: float, log, out_dir: Path | None = None) -> dict:
+    def draft(self, catalog: list[dict], round_time: float, log, out_dir: Path | None = None) -> dict:
         catalog = [at_level(sk, self.level) for sk in catalog]
+        decision_dt = self.decision_dt_cfg
+        n_decisions = int(round(round_time / decision_dt))
         self.catalog, self.n_decisions, self.decision_dt = catalog, n_decisions, decision_dt
         valid = [sk["id"] for sk in catalog]
         names = {sk["id"]: sk["name"] for sk in catalog}
@@ -172,6 +176,8 @@ class Game:
 
         def ask(t: int):
             p = self.players[t]
+            if self.fixed:   # same loadout for every seat, no draft (user 2026-11-09)
+                return t, list(self.fixed), None, "fixed loadout"
             if not p.is_llm or p.vendor == "random":
                 picks = rng.sample(valid, self.slots)
                 return t, picks, None, ""
@@ -193,12 +199,13 @@ class Game:
                 "cost_usd": round(call_cost(p.model, r.usage, datetime.fromisoformat(r.at) if r and r.at else None) or 0, 5) if r else 0,
             }
             by_id = {sk["id"]: sk for sk in catalog}
-            info = [{**by_id[i], "slot": k + 1} for k, i in enumerate(picks)]
+            info = [{**by_id[i], "slot": k + 1, "fixed": bool(self.fixed)} for k, i in enumerate(picks)]
             self.systems[t] = system_prompt(n_decisions, decision_dt, info)
             log(f"game {self.no} draft {L} {p.name}: {', '.join(picks)}" + (f"  ({note})" if note else ""))
         self.record["draft_system_prompt"], self.record["draft_user_prompt"] = system, user
         self.record["skill_level"] = self.level
-        self.setup = {"seed": self.seed, "teams": teams}
+        self.record["fixed_loadout"] = self.fixed
+        self.setup = {"seed": self.seed, "teams": teams, "decision_dt": decision_dt, "n_decisions": n_decisions}
         if out_dir is not None:   # on disk right away, so a stopped game still leaves the draft behind
             out_dir.mkdir(parents=True, exist_ok=True)
             (out_dir / f"game_{self.no}.draft.json").write_text(json.dumps({"setup": self.setup, "draft": self.record["draft"]}, ensure_ascii=False, indent=1))
@@ -349,8 +356,10 @@ def write_summary(out_dir: Path):
 
 # ---------------------------------------------------------------- http
 class Server:
-    def __init__(self, specs: list[str], seeds: list[int], out: Path, bundle: Path, slots: int, effort: str, level: int = 3):
+    def __init__(self, specs: list[str], seeds: list[int], out: Path, bundle: Path, slots: int, effort: str, level: int = 3,
+                 fixed: list[str] | None = None, decision_dt: float = 2.0):
         self.specs, self.seeds, self.out, self.bundle, self.slots, self.effort, self.level = specs, seeds, out, bundle, slots, effort, level
+        self.fixed, self.decision_dt = fixed, decision_dt
         self.games: dict[int, Game] = {}
         self.players_cache = [make_player(s, effort, seed=100 + k, slots=slots) for k, s in enumerate(specs)]
         seen: dict[str, int] = {}
@@ -378,7 +387,7 @@ class Server:
                 seed = self.seeds[(no - 1) % len(self.seeds)] if self.seeds else 1000 + no
                 # seat rotation: player k → team (k + no - 1) mod 4
                 players = {((k + no - 1) % 4) + 1: p for k, p in enumerate(self.players_cache)}
-                self.games[no] = Game(no, seed, players, self.slots, self.effort, self.level)
+                self.games[no] = Game(no, seed, players, self.slots, self.effort, self.level, self.fixed, self.decision_dt)
             return self.games[no]
 
 
@@ -433,7 +442,7 @@ def make_handler(srv: Server):
                 if path == "/draft":
                     g = srv.game(int(req.get("game", 1)))
                     if g.setup is None:
-                        g.draft(req["catalog"], int(req.get("n_decisions", 30)), float(req.get("decision_dt", 2.0)), srv.log, srv.out)
+                        g.draft(req["catalog"], float(req.get("round_time", 60)), srv.log, srv.out)
                     return self._json(g.setup)
                 if path == "/decide":
                     g = srv.game(int(req.get("game", 1)))
@@ -461,10 +470,13 @@ def main():
     ap.add_argument("--slots", type=int, default=3, help="skills each team drafts")
     ap.add_argument("--effort", default="high")
     ap.add_argument("--level", type=int, default=3, help="skill level for every drafted skill (1-3; user 2026-11-09: max level)")
+    ap.add_argument("--loadout", default="", help="comma-separated skill ids given to EVERY seat instead of a draft, e.g. split,shock,giant")
+    ap.add_argument("--decision-dt", type=float, default=2.0, help="seconds of game time between decisions")
     a = ap.parse_args()
     specs = a.players.split(",")
     assert len(specs) == 4, "need four players"
-    srv = Server(specs, [int(s) for s in a.seeds.split(",") if s], (HERE / a.out), (HERE / a.bundle) if not os.path.isabs(a.bundle) else Path(a.bundle), a.slots, a.effort, a.level)
+    fixed = [x.strip() for x in a.loadout.split(",") if x.strip()] or None
+    srv = Server(specs, [int(s) for s in a.seeds.split(",") if s], (HERE / a.out), (HERE / a.bundle) if not os.path.isabs(a.bundle) else Path(a.bundle), a.slots, a.effort, a.level, fixed, a.decision_dt)
     httpd = ThreadingHTTPServer(("127.0.0.1", a.port), make_handler(srv))
     srv.log(f"arena server on http://127.0.0.1:{a.port}  players={specs}  out={a.out}  bundle={srv.bundle}")
     srv.log(f"open http://127.0.0.1:{a.port}/index.html?arena=live&game=1")

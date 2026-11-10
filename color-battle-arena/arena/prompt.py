@@ -53,7 +53,7 @@ def system_prompt(n_decisions: int, decision_dt: float, skills: list[dict]) -> s
     ]
     if skills:
         rules.append("")
-        rules.append("Your skills this game (you picked them in the draft; the other teams picked their own):")
+        rules.append("Your skills this game (every team has the same three, all at the maximum level):" if all(sk.get("fixed") for sk in skills) else "Your skills this game (you picked them in the draft; the other teams picked their own):")
         for sk in skills:
             p = sk.get("params", {})
             text = SKILL_HELP.get(sk["id"], sk["id"]).format(

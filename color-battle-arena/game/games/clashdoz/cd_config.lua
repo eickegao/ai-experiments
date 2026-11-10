@@ -71,7 +71,7 @@ M.SKILLS = {
 }
 -- 玩家专属技能（炸弹 2026-10-31 只给玩家）：电脑配技能时跳过，sim 里非玩家队放也直接拒绝。
 -- 冰冻 2026-10-30 起曾是玩家专属；2026-11-03 用户改口：减速电脑也可以拥有，但一关里最多一个电脑有（cd_levels.roll 里 FREEZE_BOTS_MAX）
-M.PLAYER_ONLY_SKILLS = { bomb = true }
+M.PLAYER_ONLY_SKILLS = {}   -- arena: four AI seats, nobody is "the player"; BOMB is open to all (bug found 2026-11-09: Gemini drafted it and every cast was rejected)
 M.FREEZE_BOTS_MAX = 1
 M.FREEZE_AI_DELAY = 6      -- 电脑开局这么多秒内不放冰冻（2026-11-03 网页实测：GO 一响三级冰冻把全场冻 6 s，开局就没法玩）
 -- 电脑手里的技能冷却覆盖表（没列的技能两边一样）：冰冻电脑拿到 18/20/24，我方仍 12/15/20（用户 2026-11-03：冷却太短）。取值走 cd_sim.skill_cd

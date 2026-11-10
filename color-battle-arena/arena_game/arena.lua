@@ -15,10 +15,16 @@ local C = require("games.clashdoz.cd_config")
 
 local M = { mode = nil, params = {}, names = {}, bots = {}, log = {}, timeline = {}, asked = {}, last = {}, waiting = false,
             decision = 0, done = false, replay = nil, by_tick = nil, mismatch = 0, speed = 1 }
-local DEC_STEPS = 120                       -- 2 s of game time at FIXED_DT = 1/60
+local DEC_STEPS = 120                       -- fixed steps between decisions; the server's setup can change it (decision_dt seconds)
 local LETTERS = { "A", "B", "C", "D" }
 local TEAM_OF = { A = 1, B = 2, C = 3, D = 4 }
 local N_DECISIONS = math.floor(C.ROUND_TIME / (DEC_STEPS * C.FIXED_DT) + 0.5)
+local function set_interval(dt)
+    if dt and dt > 0 then
+        DEC_STEPS = math.max(1, math.floor(dt / C.FIXED_DT + 0.5))
+        N_DECISIONS = math.floor(C.ROUND_TIME / (DEC_STEPS * C.FIXED_DT) + 0.5)
+    end
+end
 
 local function url_params()
     if not html5 then return {} end
@@ -73,6 +79,7 @@ end
 --- setup = { seed, teams = { A = { name, model, bot, skills = { {id, level}, … } }, … } } → start_match opts
 local function apply_setup(setup)
     M.seed = setup.seed
+    set_interval(tonumber(setup.decision_dt))
     local opts = { layout = "quad", arena = true, seed = setup.seed, enemies = {}, bots = {}, eager = 0.7 }
     for t = 1, 4 do
         local team = setup.teams[LETTERS[t]] or {}
@@ -89,7 +96,7 @@ end
 --- live: ask the server for the draft; replay: load the log. cb(opts) when ready.
 function M.start(cb)
     if M.mode == "live" then
-        request("POST", "/draft", { game = M.game, catalog = catalog(), n_decisions = N_DECISIONS, decision_dt = DEC_STEPS * C.FIXED_DT },
+        request("POST", "/draft", { game = M.game, catalog = catalog(), round_time = C.ROUND_TIME },
             function(d, err)
                 if not d then print("[arena] draft failed: " .. tostring(err)); js("window.__arena_error = " .. json.encode(tostring(err))); return end
                 cb(apply_setup(d))
