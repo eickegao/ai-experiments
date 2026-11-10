@@ -216,6 +216,7 @@ class Game:
             self.systems[t] = system_prompt(n_decisions, decision_dt, info)
             if self.tutorial:
                 self.systems[t] += "\n\n" + "\n".join(compact_tutorial(self.tutorial["json"]))
+            self.record.setdefault("system_prompts", {})[L] = self.systems[t]
             log(f"game {self.no} draft {L} {p.name}: {', '.join(picks)}" + (f"  ({note})" if note else ""))
         self.record["draft_system_prompt"], self.record["draft_user_prompt"] = system, user
         self.record["skill_level"] = self.level

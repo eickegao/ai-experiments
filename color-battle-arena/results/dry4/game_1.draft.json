@@ -1,0 +1,151 @@
+{
+ "setup": {
+  "seed": 1001,
+  "teams": {
+   "A": {
+    "name": "Rand 100",
+    "full_name": "Random#100",
+    "model": "random",
+    "bot": false,
+    "skills": [
+     {
+      "id": "freeze",
+      "level": 3
+     },
+     {
+      "id": "bomb",
+      "level": 3
+     },
+     {
+      "id": "split",
+      "level": 3
+     }
+    ]
+   },
+   "B": {
+    "name": "Rand 101",
+    "full_name": "Random#101",
+    "model": "random",
+    "bot": false,
+    "skills": [
+     {
+      "id": "lightning",
+      "level": 3
+     },
+     {
+      "id": "fire",
+      "level": 3
+     },
+     {
+      "id": "shock",
+      "level": 3
+     }
+    ]
+   },
+   "C": {
+    "name": "Bot 1",
+    "full_name": "Bot (eager 0.6) #1",
+    "model": "cd_ai",
+    "bot": true,
+    "skills": [
+     {
+      "id": "shatter",
+      "level": 3
+     },
+     {
+      "id": "lightning",
+      "level": 3
+     },
+     {
+      "id": "accel",
+      "level": 3
+     }
+    ]
+   },
+   "D": {
+    "name": "Bot 2",
+    "full_name": "Bot (eager 0.6) #2",
+    "model": "cd_ai",
+    "bot": true,
+    "skills": [
+     {
+      "id": "chain",
+      "level": 3
+     },
+     {
+      "id": "lightning",
+      "level": 3
+     },
+     {
+      "id": "shock",
+      "level": 3
+     }
+    ]
+   }
+  },
+  "decision_dt": 3.0,
+  "n_decisions": 20
+ },
+ "draft": {
+  "A": {
+   "picks": [
+    "freeze",
+    "bomb",
+    "split"
+   ],
+   "note": "",
+   "prompt": "",
+   "reply": "",
+   "seconds": 0,
+   "usage": {},
+   "error": null,
+   "at": "",
+   "cost_usd": 0
+  },
+  "B": {
+   "picks": [
+    "lightning",
+    "fire",
+    "shock"
+   ],
+   "note": "",
+   "prompt": "",
+   "reply": "",
+   "seconds": 0,
+   "usage": {},
+   "error": null,
+   "at": "",
+   "cost_usd": 0
+  },
+  "C": {
+   "picks": [
+    "shatter",
+    "lightning",
+    "accel"
+   ],
+   "note": "",
+   "prompt": "",
+   "reply": "",
+   "seconds": 0,
+   "usage": {},
+   "error": null,
+   "at": "",
+   "cost_usd": 0
+  },
+  "D": {
+   "picks": [
+    "chain",
+    "lightning",
+    "shock"
+   ],
+   "note": "",
+   "prompt": "",
+   "reply": "",
+   "seconds": 0,
+   "usage": {},
+   "error": null,
+   "at": "",
+   "cost_usd": 0
+  }
+ }
+}

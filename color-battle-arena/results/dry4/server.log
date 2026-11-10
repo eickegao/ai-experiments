@@ -1,0 +1,27 @@
+19:22:23 arena server on http://127.0.0.1:8787  players=['random', 'random', 'bot', 'bot']  out=results/dry4  bundle=/Users/eicke/Projects/AIExperiments/color-battle-arena/game/build_web/Color Battle Arena
+19:22:23 open http://127.0.0.1:8787/index.html?arena=live&game=1
+19:22:29 game 1 draft A Random#100: freeze, bomb, split
+19:22:29 game 1 draft B Random#101: lightning, fire, shock
+19:22:29 game 1 draft C Bot (eager 0.6) #1: shatter, lightning, accel
+19:22:29 game 1 draft D Bot (eager 0.6) #2: chain, lightning, shock
+19:22:29 game 1 decision 1/20 t=   0s  A:256  B:256  C:256  D:256  lead A  wall 0.0s  A 0s | B 0s
+19:22:32 game 1 decision 2/20 t=   3s  A:246  B:239  C:264  D:275  lead D  wall 0.0s  A 0s | B 0s
+19:22:35 game 1 decision 3/20 t=   6s  A:214  B:228  C:412  D:170  lead C  wall 0.0s  A 0s | B 0s
+19:22:38 game 1 decision 4/20 t=   9s  A:202  B:246  C:436  D:140  lead C  wall 0.0s  A 0s | B 0s
+19:22:41 game 1 decision 5/20 t=  12s  A:192  B:228  C:437  D:167  lead C  wall 0.0s  A 0s | B 0s
+19:22:44 game 1 decision 6/20 t=  15s  A:200  B:231  C:420  D:173  lead C  wall 0.0s  A 0s | B 0s
+19:22:47 game 1 decision 7/20 t=  18s  A:203  B:214  C:408  D:199  lead C  wall 0.0s  A 0s | B 0s
+19:22:50 game 1 decision 8/20 t=  21s  A:209  B:219  C:399  D:197  lead C  wall 0.0s  A 0s | B 0s
+19:22:53 game 1 decision 9/20 t=  24s  A:194  B:211  C:479  D:140  lead C  wall 0.0s  A 0s | B 0s
+19:22:56 game 1 decision 10/20 t=  27s  A:166  B:194  C:557  D:107  lead C  wall 0.0s  A 0s | B 0s
+19:22:59 game 1 decision 11/20 t=  30s  A:164  B:177  C:566  D:117  lead C  wall 0.0s  A 0s | B 0s
+19:23:02 game 1 decision 12/20 t=  33s  A:154  B:177  C:563  D:130  lead C  wall 0.0s  A 0s | B 0s
+19:23:05 game 1 decision 13/20 t=  36s  A:142  B:198  C:509  D:175  lead C  wall 0.0s  A 0s | B 0s
+19:23:09 game 1 decision 14/20 t=  39s  A:147  B:196  C:503  D:178  lead C  wall 0.0s  A 0s | B 0s
+19:23:12 game 1 decision 15/20 t=  42s  A:155  B:200  C:487  D:182  lead C  wall 0.0s  A 0s | B 0s
+19:23:15 game 1 decision 16/20 t=  45s  A:142  B:203  C:460  D:219  lead C  wall 0.0s  A 0s | B 0s
+19:23:18 game 1 decision 17/20 t=  48s  A:130  B:217  C:501  D:176  lead C  wall 0.0s  A 0s | B 0s
+19:23:21 game 1 decision 18/20 t=  51s  A:127  B:185  C:600  D:112  lead C  wall 0.0s  A 0s | B 0s
+19:23:24 game 1 decision 19/20 t=  54s  A:123  B:170  C:666  D: 65  lead C  wall 0.0s  A 0s | B 0s
+19:23:27 game 1 decision 20/20 t=  57s  A:136  B:177  C:590  D:121  lead C  wall 0.0s  A 0s | B 0s
+19:23:30 game 1 finished: C > B > A > D  cells A 148 B 166 C 581 D 129
