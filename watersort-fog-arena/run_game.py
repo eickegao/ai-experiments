@@ -61,10 +61,11 @@ def main():
             break
         if not s.step():
             break
-        last = s.messages[-2]["content"] if s.status == "running" else s.messages[-1]["content"]
+        idx = -2 if s.status == "running" else -1          # the model's latest reply (a user turn follows it unless the game is over)
+        said = (s.messages[idx]["content"].strip().splitlines() or ["(empty reply)"])[-1]
         g = s.game
         print(f"turn {s.turns:>4} | attempt {g.attempts} | pours {g.pours:>3} | undos {g.undos} | fouls {s.fouls} | "
-              f"{s.seconds / s.turns:5.1f}s/turn | ${s.cost:.2f} | {last.strip().splitlines()[-1][:40]}", flush=True)
+              f"{s.seconds / s.turns:5.1f}s/turn | ${s.cost:.2f} | {said[:40]}", flush=True)
     summ = s.summary(optimal)
     if s.status == "running":
         summ["status"] = "paused"

@@ -1,0 +1,433 @@
+GPT (gpt-6.2-astra) @ off on level 286 → /Users/eicke/Projects/AIExperiments/watersort-fog-arena/results/openai-off
+turn    1 | attempt 1 | pours   1 | undos 0 | fouls 0 |   2.8s/turn | $0.01 | MOVE 12 13
+turn    2 | attempt 1 | pours   2 | undos 0 | fouls 0 |   2.8s/turn | $0.01 | MOVE 11 13
+turn    3 | attempt 1 | pours   3 | undos 0 | fouls 0 |   2.8s/turn | $0.02 | MOVE 12 14
+turn    4 | attempt 1 | pours   4 | undos 0 | fouls 0 |   2.6s/turn | $0.04 | MOVE 6 12
+turn    5 | attempt 1 | pours   5 | undos 0 | fouls 0 |   2.6s/turn | $0.05 | MOVE 8 6
+turn    6 | attempt 1 | pours   6 | undos 0 | fouls 0 |   2.6s/turn | $0.06 | MOVE 5 8
+turn    7 | attempt 1 | pours   7 | undos 0 | fouls 0 |   2.6s/turn | $0.07 | MOVE 7 5
+turn    8 | attempt 2 | pours   7 | undos 0 | fouls 0 |   2.7s/turn | $0.08 | RESTART
+turn    9 | attempt 2 | pours   8 | undos 0 | fouls 0 |   2.7s/turn | $0.09 | MOVE 10 13
+turn   10 | attempt 2 | pours   9 | undos 0 | fouls 0 |   2.6s/turn | $0.10 | MOVE 8 13
+turn   11 | attempt 2 | pours  10 | undos 0 | fouls 0 |   2.5s/turn | $0.10 | MOVE 5 8
+turn   12 | attempt 2 | pours  11 | undos 0 | fouls 0 |   2.5s/turn | $0.11 | MOVE 7 5
+turn   13 | attempt 2 | pours  12 | undos 0 | fouls 0 |   2.5s/turn | $0.12 | MOVE 10 7
+turn   14 | attempt 2 | pours  13 | undos 0 | fouls 0 |   2.5s/turn | $0.13 | MOVE 5 10
+turn   15 | attempt 2 | pours  14 | undos 0 | fouls 0 |   2.5s/turn | $0.14 | MOVE 7 14
+turn   16 | attempt 2 | pours  15 | undos 0 | fouls 0 |   2.5s/turn | $0.15 | MOVE 11 7
+turn   17 | attempt 2 | pours  16 | undos 0 | fouls 0 |   2.5s/turn | $0.15 | MOVE 5 11
+turn   18 | attempt 2 | pours  17 | undos 0 | fouls 0 |   2.5s/turn | $0.16 | MOVE 5 13
+turn   19 | attempt 2 | pours  18 | undos 0 | fouls 0 |   2.5s/turn | $0.17 | MOVE 11 5
+turn   20 | attempt 2 | pours  19 | undos 0 | fouls 0 |   2.5s/turn | $0.18 | MOVE 9 11
+turn   21 | attempt 2 | pours  20 | undos 0 | fouls 0 |   2.5s/turn | $0.19 | MOVE 3 9
+turn   22 | attempt 2 | pours  21 | undos 0 | fouls 0 |   2.4s/turn | $0.20 | MOVE 3 11
+turn   23 | attempt 2 | pours  22 | undos 0 | fouls 0 |   2.5s/turn | $0.20 | MOVE 8 3
+turn   24 | attempt 2 | pours  23 | undos 0 | fouls 0 |   2.4s/turn | $0.21 | MOVE 9 8
+turn   25 | attempt 2 | pours  24 | undos 0 | fouls 0 |   2.4s/turn | $0.22 | MOVE 12 7
+turn   26 | attempt 2 | pours  25 | undos 0 | fouls 0 |   2.4s/turn | $0.23 | MOVE 12 9
+turn   27 | attempt 2 | pours  26 | undos 0 | fouls 0 |   2.4s/turn | $0.24 | MOVE 6 12
+turn   28 | attempt 2 | pours  27 | undos 0 | fouls 0 |   2.4s/turn | $0.25 | MOVE 6 13
+turn   29 | attempt 2 | pours  28 | undos 0 | fouls 0 |   2.4s/turn | $0.26 | MOVE 6 10
+turn   30 | attempt 2 | pours  29 | undos 0 | fouls 0 |   2.4s/turn | $0.27 | MOVE 9 6
+turn   31 | attempt 2 | pours  30 | undos 0 | fouls 0 |   2.4s/turn | $0.28 | MOVE 9 12
+turn   32 | attempt 2 | pours  31 | undos 0 | fouls 0 |   2.4s/turn | $0.29 | MOVE 4 9
+turn   33 | attempt 3 | pours  31 | undos 0 | fouls 0 |   2.5s/turn | $0.30 | RESTART
+turn   34 | attempt 3 | pours  32 | undos 0 | fouls 0 |   2.5s/turn | $0.31 | MOVE 1 13
+turn   35 | attempt 3 | pours  33 | undos 0 | fouls 0 |   2.5s/turn | $0.32 | MOVE 2 13
+turn   36 | attempt 3 | pours  34 | undos 0 | fouls 0 |   2.5s/turn | $0.33 | MOVE 5 2
+turn   37 | attempt 3 | pours  35 | undos 0 | fouls 0 |   2.5s/turn | $0.34 | MOVE 7 5
+turn   38 | attempt 3 | pours  36 | undos 0 | fouls 0 |   2.5s/turn | $0.35 | MOVE 7 14
+turn   39 | attempt 3 | pours  37 | undos 0 | fouls 0 |   2.5s/turn | $0.36 | MOVE 12 7
+turn   40 | attempt 3 | pours  38 | undos 0 | fouls 0 |   2.5s/turn | $0.37 | MOVE 1 12
+turn   41 | attempt 3 | pours  39 | undos 0 | fouls 0 |   2.4s/turn | $0.38 | MOVE 11 7
+turn   42 | attempt 3 | pours  40 | undos 0 | fouls 0 |   2.4s/turn | $0.39 | MOVE 1 11
+turn   43 | attempt 3 | pours  41 | undos 0 | fouls 0 |   2.4s/turn | $0.40 | MOVE 4 1
+turn   44 | attempt 3 | pours  42 | undos 0 | fouls 0 |   2.4s/turn | $0.41 | MOVE 9 4
+turn   45 | attempt 3 | pours  43 | undos 0 | fouls 0 |   2.4s/turn | $0.42 | MOVE 3 9
+turn   46 | attempt 3 | pours  44 | undos 0 | fouls 0 |   2.4s/turn | $0.43 | MOVE 3 4
+turn   47 | attempt 3 | pours  45 | undos 0 | fouls 0 |   2.4s/turn | $0.44 | MOVE 2 3
+turn   48 | attempt 3 | pours  46 | undos 0 | fouls 0 |   2.4s/turn | $0.45 | MOVE 11 2
+turn   49 | attempt 3 | pours  46 | undos 1 | fouls 0 |   2.5s/turn | $0.47 | UNDO
+turn   50 | attempt 4 | pours  46 | undos 1 | fouls 0 |   2.6s/turn | $0.49 | RESTART
+turn   51 | attempt 4 | pours  47 | undos 1 | fouls 0 |   2.6s/turn | $0.50 | MOVE 2 13
+turn   52 | attempt 4 | pours  48 | undos 1 | fouls 0 |   2.6s/turn | $0.51 | MOVE 10 14
+turn   53 | attempt 4 | pours  49 | undos 1 | fouls 0 |   2.6s/turn | $0.52 | MOVE 8 14
+turn   54 | attempt 4 | pours  50 | undos 1 | fouls 0 |   2.6s/turn | $0.53 | MOVE 2 8
+turn   55 | attempt 4 | pours  50 | undos 2 | fouls 0 |   2.7s/turn | $0.55 | UNDO
+turn   56 | attempt 4 | pours  51 | undos 2 | fouls 0 |   2.7s/turn | $0.56 | MOVE 8 2
+turn   57 | attempt 4 | pours  52 | undos 2 | fouls 0 |   2.7s/turn | $0.57 | MOVE 3 8
+turn   58 | attempt 4 | pours  53 | undos 2 | fouls 0 |   2.7s/turn | $0.58 | MOVE 9 3
+turn   59 | attempt 4 | pours  54 | undos 2 | fouls 0 |   2.7s/turn | $0.59 | MOVE 9 8
+turn   60 | attempt 4 | pours  55 | undos 2 | fouls 0 |   2.7s/turn | $0.60 | MOVE 1 13
+turn   61 | attempt 4 | pours  56 | undos 2 | fouls 0 |   2.7s/turn | $0.62 | MOVE 9 1
+turn   62 | attempt 4 | pours  57 | undos 2 | fouls 0 |   2.7s/turn | $0.63 | MOVE 6 9
+turn   63 | attempt 4 | pours  58 | undos 2 | fouls 0 |   2.7s/turn | $0.64 | MOVE 6 14
+turn   64 | attempt 4 | pours  59 | undos 2 | fouls 0 |   2.7s/turn | $0.65 | MOVE 7 6
+turn   65 | attempt 4 | pours  60 | undos 2 | fouls 0 |   2.7s/turn | $0.66 | MOVE 10 7
+turn   66 | attempt 4 | pours  61 | undos 2 | fouls 0 |   2.7s/turn | $0.68 | MOVE 10 6
+turn   67 | attempt 4 | pours  62 | undos 2 | fouls 0 |   2.7s/turn | $0.69 | MOVE 10 13
+turn   68 | attempt 4 | pours  63 | undos 2 | fouls 0 |   2.7s/turn | $0.70 | MOVE 7 10
+turn   69 | attempt 4 | pours  64 | undos 2 | fouls 0 |   2.7s/turn | $0.72 | MOVE 12 7
+turn   70 | attempt 4 | pours  65 | undos 2 | fouls 0 |   2.7s/turn | $0.73 | MOVE 1 12
+turn   71 | attempt 4 | pours  66 | undos 2 | fouls 0 |   2.7s/turn | $0.74 | MOVE 11 7
+turn   72 | attempt 4 | pours  67 | undos 2 | fouls 0 |   2.7s/turn | $0.76 | MOVE 1 11
+turn   73 | attempt 4 | pours  68 | undos 2 | fouls 0 |   2.7s/turn | $0.77 | MOVE 4 1
+turn   74 | attempt 4 | pours  69 | undos 2 | fouls 0 |   2.7s/turn | $0.78 | MOVE 3 4
+turn   75 | attempt 4 | pours  70 | undos 2 | fouls 0 |   2.7s/turn | $0.80 | MOVE 2 3
+turn   76 | attempt 4 | pours  70 | undos 3 | fouls 0 |   2.7s/turn | $0.81 | UNDO
+turn   77 | attempt 4 | pours  70 | undos 4 | fouls 0 |   2.7s/turn | $0.83 | UNDO
+turn   78 | attempt 4 | pours  70 | undos 5 | fouls 0 |   2.7s/turn | $0.84 | UNDO
+turn   79 | attempt 4 | pours  70 | undos 6 | fouls 0 |   2.7s/turn | $0.85 | UNDO
+turn   80 | attempt 4 | pours  71 | undos 6 | fouls 0 |   2.7s/turn | $0.87 | MOVE 11 1
+turn   81 | attempt 4 | pours  72 | undos 6 | fouls 0 |   2.7s/turn | $0.88 | MOVE 3 11
+turn   82 | attempt 4 | pours  73 | undos 6 | fouls 0 |   2.7s/turn | $0.90 | MOVE 2 3
+turn   83 | attempt 4 | pours  74 | undos 6 | fouls 0 |   2.7s/turn | $0.91 | MOVE 2 1
+turn   84 | attempt 4 | pours  75 | undos 6 | fouls 0 |   2.7s/turn | $0.92 | MOVE 2 7
+turn   85 | attempt 4 | pours  76 | undos 6 | fouls 0 |   2.7s/turn | $0.94 | MOVE 3 2
+turn   86 | attempt 4 | pours  77 | undos 6 | fouls 0 |   2.7s/turn | $0.95 | MOVE 3 10
+turn   87 | attempt 4 | pours  78 | undos 6 | fouls 0 |   2.7s/turn | $0.96 | MOVE 8 3
+turn   88 | attempt 4 | pours  79 | undos 6 | fouls 0 |   2.7s/turn | $0.98 | MOVE 5 2
+turn   89 | attempt 4 | pours  80 | undos 6 | fouls 0 |   2.7s/turn | $0.99 | MOVE 4 8
+turn   90 | attempt 5 | pours  80 | undos 6 | fouls 0 |   2.8s/turn | $1.01 | RESTART
+turn   91 | attempt 5 | pours  81 | undos 6 | fouls 0 |   2.8s/turn | $1.03 | MOVE 10 13
+turn   92 | attempt 5 | pours  82 | undos 6 | fouls 0 |   2.8s/turn | $1.05 | MOVE 10 14
+turn   93 | attempt 5 | pours  83 | undos 6 | fouls 0 |   2.8s/turn | $1.06 | MOVE 7 10
+turn   94 | attempt 5 | pours  84 | undos 6 | fouls 0 |   2.8s/turn | $1.08 | MOVE 7 14
+turn   95 | attempt 5 | pours  85 | undos 6 | fouls 0 |   2.8s/turn | $1.09 | MOVE 12 7
+turn   96 | attempt 5 | pours  86 | undos 6 | fouls 0 |   2.8s/turn | $1.11 | MOVE 8 13
+turn   97 | attempt 5 | pours  87 | undos 6 | fouls 0 |   2.8s/turn | $1.12 | MOVE 5 8
+turn   98 | attempt 5 | pours  88 | undos 6 | fouls 0 |   2.8s/turn | $1.14 | MOVE 5 10
+turn   99 | attempt 5 | pours  89 | undos 6 | fouls 0 |   2.8s/turn | $1.15 | MOVE 11 7
+turn  100 | attempt 5 | pours  90 | undos 6 | fouls 0 |   2.8s/turn | $1.17 | MOVE 5 11
+turn  101 | attempt 5 | pours  91 | undos 6 | fouls 0 |   2.9s/turn | $1.18 | MOVE 5 13
+turn  102 | attempt 5 | pours  92 | undos 6 | fouls 0 |   2.9s/turn | $1.20 | MOVE 11 5
+turn  103 | attempt 5 | pours  93 | undos 6 | fouls 0 |   2.9s/turn | $1.21 | MOVE 9 11
+turn  104 | attempt 5 | pours  94 | undos 6 | fouls 0 |   2.9s/turn | $1.23 | MOVE 3 9
+turn  105 | attempt 5 | pours  95 | undos 6 | fouls 0 |   2.9s/turn | $1.24 | MOVE 3 11
+turn  106 | attempt 5 | pours  96 | undos 6 | fouls 0 |   2.8s/turn | $1.26 | MOVE 8 3
+turn  107 | attempt 5 | pours  97 | undos 6 | fouls 0 |   2.9s/turn | $1.28 | MOVE 9 8
+turn  108 | attempt 5 | pours  98 | undos 6 | fouls 0 |   2.8s/turn | $1.29 | MOVE 9 12
+turn  109 | attempt 5 | pours  99 | undos 6 | fouls 0 |   2.8s/turn | $1.31 | MOVE 6 9
+turn  110 | attempt 5 | pours 100 | undos 6 | fouls 0 |   2.8s/turn | $1.32 | MOVE 6 13
+turn  111 | attempt 5 | pours 101 | undos 6 | fouls 0 |   2.9s/turn | $1.34 | MOVE 6 10
+turn  112 | attempt 5 | pours 102 | undos 6 | fouls 0 |   2.9s/turn | $1.36 | MOVE 6 12
+turn  113 | attempt 5 | pours 103 | undos 6 | fouls 0 |   2.8s/turn | $1.37 | MOVE 8 6
+turn  114 | attempt 6 | pours 103 | undos 6 | fouls 0 |   2.9s/turn | $1.40 | RESTART
+turn  115 | attempt 6 | pours 104 | undos 6 | fouls 0 |   2.9s/turn | $1.41 | MOVE 2 13
+turn  116 | attempt 6 | pours 105 | undos 6 | fouls 0 |   2.9s/turn | $1.43 | MOVE 10 14
+turn  117 | attempt 6 | pours 106 | undos 6 | fouls 0 |   2.9s/turn | $1.44 | MOVE 8 14
+turn  118 | attempt 6 | pours 107 | undos 6 | fouls 0 |   2.9s/turn | $1.46 | MOVE 8 2
+turn  119 | attempt 6 | pours 108 | undos 6 | fouls 0 |   2.9s/turn | $1.48 | MOVE 3 8
+turn  120 | attempt 6 | pours 109 | undos 6 | fouls 0 |   2.9s/turn | $1.49 | MOVE 9 3
+turn  121 | attempt 6 | pours 110 | undos 6 | fouls 0 |   2.9s/turn | $1.51 | MOVE 9 8
+turn  122 | attempt 6 | pours 111 | undos 6 | fouls 0 |   2.9s/turn | $1.53 | MOVE 1 13
+turn  123 | attempt 6 | pours 112 | undos 6 | fouls 0 |   2.9s/turn | $1.54 | MOVE 9 1
+turn  124 | attempt 6 | pours 113 | undos 6 | fouls 0 |   2.9s/turn | $1.56 | MOVE 6 9
+turn  125 | attempt 6 | pours 114 | undos 6 | fouls 0 |   2.9s/turn | $1.58 | MOVE 6 14
+turn  126 | attempt 6 | pours 115 | undos 6 | fouls 0 |   2.9s/turn | $1.60 | MOVE 7 6
+turn  127 | attempt 6 | pours 116 | undos 6 | fouls 0 |   2.9s/turn | $1.61 | MOVE 10 7
+turn  128 | attempt 6 | pours 117 | undos 6 | fouls 0 |   2.9s/turn | $1.63 | MOVE 10 6
+turn  129 | attempt 6 | pours 118 | undos 6 | fouls 0 |   2.9s/turn | $1.65 | MOVE 10 13
+turn  130 | attempt 6 | pours 119 | undos 6 | fouls 0 |   2.9s/turn | $1.67 | MOVE 6 10
+turn  131 | attempt 6 | pours 119 | undos 7 | fouls 0 |   3.0s/turn | $1.70 | UNDO
+turn  132 | attempt 6 | pours 120 | undos 7 | fouls 0 |   3.0s/turn | $1.71 | MOVE 12 10
+turn  133 | attempt 6 | pours 121 | undos 7 | fouls 0 |   3.0s/turn | $1.73 | MOVE 11 10
+turn  134 | attempt 6 | pours 122 | undos 7 | fouls 0 |   3.0s/turn | $1.75 | MOVE 1 12
+turn  135 | attempt 6 | pours 123 | undos 7 | fouls 0 |   3.0s/turn | $1.77 | MOVE 11 1
+turn  136 | attempt 6 | pours 124 | undos 7 | fouls 0 |   3.0s/turn | $1.79 | MOVE 3 11
+turn  137 | attempt 6 | pours 125 | undos 7 | fouls 0 |   3.0s/turn | $1.81 | MOVE 2 3
+turn  138 | attempt 6 | pours 126 | undos 7 | fouls 0 |   3.0s/turn | $1.83 | MOVE 2 1
+turn  139 | attempt 6 | pours 127 | undos 7 | fouls 0 |   3.0s/turn | $1.85 | MOVE 2 10
+turn  140 | attempt 6 | pours 128 | undos 7 | fouls 0 |   3.0s/turn | $1.87 | MOVE 3 2
+turn  141 | attempt 7 | pours 128 | undos 7 | fouls 0 |   3.1s/turn | $1.90 | RESTART
+turn  142 | attempt 7 | pours 129 | undos 7 | fouls 0 |   3.1s/turn | $1.92 | MOVE 6 13
+turn  143 | attempt 7 | pours 130 | undos 7 | fouls 0 |   3.1s/turn | $1.94 | MOVE 8 6
+turn  144 | attempt 7 | pours 131 | undos 7 | fouls 0 |   3.1s/turn | $1.96 | MOVE 5 8
+turn  145 | attempt 7 | pours 132 | undos 7 | fouls 0 |   3.2s/turn | $1.99 | MOVE 7 5
+turn  146 | attempt 7 | pours 133 | undos 7 | fouls 0 |   3.2s/turn | $2.01 | MOVE 10 14
+turn  147 | attempt 7 | pours 134 | undos 7 | fouls 0 |   3.2s/turn | $2.03 | MOVE 10 7
+turn  148 | attempt 7 | pours 135 | undos 7 | fouls 0 |   3.2s/turn | $2.05 | MOVE 6 14
+turn  149 | attempt 7 | pours 136 | undos 7 | fouls 0 |   3.2s/turn | $2.07 | MOVE 10 6
+turn  150 | attempt 7 | pours 137 | undos 7 | fouls 0 |   3.3s/turn | $2.10 | MOVE 2 10
+turn  151 | attempt 7 | pours 138 | undos 7 | fouls 0 |   3.3s/turn | $2.13 | MOVE 1 10
+turn  152 | attempt 7 | pours 138 | undos 8 | fouls 0 |   3.3s/turn | $2.15 | UNDO
+turn  153 | attempt 8 | pours 138 | undos 8 | fouls 0 |   3.4s/turn | $2.17 | RESTART
+turn  154 | attempt 8 | pours 139 | undos 8 | fouls 0 |   3.4s/turn | $2.19 | MOVE 4 13
+turn  155 | attempt 8 | pours 140 | undos 8 | fouls 0 |   3.4s/turn | $2.22 | MOVE 4 14
+turn  156 | attempt 8 | pours 141 | undos 8 | fouls 0 |   3.4s/turn | $2.23 | MOVE 6 4
+turn  157 | attempt 8 | pours 142 | undos 8 | fouls 0 |   3.4s/turn | $2.26 | MOVE 9 14
+turn  158 | attempt 8 | pours 143 | undos 8 | fouls 0 |   3.4s/turn | $2.28 | MOVE 3 9
+turn  159 | attempt 8 | pours 144 | undos 8 | fouls 0 |   3.4s/turn | $2.30 | MOVE 3 14
+turn  160 | attempt 8 | pours 145 | undos 8 | fouls 0 |   3.4s/turn | $2.32 | MOVE 8 6
+turn  161 | attempt 8 | pours 146 | undos 8 | fouls 0 |   3.5s/turn | $2.34 | MOVE 8 3
+turn  162 | attempt 8 | pours 146 | undos 9 | fouls 0 |   3.5s/turn | $2.36 | UNDO
+turn  163 | attempt 8 | pours 147 | undos 9 | fouls 0 |   3.5s/turn | $2.39 | MOVE 3 8
+turn  164 | attempt 9 | pours 147 | undos 9 | fouls 0 |   3.6s/turn | $2.43 | RESTART
+turn  165 | attempt 9 | pours 148 | undos 9 | fouls 0 |   3.6s/turn | $2.45 | MOVE 5 13
+turn  166 | attempt 9 | pours 149 | undos 9 | fouls 0 |   3.6s/turn | $2.48 | MOVE 7 5
+turn  167 | attempt 9 | pours 150 | undos 9 | fouls 0 |   3.6s/turn | $2.50 | MOVE 10 14
+turn  168 | attempt 9 | pours 151 | undos 9 | fouls 0 |   3.6s/turn | $2.52 | MOVE 8 14
+turn  169 | attempt 9 | pours 152 | undos 9 | fouls 0 |   3.6s/turn | $2.54 | MOVE 8 13
+turn  170 | attempt 9 | pours 153 | undos 9 | fouls 0 |   3.6s/turn | $2.57 | MOVE 3 8
+turn  171 | attempt 9 | pours 154 | undos 9 | fouls 0 |   3.7s/turn | $2.59 | MOVE 9 3
+turn  172 | attempt 9 | pours 155 | undos 9 | fouls 0 |   3.7s/turn | $2.61 | MOVE 10 7
+turn  173 | attempt 9 | pours 156 | undos 9 | fouls 0 |   3.7s/turn | $2.64 | MOVE 5 10
+turn  174 | attempt 10 | pours 156 | undos 9 | fouls 0 |   3.7s/turn | $2.66 | RESTART
+turn  175 | attempt 10 | pours 157 | undos 9 | fouls 0 |   3.7s/turn | $2.69 | MOVE 4 13
+turn  176 | attempt 10 | pours 158 | undos 9 | fouls 0 |   3.7s/turn | $2.71 | MOVE 9 4
+turn  177 | attempt 10 | pours 159 | undos 9 | fouls 0 |   3.7s/turn | $2.73 | MOVE 3 9
+turn  178 | attempt 10 | pours 160 | undos 9 | fouls 0 |   3.7s/turn | $2.75 | MOVE 3 4
+turn  179 | attempt 10 | pours 161 | undos 9 | fouls 0 |   3.7s/turn | $2.77 | MOVE 3 14
+turn  180 | attempt 10 | pours 162 | undos 9 | fouls 0 |   3.7s/turn | $2.80 | MOVE 5 14
+turn  181 | attempt 10 | pours 163 | undos 9 | fouls 0 |   3.7s/turn | $2.82 | MOVE 7 5
+turn  182 | attempt 10 | pours 164 | undos 9 | fouls 0 |   3.7s/turn | $2.84 | MOVE 7 3
+turn  183 | attempt 10 | pours 165 | undos 9 | fouls 0 |   3.8s/turn | $2.88 | MOVE 12 7
+turn  184 | attempt 11 | pours 165 | undos 9 | fouls 0 |   3.8s/turn | $2.92 | RESTART
+turn  185 | attempt 11 | pours 166 | undos 9 | fouls 0 |   3.8s/turn | $2.94 | MOVE 1 13
+turn  186 | attempt 11 | pours 167 | undos 9 | fouls 0 |   3.8s/turn | $2.96 | MOVE 12 14
+turn  187 | attempt 11 | pours 168 | undos 9 | fouls 0 |   3.8s/turn | $2.99 | MOVE 1 12
+turn  188 | attempt 11 | pours 169 | undos 9 | fouls 0 |   3.8s/turn | $3.01 | MOVE 11 14
+turn  189 | attempt 11 | pours 170 | undos 9 | fouls 0 |   3.8s/turn | $3.03 | MOVE 11 1
+turn  190 | attempt 11 | pours 171 | undos 9 | fouls 0 |   3.8s/turn | $3.06 | MOVE 9 11
+turn  191 | attempt 11 | pours 172 | undos 9 | fouls 0 |   3.8s/turn | $3.08 | MOVE 3 9
+turn  192 | attempt 11 | pours 173 | undos 9 | fouls 0 |   3.8s/turn | $3.10 | MOVE 3 11
+turn  193 | attempt 11 | pours 174 | undos 9 | fouls 0 |   3.8s/turn | $3.13 | MOVE 2 13
+turn  194 | attempt 11 | pours 175 | undos 9 | fouls 0 |   3.8s/turn | $3.15 | MOVE 2 3
+turn  195 | attempt 11 | pours 176 | undos 9 | fouls 0 |   3.8s/turn | $3.18 | MOVE 2 1
+turn  196 | attempt 11 | pours 177 | undos 9 | fouls 0 |   3.8s/turn | $3.20 | MOVE 2 14
+turn  197 | attempt 11 | pours 178 | undos 9 | fouls 0 |   3.8s/turn | $3.22 | MOVE 3 2
+turn  198 | attempt 11 | pours 179 | undos 9 | fouls 0 |   3.8s/turn | $3.25 | MOVE 5 2
+turn  199 | attempt 11 | pours 180 | undos 9 | fouls 0 |   3.8s/turn | $3.27 | MOVE 7 5
+turn  200 | attempt 11 | pours 181 | undos 9 | fouls 0 |   3.8s/turn | $3.30 | MOVE 7 3
+turn  201 | attempt 11 | pours 182 | undos 9 | fouls 0 |   3.8s/turn | $3.32 | MOVE 7 14
+turn  202 | attempt 11 | pours 183 | undos 9 | fouls 0 |   3.8s/turn | $3.34 | MOVE 3 7
+turn  203 | attempt 11 | pours 184 | undos 9 | fouls 0 |   3.8s/turn | $3.37 | MOVE 9 3
+turn  204 | attempt 11 | pours 185 | undos 9 | fouls 0 |   3.8s/turn | $3.39 | MOVE 9 12
+turn  205 | attempt 11 | pours 186 | undos 9 | fouls 0 |   3.8s/turn | $3.42 | MOVE 6 9
+turn  206 | attempt 11 | pours 187 | undos 9 | fouls 0 |   3.8s/turn | $3.44 | MOVE 8 6
+turn  207 | attempt 11 | pours 188 | undos 9 | fouls 0 |   3.8s/turn | $3.46 | MOVE 8 2
+turn  208 | attempt 11 | pours 189 | undos 9 | fouls 0 |   3.8s/turn | $3.49 | MOVE 8 3
+turn  209 | attempt 11 | pours 189 | undos 10 | fouls 0 |   3.9s/turn | $3.52 | UNDO
+turn  210 | attempt 11 | pours 189 | undos 11 | fouls 0 |   3.9s/turn | $3.55 | UNDO
+turn  211 | attempt 11 | pours 189 | undos 12 | fouls 0 |   3.9s/turn | $3.57 | UNDO
+turn  212 | attempt 11 | pours 189 | undos 13 | fouls 0 |   3.9s/turn | $3.60 | UNDO
+turn  213 | attempt 11 | pours 189 | undos 14 | fouls 0 |   3.9s/turn | $3.62 | UNDO
+turn  214 | attempt 11 | pours 189 | undos 15 | fouls 0 |   3.9s/turn | $3.65 | UNDO
+turn  215 | attempt 11 | pours 189 | undos 16 | fouls 0 |   3.9s/turn | $3.67 | UNDO
+turn  216 | attempt 11 | pours 190 | undos 16 | fouls 0 |   3.9s/turn | $3.70 | MOVE 11 7
+turn  217 | attempt 11 | pours 191 | undos 16 | fouls 0 |   3.9s/turn | $3.72 | MOVE 5 11
+turn  218 | attempt 11 | pours 191 | undos 17 | fouls 0 |   3.9s/turn | $3.75 | UNDO
+turn  219 | attempt 11 | pours 191 | undos 18 | fouls 0 |   3.9s/turn | $3.78 | UNDO
+turn  220 | attempt 11 | pours 192 | undos 18 | fouls 0 |   3.9s/turn | $3.81 | MOVE 10 7
+turn  221 | attempt 11 | pours 193 | undos 18 | fouls 0 |   3.9s/turn | $3.83 | MOVE 8 7
+turn  222 | attempt 11 | pours 194 | undos 18 | fouls 0 |   3.9s/turn | $3.86 | MOVE 8 2
+turn  223 | attempt 11 | pours 195 | undos 18 | fouls 0 |   3.9s/turn | $3.88 | MOVE 9 8
+turn  224 | attempt 11 | pours 196 | undos 18 | fouls 0 |   3.9s/turn | $3.91 | MOVE 9 12
+turn  225 | attempt 11 | pours 197 | undos 18 | fouls 0 |   3.9s/turn | $3.94 | MOVE 6 9
+turn  226 | attempt 11 | pours 198 | undos 18 | fouls 0 |   3.9s/turn | $3.96 | MOVE 6 7
+turn  227 | attempt 11 | pours 199 | undos 18 | fouls 0 |   3.9s/turn | $4.00 | MOVE 5 6
+turn  228 | attempt 12 | pours 199 | undos 18 | fouls 0 |   4.0s/turn | $4.03 | RESTART
+turn  229 | attempt 12 | pours 200 | undos 18 | fouls 0 |   4.0s/turn | $4.08 | MOVE 4 13
+turn  230 | attempt 12 | pours 201 | undos 18 | fouls 0 |   4.0s/turn | $4.11 | MOVE 2 14
+turn  231 | attempt 12 | pours 202 | undos 18 | fouls 0 |   4.0s/turn | $4.14 | MOVE 9 4
+turn  232 | attempt 12 | pours 203 | undos 18 | fouls 0 |   4.0s/turn | $4.17 | MOVE 3 9
+turn  233 | attempt 12 | pours 204 | undos 18 | fouls 0 |   4.0s/turn | $4.19 | MOVE 3 4
+turn  234 | attempt 12 | pours 205 | undos 18 | fouls 0 |   4.1s/turn | $4.24 | MOVE 2 3
+turn  235 | attempt 12 | pours 206 | undos 18 | fouls 0 |   4.1s/turn | $4.27 | MOVE 5 3
+turn  236 | attempt 13 | pours 206 | undos 18 | fouls 0 |   4.2s/turn | $4.33 | RESTART
+turn  237 | attempt 13 | pours 207 | undos 18 | fouls 0 |   4.2s/turn | $4.36 | MOVE 1 13
+turn  238 | attempt 13 | pours 208 | undos 18 | fouls 0 |   4.2s/turn | $4.38 | MOVE 12 14
+turn  239 | attempt 13 | pours 209 | undos 18 | fouls 0 |   4.2s/turn | $4.41 | MOVE 1 12
+turn  240 | attempt 13 | pours 210 | undos 18 | fouls 0 |   4.2s/turn | $4.44 | MOVE 11 14
+turn  241 | attempt 13 | pours 211 | undos 18 | fouls 0 |   4.2s/turn | $4.47 | MOVE 11 1
+turn  242 | attempt 13 | pours 212 | undos 18 | fouls 0 |   4.2s/turn | $4.49 | MOVE 9 11
+turn  243 | attempt 13 | pours 213 | undos 18 | fouls 0 |   4.2s/turn | $4.52 | MOVE 3 9
+turn  244 | attempt 13 | pours 214 | undos 18 | fouls 0 |   4.2s/turn | $4.55 | MOVE 3 11
+turn  245 | attempt 13 | pours 215 | undos 18 | fouls 0 |   4.2s/turn | $4.57 | MOVE 2 13
+turn  246 | attempt 13 | pours 216 | undos 18 | fouls 0 |   4.2s/turn | $4.60 | MOVE 2 3
+turn  247 | attempt 13 | pours 217 | undos 18 | fouls 0 |   4.2s/turn | $4.63 | MOVE 2 1
+turn  248 | attempt 13 | pours 218 | undos 18 | fouls 0 |   4.2s/turn | $4.66 | MOVE 2 14
+turn  249 | attempt 13 | pours 219 | undos 18 | fouls 0 |   4.2s/turn | $4.68 | MOVE 3 2
+turn  250 | attempt 13 | pours 220 | undos 18 | fouls 0 |   4.2s/turn | $4.71 | MOVE 5 2
+turn  251 | attempt 13 | pours 221 | undos 18 | fouls 0 |   4.2s/turn | $4.74 | MOVE 7 5
+turn  252 | attempt 13 | pours 222 | undos 18 | fouls 0 |   4.2s/turn | $4.77 | MOVE 7 3
+turn  253 | attempt 13 | pours 223 | undos 18 | fouls 0 |   4.2s/turn | $4.80 | MOVE 7 14
+turn  254 | attempt 13 | pours 224 | undos 18 | fouls 0 |   4.2s/turn | $4.82 | MOVE 12 7
+turn  255 | attempt 13 | pours 225 | undos 18 | fouls 0 |   4.2s/turn | $4.85 | MOVE 6 12
+turn  256 | attempt 13 | pours 226 | undos 18 | fouls 0 |   4.2s/turn | $4.88 | MOVE 8 6
+turn  257 | attempt 13 | pours 227 | undos 18 | fouls 0 |   4.2s/turn | $4.91 | MOVE 8 2
+turn  258 | attempt 13 | pours 228 | undos 18 | fouls 0 |   4.2s/turn | $4.94 | MOVE 9 8
+turn  259 | attempt 13 | pours 229 | undos 18 | fouls 0 |   4.2s/turn | $4.97 | MOVE 9 7
+turn  260 | attempt 13 | pours 230 | undos 18 | fouls 0 |   4.2s/turn | $4.99 | MOVE 12 9
+turn  261 | attempt 13 | pours 231 | undos 18 | fouls 0 |   4.2s/turn | $5.02 | MOVE 6 12
+turn  262 | attempt 13 | pours 231 | undos 19 | fouls 0 |   4.2s/turn | $5.06 | UNDO
+turn  263 | attempt 13 | pours 232 | undos 19 | fouls 0 |   4.3s/turn | $5.12 | MOVE 9 12
+turn  264 | attempt 13 | pours 232 | undos 20 | fouls 0 |   4.3s/turn | $5.17 | UNDO
+turn  265 | attempt 13 | pours 233 | undos 20 | fouls 0 |   4.4s/turn | $5.22 | MOVE 1 12
+turn  266 | attempt 13 | pours 233 | undos 21 | fouls 0 |   4.5s/turn | $5.27 | UNDO
+turn  267 | attempt 13 | pours 234 | undos 21 | fouls 0 |   4.5s/turn | $5.32 | MOVE 11 12
+turn  268 | attempt 13 | pours 234 | undos 22 | fouls 0 |   4.6s/turn | $5.36 | UNDO
+turn  269 | attempt 13 | pours 235 | undos 22 | fouls 0 |   4.7s/turn | $5.43 | MOVE 10 12
+turn  270 | attempt 13 | pours 236 | undos 22 | fouls 0 |   4.7s/turn | $5.47 | MOVE 6 12
+turn  271 | attempt 13 | pours 236 | undos 23 | fouls 0 |   4.7s/turn | $5.51 | UNDO
+turn  272 | attempt 13 | pours 236 | undos 24 | fouls 0 |   4.8s/turn | $5.57 | UNDO
+turn  273 | attempt 13 | pours 237 | undos 24 | fouls 0 |   4.8s/turn | $5.62 | MOVE 3 12
+turn  274 | attempt 13 | pours 238 | undos 24 | fouls 0 |   4.9s/turn | $5.66 | MOVE 8 3
+turn  275 | attempt 14 | pours 238 | undos 24 | fouls 0 |   4.9s/turn | $5.72 | RESTART
+turn  276 | attempt 14 | pours 239 | undos 24 | fouls 0 |   4.9s/turn | $5.75 | MOVE 9 13
+turn  277 | attempt 14 | pours 240 | undos 24 | fouls 0 |   4.9s/turn | $5.78 | MOVE 3 9
+turn  278 | attempt 14 | pours 241 | undos 24 | fouls 0 |   4.9s/turn | $5.81 | MOVE 3 13
+turn  279 | attempt 14 | pours 242 | undos 24 | fouls 0 |   4.9s/turn | $5.84 | MOVE 4 14
+turn  280 | attempt 14 | pours 243 | undos 24 | fouls 0 |   4.9s/turn | $5.87 | MOVE 4 13
+turn  281 | attempt 15 | pours 243 | undos 24 | fouls 0 |   4.9s/turn | $5.90 | RESTART
+turn  282 | attempt 15 | pours 244 | undos 24 | fouls 0 |   5.0s/turn | $5.95 | MOVE 9 13
+turn  283 | attempt 15 | pours 245 | undos 24 | fouls 0 |   5.0s/turn | $5.99 | MOVE 10 14
+turn  284 | attempt 15 | pours 246 | undos 24 | fouls 0 |   5.0s/turn | $6.02 | MOVE 3 9
+turn  285 | attempt 15 | pours 247 | undos 24 | fouls 0 |   5.0s/turn | $6.05 | MOVE 3 13
+turn  286 | attempt 15 | pours 248 | undos 24 | fouls 0 |   5.0s/turn | $6.08 | MOVE 8 14
+turn  287 | attempt 15 | pours 249 | undos 24 | fouls 0 |   5.0s/turn | $6.12 | MOVE 3 8
+turn  288 | attempt 15 | pours 250 | undos 24 | fouls 0 |   5.0s/turn | $6.16 | MOVE 10 3
+turn  289 | attempt 15 | pours 251 | undos 24 | fouls 0 |   5.0s/turn | $6.20 | MOVE 7 10
+turn  290 | attempt 15 | pours 251 | undos 25 | fouls 0 |   5.1s/turn | $6.25 | UNDO
+turn  291 | attempt 15 | pours 251 | undos 26 | fouls 0 |   5.1s/turn | $6.28 | UNDO
+turn  292 | attempt 15 | pours 252 | undos 26 | fouls 0 |   5.1s/turn | $6.31 | MOVE 3 10
+turn  293 | attempt 15 | pours 253 | undos 26 | fouls 0 |   5.1s/turn | $6.36 | MOVE 9 3
+turn  294 | attempt 16 | pours 253 | undos 26 | fouls 0 |   5.1s/turn | $6.41 | RESTART
+turn  295 | attempt 16 | pours 254 | undos 26 | fouls 0 |   5.1s/turn | $6.44 | MOVE 6 13
+turn  296 | attempt 16 | pours 255 | undos 26 | fouls 0 |   5.1s/turn | $6.47 | MOVE 8 6
+turn  297 | attempt 16 | pours 256 | undos 26 | fouls 0 |   5.1s/turn | $6.50 | MOVE 2 14
+turn  298 | attempt 16 | pours 257 | undos 26 | fouls 0 |   5.1s/turn | $6.53 | MOVE 8 2
+turn  299 | attempt 16 | pours 258 | undos 26 | fouls 0 |   5.1s/turn | $6.56 | MOVE 3 8
+turn  300 | attempt 16 | pours 259 | undos 26 | fouls 0 |   5.1s/turn | $6.60 | MOVE 9 3
+turn  301 | attempt 16 | pours 260 | undos 26 | fouls 0 |   5.1s/turn | $6.63 | MOVE 9 8
+turn  302 | attempt 16 | pours 261 | undos 26 | fouls 0 |   5.1s/turn | $6.66 | MOVE 1 14
+turn  303 | attempt 16 | pours 262 | undos 26 | fouls 0 |   5.1s/turn | $6.69 | MOVE 9 1
+turn  304 | attempt 16 | pours 263 | undos 26 | fouls 0 |   5.1s/turn | $6.73 | MOVE 9 13
+turn  305 | attempt 16 | pours 264 | undos 26 | fouls 0 |   5.1s/turn | $6.76 | MOVE 4 9
+turn  306 | attempt 16 | pours 265 | undos 26 | fouls 0 |   5.1s/turn | $6.79 | MOVE 3 4
+turn  307 | attempt 16 | pours 265 | undos 27 | fouls 0 |   5.1s/turn | $6.82 | UNDO
+turn  308 | attempt 16 | pours 265 | undos 28 | fouls 0 |   5.1s/turn | $6.86 | UNDO
+turn  309 | attempt 16 | pours 265 | undos 29 | fouls 0 |   5.1s/turn | $6.89 | UNDO
+turn  310 | attempt 16 | pours 266 | undos 29 | fouls 0 |   5.1s/turn | $6.92 | MOVE 13 9
+turn  311 | attempt 16 | pours 267 | undos 29 | fouls 0 |   5.1s/turn | $6.96 | MOVE 12 13
+turn  312 | attempt 16 | pours 268 | undos 29 | fouls 0 |   5.1s/turn | $6.99 | MOVE 1 12
+turn  313 | attempt 16 | pours 269 | undos 29 | fouls 0 |   5.1s/turn | $7.02 | MOVE 11 13
+turn  314 | attempt 16 | pours 270 | undos 29 | fouls 0 |   5.1s/turn | $7.06 | MOVE 11 1
+turn  315 | attempt 16 | pours 271 | undos 29 | fouls 0 |   5.1s/turn | $7.09 | MOVE 3 11
+turn  316 | attempt 16 | pours 272 | undos 29 | fouls 0 |   5.1s/turn | $7.12 | MOVE 2 3
+turn  317 | attempt 16 | pours 273 | undos 29 | fouls 0 |   5.1s/turn | $7.16 | MOVE 2 1
+turn  318 | attempt 16 | pours 274 | undos 29 | fouls 0 |   5.1s/turn | $7.19 | MOVE 2 13
+turn  319 | attempt 16 | pours 275 | undos 29 | fouls 0 |   5.1s/turn | $7.23 | MOVE 3 2
+turn  320 | attempt 16 | pours 276 | undos 29 | fouls 0 |   5.1s/turn | $7.26 | MOVE 5 2
+turn  321 | attempt 16 | pours 277 | undos 29 | fouls 0 |   5.1s/turn | $7.29 | MOVE 7 5
+turn  322 | attempt 16 | pours 278 | undos 29 | fouls 0 |   5.1s/turn | $7.33 | MOVE 7 3
+turn  323 | attempt 16 | pours 279 | undos 29 | fouls 0 |   5.1s/turn | $7.36 | MOVE 7 13
+turn  324 | attempt 16 | pours 280 | undos 29 | fouls 0 |   5.2s/turn | $7.42 | MOVE 12 7
+turn  325 | attempt 16 | pours 281 | undos 29 | fouls 0 |   5.2s/turn | $7.47 | MOVE 12 9
+turn  326 | attempt 17 | pours 281 | undos 29 | fouls 0 |   5.3s/turn | $8.10 | RESTART
+turn  327 | attempt 17 | pours 282 | undos 29 | fouls 0 |   5.3s/turn | $8.13 | MOVE 3 13
+turn  328 | attempt 17 | pours 283 | undos 29 | fouls 0 |   5.3s/turn | $8.17 | MOVE 9 3
+turn  329 | attempt 17 | pours 284 | undos 29 | fouls 0 |   5.3s/turn | $8.20 | MOVE 9 13
+turn  330 | attempt 17 | pours 285 | undos 29 | fouls 0 |   5.4s/turn | $8.24 | MOVE 1 14
+turn  331 | attempt 17 | pours 286 | undos 29 | fouls 0 |   5.3s/turn | $8.28 | MOVE 9 1
+turn  332 | attempt 17 | pours 287 | undos 29 | fouls 0 |   5.3s/turn | $8.31 | MOVE 6 9
+turn  333 | attempt 17 | pours 288 | undos 29 | fouls 0 |   5.3s/turn | $8.35 | MOVE 8 6
+turn  334 | attempt 17 | pours 289 | undos 29 | fouls 0 |   5.3s/turn | $8.38 | MOVE 2 14
+turn  335 | attempt 17 | pours 290 | undos 29 | fouls 0 |   5.4s/turn | $8.42 | MOVE 8 2
+turn  336 | attempt 17 | pours 291 | undos 29 | fouls 0 |   5.4s/turn | $8.45 | MOVE 13 8
+turn  337 | attempt 17 | pours 292 | undos 29 | fouls 0 |   5.4s/turn | $8.50 | MOVE 6 13
+turn  338 | attempt 17 | pours 293 | undos 29 | fouls 0 |   5.4s/turn | $8.54 | MOVE 10 13
+turn  339 | attempt 17 | pours 294 | undos 29 | fouls 0 |   5.4s/turn | $8.57 | MOVE 7 6
+turn  340 | attempt 17 | pours 295 | undos 29 | fouls 0 |   5.4s/turn | $8.61 | MOVE 10 7
+turn  341 | attempt 17 | pours 296 | undos 29 | fouls 0 |   5.4s/turn | $8.64 | MOVE 10 6
+turn  342 | attempt 17 | pours 297 | undos 29 | fouls 0 |   5.4s/turn | $8.69 | MOVE 10 14
+turn  343 | attempt 17 | pours 298 | undos 29 | fouls 0 |   5.5s/turn | $8.76 | MOVE 4 10
+turn  344 | attempt 17 | pours 299 | undos 29 | fouls 0 |   5.5s/turn | $8.81 | MOVE 3 4
+turn  345 | attempt 17 | pours 299 | undos 30 | fouls 0 |   5.6s/turn | $8.88 | UNDO
+turn  346 | attempt 17 | pours 299 | undos 31 | fouls 0 |   5.6s/turn | $8.92 | UNDO
+turn  347 | attempt 17 | pours 300 | undos 31 | fouls 0 |   5.7s/turn | $8.99 | MOVE 8 10
+turn  348 | attempt 17 | pours 301 | undos 31 | fouls 0 |   5.7s/turn | $9.03 | MOVE 4 8
+turn  349 | attempt 17 | pours 302 | undos 31 | fouls 0 |   5.7s/turn | $9.08 | MOVE 3 4
+turn  350 | attempt 17 | pours 302 | undos 32 | fouls 0 |   5.7s/turn | $9.14 | UNDO
+turn  351 | attempt 17 | pours 302 | undos 33 | fouls 0 |   5.8s/turn | $9.18 | UNDO
+turn  352 | attempt 17 | pours 302 | undos 34 | fouls 0 |   5.8s/turn | $9.22 | UNDO
+turn  353 | attempt 17 | pours 303 | undos 34 | fouls 0 |   5.8s/turn | $9.27 | MOVE 9 10
+turn  354 | attempt 17 | pours 304 | undos 34 | fouls 0 |   5.8s/turn | $9.32 | MOVE 4 9
+turn  355 | attempt 17 | pours 304 | undos 35 | fouls 0 |   5.9s/turn | $9.38 | UNDO
+turn  356 | attempt 17 | pours 304 | undos 36 | fouls 0 |   5.9s/turn | $9.42 | UNDO
+turn  357 | attempt 17 | pours 305 | undos 36 | fouls 0 |   5.9s/turn | $9.47 | MOVE 2 10
+turn  358 | attempt 17 | pours 305 | undos 37 | fouls 0 |   5.9s/turn | $9.51 | UNDO
+turn  359 | attempt 17 | pours 306 | undos 37 | fouls 0 |   6.0s/turn | $9.57 | MOVE 12 10
+turn  360 | attempt 17 | pours 307 | undos 37 | fouls 0 |   6.0s/turn | $9.60 | MOVE 1 12
+turn  361 | attempt 17 | pours 308 | undos 37 | fouls 0 |   5.9s/turn | $9.64 | MOVE 11 10
+turn  362 | attempt 17 | pours 309 | undos 37 | fouls 0 |   5.9s/turn | $9.68 | MOVE 11 1
+turn  363 | attempt 17 | pours 310 | undos 37 | fouls 0 |   5.9s/turn | $9.71 | MOVE 3 11
+turn  364 | attempt 17 | pours 311 | undos 37 | fouls 0 |   5.9s/turn | $9.75 | MOVE 2 3
+turn  365 | attempt 17 | pours 312 | undos 37 | fouls 0 |   5.9s/turn | $9.79 | MOVE 2 1
+turn  366 | attempt 17 | pours 313 | undos 37 | fouls 0 |   5.9s/turn | $9.83 | MOVE 10 2
+turn  367 | attempt 17 | pours 314 | undos 37 | fouls 0 |   5.9s/turn | $9.87 | MOVE 12 10
+turn  368 | attempt 17 | pours 315 | undos 37 | fouls 0 |   5.9s/turn | $9.91 | MOVE 12 9
+turn  369 | attempt 17 | pours 316 | undos 37 | fouls 0 |   5.9s/turn | $9.94 | MOVE 6 12
+turn  370 | attempt 17 | pours 317 | undos 37 | fouls 0 |   5.9s/turn | $9.98 | MOVE 6 10
+turn  371 | attempt 17 | pours 317 | undos 38 | fouls 0 |   6.0s/turn | $10.03 | UNDO
+turn  372 | attempt 17 | pours 317 | undos 39 | fouls 0 |   5.9s/turn | $10.07 | UNDO
+turn  373 | attempt 17 | pours 318 | undos 39 | fouls 0 |   5.9s/turn | $10.11 | MOVE 7 12
+turn  374 | attempt 17 | pours 319 | undos 39 | fouls 0 |   5.9s/turn | $10.15 | MOVE 2 7
+turn  375 | attempt 17 | pours 320 | undos 39 | fouls 0 |   5.9s/turn | $10.19 | MOVE 3 2
+turn  376 | attempt 17 | pours 321 | undos 39 | fouls 0 |   5.9s/turn | $10.23 | MOVE 3 12
+turn  377 | attempt 17 | pours 322 | undos 39 | fouls 0 |   5.9s/turn | $10.27 | MOVE 8 3
+turn  378 | attempt 17 | pours 322 | undos 40 | fouls 0 |   6.1s/turn | $10.38 | UNDO
+turn  379 | attempt 17 | pours 322 | undos 41 | fouls 0 |   6.1s/turn | $10.42 | UNDO
+turn  380 | attempt 17 | pours 322 | undos 42 | fouls 0 |   6.1s/turn | $10.46 | UNDO
+turn  381 | attempt 17 | pours 322 | undos 43 | fouls 0 |   6.1s/turn | $10.49 | UNDO
+turn  382 | attempt 17 | pours 322 | undos 44 | fouls 0 |   6.1s/turn | $10.53 | UNDO
+turn  383 | attempt 17 | pours 323 | undos 44 | fouls 0 |   6.1s/turn | $10.57 | MOVE 11 12
+turn  384 | attempt 17 | pours 324 | undos 44 | fouls 0 |   6.0s/turn | $10.61 | MOVE 6 11
+turn  385 | attempt 17 | pours 325 | undos 44 | fouls 0 |   6.0s/turn | $10.65 | MOVE 6 10
+turn  386 | attempt 17 | pours 326 | undos 44 | fouls 0 |   6.0s/turn | $10.69 | MOVE 8 6
+turn  387 | attempt 17 | pours 327 | undos 44 | fouls 0 |   6.0s/turn | $10.73 | MOVE 4 8
+turn  388 | attempt 17 | pours 328 | undos 44 | fouls 0 |   6.0s/turn | $10.77 | MOVE 4 12
+turn  389 | attempt 17 | pours 329 | undos 44 | fouls 0 |   6.0s/turn | $10.81 | MOVE 4 9
+turn  390 | attempt 17 | pours 330 | undos 44 | fouls 0 |   6.0s/turn | $10.85 | MOVE 4 12
+turn  391 | attempt 17 | pours 331 | undos 44 | fouls 0 |   6.0s/turn | $10.89 | MOVE 7 4
+turn  392 | attempt 17 | pours 332 | undos 44 | fouls 0 |   6.0s/turn | $10.93 | MOVE 2 7
+turn  393 | attempt 17 | pours 333 | undos 44 | fouls 0 |   6.0s/turn | $10.97 | MOVE 3 2
+turn  394 | attempt 17 | pours 334 | undos 44 | fouls 0 |   6.0s/turn | $11.01 | MOVE 3 4
+turn  395 | attempt 17 | pours 335 | undos 44 | fouls 0 |   6.0s/turn | $11.05 | MOVE 3 6
+turn  396 | attempt 17 | pours 336 | undos 44 | fouls 0 |   6.0s/turn | $11.09 | MOVE 5 2
+turn  397 | attempt 17 | pours 337 | undos 44 | fouls 0 |   6.0s/turn | $11.13 | MOVE 11 3
+turn  398 | attempt 17 | pours 338 | undos 44 | fouls 0 |   6.0s/turn | $11.17 | MOVE 5 3
+turn  399 | attempt 17 | pours 339 | undos 44 | fouls 0 |   6.0s/turn | $11.21 | MOVE 11 14
+turn  400 | attempt 17 | pours 340 | undos 44 | fouls 0 |   6.0s/turn | $11.25 | MOVE 1 11
+turn  401 | attempt 17 | pours 341 | undos 44 | fouls 0 |   6.0s/turn | $11.29 | MOVE 5 11
+turn  402 | attempt 17 | pours 342 | undos 44 | fouls 0 |   6.0s/turn | $11.33 | MOVE 5 13
+turn  403 | attempt 17 | pours 343 | undos 44 | fouls 0 |   6.0s/turn | $11.37 | MOVE 5 11
+turn  404 | attempt 17 | pours 344 | undos 44 | fouls 0 |   6.0s/turn | $11.41 | MOVE 9 5
+turn  405 | attempt 17 | pours 345 | undos 44 | fouls 0 |   6.0s/turn | $11.45 | MOVE 8 9
+turn  406 | attempt 17 | pours 346 | undos 44 | fouls 0 |   6.0s/turn | $11.49 | MOVE 8 5
+turn  407 | attempt 17 | pours 347 | undos 44 | fouls 0 |   6.0s/turn | $11.53 | MOVE 1 9
+{
+ "level": 286,
+ "player": "GPT (gpt-6.2-astra)",
+ "model": "gpt-6.2-astra",
+ "vendor": "OpenAI",
+ "effort": "off",
+ "status": "solved",
+ "solved": true,
+ "turns": 408,
+ "total_pours": 348,
+ "undos": 44,
+ "restarts": 16,
+ "attempts": 17,
+ "fouls": 0,
+ "seconds": 2439.5,
+ "tokens": {
+  "input": 17493782,
+  "cached": 17141705,
+  "output": 47364
+ },
+ "cost_usd": 11.5679,
+ "solution_pours": 52,
+ "optimal_pours": 50,
+ "over_optimal": 2
+}

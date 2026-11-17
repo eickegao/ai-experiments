@@ -126,11 +126,20 @@ class GeminiPlayer(Player):
 
         # a request that has not answered in 5 minutes is treated as stuck and retried by the session (seen 2026-11-17:
         # the first high-effort call sat for 9 minutes without returning)
-        self.client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY"),
-                                   http_options=types.HttpOptions(timeout=300_000))
+        # Two ways in, same model. With GEMINI_VERTEX_PROJECT set: Vertex AI on that Google Cloud project, signed in
+        # through Application Default Credentials (`gcloud auth application-default login`), location "global"; this
+        # route takes thinking levels only (no thinking_budget). Otherwise: the AI Studio key GEMINI_API_KEY.
+        opts = types.HttpOptions(timeout=300_000)
+        self.vertex = os.environ.get("GEMINI_VERTEX_PROJECT")
+        if self.vertex:
+            if effort == "off":
+                raise SystemExit("Vertex AI rejects thinking_budget for this model; use --effort low (the lowest level)")
+            self.client = genai.Client(vertexai=True, project=self.vertex, location="global", http_options=opts)
+        else:
+            self.client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY"), http_options=opts)
         self.model, self.effort = model, effort
         self.thinking = types.ThinkingConfig(thinking_budget=0) if effort == "off" else types.ThinkingConfig(thinking_level=effort)
-        self.sent = "thinking_budget=0" if effort == "off" else f"thinking_level={effort}"
+        self.sent = ("thinking_budget=0" if effort == "off" else f"thinking_level={effort}") + (" (Vertex AI)" if self.vertex else " (AI Studio)")
         self.name = f"Gemini ({model})"
 
     def chat(self, system, messages) -> Reply:

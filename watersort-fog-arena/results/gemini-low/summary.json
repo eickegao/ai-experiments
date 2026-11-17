@@ -1,0 +1,22 @@
+{
+ "level": 286,
+ "player": "Gemini (gemini-4-carbon)",
+ "model": "gemini-4-carbon",
+ "vendor": "Google",
+ "effort": "low",
+ "status": "paused",
+ "solved": false,
+ "turns": 2,
+ "total_pours": 2,
+ "undos": 0,
+ "restarts": 0,
+ "attempts": 1,
+ "fouls": 0,
+ "seconds": 13.0,
+ "tokens": {
+  "input": 1599,
+  "cached": 0,
+  "output": 117
+ },
+ "cost_usd": 0.0044
+}
