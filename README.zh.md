@@ -12,6 +12,7 @@
 |---|---|---|
 | [`chess-arena/`](chess-arena/README.zh.md) | Anthropic 最强模型对 OpenAI 最强模型下国际象棋。python-chess 判合法性，Stockfish 评估每一步，每轮两局换色。 | 已完成：GPT-6 Astra 2 比 0 胜 Claude Fable 5.1（2026-11-08） |
 | [`color-battle-arena/`](color-battle-arena/README.zh.md) | 四个大模型（Claude、GPT、Gemini、DeepSeek）各遥控一颗球，在 PlayDoz 的 Color Battle（60 秒四人抢地盘）里对战。游戏引擎裁定每条指令；两轮（只转向、带技能），每个模型每个角落都开一次。 | 框架就绪，即将运行（2026-11-09） |
+| [`watersort-fog-arena/`](watersort-fog-arena/README.zh.md) | 四个大模型各自打同一个倒水雾关（PlayDoz 第 286 关），全程一个对话，允许撤销和重来。记录总步数、撤销、重来次数和通关步数，对照证明过的 50 步最优解。 | 程序就绪，付费对局未开跑（2026-11-17） |
 
 ## 怎么复现
 

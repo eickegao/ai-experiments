@@ -1,0 +1,4 @@
+anthropic>=2.0
+openai>=3.0
+google-genai>=1.30
+pytest>=8   # tests only
