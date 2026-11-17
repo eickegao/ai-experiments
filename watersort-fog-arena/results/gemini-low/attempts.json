@@ -1,0 +1,35 @@
+[
+ {
+  "attempt": 1,
+  "first_turn": 1,
+  "pours": 21,
+  "undos": 0,
+  "fouls": 0,
+  "seconds": 607.1,
+  "ended": "restart",
+  "last_turn": 22,
+  "standing_pours": 21
+ },
+ {
+  "attempt": 2,
+  "first_turn": 23,
+  "pours": 30,
+  "undos": 6,
+  "fouls": 12,
+  "seconds": 1824.1,
+  "ended": "restart",
+  "last_turn": 71,
+  "standing_pours": 24
+ },
+ {
+  "attempt": 3,
+  "first_turn": 72,
+  "pours": 9,
+  "undos": 3,
+  "fouls": 2,
+  "seconds": 392.3,
+  "ended": "unfinished",
+  "last_turn": 85,
+  "standing_pours": 6
+ }
+]

@@ -19,6 +19,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 
 MAX_OUT = 16000
+CLAUDE_MAX_OUT = 64000
 
 
 @dataclass
@@ -64,10 +65,14 @@ class ClaudePlayer(Player):
 
         t0, at = time.time(), _now()
         try:
-            r = self.client.messages.create(
-                model=self.model, max_tokens=MAX_OUT, system=system, output_config={"effort": self.effort},
+            # Thinking cannot be switched off for this model and counts against max_tokens. With the 16000 cap the
+            # official run had 10 replies cut off before any command was written (turns 128-158), so from turn 159 on
+            # the cap is 64000, streamed to stay clear of HTTP timeouts.
+            with self.client.messages.stream(
+                model=self.model, max_tokens=CLAUDE_MAX_OUT, system=system, output_config={"effort": self.effort},
                 cache_control={"type": "ephemeral"}, messages=messages,
-            )
+            ) as stream:
+                r = stream.get_final_message()
         except anthropic.APIError as e:
             return Reply("", time.time() - t0, error=f"{type(e).__name__}: {e}", at=at)
         if r.stop_reason == "refusal":
@@ -75,6 +80,8 @@ class ClaudePlayer(Player):
         u = r.usage
         read, write = u.cache_read_input_tokens or 0, u.cache_creation_input_tokens or 0
         usage = {"input": u.input_tokens + read + write, "cached": read, "cache_write": write, "output": u.output_tokens}
+        if r.stop_reason == "max_tokens":
+            usage["cut_off"] = True
         text = "".join(b.text for b in r.content if b.type == "text")
         return Reply(text, time.time() - t0, usage, at=at)
 

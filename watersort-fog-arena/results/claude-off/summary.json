@@ -1,0 +1,22 @@
+{
+ "level": 286,
+ "player": "Claude (claude-fable-5-2)",
+ "model": "claude-fable-5-2",
+ "vendor": "Anthropic",
+ "effort": "off",
+ "status": "stopped_by_operator",
+ "solved": false,
+ "turns": 161,
+ "total_pours": 127,
+ "undos": 11,
+ "restarts": 6,
+ "attempts": 7,
+ "fouls": 17,
+ "seconds": 5781.5,
+ "tokens": {
+  "input": 4275774,
+  "cached": 4119752,
+  "output": 526697
+ },
+ "cost_usd": 23.4508
+}

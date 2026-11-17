@@ -4,19 +4,19 @@
  "model": "gemini-4-carbon",
  "vendor": "Google",
  "effort": "low",
- "status": "paused",
+ "status": "stopped_by_operator",
  "solved": false,
- "turns": 2,
- "total_pours": 2,
- "undos": 0,
- "restarts": 0,
- "attempts": 1,
- "fouls": 0,
- "seconds": 13.0,
+ "turns": 85,
+ "total_pours": 60,
+ "undos": 9,
+ "restarts": 2,
+ "attempts": 3,
+ "fouls": 14,
+ "seconds": 2823.5,
  "tokens": {
-  "input": 1599,
-  "cached": 0,
-  "output": 117
+  "input": 2268944,
+  "cached": 1971533,
+  "output": 79706
  },
- "cost_usd": 0.0044
+ "cost_usd": 1.589
 }

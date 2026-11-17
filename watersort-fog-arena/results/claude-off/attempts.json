@@ -1,0 +1,79 @@
+[
+ {
+  "attempt": 1,
+  "first_turn": 1,
+  "pours": 23,
+  "undos": 0,
+  "fouls": 3,
+  "seconds": 69.8,
+  "ended": "restart",
+  "last_turn": 27,
+  "standing_pours": 23
+ },
+ {
+  "attempt": 2,
+  "first_turn": 28,
+  "pours": 13,
+  "undos": 0,
+  "fouls": 0,
+  "seconds": 233.3,
+  "ended": "restart",
+  "last_turn": 41,
+  "standing_pours": 13
+ },
+ {
+  "attempt": 3,
+  "first_turn": 42,
+  "pours": 13,
+  "undos": 1,
+  "fouls": 0,
+  "seconds": 332.1,
+  "ended": "restart",
+  "last_turn": 56,
+  "standing_pours": 12
+ },
+ {
+  "attempt": 4,
+  "first_turn": 57,
+  "pours": 13,
+  "undos": 2,
+  "fouls": 0,
+  "seconds": 544.4,
+  "ended": "restart",
+  "last_turn": 72,
+  "standing_pours": 11
+ },
+ {
+  "attempt": 5,
+  "first_turn": 73,
+  "pours": 19,
+  "undos": 0,
+  "fouls": 1,
+  "seconds": 559.7,
+  "ended": "restart",
+  "last_turn": 93,
+  "standing_pours": 19
+ },
+ {
+  "attempt": 6,
+  "first_turn": 94,
+  "pours": 11,
+  "undos": 0,
+  "fouls": 0,
+  "seconds": 246.4,
+  "ended": "restart",
+  "last_turn": 105,
+  "standing_pours": 11
+ },
+ {
+  "attempt": 7,
+  "first_turn": 106,
+  "pours": 35,
+  "undos": 8,
+  "fouls": 13,
+  "seconds": 3795.8,
+  "ended": "unfinished",
+  "last_turn": 161,
+  "standing_pours": 27
+ }
+]
