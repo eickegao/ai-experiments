@@ -1,0 +1,22 @@
+{
+ "level": 286,
+ "player": "GPT (gpt-6.2-astra)",
+ "model": "gpt-6.2-astra",
+ "vendor": "OpenAI",
+ "effort": "high",
+ "status": "paused",
+ "solved": false,
+ "turns": 10,
+ "total_pours": 10,
+ "undos": 0,
+ "restarts": 0,
+ "attempts": 1,
+ "fouls": 0,
+ "seconds": 28.4,
+ "tokens": {
+  "input": 15775,
+  "cached": 6056,
+  "output": 463
+ },
+ "cost_usd": 0.0987
+}

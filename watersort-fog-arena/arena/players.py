@@ -112,7 +112,12 @@ class GeminiPlayer(Player):
     def __init__(self, model: str = "gemini-4-carbon", effort: str = "medium"):
         from google import genai
 
-        self.client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY"))
+        from google.genai import types
+
+        # a request that has not answered in 5 minutes is treated as stuck and retried by the session (seen 2026-11-17:
+        # the first high-effort call sat for 9 minutes without returning)
+        self.client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY"),
+                                   http_options=types.HttpOptions(timeout=300_000))
         self.model, self.effort = model, effort
         self.name = f"Gemini ({model})"
 
