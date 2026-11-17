@@ -2,6 +2,13 @@
 so everything the model saw and said earlier (boards, its own reasons, failed attempts) is in its context. Only the
 visible reply text is carried forward; hidden reasoning is not replayed, for any vendor. Reasoning depth is the same
 word ("medium" / "high") for everyone.
+
+Effort "off" means "thinking switched off, or as close as the API allows" (probed 2026-11-17):
+  DeepSeek   thinking disabled
+  Gemini     thinking_budget 0
+  OpenAI     cannot be switched off for gpt-6.2-astra ('none' and 'minimal' are rejected) → lowest level, "low"
+  Anthropic  cannot be switched off for claude-fable-5-2 (thinking "disabled" is rejected) → lowest level, "low"
+Each player's `sent` attribute says what was actually sent; it goes into the log header.
 """
 from __future__ import annotations
 
@@ -27,6 +34,7 @@ class Player:
     name = "player"
     model = ""
     vendor = ""
+    sent = ""   # the thinking setting actually sent to the API
 
     def chat(self, system: str, messages: list[dict]) -> Reply:
         """messages: [{"role": "user" | "assistant", "content": str}, ...], ending with a user turn."""
@@ -47,7 +55,8 @@ class ClaudePlayer(Player):
         import anthropic
 
         self.client = anthropic.Anthropic()
-        self.model, self.effort = model, effort
+        self.model, self.effort = model, ("low" if effort == "off" else effort)
+        self.sent = f"output_config.effort={self.effort}"
         self.name = f"Claude ({model})"
 
     def chat(self, system, messages) -> Reply:
@@ -79,7 +88,8 @@ class OpenAIPlayer(Player):
         import openai
 
         self.client = openai.OpenAI()
-        self.model, self.effort = model, effort
+        self.model, self.effort = model, ("low" if effort == "off" else effort)
+        self.sent = f"reasoning.effort={self.effort}"
         self.name = f"GPT ({model})"
 
     def chat(self, system, messages) -> Reply:
@@ -119,6 +129,8 @@ class GeminiPlayer(Player):
         self.client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY"),
                                    http_options=types.HttpOptions(timeout=300_000))
         self.model, self.effort = model, effort
+        self.thinking = types.ThinkingConfig(thinking_budget=0) if effort == "off" else types.ThinkingConfig(thinking_level=effort)
+        self.sent = "thinking_budget=0" if effort == "off" else f"thinking_level={effort}"
         self.name = f"Gemini ({model})"
 
     def chat(self, system, messages) -> Reply:
@@ -132,7 +144,7 @@ class GeminiPlayer(Player):
                 model=self.model, contents=contents,
                 config=types.GenerateContentConfig(
                     system_instruction=system, max_output_tokens=MAX_OUT,
-                    thinking_config=types.ThinkingConfig(thinking_level=self.effort),
+                    thinking_config=self.thinking,
                 ),
             )
         except Exception as e:  # google-genai raises its own error classes
@@ -159,6 +171,8 @@ class DeepSeekPlayer(Player):
 
         self.client = openai.OpenAI(api_key=os.environ["DEEPSEEK_API_KEY"], base_url="https://api.deepseek.com")
         self.model, self.effort = model, effort
+        self.extra = {"thinking": {"type": "disabled"}} if effort == "off" else {"thinking": {"type": "enabled"}, "reasoning_effort": effort}
+        self.sent = "thinking disabled" if effort == "off" else f"thinking enabled, reasoning_effort={effort}"
         self.name = f"DeepSeek ({model})"
 
     def chat(self, system, messages) -> Reply:
@@ -169,7 +183,7 @@ class DeepSeekPlayer(Player):
             r = self.client.chat.completions.create(
                 model=self.model, max_tokens=24000,
                 messages=[{"role": "system", "content": system}, *messages],
-                extra_body={"thinking": {"type": "enabled"}, "reasoning_effort": self.effort},
+                extra_body=self.extra,
             )
         except openai.APIError as e:
             return Reply("", time.time() - t0, error=f"{type(e).__name__}: {e}", at=at)

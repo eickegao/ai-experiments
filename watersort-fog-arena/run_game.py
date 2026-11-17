@@ -34,7 +34,7 @@ def load_env():
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--player", required=True)
-    ap.add_argument("--effort", default="medium", help="reasoning effort, same word for every vendor (medium | high)")
+    ap.add_argument("--effort", default="medium", help="reasoning effort, same word for every vendor: medium | high | off (thinking off, or the lowest level where it cannot be switched off; see arena/players.py)")
     ap.add_argument("--level", type=int, default=286)
     ap.add_argument("--max-pours", type=int, default=500)
     ap.add_argument("--max-turns", type=int, default=1500, help="hard stop on model replies (fouls, undos and restarts count here)")

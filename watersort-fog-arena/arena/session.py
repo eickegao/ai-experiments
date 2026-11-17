@@ -51,7 +51,7 @@ class Session:
         self.cost_known = True
         self.status = "running"
         header = {"type": "header", "level": level, "capacity": capacity, "tubes": tubes, "player": player.name,
-                  "model": player.model, "vendor": player.vendor, "effort": effort, "max_pours": max_pours,
+                  "model": player.model, "vendor": player.vendor, "effort": effort, "thinking_sent": player.sent, "max_pours": max_pours,
                   "max_turns": max_turns, "system": self.system}
         if log.exists() and log.stat().st_size:
             self._replay(header)

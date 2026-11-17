@@ -1,0 +1,22 @@
+{
+ "level": 286,
+ "player": "DeepSeek (deepseek-v4-pro)",
+ "model": "deepseek-v4-pro",
+ "vendor": "DeepSeek",
+ "effort": "off",
+ "status": "paused",
+ "solved": false,
+ "turns": 10,
+ "total_pours": 6,
+ "undos": 1,
+ "restarts": 1,
+ "attempts": 2,
+ "fouls": 2,
+ "seconds": 18.7,
+ "tokens": {
+  "input": 17779,
+  "cached": 15104,
+  "output": 972
+ },
+ "cost_usd": 0.0039
+}
