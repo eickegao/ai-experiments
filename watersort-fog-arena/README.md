@@ -4,7 +4,7 @@ English · [中文说明](README.zh.md)
 
 Four LLMs each play the same fogged level of PlayDoz's Water Sort (level 286) on their own, in one long conversation, with undo and restart allowed. Made for [**Build with AI**](https://www.youtube.com/@buildwithai2027) and [**独立营业中**](https://www.youtube.com/@独立营业中); more at [videodoz.com](https://videodoz.com).
 
-Status: harness ready, paid runs not started (2026-11-17).
+Status: done (2026-11-17). GPT-6.2 Astra solved the level in 52 pours; the other three did not finish.
 
 ## What and why
 
@@ -50,7 +50,7 @@ The rules are a Python port of the game's own logic (`nutssort_logic.lua` for po
 | Google | `gemini-4-carbon` |
 | DeepSeek | `deepseek-v4-pro` |
 
-Same reasoning-effort word for all four; the level used for the official runs is decided after a short timing pilot. Prices are in `arena/prices.py`.
+The official runs use the lowest thinking setting each API accepts (see Results). Prices are in `arena/prices.py`.
 
 ## How to run
 
@@ -72,4 +72,23 @@ Keys go in the repo-root `.env`. The level data is read from a local checkout of
 
 ## Results
 
-Not run yet.
+Run on 2026-11-17, one session per model. Reference: 50 pours with the whole board visible.
+
+| Model | Thinking setting sent | Solved | Solution pours | Total pours | Undos | Restarts | Fouls | Minutes | USD |
+|---|---|---|---|---|---|---|---|---|---|
+| gpt-6.2-astra | reasoning effort low | yes, on attempt 17 | 52 (+2) | 348 | 44 | 16 | 0 | 40.7 | 11.57 |
+| claude-fable-5-2 | effort low | no, stopped by us | - | 127 | 11 | 6 | 17 (11 of them replies cut off by the output cap) | 96.4 | 23.45 |
+| gemini-4-carbon | thinking level low | no, stopped by us | - | 60 | 9 | 2 | 14 (10 of them empty replies) | 47.1 | 1.59 |
+| deepseek-v4-pro | thinking on, effort low | no, stopped by us | - | 71 | 22 | 5 | 9 | 93.4 | 1.41 |
+| deepseek-v4-pro | thinking off | no, hit the 500-pour limit | - | 500 | 166 | 166 | 6 | 26.9 | 1.97 |
+
+Read these with care:
+
+- **One session per model.** This is one run, not a statistic.
+- **Three of the four unsolved sessions were stopped by us** (too slow or too expensive), not by the 500-pour limit. They might have solved the level with more time.
+- **Thinking settings.** The plan was "thinking off" for speed. Only DeepSeek can switch it off; Claude Fable 5.2 and GPT-6.2 Astra reject that and bottom out at "low". So the four listed runs use "low", and the thinking-off DeepSeek run is kept as an extra. In that run DeepSeek repeated the same five commands 163 times.
+- **Claude and the output cap.** Thinking counts against the reply length. With our 16,000-token cap Claude ran out before writing a command 10 times (recorded as fouls in the raw log; they are ours, not the model's). From turn 159 the cap was 64,000; it then spent the full 64,000 tokens twice in a row, about 12 minutes each, without giving a command, and we stopped it.
+- **Gemini** first ran through an AI Studio key at thinking_budget 0 (`gemini-off-stopped-credit-ran-out/`); that project ran out of prepaid credit at turn 108. The listed run is a fresh one through Vertex AI at thinking level low.
+- `deepseek-medium-stopped-after-4-turns/` and `pilot/` are timing pilots and not part of the results.
+
+Files: `results/summary.md`, and per run `turns.jsonl` (every board sent, every raw reply), `summary.json`, `attempts.json`.
