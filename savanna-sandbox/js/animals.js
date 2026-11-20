@@ -7,27 +7,27 @@ import { moveToward, settle } from './agents.js';
 import * as MD from './models.js';
 
 export const SPEC = {
-  zebra:      { walk: 1.25, run: 5.0, hp: 2, meat: 10, size: 1.2, cap: 16, prey: true, stride: 4.2, color: '#f1eee4' },
-  wildebeest: { walk: 1.15, run: 4.6, hp: 2, meat: 12, size: 1.2, cap: 20, prey: true, stride: 4.2, color: '#4a443f' },
-  gazelle:    { walk: 1.45, run: 5.9, hp: 1, meat: 6,  size: 1.15, cap: 16, prey: true, stride: 5.2, color: '#d6a45c' },
-  elephant:   { walk: 0.85, run: 2.4, hp: 40, meat: 0, size: 1.25, cap: 7, prey: false, stride: 2.2, color: '#8f8b8e' },
-  giraffe:    { walk: 1.0, run: 3.8, hp: 8, meat: 0,  size: 1.15, cap: 7, prey: false, stride: 2.0, color: '#e6b95c' },
-  lion:       { walk: 1.2, run: 6.4, hp: 6, meat: 0,  size: 1.25, cap: 6, prey: false, stride: 4.4, color: '#d7a24f' },
+  zebra:      { walk: 1.25, run: 5.0, hp: 2, meat: 10, size: 1.0, cap: 22, prey: true, stride: 5.0, color: '#f1eee4' },
+  wildebeest: { walk: 1.15, run: 4.6, hp: 2, meat: 12, size: 1.0, cap: 30, prey: true, stride: 5.0, color: '#4a443f' },
+  gazelle:    { walk: 1.45, run: 5.9, hp: 1, meat: 6,  size: 0.95, cap: 22, prey: true, stride: 6.2, color: '#d6a45c' },
+  elephant:   { walk: 0.85, run: 2.4, hp: 40, meat: 0, size: 1.05, cap: 9, prey: false, stride: 2.6, color: '#8f8b8e' },
+  giraffe:    { walk: 1.0, run: 3.8, hp: 8, meat: 0,  size: 0.95, cap: 8, prey: false, stride: 2.4, color: '#e6b95c' },
+  lion:       { walk: 1.2, run: 6.4, hp: 6, meat: 0,  size: 1.0, cap: 7, prey: false, stride: 5.2, color: '#d7a24f' },
 };
 
 export function createAnimals(G) {
   const { stage, terrain: T, rng, villages } = G;
   const scene = stage.scene;
   const kinds = {
-    zebra: new CreatureKind(scene, MD.zebraParts(), 90),
-    wildebeest: new CreatureKind(scene, MD.wildebeestParts(), 110),
-    gazelle: new CreatureKind(scene, MD.gazelleParts(), 90),
-    elephant: new CreatureKind(scene, MD.elephantParts(), 24, { swing: 0.45 }),
-    giraffe: new CreatureKind(scene, MD.giraffeParts(), 24, { swing: 0.5 }),
-    lion: new CreatureKind(scene, MD.lionParts(), 24),
-    bird: new CreatureKind(scene, MD.birdParts(), 80),
+    zebra: new CreatureKind(scene, MD.zebraParts(), 420),
+    wildebeest: new CreatureKind(scene, MD.wildebeestParts(), 560),
+    gazelle: new CreatureKind(scene, MD.gazelleParts(), 420),
+    elephant: new CreatureKind(scene, MD.elephantParts(), 70, { swing: 0.45 }),
+    giraffe: new CreatureKind(scene, MD.giraffeParts(), 70, { swing: 0.5 }),
+    lion: new CreatureKind(scene, MD.lionParts(), 48),
+    bird: new CreatureKind(scene, MD.birdParts(), 160),
   };
-  const carcassMesh = new THREE.InstancedMesh(MD.carcassGeo(), toyMaterial(), 60);
+  const carcassMesh = new THREE.InstancedMesh(MD.carcassGeo(), toyMaterial(), 200);
   carcassMesh.castShadow = true; carcassMesh.count = 0; carcassMesh.frustumCulled = false;
   scene.add(carcassMesh);
 
@@ -63,22 +63,23 @@ export function createAnimals(G) {
   };
 
   // ---- initial population
-  const spot = (minVillage = 18) => {
+  const spot = (minVillage = 42) => {
     for (let i = 0; i < 200; i++) {
       const x = rng.range(8, N - 8), z = rng.range(8, N - 8);
       if (walkable(x, z) && !nearVillage(x, z, minVillage) && T.slope(x, z) < 0.5) return { x, z };
     }
     return { x: N / 2, z: 20 };
   };
-  for (const [kind, herds, size] of [['zebra', 3, 9], ['wildebeest', 3, 12], ['gazelle', 3, 9], ['elephant', 1, 5], ['giraffe', 2, 3]]) {
+  for (const [kind, herds, size] of [['zebra', 10, 12], ['wildebeest', 9, 18], ['gazelle', 10, 12], ['elephant', 4, 6], ['giraffe', 6, 4]]) {
     for (let i = 0; i < herds; i++) { const s = spot(); A.spawnHerd(kind, s.x, s.z, size); }
   }
-  const den = KOPJES[2];
-  const pride = A.spawnHerd('lion', den.x + 3, den.z - 4, 4);
-  pride.mode = 'rest'; pride.timer = 25; pride.home = { x: den.x + 3, z: den.z - 4 };
+  for (const den of [KOPJES[2], KOPJES[3], KOPJES[4]]) {
+    const pride = A.spawnHerd('lion', den.x + 5, den.z - 6, 5);
+    pride.mode = 'rest'; pride.timer = 25; pride.home = { x: den.x + 5, z: den.z - 6 }; pride.hunger = rng.range(15, 50);
+  }
 
-  for (let f = 0; f < 3; f++) {
-    const flock = { x: rng.range(20, N - 20), z: rng.range(20, N - 20), r: rng.range(7, 13), h: rng.range(11, 16), w: rng.range(0.25, 0.4) * (f % 2 ? 1 : -1), birds: [], tx: 0, tz: 0, target: null };
+  for (let f = 0; f < 9; f++) {
+    const flock = { x: rng.range(20, N - 20), z: rng.range(20, N - 20), r: rng.range(8, 16), h: rng.range(11, 17), w: rng.range(0.25, 0.4) * (f % 2 ? 1 : -1), birds: [], tx: 0, tz: 0, target: null };
     flock.tx = flock.x; flock.tz = flock.z;
     for (let i = 0; i < 7; i++) {
       const b = { x: 0, y: 0, z: 0, yaw: 0, scale: 1.5, gait: 0, amp: 0, flap: rng.range(0, 6), ph: (i / 7) * 6.28 + rng.range(-0.3, 0.3), dr: rng.range(-2, 2), dh: rng.range(-1, 1) };
@@ -144,7 +145,7 @@ export function createAnimals(G) {
   };
 
   const grazeScore = (x, z) => {
-    if (!walkable(x, z) || nearVillage(x, z, 17)) return -9;
+    if (!walkable(x, z) || nearVillage(x, z, 38)) return -9;
     const c = T.cell(x, z);
     if (T.fire[c] > 0) return -9;
     return T.grass[c] * 2 - T.burnt[c] * 2 + rng() * 0.6 - T.slope(x, z);
@@ -153,7 +154,7 @@ export function createAnimals(G) {
     const c = centre(h);
     let best = null, bs = -5;
     for (let i = 0; i < 12; i++) {
-      const a = rng.range(0, 6.28), r = rng.range(9, 28);
+      const a = rng.range(0, 6.28), r = rng.range(12, 42);
       const x = c.x + Math.cos(a) * r, z = c.z + Math.sin(a) * r;
       const s = grazeScore(x, z);
       if (s > bs) { bs = s; best = { x, z }; }
@@ -224,8 +225,8 @@ export function createAnimals(G) {
     h.hunger = (h.hunger ?? 30) - dt;
     if (h.mode === 'rest') {
       if (h.hunger <= 0 && G.stage.night < 0.8) {
-        const prey = A.nearestPrey(c.x, c.z, 55);
-        if (prey) { h.mode = 'stalk'; h.prey = prey; h.timer = 45; G.log('lion_hunt', { x: prey.x, z: prey.z }); }
+        const prey = A.nearestPrey(c.x, c.z, 90);
+        if (prey) { h.mode = 'stalk'; h.prey = prey; h.timer = 75; G.log('lion_hunt', { x: prey.x, z: prey.z }); }
         else h.hunger = 15;
       }
     } else if (h.mode === 'stalk') {

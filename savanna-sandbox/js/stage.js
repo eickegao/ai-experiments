@@ -27,24 +27,26 @@ export function createStage(canvas) {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color('#f4e7cf');
 
-  const camera = new THREE.PerspectiveCamera(26, 1, 1, 900);
+  const camera = new THREE.PerspectiveCamera(26, 1, 1, 3200);
 
   const hemi = new THREE.HemisphereLight('#fdf3e0', '#b89468', 0.9);
   scene.add(hemi);
   const sun = new THREE.DirectionalLight('#fff0d6', 2.7);
   sun.castShadow = true;
-  sun.shadow.mapSize.set(4096, 4096);
+  const maxTex = renderer.capabilities.maxTextureSize;
+  sun.shadow.mapSize.set(Math.min(8192, maxTex), Math.min(8192, maxTex));
   const sc = sun.shadow.camera;
-  sc.left = -76; sc.right = 76; sc.top = 76; sc.bottom = -76; sc.near = 10; sc.far = 400;
-  sun.shadow.bias = -0.0004;
+  const half = N * 0.78;
+  sc.left = -half; sc.right = half; sc.top = half; sc.bottom = -half; sc.near = 10; sc.far = N * 4.2;
+  sun.shadow.bias = -0.0005;
   sun.shadow.normalBias = 0.05;
   sun.shadow.radius = 2.5;
   sun.target.position.set(N / 2, 0, N / 2);
   scene.add(sun, sun.target);
 
   // A table top that only shows the slab's shadow.
-  const table = new THREE.Mesh(new THREE.CircleGeometry(400, 48).rotateX(-Math.PI / 2), new THREE.ShadowMaterial({ opacity: 0.22 }));
-  table.position.set(N / 2, -7.0, N / 2);
+  const table = new THREE.Mesh(new THREE.CircleGeometry(1400, 48).rotateX(-Math.PI / 2), new THREE.ShadowMaterial({ opacity: 0.22 }));
+  table.position.set(N / 2, -7.9, N / 2);
   table.receiveShadow = true;
   scene.add(table);
 
@@ -66,19 +68,21 @@ export function createStage(canvas) {
     hemi.intensity = lerp(a.hi, b.hi, f) + S.flash * 1.5;
     S.night = 1 - smooth(0.22, 0.3, t) * (1 - smooth(0.72, 0.8, t));
     scene.background.multiplyScalar(lerp(S.bgBoost, 0.55, S.night));
+    if (S.room) { scene.background.copy(S.room.bg); table.visible = false; }
     // Sun travels east -> west during the day; at night the same light acts as a moon.
     const dayPhase = clamp((t - 0.25) / 0.5, 0, 1);
     const ang = S.night > 0.5 ? 0.62 * Math.PI : lerp(0.14, 0.86, dayPhase) * Math.PI;
     const elev = S.night > 0.5 ? 0.9 : 0.35 + Math.sin(dayPhase * Math.PI) * 0.75;
-    sun.position.set(N / 2 + Math.cos(ang) * 150, Math.sin(elev) * 170 + 30, N / 2 - 70 + Math.sin(ang) * 30);
+    const q = N / 96;
+    sun.position.set(N / 2 + Math.cos(ang) * 150 * q, (Math.sin(elev) * 170 + 30) * q, N / 2 + (-70 + Math.sin(ang) * 30) * q);
   };
 
   // ---- orbit camera
-  const cam = { tx: N / 2, ty: 0, tz: N / 2, yaw: 0.72, pitch: 0.66, dist: 235 };
+  const cam = { tx: N / 2, ty: 0, tz: N / 2, yaw: 0.72, pitch: 0.66, dist: 235 * N / 96 };
   S.cam = cam;
   S.applyCamera = (time = 0) => {
-    cam.pitch = clamp(cam.pitch, 0.16, 1.45);
-    cam.dist = clamp(cam.dist, 14, 420);
+    cam.pitch = clamp(cam.pitch, 0.05, 1.45);
+    cam.dist = clamp(cam.dist, 10, 1200);
     const cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch);
     let sx = 0, sy = 0;
     if (S.shake > 0.001) {
@@ -132,7 +136,7 @@ export function createStage(canvas) {
     ray.setFromCamera(ndc, camera);
     const o = ray.ray.origin, d = ray.ray.direction;
     let prev = 0;
-    for (let t = 0; t < 700; t += 0.5) {
+    for (let t = 0; t < 2400; t += 0.5) {
       const x = o.x + d.x * t, y = o.y + d.y * t, z = o.z + d.z * t;
       if (x < 0 || z < 0 || x > N || z > N) { prev = t; continue; }
       if (y <= Math.max(terrain.height(x, z), terrain.waterLevel)) {

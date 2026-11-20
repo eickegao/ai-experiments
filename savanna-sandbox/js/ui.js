@@ -34,7 +34,7 @@ const ICON = {
   war: '<path d="M4 3l9 9l-2 2l-9-9zM20 3l-9 9l2 2l9-9zM4 21l4-4M20 21l-4-4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/>',
 };
 const AREA_TOOLS = ['rain', 'lightning', 'meteor', 'raise', 'lower', 'herd'];
-const RADIUS = { rain: 13, lightning: 1.8, meteor: 8, raise: 6.5, lower: 6.5, herd: 4 };
+const RADIUS = { rain: 24, lightning: 2.5, meteor: 13, raise: 12, lower: 12, herd: 6 };
 
 export function createUI(G, lang) {
   const L = STR[lang] || STR.en;

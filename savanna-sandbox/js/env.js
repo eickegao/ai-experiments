@@ -76,7 +76,7 @@ export function createEnv(G) {
   const renderFire = () => {
     const n = E.burning.size;
     if (!n) return;
-    const p = Math.min(1, 150 / n);
+    const p = Math.min(1, 260 / n);
     for (const c of E.burning) {
       if (G.fx.R() > p) continue;
       const x = c % GRID, z = (c - x) / GRID, y = T.h[c];
@@ -100,7 +100,7 @@ export function createEnv(G) {
     T.colorsDirty = true;
   };
 
-  E.startRain = (x, z, r = 13, time = 13) => {
+  E.startRain = (x, z, r = 24, time = 14) => {
     const cloud = fx.addCloud(x - 2, z, 22 + rng.range(0, 2), r / 12, true);
     const cloud2 = fx.addCloud(x + r * 0.5, z + r * 0.35, 23.5, r / 15, true);
     const cloud3 = fx.addCloud(x - r * 0.35, z - r * 0.5, 24.5, r / 16, true);
@@ -126,7 +126,7 @@ export function createEnv(G) {
   };
   const renderRain = (real) => {
     for (const r of E.rains) {
-      const n = Math.min(40, Math.ceil(r.r * r.r * 0.09 * real * 60));
+      const n = Math.min(90, Math.ceil(r.r * r.r * 0.05 * real * 60));
       for (let k = 0; k < n; k++) {
         const a = G.fx.R() * 6.28, d = Math.sqrt(G.fx.R()) * r.r;
         const x = r.x + Math.cos(a) * d, z = r.z + Math.sin(a) * d;
@@ -141,9 +141,9 @@ export function createEnv(G) {
   E.startStorm = (time = 16) => {
     E.storm = time; E.endDrought();
     E.waterTarget = 0.3;
-    E.startRain(N / 2, N / 2, 70, time);
+    E.startRain(N / 2, N / 2, N * 0.75, time);
     E.stormClouds = [];
-    for (let i = 0; i < 6; i++) E.stormClouds.push(fx.addCloud(rng.range(6, N - 6), rng.range(6, N - 6), rng.range(24, 28), rng.range(1.2, 1.9), true));
+    for (let i = 0; i < 16; i++) E.stormClouds.push(fx.addCloud(rng.range(6, N - 6), rng.range(6, N - 6), rng.range(24, 28), rng.range(1.2, 1.9), true));
     G.log('storm'); G.ui && G.ui.toast('storm');
   };
 
@@ -166,17 +166,17 @@ export function createEnv(G) {
     meteor: (x, z) => {
       G.log('meteor', { x, z });
       fx.meteor(x, z, () => {
-        const R = 8;
+        const R = 13;
         T.deform(x, z, R + 3, (d, h) => {
-          const bowl = d < R ? -3.6 * (1 - (d / R) ** 2) : 0;
-          const rim = 1.5 * Math.exp(-((d - R) ** 2) / 3);
+          const bowl = d < R ? -5 * (1 - (d / R) ** 2) : 0;
+          const rim = 2 * Math.exp(-((d - R) ** 2) / 5);
           return h + bowl + rim;
         });
         G.flora.clear(x, z, R + 1.5);
         G.tribes.destroyAt(x, z, R + 1, 'meteor');
         killAt(x, z, R + 1.5, 'meteor');
-        G.animals.scare(x, z, 34);
-        for (let i = 0; i < 26; i++) { const a = rng.range(0, 6.28), d = R + rng.range(1.5, 5); E.ignite(x + Math.cos(a) * d, z + Math.sin(a) * d); }
+        G.animals.scare(x, z, 60);
+        for (let i = 0; i < 44; i++) { const a = rng.range(0, 6.28), d = R + rng.range(1.5, 7); E.ignite(x + Math.cos(a) * d, z + Math.sin(a) * d); }
         for (let i = 0; i < GRID * GRID; i++) {
           const cx = i % GRID, cz = (i - cx) / GRID, d = Math.hypot(cx - x, cz - z);
           if (d < R + 2) { T.grass[i] = 0.02; T.burnt[i] = Math.max(T.burnt[i], 1 - d / (R + 2) * 0.4); }
@@ -185,14 +185,14 @@ export function createEnv(G) {
         G.log('meteor_impact', { x, z });
       });
     },
-    raise: (x, z, dt = 1 / 30) => T.deform(x, z, 6.5, (d, h) => h + 5.5 * dt * smooth(6.5, 0, d)),
-    lower: (x, z, dt = 1 / 30) => T.deform(x, z, 6.5, (d, h) => h - 5.5 * dt * smooth(6.5, 0, d)),
+    raise: (x, z, dt = 1 / 30) => T.deform(x, z, 12, (d, h) => h + 8 * dt * smooth(12, 0, d)),
+    lower: (x, z, dt = 1 / 30) => T.deform(x, z, 12, (d, h) => h - 8 * dt * smooth(12, 0, d)),
     drought: () => (E.drought > 0 ? E.endDrought() : E.startDrought()),
     storm: () => E.startStorm(),
     herd: (x, z) => {
       if (T.isWater(x, z)) return;
       const kind = rng.pick(['zebra', 'wildebeest', 'gazelle', 'gazelle', 'giraffe', 'elephant']);
-      G.animals.spawnHerd(kind, x, z, kind === 'elephant' || kind === 'giraffe' ? 3 : 8);
+      G.animals.spawnHerd(kind, x, z, kind === 'elephant' || kind === 'giraffe' ? 5 : 14);
       fx.spark(x, T.height(x, z) + 1, z, 30, '#fff3b0', 1.2);
       fx.ring(x, T.height(x, z), z, 6, '#fff3b0', 0.7);
       G.log('herd', { kind, x, z });
@@ -208,7 +208,7 @@ export function createEnv(G) {
     if (E.drought > 0) { E.drought -= dt; if (E.drought <= 0) E.endDrought(); }
     if (E.storm > 0) {
       E.storm -= dt;
-      if (rng() < dt * 0.45) E.powers.lightning(rng.range(8, N - 8), rng.range(8, N - 8));
+      if (rng() < dt * 0.8) E.powers.lightning(rng.range(8, N - 8), rng.range(8, N - 8));
       if (E.storm <= 0) { E.waterTarget = 0; (E.stormClouds || []).forEach(c => c.dying = true); }
     }
     if (Math.abs(T.waterLevel - E.waterTarget) > 0.004) {

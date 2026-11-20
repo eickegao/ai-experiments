@@ -73,7 +73,7 @@ export function createPost(stage) {
     vertexShader: VERT, fragmentShader: FRAG, depthTest: false, depthWrite: false,
     uniforms: {
       tColor: { value: target.texture }, tDepth: { value: target.depthTexture }, px: { value: new THREE.Vector2() },
-      near: { value: camera.near }, far: { value: camera.far }, focus: { value: 100 }, maxBlur: { value: 10 }, exposure: { value: 1.0 }, vig: { value: 0.16 },
+      near: { value: camera.near }, far: { value: camera.far }, focus: { value: 100 }, maxBlur: { value: 10 }, exposure: { value: 1.0 }, vig: { value: 0.3 },
     },
   });
   const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat);

@@ -43,7 +43,7 @@ class Pool {
       q.setFromEuler(e);
       mesh.setMatrixAt(i, M.compose(p.set(o.x, o.y, o.z), q, s.set(sc * (o.sx || 1), sc * (o.sy || 1), sc * (o.sx || 1))));
       if (o.fire) {
-        const f = t * 3, k = Math.min(2, Math.floor(f));
+        const f = Math.min(2.999, Math.max(0, t || 0) * 3), k = Math.floor(f);
         col.copy(FIRE[k]).lerp(FIRE[k + 1], f - k);
       } else col.setRGB(o.r, o.g, o.b);
       mesh.setColorAt(i, col);
@@ -68,8 +68,8 @@ function cloudGeo(rng) {
 export function createFx(G) {
   const { stage, terrain: T, rng } = G;
   const scene = stage.scene;
-  const lit = new Pool(scene, 2400, new THREE.MeshStandardMaterial({ roughness: 0.85, flatShading: true }), true);
-  const glow = new Pool(scene, 4200, new THREE.MeshBasicMaterial({ toneMapped: false }), false);
+  const lit = new Pool(scene, 5000, new THREE.MeshStandardMaterial({ roughness: 0.85, flatShading: true }), true);
+  const glow = new Pool(scene, 8000, new THREE.MeshBasicMaterial({ toneMapped: false }), false);
   const R = makeRng(4242);            // cosmetic randomness only; never feeds the simulation
   const F = { lit, glow, clouds: [], meteors: [], rings: [], bolts: [], R };
 
@@ -112,12 +112,12 @@ export function createFx(G) {
   // ---- lightning: a jagged bolt drawn with stretched glowing boxes
   F.lightning = (x, z) => {
     const gy = Math.max(T.height(x, z), T.waterLevel);
-    let px = x + (R() - 0.5) * 8, py = 44, pz = z + (R() - 0.5) * 8;
+    let px = x + (R() - 0.5) * 12, py = 70, pz = z + (R() - 0.5) * 12;
     const segs = [];
     const steps = 11;
     for (let i = 1; i <= steps; i++) {
       const t = i / steps;
-      const nx = lerp(px, x, 0.28) + (R() - 0.5) * 4.5 * (1 - t), nz = lerp(pz, z, 0.28) + (R() - 0.5) * 4.5 * (1 - t), ny = lerp(44, gy, t);
+      const nx = lerp(px, x, 0.28) + (R() - 0.5) * 4.5 * (1 - t), nz = lerp(pz, z, 0.28) + (R() - 0.5) * 4.5 * (1 - t), ny = lerp(70, gy, t);
       segs.push([px, py, pz, i === steps ? x : nx, ny, i === steps ? z : nz]);
       if (i > 3 && R() < 0.3) segs.push([px, py, pz, px + (R() - 0.5) * 9, py - 4 - R() * 4, pz + (R() - 0.5) * 9, 0.5]);
       px = i === steps ? x : nx; py = ny; pz = i === steps ? z : nz;
@@ -134,12 +134,12 @@ export function createFx(G) {
 
   // ---- meteor
   const ballGeo = new THREE.IcosahedronGeometry(1, 1);
-  F.meteor = (x, z, onImpact, size = 1) => {
+  F.meteor = (x, z, onImpact, size = 1.7) => {
     const gy = Math.max(T.height(x, z), T.waterLevel);
     const mesh = new THREE.Mesh(ballGeo, new THREE.MeshBasicMaterial({ color: '#ffd9a0', toneMapped: false }));
     mesh.scale.setScalar(1.3 * size);
     scene.add(mesh);
-    F.meteors.push({ mesh, x0: x - 62, y0: 78, z0: z - 34, x, y: gy, z, t: 0, dur: 1.7, onImpact, size });
+    F.meteors.push({ mesh, x0: x - 110, y0: 140, z0: z - 60, x, y: gy, z, t: 0, dur: 1.9, onImpact, size });
   };
   const ringGeo = new THREE.RingGeometry(0.86, 1, 48).rotateX(-Math.PI / 2);
   F.ring = (x, y, z, r, color = '#fff1cf', dur = 0.9) => {
@@ -163,10 +163,10 @@ export function createFx(G) {
     F.clouds.push(c);
     return c;
   };
-  for (let i = 0; i < 5; i++) F.addCloud(rng.range(-20, N + 10), rng.range(4, N - 4), rng.range(19, 25), rng.range(0.9, 1.6));
+  for (let i = 0; i < 16; i++) F.addCloud(rng.range(-20, N + 10), rng.range(4, N - 4), rng.range(24, 34), rng.range(1.2, 2.4));
 
   // ---- fire light: one light that follows the blaze
-  const fireLight = new THREE.PointLight('#ff8a3a', 0, 70, 1.6);
+  const fireLight = new THREE.PointLight('#ff8a3a', 0, 120, 1.6);
   scene.add(fireLight);
   F.fireLight = fireLight;
   F.fireSum = { x: 0, z: 0, n: 0 };
@@ -187,7 +187,7 @@ export function createFx(G) {
         dir.set(sg[3] - sg[0], sg[4] - sg[1], sg[5] - sg[2]);
         const len = dir.length();
         q.setFromUnitVectors(up, dir.normalize());
-        const w = 0.34 * flick * (sg[6] || 1);
+        const w = 0.6 * flick * (sg[6] || 1);
         boltMesh.setMatrixAt(n++, M.compose(p.set((sg[0] + sg[3]) / 2, (sg[1] + sg[4]) / 2, (sg[2] + sg[5]) / 2), q, s.set(w, len, w)));
       }
     }

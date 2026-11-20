@@ -7,17 +7,18 @@ import { moveToward, settle, faceTo } from './agents.js';
 import { SPEC } from './animals.js';
 import * as MD from './models.js';
 
-const HOUSE_CAP = [0, 3, 4, 5, 7];
-const ERA_POP = [0, 10, 20, 32, 999];        // population needed to leave each era
+const HOUSE_CAP = [0, 4, 5, 6, 8];
+const ERA_POP = [0, 30, 70, 120, 9999];        // population needed to leave each era
 const WORK = { house: 7, granary: 8, totem: 6, field: 6, tower: 12, wall: 26, hall: 34, stall: 5, bonfire: 1 };
-const MAX_POP = 64;
+const MAX_POP = 230;
+const WALL_R = 25;
 
 export function createTribes(G) {
   const { stage, terrain: T, rng, villages } = G;
   const scene = stage.scene;
   const mat = toyMaterial();
   const glowMat = new THREE.MeshBasicMaterial({ vertexColors: true, toneMapped: false });
-  const kinds = [new CreatureKind(scene, MD.humanParts(0), 96), new CreatureKind(scene, MD.humanParts(1), 96)];
+  const kinds = [new CreatureKind(scene, MD.humanParts(0), 300), new CreatureKind(scene, MD.humanParts(1), 300)];
   const S = { tribes: [], people: [], kinds, war: null, peace: 60 };
   let nextId = 1000;
 
@@ -31,21 +32,21 @@ export function createTribes(G) {
     const back = gate + Math.PI;
     const diff = (a, b) => { let d = Math.abs(a - b) % (Math.PI * 2); return d > Math.PI ? Math.PI * 2 - d : d; };
     const slots = [];
-    for (const [r, n, off] of [[5.6, 7, 0.2], [9.0, 11, 0.5]]) {
+    for (const [r, n, off] of [[5.6, 7, 0.2], [9.0, 11, 0.5], [12.6, 15, 0.1], [16.2, 19, 0.4], [19.8, 23, 0.25]]) {
       for (let i = 0; i < n; i++) {
         const a = off + (i / n) * Math.PI * 2;
-        if (diff(a, gate) < (r < 7 ? 0.55 : 0.4)) continue;
-        if (diff(a, back) < (r < 7 ? 1.2 : 0.62)) continue;
+        if (diff(a, gate) < (r < 7 ? 0.55 : r < 10 ? 0.4 : 0.26)) continue;
+        if (r < 10 && diff(a, back) < (r < 7 ? 1.2 : 0.62)) continue;
         slots.push({ x: v.x + Math.cos(a) * r, z: v.z + Math.sin(a) * r, used: null });
       }
     }
     const at = (r, a) => ({ x: v.x + Math.cos(a) * r, z: v.z + Math.sin(a) * r });
     const tribe = {
-      id, x: v.x, z: v.z, gate, era: 1, food: 24, people: [], buildings: [], queue: [], slots,
-      rally: at(14.5, gate), spots: {
-        granary: at(3.1, gate + 2.1), totem: at(3.0, gate - 2.1), tower: at(10.6, gate + 0.62), hall: at(5.6, back),
+      id, x: v.x, z: v.z, gate, era: 1, food: 60, people: [], buildings: [], queue: [], slots,
+      rally: at(31, gate), spots: {
+        granary: at(3.1, gate + 2.1), totem: at(3.0, gate - 2.1), tower: at(22.5, gate + 0.3), hall: at(5.6, back),
         stalls: [at(3.4, gate + 0.75), at(3.4, gate - 0.75), at(6.6, gate + 1.25)],
-        fields: [at(17.5, gate + 1.25), at(17.5, gate - 1.25), at(17.5, gate + 2.2), at(17.5, gate - 2.2)].filter(f => T.inside(f.x, f.z, 4) && T.depth(f.x, f.z) < -0.3),
+        fields: [1.0, -1.0, 1.7, -1.7, 2.4, -2.4, 0.5, -0.5, 3.1].map(d => at(30.5, gate + d)).filter(f => T.inside(f.x, f.z, 4) && T.depth(f.x, f.z) < -0.3),
       },
       birth: 6, starve: 0, plan: 1, parties: [], cheer: 0, deaths: 0,
     };
@@ -77,7 +78,7 @@ export function createTribes(G) {
       case 'tower': m = model('tower' + tr, () => MD.towerModel(tr)); break;
       case 'hall': m = model('hall' + tr, () => MD.hallModel(tr)); break;
       case 'stall': m = model(`stall${tr}${b.v}`, () => MD.stallModel(tr, b.v)); break;
-      case 'wall': m = model(`wall${tr}${b.era}`, () => MD.wallModel(tr, b.era, 12, b.tribe.gate)); break;
+      case 'wall': m = model(`wall${tr}${b.era}`, () => MD.wallModel(tr, b.era, WALL_R, b.tribe.gate)); break;
     }
     b.mesh.geometry = m.geo; b.glow.geometry = m.glow;
     if (b.type === 'wall') b.yaw = 0;
@@ -108,14 +109,14 @@ export function createTribes(G) {
     const cap = HOUSE_CAP[t.era];
     const want = Math.min(t.slots.length, Math.ceil((pop + 3) / cap));
     const pending = t.queue.filter(b => b.type === 'house' && b.state !== 'done').length;
-    if (houses.length < want && pending < 2) {
+    if (houses.length < want && pending < 4) {
       const slot = t.slots.find(s => !s.used);
       if (slot) { const b = addBuilding(t, 'house', slot.x, slot.z, { slot }); slot.used = b; }
     }
     // upgrades, a couple at a time
     let upgrading = t.queue.filter(b => b.upgrading).length;
     for (const b of t.buildings) {
-      if (upgrading >= 2) break;
+      if (upgrading >= 5) break;
       if ((b.type === 'house' || b.type === 'totem' || b.type === 'wall') && b.state === 'done' && b.era < t.era && !(b.type === 'wall' && t.era < 4)) {
         b.era = t.era; b.upgrading = true; b.state = 'site'; b.work = 0; b.built = 0.25; setModel(b); t.queue.push(b); upgrading++;
       }
@@ -125,7 +126,7 @@ export function createTribes(G) {
       if (!find(t, 'totem')) addBuilding(t, 'totem', sp.totem.x, sp.totem.z);
       if (!find(t, 'granary')) addBuilding(t, 'granary', sp.granary.x, sp.granary.z);
       const nf = count(t, 'field');
-      if (nf < Math.min(sp.fields.length, t.era) && !t.queue.some(b => b.type === 'field')) addBuilding(t, 'field', sp.fields[nf].x, sp.fields[nf].z);
+      if (nf < Math.min(sp.fields.length, t.era * 2) && !t.queue.some(b => b.type === 'field')) addBuilding(t, 'field', sp.fields[nf].x, sp.fields[nf].z);
     }
     if (t.era >= 3) {
       if (!find(t, 'wall')) addBuilding(t, 'wall', t.x, t.z);
@@ -149,7 +150,7 @@ export function createTribes(G) {
   // ------------------------------------------------------------ people
   const addPerson = (t, x, z, child = false) => {
     const p = {
-      id: nextId++, tribe: t, x, z, y: T.ground(x, z), yaw: rng.range(0, 6.28), scale: child ? 0.62 : 1.22 * rng.range(0.95, 1.05), full: 1.22 * rng.range(0.95, 1.05),
+      id: nextId++, tribe: t, x, z, y: T.ground(x, z), yaw: rng.range(0, 6.28), scale: child ? 0.45 : 0.86 * rng.range(0.94, 1.06), full: 0.86 * rng.range(0.94, 1.06),
       gait: rng.range(0, 6), amp: 0, stride: 6.5, role: child ? 'child' : 'idle', state: 'idle', timer: rng.range(0, 3), hp: 3, alive: true,
       spear: false, shield: false, carry: false, attack: 0, cheer: 0, bob: 0, cd: 0,
     };
@@ -180,14 +181,14 @@ export function createTribes(G) {
   };
 
   for (const t of S.tribes) {
-    for (let i = 0; i < 7; i++) { const a = rng.range(0, 6.28), r = rng.range(1.5, 4.5); addPerson(t, t.x + Math.cos(a) * r, t.z + Math.sin(a) * r); }
+    for (let i = 0; i < 18; i++) { const a = rng.range(0, 6.28), r = rng.range(1.5, 7.5); addPerson(t, t.x + Math.cos(a) * r, t.z + Math.sin(a) * r); }
     planTribe(t);
     // Start with two finished shelters so the camp does not look empty.
-    for (let i = 0; i < 3; i++) { planTribe(t); for (const b of t.buildings) if (b.type === 'house') { b.built = 1; b.state = 'done'; } t.queue.length = 0; }
+    for (let i = 0; i < 6; i++) { planTribe(t); for (const b of t.buildings) if (b.type === 'house') { b.built = 1; b.state = 'done'; } t.queue.length = 0; }
   }
 
   const adults = (t) => t.people.filter(p => p.role !== 'child');
-  const idleSpot = (p) => { const a = rng.range(0, 6.28), r = rng.range(1.6, 4.4); p.tx = p.tribe.x + Math.cos(a) * r; p.tz = p.tribe.z + Math.sin(a) * r; };
+  const idleSpot = (p) => { const a = rng.range(0, 6.28), r = rng.range(1.6, 4.4 + Math.sqrt(p.tribe.people.length) * 0.9); p.tx = p.tribe.x + Math.cos(a) * r; p.tz = p.tribe.z + Math.sin(a) * r; };
   const goHome = (p) => { p.state = 'home'; const a = rng.range(0, 6.28); p.tx = p.tribe.x + Math.cos(a) * 2.6; p.tz = p.tribe.z + Math.sin(a) * 2.6; };
   const release = (p) => { p.role = 'idle'; p.state = 'idle'; p.spear = false; p.shield = false; p.timer = rng.range(0.5, 2); p.party = null; p.site = null; if (p.bush) { p.bush.taken = null; p.bush = null; } idleSpot(p); };
 
@@ -201,7 +202,7 @@ export function createTribes(G) {
 
     const sites = t.queue.filter(b => b.state !== 'done');
     let builders = cnt('builder');
-    const wantB = sites.length ? clamp(Math.ceil(all.length / 5), 1, 5) : 0;
+    const wantB = sites.length ? clamp(Math.ceil(all.length / 5), 1, 16) : 0;
     while (builders < wantB && idle.length) { const p = idle.pop(); p.role = 'builder'; p.state = 'toSite'; p.site = null; builders++; }
 
     const fields = t.buildings.filter(b => b.type === 'field' && b.state === 'done');
@@ -210,9 +211,9 @@ export function createTribes(G) {
 
     // a hunting party of three
     t.parties = t.parties.filter(pt => pt.members.some(m => m.alive && m.party === pt));
-    const wantParties = all.length >= 16 ? 2 : 1;
+    const wantParties = clamp(Math.floor(all.length / 14), 1, 6);
     if (t.parties.length < wantParties && idle.length >= 3) {
-      const prey = G.animals.nearestPrey(t.x, t.z, 52, a => !a.hunted);
+      const prey = G.animals.nearestPrey(t.x, t.z, 95, a => !a.hunted);
       if (prey) {
         const party = { members: [], prey, timer: 55, state: 'hunt' };
         prey.hunted = true;
@@ -224,7 +225,7 @@ export function createTribes(G) {
   };
 
   const nearestBush = (p) => {
-    let best = null, bd = 46 * 46;
+    let best = null, bd = 90 * 90 * 1.6;
     for (const b of G.flora.bushes) {
       if (!b.alive || !b.berries || b.taken) continue;
       const d = (b.x - p.x) ** 2 + (b.z - p.z) ** 2 + ((b.x - p.tribe.x) ** 2 + (b.z - p.tribe.z) ** 2) * 0.5;
@@ -251,7 +252,7 @@ export function createTribes(G) {
     if (T.fire[T.cell(p.x, p.z)] > 0) { p.hp -= dt * 2.5; if (p.hp <= 0) { S.kill(p, 'fire'); return; } }
 
     if (p.role === 'child') {
-      if (p.scale < p.full) p.scale += dt * 0.012; else { release(p); return; }
+      if (p.scale < p.full) p.scale += dt * 0.014; else { release(p); return; }
       p.timer -= dt;
       if (p.timer <= 0) { p.timer = rng.range(1.5, 4); idleSpot(p); }
       moveToward(T, p, p.tx, p.tz, WALK * 1.1, dt);
@@ -262,7 +263,7 @@ export function createTribes(G) {
     if (night && !S.war && (p.role === 'gatherer' || p.role === 'farmer' || p.role === 'idle' || p.role === 'builder') && p.state !== 'fire' && p.state !== 'home' && p.state !== 'toFire') {
       if (p.bush) { p.bush.taken = null; p.bush = null; }
       p.role = 'idle'; goHome(p); p.state = 'toFire'; p.site = null;
-      const a = (p.id * 2.399) % 6.28; p.tx = t.x + Math.cos(a) * 2.7; p.tz = t.z + Math.sin(a) * 2.7;
+      const a = (p.id * 2.399) % 6.28, rr = 2.4 + ((p.id * 7) % 5) * 0.9; p.tx = t.x + Math.cos(a) * rr; p.tz = t.z + Math.sin(a) * rr;
     }
 
     switch (p.role) {
@@ -288,7 +289,7 @@ export function createTribes(G) {
         if (p.state === 'seek') {
           const b = nearestBush(p);
           if (b) { b.taken = p; p.bush = b; p.state = 'toBush'; }
-          else { const a = rng.range(0, 6.28), r = rng.range(13, 24); p.tx = clamp(t.x + Math.cos(a) * r, 3, N - 3); p.tz = clamp(t.z + Math.sin(a) * r, 3, N - 3); p.state = 'forage'; }
+          else { const a = rng.range(0, 6.28), r = rng.range(28, 46); p.tx = clamp(t.x + Math.cos(a) * r, 3, N - 3); p.tz = clamp(t.z + Math.sin(a) * r, 3, N - 3); p.state = 'forage'; }
         } else if (p.state === 'toBush') {
           const b = p.bush;
           if (!b || !b.alive || !b.berries) { if (b) b.taken = null; p.bush = null; p.state = 'seek'; break; }
@@ -323,9 +324,9 @@ export function createTribes(G) {
         if (!p.site || p.site.state === 'done' || !t.buildings.includes(p.site)) {
           const open = t.queue.filter(b => b.state !== 'done');
           if (!open.length) { release(p); break; }
-          p.site = open[p.id % Math.min(open.length, 2)];
+          p.site = open[p.id % Math.min(open.length, 5)];
           p.state = 'toSite';
-          const a = rng.range(0, 6.28), r = p.site.type === 'wall' ? 12.8 : p.site.type === 'hall' ? 4.6 : 2.0;
+          const a = rng.range(0, 6.28), r = p.site.type === 'wall' ? WALL_R + 0.9 : p.site.type === 'hall' ? 4.6 : 2.0;
           p.tx = p.site.x + Math.cos(a) * r; p.tz = p.site.z + Math.sin(a) * r;
         }
         if (p.state === 'toSite') {
@@ -357,7 +358,7 @@ export function createTribes(G) {
       }
       const d = Math.hypot(prey.x - p.x, prey.z - p.z);
       const i = pt.members.indexOf(p);
-      if (d > 7.5) moveToward(T, p, prey.x + Math.cos(i * 2.1) * 2.5, prey.z + Math.sin(i * 2.1) * 2.5, d > 16 ? RUN * 0.9 : WALK * 1.15, dt);
+      if (d > 6.5) moveToward(T, p, prey.x + Math.cos(i * 2.1) * 2.5, prey.z + Math.sin(i * 2.1) * 2.5, d > 16 ? RUN * 0.9 : WALK * 1.15, dt);
       else {
         settle(T, p, dt); faceTo(p, prey.x, prey.z, dt);
         if (p.cd <= 0) {
@@ -394,9 +395,9 @@ export function createTribes(G) {
       ws.forEach((p, i) => {
         if (p.bush) { p.bush.taken = null; p.bush = null; }
         p.role = 'warrior'; p.state = 'rally'; p.spear = true; p.shield = true; p.party = null; p.hp = 5; p.target = null;
-        const row = Math.floor(i / 6), colm = (i % 6) - 2.5;
+        const row = Math.floor(i / 14), colm = (i % 14) - 6.5;
         const ax = Math.cos(t.gate), az = Math.sin(t.gate);
-        p.fx = t.rally.x - ax * row * 1.3 - az * colm * 1.2; p.fz = t.rally.z - az * row * 1.3 + ax * colm * 1.2;
+        p.fx = t.rally.x - ax * row * 1.1 - az * colm * 1.0; p.fz = t.rally.z - az * row * 1.1 + ax * colm * 1.0;
       });
       war.sides.push({ tribe: t, start: ws.length, warriors: ws });
     }
@@ -417,11 +418,11 @@ export function createTribes(G) {
     const war = S.war;
     war.t += dt;
     for (const s of war.sides) s.warriors = s.warriors.filter(p => p.alive);
-    if (war.phase === 'rally' && war.t > 7) { war.phase = 'march'; G.log('war_march'); }
+    if (war.phase === 'rally' && war.t > 11) { war.phase = 'march'; G.log('war_march'); }
     if (war.phase !== 'rally') {
       const [a, b] = war.sides;
       const lost = (s) => s.warriors.length <= Math.max(0, Math.floor(s.start * 0.25));
-      if (lost(a) || lost(b) || war.t > 150) endWar(lost(a) && lost(b) ? null : lost(a) ? b.tribe : lost(b) ? a.tribe : null);
+      if (lost(a) || lost(b) || war.t > 300) endWar(lost(a) && lost(b) ? null : lost(a) ? b.tribe : lost(b) ? a.tribe : null);
     }
   };
   const updateWarrior = (p, dt) => {
@@ -468,7 +469,7 @@ export function createTribes(G) {
 
     t.birth -= dt;
     if (t.birth <= 0) {
-      t.birth = rng.range(6, 10);
+      t.birth = rng.range(1.6, 3.2) * (pop > 120 ? 1.6 : 1);
       if (pop >= 2 && pop < MAX_POP && pop < capacity(t) && t.food > 6 + pop * 1.2 && !S.war) {
         const h = rng.pick(t.buildings.filter(b => b.type === 'house' && b.state === 'done'));
         if (h) { addPerson(t, h.x + rng.range(-0.6, 0.6), h.z + rng.range(-0.6, 0.6), true); t.food -= 4; G.log('birth', { tribe: t.id }); }
@@ -511,7 +512,7 @@ export function createTribes(G) {
   };
 
   // ------------------------------------------------------------ drawing
-  const fireLights = S.tribes.map(t => { const l = new THREE.PointLight('#ff9a45', 0, 34, 1.5); scene.add(l); return l; });
+  const fireLights = S.tribes.map(t => { const l = new THREE.PointLight('#ff9a45', 0, 60, 1.5); scene.add(l); return l; });
   S.render = (dt, time) => {
     kinds[0].draw(); kinds[1].draw();
     const night = stage.night;

@@ -13,7 +13,7 @@ with sync_playwright() as p:
     b = p.chromium.launch(channel="chrome", headless=True, args=["--use-angle=metal", "--enable-gpu", "--ignore-gpu-blocklist"])
     page = b.new_page(viewport={"width": 800, "height": 600})
     page.on("pageerror", lambda e: print("PAGEERROR", e))
-    page.goto(f"http://127.0.0.1:{server.server_address[1]}/")
+    page.goto(f"http://127.0.0.1:{server.server_address[1]}/?demo=1&ui=0")
     page.wait_for_function("window.G && window.G.ready")
     page.evaluate(setup)
     el = 0

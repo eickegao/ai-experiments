@@ -3,7 +3,7 @@
 import * as THREE from '../vendor/three/three.module.js';
 import { makeRng } from './util.js';
 import { createStage } from './stage.js';
-import { createTerrain, N } from './terrain.js';
+import { createTerrain, N, K } from './terrain.js';
 import { createFlora } from './flora.js';
 import { modelLineup } from './debug.js';
 import { createFx } from './fx.js';
@@ -13,6 +13,7 @@ import { createEnv } from './env.js';
 import { createUI } from './ui.js';
 import { createPost } from './post.js';
 import { createDirector } from './director.js';
+import { createRoom } from './room.js';
 
 const params = new URLSearchParams(location.search);
 const seed = +(params.get('seed') || 7);
@@ -21,8 +22,10 @@ const DAY = 120;              // seconds of simulation per day
 
 const stage = createStage(document.getElementById('view'));
 const rng = makeRng(seed);
-const villages = [{ x: 21, z: 25 }, { x: 76, z: 73 }];
+const villages = [{ x: 21 * K, z: 25 * K }, { x: 76 * K, z: 73 * K }];
 const terrain = createTerrain(stage.scene, seed, villages);
+const room = params.get('room') === '0' ? null : createRoom(stage);
+if (room) { stage.room = room; terrain.tray.visible = true; }
 
 const G = window.G = {
   DAY,
@@ -74,6 +77,7 @@ function frame(now) {
     if (n === 160) acc = 0;
   }
   stage.setTime(G.dayOverride ?? G.time / DAY);
+  if (room) room.update(now / 1000, stage.night);
   if (terrain.colorsDirty) terrain.updateColors();
   for (const s of G.systems) s.render && s.render(real, now / 1000);
   stage.shake *= Math.pow(0.02, real);

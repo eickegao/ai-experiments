@@ -2,14 +2,15 @@
 import * as THREE from '../vendor/three/three.module.js';
 import { clamp, lerp, smooth, makeNoise } from './util.js';
 
-export const N = 96;          // slab is N x N world units
+export const N = 256;         // slab is N x N world units
 export const GRID = N + 1;    // vertices per side
 export const BASE_Y = -5;
 
-const RIVER = [[63, -2], [59, 16], [51, 33], [47, 48], [41, 62], [31, 79], [27, 98]];
-export const LAKE = { x: 47, z: 48, r: 9.5 };
-export const POND = { x: 79, z: 33, r: 4.2 };
-export const KOPJES = [{ x: 81, z: 15, s: 4.2 }, { x: 13, z: 68, s: 3.6 }, { x: 60, z: 87, s: 3.0 }];
+export const K = N / 96;      // the first version was 96 wide; layout numbers are scaled from it
+const RIVER = [[63, -2], [61, 9], [56, 18], [58, 27], [51, 35], [47, 48], [43, 57], [44, 66], [36, 74], [31, 84], [27, 98]].map(([x, z]) => [x * K, z * K]);
+export const LAKE = { x: 47 * K, z: 48 * K, r: 17 };
+export const PONDS = [{ x: 79 * K, z: 33 * K, r: 6.5 }, { x: 17 * K, z: 50 * K, r: 5.5 }, { x: 70 * K, z: 90 * K, r: 5 }, { x: 30 * K, z: 8 * K, r: 5 }];
+export const KOPJES = [{ x: 81, z: 15, s: 5.5 }, { x: 13, z: 68, s: 4.6 }, { x: 60, z: 87, s: 4.2 }, { x: 40, z: 22, s: 3.4 }, { x: 88, z: 52, s: 4.8 }, { x: 8, z: 12, s: 3.2 }, { x: 66, z: 62, s: 3.0 }].map(k => ({ x: k.x * K, z: k.z * K, s: k.s }));
 
 function distToRiver(x, z) {
   let best = 1e9;
@@ -51,19 +52,23 @@ export function createTerrain(scene, seed, villages) {
       let y = 0.7 + fbm(ix * 0.035, iz * 0.035, 4) * 3.4 + fbm(ix * 0.12 + 40, iz * 0.12, 2) * 0.7;
       for (const k of KOPJES) {
         const d2 = (ix - k.x) ** 2 + (iz - k.z) ** 2;
-        y += k.s * Math.exp(-d2 / 26) * (0.65 + 0.5 * noise(ix * 0.5, iz * 0.5));
+        y += k.s * Math.exp(-d2 / 60) * (0.65 + 0.5 * noise(ix * 0.5, iz * 0.5));
       }
       for (const v of villages) {
         const d = Math.hypot(ix - v.x, iz - v.z);
-        y = lerp(y, 1.5, 1 - smooth(9, 17, d));
+        y = lerp(y, 1.5, 1 - smooth(24, 36, d));
       }
       const wob = (fbm(ix * 0.15 + 9, iz * 0.15 + 3, 2) - 0.5) * 3;
       const dr = distToRiver(ix, iz) + wob * 0.5;
-      y = lerp(y, -0.58, 1 - smooth(1.2, 8, dr));
+      y = lerp(y, -0.58, 1 - smooth(2.2, 11, dr));
       const dl = Math.hypot(ix - LAKE.x, iz - LAKE.z) + wob * 1.6;
-      y = lerp(y, -1.7, 1 - smooth(LAKE.r - 3.5, LAKE.r + 3, dl));
-      const dp = Math.hypot(ix - POND.x, iz - POND.z) + wob * 0.8;
-      y = lerp(y, -0.9, 1 - smooth(POND.r - 2, POND.r + 2.5, dp));
+      y = lerp(y, -1.9, 1 - smooth(LAKE.r - 5, LAKE.r + 4, dl));
+      let dp = 1e9;
+      for (const pd of PONDS) {
+        const d = Math.hypot(ix - pd.x, iz - pd.z) + wob * 0.8;
+        y = lerp(y, -0.9, 1 - smooth(pd.r - 2.5, pd.r + 3, d));
+        dp = Math.min(dp, d - pd.r * 0.5);
+      }
       h[idx(ix, iz)] = y;
       jitter[idx(ix, iz)] = noise(ix * 1.7 + 5, iz * 1.7 + 11) - 0.5;
       const wet = 1 - smooth(2, 14, Math.min(dr, dl - LAKE.r * 0.6, dp));
@@ -166,13 +171,14 @@ export function createTerrain(scene, seed, villages) {
   const tray = new THREE.Group();
   const wood = new THREE.MeshStandardMaterial({ color: '#c79c6b', roughness: 0.7 });
   const woodDark = new THREE.MeshStandardMaterial({ color: '#a97c50', roughness: 0.7 });
-  const plate = new THREE.Mesh(new THREE.BoxGeometry(N + 5, 1.1, N + 5), wood);
-  plate.position.set(N / 2, BASE_Y - 0.55, N / 2);
-  const foot = new THREE.Mesh(new THREE.BoxGeometry(N + 1, 0.9, N + 1), woodDark);
-  foot.position.set(N / 2, BASE_Y - 1.5, N / 2);
+  const plate = new THREE.Mesh(new THREE.BoxGeometry(N + 10, 1.6, N + 10), wood);
+  plate.position.set(N / 2, BASE_Y - 0.8, N / 2);
+  const foot = new THREE.Mesh(new THREE.BoxGeometry(N + 4, 1.2, N + 4), woodDark);
+  foot.position.set(N / 2, BASE_Y - 2.2, N / 2);
   plate.castShadow = plate.receiveShadow = true;
   tray.add(plate, foot);
   scene.add(tray);
+  T.tray = tray;
 
   // ---- water: one sheet plus side curtains where the slab is cut through water
   const waterMat = new THREE.MeshStandardMaterial({
@@ -234,7 +240,7 @@ export function createTerrain(scene, seed, villages) {
   T.version = 0;
 
   // Nearest shoreline point to (x,z), searched on a coarse ring pattern.
-  T.findShore = (x, z, maxR = 60) => {
+  T.findShore = (x, z, maxR = 130) => {
     for (let r = 1; r < maxR; r += 1.5) {
       const steps = Math.max(8, Math.floor(r * 3));
       const off = (x * 7 + z * 13) % 6.28;

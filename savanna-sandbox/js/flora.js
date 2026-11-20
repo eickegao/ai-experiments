@@ -19,19 +19,19 @@ export function createFlora(G) {
     return m;
   };
   const meshes = {
-    acacia: [0, 1, 2].map(v => inst(acaciaGeo(v), 80)),
-    baobab: inst(baobabGeo(), 16),
-    burnt: inst(burntTreeGeo(), 200),
-    bush: inst(bushGeo(), 140),
-    berries: inst(berriesGeo(), 140, false),
-    rock: [0, 1, 2].map(v => inst(rockGeo(v), 90)),
-    tuft: inst(tuftGeo(), 3200, false, new THREE.MeshStandardMaterial({ roughness: 1, flatShading: true })),
+    acacia: [0, 1, 2].map(v => inst(acaciaGeo(v), 320)),
+    baobab: inst(baobabGeo(), 60),
+    burnt: inst(burntTreeGeo(), 800),
+    bush: inst(bushGeo(), 640),
+    berries: inst(berriesGeo(), 640, false),
+    rock: [0, 1, 2].map(v => inst(rockGeo(v), 320)),
+    tuft: inst(tuftGeo(), 16500, false, new THREE.MeshStandardMaterial({ roughness: 1, flatShading: true })),
   };
 
   const F = { trees: [], bushes: [], rocks: [], tufts: [] };
   const { fbm } = makeNoise(G.rng.int(1, 9999));
   const nearVillage = (x, z, r) => villages.some(v => Math.hypot(x - v.x, z - v.z) < r);
-  const free = (x, z, vr = 15) => T.inside(x, z, 2.5) && T.depth(x, z) < -0.25 && !nearVillage(x, z, vr);
+  const free = (x, z, vr = 30) => T.inside(x, z, 2.5) && T.depth(x, z) < -0.25 && !nearVillage(x, z, vr);
 
   const setM = (mesh, i, x, y, z, yaw, sc, sy = sc) => {
     q.setFromEuler(e.set(0, yaw, 0));
@@ -40,44 +40,45 @@ export function createFlora(G) {
   };
 
   // ---- place things
-  let tries = 0;
-  while (F.trees.length < 74 && tries++ < 6000) {
+  let tries = 0, nBaobab = 0;
+  while (F.trees.length < 560 && tries++ < 60000) {
     const x = rng.range(3, N - 3), z = rng.range(3, N - 3);
     if (!free(x, z) || T.slope(x, z) > 0.5) continue;
     if (fbm(x * 0.06, z * 0.06, 2) < 0.42 && rng() < 0.8) continue;      // clumps, with open plains between
     if (F.trees.some(t => Math.hypot(t.x - x, t.z - z) < 4.2)) continue;
-    const baobab = F.trees.filter(t => t.kind === 'baobab').length < 8 && rng() < 0.12;
+    const baobab = nBaobab < 44 && rng() < 0.09;
+    if (baobab) nBaobab++;
     F.trees.push({ kind: baobab ? 'baobab' : 'acacia', v: rng.int(0, 2), x, z, yaw: rng.range(0, 6.28), sc: rng.range(0.85, 1.25), state: 'alive', burn: 0 });
   }
   tries = 0;
-  while (F.bushes.length < 96 && tries++ < 6000) {
+  while (F.bushes.length < 560 && tries++ < 60000) {
     // Two thirds of the bushes sit in a belt around the villages so foragers have work nearby.
     let x, z;
     if (rng() < 0.66) {
-      const v = rng.pick(villages), a = rng.range(0, 6.28), r = rng.range(15, 34);
+      const v = rng.pick(villages), a = rng.range(0, 6.28), r = rng.range(28, 70);
       x = v.x + Math.cos(a) * r; z = v.z + Math.sin(a) * r;
     } else { x = rng.range(3, N - 3); z = rng.range(3, N - 3); }
-    if (!free(x, z, 14)) continue;
+    if (!free(x, z, 27)) continue;
     if (F.bushes.some(t => Math.hypot(t.x - x, t.z - z) < 2.2) || F.trees.some(t => Math.hypot(t.x - x, t.z - z) < 1.8)) continue;
     F.bushes.push({ x, z, yaw: rng.range(0, 6.28), sc: rng.range(0.8, 1.3), berries: rng() < 0.85, regrow: 0, taken: null, alive: true });
   }
   for (const k of KOPJES) {
-    for (let i = 0; i < 16; i++) {
-      const a = rng.range(0, 6.28), r = rng.range(0, 6.5);
+    for (let i = 0; i < 26; i++) {
+      const a = rng.range(0, 6.28), r = rng.range(0, 10);
       const x = k.x + Math.cos(a) * r, z = k.z + Math.sin(a) * r;
       if (!T.inside(x, z, 2)) continue;
-      F.rocks.push({ v: rng.int(0, 2), x, z, yaw: rng.range(0, 6.28), sc: rng.range(0.8, 2.3) * (1 - r / 11) });
+      F.rocks.push({ v: rng.int(0, 2), x, z, yaw: rng.range(0, 6.28), sc: rng.range(0.9, 2.8) * (1 - r / 16) });
     }
   }
-  for (let i = 0; i < 46; i++) {
+  for (let i = 0; i < 300; i++) {
     const x = rng.range(3, N - 3), z = rng.range(3, N - 3);
-    if (!free(x, z, 12) && T.depth(x, z) < 0.1) continue;
+    if (!free(x, z, 26) && T.depth(x, z) < 0.1) continue;
     F.rocks.push({ v: rng.int(0, 2), x, z, yaw: rng.range(0, 6.28), sc: rng.range(0.35, 1.0) });
   }
   tries = 0;
-  while (F.tufts.length < 3000 && tries++ < 20000) {
+  while (F.tufts.length < 16000 && tries++ < 120000) {
     const x = rng.range(1.5, N - 1.5), z = rng.range(1.5, N - 1.5);
-    if (T.depth(x, z) > -0.12 || nearVillage(x, z, 7)) continue;
+    if (T.depth(x, z) > -0.12 || nearVillage(x, z, 10)) continue;
     if (T.grass[T.cell(x, z)] < rng.range(0.2, 0.6)) continue;
     F.tufts.push({ x, z, yaw: rng.range(0, 6.28), sc: rng.range(0.7, 1.5), tint: rng.range(0.85, 1.1) });
   }
