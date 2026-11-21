@@ -72,3 +72,6 @@ body.bare #ui { display: none; }
 @media (max-width: 760px) { .panel { left: 50%; transform: translateX(-50%); bottom: 118px; } }
 
 .tool { width: 54px; white-space: nowrap; font-size: 10px; }
+
+/* photo mode (thumbnails): the scene without its interface */
+body.photo #ui { display: none; }

@@ -140,5 +140,7 @@ function frame(now) {
   if (post) post.render(); else stage.renderer.render(stage.scene, stage.camera);
 }
 
+// ?warp=<seconds>: run the world ahead before showing it (for thumbnails and tests).
+if (G.tribes) for (let i = 0, n = Math.min(3000, +params.get('warp') || 0) * 30; i < n; i++) simulate(STEP);
 G.ready = true;
 requestAnimationFrame(frame);
