@@ -71,7 +71,7 @@ else {
   G.env = createEnv(G);
   // When the page is served per language (simdoz.com/<lang>/savanna/), the host says which one in <html data-lang>.
   const lang = params.get('lang') || document.documentElement.dataset.lang || G.opts.lang || ((navigator.language || 'en').startsWith('zh') ? 'zh' : 'en');
-  document.title = lang === 'zh' ? '草原沙盘' : 'Savanna Sandbox';
+  if (!document.documentElement.dataset.lang) document.title = lang === 'zh' ? '草原沙盘' : 'Savanna Sandbox';      // a host page brings its own title
   document.documentElement.lang = lang;
   G.ui = createUI(G, lang);
   if (params.get('ui') === '0') document.body.classList.add('bare');
