@@ -101,8 +101,15 @@ if (G.director && params.get('hold') !== '1') {
   view.addEventListener('wheel', take, { capture: true, passive: true });
 }
 
+// A head count every 30 simulated seconds, for charts and for the video's counters.
+let censusAt = 0;
 function simulate(dt) {
   G.time += dt;
+  if (G.tribes && G.time >= censusAt) {
+    censusAt = G.time + 30;
+    const s = G.tribes.summary();
+    G.log('census', { day: +(G.time / DAY + 1).toFixed(2), people: s[0].pop + s[1].pop, towns: s[0].villages + s[1].villages, era: Math.max(s[0].era, s[1].era), animals: G.animals.all.length + G.animals.crocs.length, trees: G.flora.count() });
+  }
   for (const s of G.systems) s.update && s.update(dt);
 }
 

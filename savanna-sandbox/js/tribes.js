@@ -11,7 +11,10 @@ import * as MD from './models.js';
 
 const HOUSE_CAP = [0, 4, 5, 6, 8, 9, 12];
 const MAX_ERA = 6;
-const ERA_POP = [0, 30, 70, 120, 175, 215, 9999];        // population needed to leave each era
+const ERA_POP = [0, 34, 78, 130, 180, 215, 9999];
+// An age cannot begin before this day, however well a town is doing: the whole climb
+// from campfire to skyline takes about sixteen days.
+const ERA_DAY = [0, 2.6, 5.2, 8.2, 12, 16, 1e9];        // population needed to leave each era
 const WORK = { factory: 30, house: 7, granary: 8, totem: 6, field: 6, tower: 12, wall: 26, hall: 34, stall: 5, bonfire: 1 };
 // what a building costs: [wood, stone]
 const HOUSE_COST = [null, [2, 0], [4, 0], [6, 3], [4, 10], [10, 12], [8, 30]];
@@ -196,7 +199,7 @@ export function createTribes(G) {
       else if (b.type !== 'house' && b.type !== 'wall') break;      // save up for the big project first
     }
     // next era?
-    if (t.era < MAX_ERA && pop >= ERA_POP[t.era] && t.food > pop && houses.length && houses.every(b => b.era === t.era && b.state === 'done')) {
+    if (t.era < MAX_ERA && G.time / G.DAY + 1 >= ERA_DAY[t.era] && pop >= ERA_POP[t.era] && t.food > pop && houses.length && houses.every(b => b.era === t.era && b.state === 'done')) {
       t.era++;
       t.cheer = 5;
       G.log('era', { tribe: t.color, village: t.id, era: t.era });
@@ -685,7 +688,7 @@ export function createTribes(G) {
 
     t.birth -= dt;
     if (t.birth <= 0) {
-      t.birth = rng.range(1.6, 3.2) * (pop > 120 ? 1.6 : 1);
+      t.birth = rng.range(2.2, 4.2) * (pop > 120 ? 1.6 : 1);
       if (pop >= 2 && pop < MAX_POP && pop < capacity(t) && t.food > 6 + pop * 1.2 && !S.war) {
         const h = rng.pick(t.buildings.filter(b => b.type === 'house' && b.state === 'done'));
         if (h) { addPerson(t, h.x + rng.range(-0.6, 0.6), h.z + rng.range(-0.6, 0.6), true); t.food -= 4; G.log('birth', { tribe: t.color }); }
@@ -696,7 +699,7 @@ export function createTribes(G) {
 
     for (const b of t.buildings) if (b.type === 'factory' && b.state === 'done') t.wood = Math.max(0, t.wood - 0.14 * dt);
     t.colonyCd -= dt;
-    if (t.colonyCd <= 0 && pop >= 150 && t.era >= 3 && !S.war && G.opts.colonies && S.tribes.filter(o => o.color === t.color).length < MAX_VILLAGES) foundColony(t);
+    if (t.colonyCd <= 0 && pop >= 160 && t.era >= 4 && !S.war && G.opts.colonies && S.tribes.filter(o => o.color === t.color).length < MAX_VILLAGES) foundColony(t);
 
     // the wall starts to matter once it is half up
     if (t.wall && !t.wallOn && t.buildings.includes(t.wall) && (t.wall.built > 0.5 || t.wall.upgrading)) {

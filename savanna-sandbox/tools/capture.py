@@ -13,8 +13,9 @@ ap = argparse.ArgumentParser()
 ap.add_argument("out")
 ap.add_argument("seconds", nargs="?", type=float, default=50)
 ap.add_argument("--portrait", action="store_true")
-ap.add_argument("--query", default="demo=1&ui=0&lang=zh&hold=1")
+ap.add_argument("--query", default="demo=1&ui=0&lang=zh&hold=1&nature=0")
 ap.add_argument("--fps", type=int, default=30)
+ap.add_argument("--dry", action="store_true", help="step through without recording; print the director status once a second")
 a = ap.parse_args()
 W, H = (1080, 1920) if a.portrait else (1920, 1080)
 
@@ -50,7 +51,7 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
 server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(Quiet, directory=str(root)))
 threading.Thread(target=server.serve_forever, daemon=True).start()
 out = pathlib.Path(a.out); out.parent.mkdir(parents=True, exist_ok=True)
-ff = subprocess.Popen(["ffmpeg", "-y", "-loglevel", "error", "-f", "image2pipe", "-framerate", str(a.fps), "-i", "-",
+ff = None if a.dry else subprocess.Popen(["ffmpeg", "-y", "-loglevel", "error", "-f", "image2pipe", "-framerate", str(a.fps), "-i", "-",
                        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "17", "-preset", "medium", str(out)], stdin=subprocess.PIPE)
 with sync_playwright() as p:
     b = p.chromium.launch(channel="chrome", headless=True, args=["--use-angle=metal", "--enable-gpu", "--ignore-gpu-blocklist"])
@@ -62,10 +63,14 @@ with sync_playwright() as p:
     n = int(a.seconds * a.fps)
     for i in range(n):
         pg.evaluate(f"window.__step({1000 / a.fps})")
+        if a.dry:
+            if i % a.fps == 0: print(pg.evaluate("JSON.stringify(G.director.status())"), flush=True)
+            continue
         ff.stdin.write(pg.screenshot(type="jpeg", quality=95))
-        if i % 150 == 0: print(f"frame {i}/{n}", pg.evaluate("JSON.stringify(G.tribes.info())"), flush=True)
-    events = pg.evaluate("JSON.stringify(G.events)")
-    out.with_suffix(".events.json").write_text(events)
+        if i % 150 == 0: print(f"frame {i}/{n}", pg.evaluate("JSON.stringify(G.director.status())"), flush=True)
+    if not a.dry:
+        out.with_suffix(".events.json").write_text(pg.evaluate("JSON.stringify(G.events)"))
     b.close()
-ff.stdin.close(); ff.wait()
-print("wrote", out)
+if ff:
+    ff.stdin.close(); ff.wait()
+    print("wrote", out)
