@@ -125,6 +125,8 @@ export function createUI(G, lang) {
       // the whole interface is built in one language, so switching reloads the page
       if (b.dataset.v === lang) return;
       G.setOpt('lang', b.dataset.v);
+      const hosted = location.pathname.match(/^\/[a-z]{2}\/([^/]+)\/$/);       // /zh/savanna/ on simdoz.com
+      if (hosted) { location.href = `/${b.dataset.v}/${hosted[1]}/${location.search}`; return; }
       const u = new URL(location.href); u.searchParams.set('lang', b.dataset.v); location.href = u.toString();
       return;
     }
