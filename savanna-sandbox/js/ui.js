@@ -15,7 +15,7 @@ const STR = {
     hint: '拖动移动地图 · 滚轮缩放 · 右键拖动旋转 · WASD 也能移动',
     animals: '动物', settings: '设置',
     set: {
-      day: '昼夜', dayOpts: { cycle: '昼夜交替', day: '永远白天', night: '永远黑夜' }, sound: '声音', volume: '音量',
+      lang: '语言 / Language', day: '昼夜', dayOpts: { cycle: '昼夜交替', day: '永远白天', night: '永远黑夜' }, sound: '声音', volume: '音量',
       predators: '猛兽会吃人', nature: '大自然自己降灾（雷雨、干旱）', colonies: '人多了外出建新聚落', haze: '远处起雾', labels: '显示界面文字提示',
     },
   },
@@ -30,7 +30,7 @@ const STR = {
     hint: 'Drag to move the map · Scroll to zoom · Right-drag to rotate · WASD also moves',
     animals: 'Animals', settings: 'Settings',
     set: {
-      day: 'Day and night', dayOpts: { cycle: 'Day and night', day: 'Always day', night: 'Always night' }, sound: 'Sound', volume: 'Volume',
+      lang: 'Language / 语言', day: 'Day and night', dayOpts: { cycle: 'Day and night', day: 'Always day', night: 'Always night' }, sound: 'Sound', volume: 'Volume',
       predators: 'Predators eat people', nature: 'Nature strikes on its own (storms, drought)', colonies: 'Big towns found new ones', haze: 'Distance haze', labels: 'Show the hint line',
     },
   },
@@ -106,18 +106,30 @@ export function createUI(G, lang) {
   // ---- settings
   const o = G.opts, st = L.set;
   const panel = el('div', 'panel', `<h2>${L.settings}</h2>
+    <div class="grp"><label>${st.lang}</label><div class="seg" data-k="lang"><button data-v="zh">中文</button><button data-v="en">English</button></div></div>
     <div class="grp"><label>${st.day}</label><div class="seg" data-k="dayMode">${Object.keys(st.dayOpts).map(k => `<button data-v="${k}">${st.dayOpts[k]}</button>`).join('')}</div></div>
     <div class="grp"><label>${st.sound}</label><div class="line"><input type="checkbox" data-k="sound"><input type="range" min="0" max="100" data-k="volume"></div></div>
     ${['predators', 'nature', 'colonies', 'haze', 'labels'].map(k => `<label class="chk"><input type="checkbox" data-k="${k}"><span>${st[k]}</span></label>`).join('')}`);
   panel.hidden = true;
   gear.onclick = () => { panel.hidden = !panel.hidden; gear.classList.toggle('on', !panel.hidden); };
   const sync = () => {
-    panel.querySelectorAll('.seg button').forEach(b => b.classList.toggle('on', b.dataset.v === o.dayMode));
+    panel.querySelectorAll('.seg button').forEach(b => b.classList.toggle('on', b.dataset.v === (b.parentNode.dataset.k === 'lang' ? lang : o.dayMode)));
     panel.querySelectorAll('input[type=checkbox]').forEach(i => { i.checked = !!o[i.dataset.k]; });
     panel.querySelector('input[type=range]').value = Math.round(o.volume * 100);
     hint.style.display = o.labels ? '' : 'none';
   };
-  panel.addEventListener('click', e => { const b = e.target.closest('.seg button'); if (b) { G.setOpt('dayMode', b.dataset.v); sync(); } });
+  panel.addEventListener('click', e => {
+    const b = e.target.closest('.seg button');
+    if (!b) return;
+    if (b.parentNode.dataset.k === 'lang') {
+      // the whole interface is built in one language, so switching reloads the page
+      if (b.dataset.v === lang) return;
+      G.setOpt('lang', b.dataset.v);
+      const u = new URL(location.href); u.searchParams.set('lang', b.dataset.v); location.href = u.toString();
+      return;
+    }
+    G.setOpt('dayMode', b.dataset.v); sync();
+  });
   panel.addEventListener('input', e => {
     const i = e.target; if (!i.dataset || !i.dataset.k) return;
     G.setOpt(i.dataset.k, i.type === 'checkbox' ? i.checked : i.value / 100);

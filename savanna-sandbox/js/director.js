@@ -21,9 +21,21 @@ export function createDirector(G) {
     const t = G.flora.nearestTree(fire.x, fire.z, 90);
     if (t) { fire.x = t.x; fire.z = t.z; }
   };
+  // Where the fighting is: the people actually trading blows; before the lines meet,
+  // the red town's own war band (bands from other settlements are still on the road).
   const battleCentre = () => {
-    const w = G.tribes.people.filter(p => p.role === 'warrior');
-    if (w.length) { battle.x = w.reduce((s, p) => s + p.x, 0) / w.length; battle.z = w.reduce((s, p) => s + p.z, 0) / w.length; }
+    let w = G.tribes.people.filter(p => p.state === 'fight' && p.role === 'warrior');
+    if (w.length < 6) w = G.tribes.people.filter(p => p.role === 'warrior' && p.tribe === A);
+    if (!w.length) return;
+    // There can be several clashes at once (every settlement sends a band). Follow one:
+    // the knot of fighters around whoever is closest to the red town.
+    let seed = w[0], bd = 1e12;
+    for (const p of w) { const d = (p.x - A.x) ** 2 + (p.z - A.z) ** 2; if (d < bd) { bd = d; seed = p; } }
+    if (D.seed && D.seed.alive && w.includes(D.seed)) seed = D.seed; else D.seed = seed;
+    const knot = w.filter(p => Math.hypot(p.x - seed.x, p.z - seed.z) < 16);
+    const x = knot.reduce((s, p) => s + p.x, 0) / knot.length, z = knot.reduce((s, p) => s + p.z, 0) / knot.length;
+    // ease towards it so the camera does not jump when the first blows land
+    battle.x += (x - battle.x) * 0.08; battle.z += (z - battle.z) * 0.08;
   };
 
   // tuned on a dry run of the recording: how fast to march and when the lines meet
@@ -69,7 +81,7 @@ export function createDirector(G) {
     [27.8, () => G.power('rain', fire.x, fire.z)],
     [29.6, () => { G.power('war'); G.setSpeed(D.warSpeed); }],
     [D.fightAt, () => G.setSpeed(1.5)],
-    [D.fightAt + 5.2, () => { battleCentre(); G.power('meteor', battle.x, battle.z); G.setSpeed(1); }],
+    [D.fightAt + 5.2, () => { G.power('meteor', battle.x, battle.z); G.setSpeed(1); }],
     [44.5, () => G.setSpeed(150)],
     [52, () => G.setSpeed(20)],
     [52.6, () => G.setSpeed(2)],
@@ -93,6 +105,6 @@ export function createDirector(G) {
   };
   // for tuning: what is going on right now
   D.status = () => ({ t: +D.t.toFixed(1), day: +(G.time / G.DAY + 1).toFixed(1), speed: G.speed, era: A.era, pop: A.people.length,
-    fights: G.tribes.people.filter(p => p.state === 'fight').length, war: G.tribes.war ? G.tribes.war.phase : null, animals: G.animals.all.length, trees: G.flora.count() });
+    fights: G.tribes.people.filter(p => p.state === 'fight').length, inShot: G.tribes.people.filter(p => p.role === 'warrior' && Math.hypot(p.x - battle.x, p.z - battle.z) < 14).length, water: +G.terrain.depth(battle.x, battle.z).toFixed(2), war: G.tribes.war ? G.tribes.war.phase : null, animals: G.animals.all.length, trees: G.flora.count() });
   return D;
 }

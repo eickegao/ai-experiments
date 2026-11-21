@@ -69,7 +69,8 @@ else {
   G.animals = createAnimals(G);
   G.tribes = createTribes(G);
   G.env = createEnv(G);
-  const lang = params.get('lang') || ((navigator.language || 'en').startsWith('zh') ? 'zh' : 'en');
+  const lang = params.get('lang') || G.opts.lang || ((navigator.language || 'en').startsWith('zh') ? 'zh' : 'en');
+  document.title = lang === 'zh' ? '草原沙盘' : 'Savanna Sandbox';
   document.documentElement.lang = lang;
   G.ui = createUI(G, lang);
   if (params.get('ui') === '0') document.body.classList.add('bare');

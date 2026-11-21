@@ -59,7 +59,14 @@ with sync_playwright() as p:
     pg.on("pageerror", lambda e: print("PAGEERROR", str(e)[:300]))
     pg.add_init_script(CLOCK)
     pg.goto(f"http://127.0.0.1:{server.server_address[1]}/?{a.query}", wait_until="networkidle")
-    pg.wait_for_function("window.G && window.G.ready")
+    # The page clock is ours, so Playwright's own waiting (which polls on animation frames)
+    # would never tick: poll from here instead.
+    import time
+    for _ in range(600):
+        if pg.evaluate("!!(window.G && window.G.ready)"): break
+        time.sleep(0.1)
+    else:
+        raise SystemExit("the page never became ready")
     n = int(a.seconds * a.fps)
     for i in range(n):
         pg.evaluate(f"window.__step({1000 / a.fps})")
