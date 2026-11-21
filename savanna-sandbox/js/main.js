@@ -10,7 +10,7 @@ import { createFx } from './fx.js';
 import { createAnimals } from './animals.js';
 import { createTribes } from './tribes.js';
 import { createEnv } from './env.js';
-import { createUI } from './ui.js';
+import { createUI, LANGS, title } from './ui.js';
 import { createPost } from './post.js';
 import { createDirector } from './director.js';
 import { createRoom } from './room.js';
@@ -70,8 +70,9 @@ else {
   G.tribes = createTribes(G);
   G.env = createEnv(G);
   // When the page is served per language (simdoz.com/<lang>/savanna/), the host says which one in <html data-lang>.
-  const lang = params.get('lang') || document.documentElement.dataset.lang || G.opts.lang || ((navigator.language || 'en').startsWith('zh') ? 'zh' : 'en');
-  if (!document.documentElement.dataset.lang) document.title = lang === 'zh' ? '草原沙盘' : 'Savanna Sandbox';      // a host page brings its own title
+  const want = params.get('lang') || document.documentElement.dataset.lang || G.opts.lang || (navigator.language || 'en').slice(0, 2).toLowerCase();
+  const lang = want in LANGS ? want : 'en';
+  if (!document.documentElement.dataset.lang) document.title = title(lang);      // a host page brings its own title
   document.documentElement.lang = lang;
   G.ui = createUI(G, lang);
   if (params.get('ui') === '0') document.body.classList.add('bare');

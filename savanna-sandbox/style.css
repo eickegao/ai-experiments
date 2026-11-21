@@ -37,10 +37,11 @@ body.bare #ui { display: none; }
 .toast.out { opacity: 0; transform: translateY(-10px); }
 @keyframes pop { from { transform: scale(.6); opacity: 0; } }
 
-.hint { position: absolute; right: 24px; bottom: 26px; font-size: 11.5px; color: #fffaf0; text-shadow: 0 1px 4px rgba(30, 20, 5, .8); opacity: .9; pointer-events: none !important; }
+/* centred above the tool bar: beside it there is no room for the longer languages */
+.hint { position: absolute; left: 50%; transform: translateX(-50%); bottom: 90px; white-space: nowrap; font-size: 11.5px; color: #fffaf0; text-shadow: 0 1px 4px rgba(30, 20, 5, .8); opacity: .9; pointer-events: none !important; }
 
 @media (max-width: 760px) {
-  .head { left: 16px; top: 14px; }
+  .head { left: 16px; top: 14px; max-width: calc(100vw - 170px); }   /* a long title wraps beside the cards */
   .head h1 { font-size: 24px; }
   .head p, .hint { display: none; }
   .cards { right: 10px; top: 12px; width: 132px; gap: 6px; }
@@ -64,6 +65,9 @@ body.bare #ui { display: none; }
 .panel .grp > label { display: block; font-size: 11px; letter-spacing: .06em; opacity: .6; margin-bottom: 5px; }
 .panel .seg { display: flex; gap: 4px; }
 .panel .seg button { flex: 1; border: 1px solid rgba(60, 45, 30, .18); background: transparent; border-radius: 8px; padding: 7px 4px; font: 600 12px/1.1 inherit; color: #4a4036; cursor: pointer; }
+/* the nine languages: three to a row */
+.panel .seg.wrap { flex-wrap: wrap; }
+.panel .seg.wrap button { flex: 1 0 30%; }
 .panel .seg button.on { background: #2f2a24; color: #fbe9b8; border-color: #2f2a24; }
 .panel .line { display: flex; align-items: center; gap: 10px; }
 .panel .line input[type=range] { flex: 1; accent-color: #c8432a; }

@@ -2,39 +2,20 @@
 // speed buttons, the settings panel, toasts, and the brush ring.
 import * as THREE from '../vendor/three/three.module.js';
 import { TRIBES } from './models.js';
+import en from './lang/en.js';
+import zh from './lang/zh.js';
+import es from './lang/es.js';
+import pt from './lang/pt.js';
+import de from './lang/de.js';
+import fr from './lang/fr.js';
+import ja from './lang/ja.js';
+import ko from './lang/ko.js';
+import it from './lang/it.js';
 
-const STR = {
-  zh: {
-    title: '草原沙盘', sub: '你是这片草原的神', day: n => `第 ${n} 天`,
-    tribes: ['赤岩人', '蓝河人'], eras: ['', '营地', '村落', '城寨', '王城', '工业城', '现代都市'], trees: '树木', pop: '人口', food: '粮食', wood: '木头', stone: '石头', towns: '聚落',
-    tools: { hand: '移动', rotate: '旋转', rain: '降雨', lightning: '闪电', meteor: '陨石', tornado: '龙卷风', plague: '瘟疫', bless: '祝福', raise: '隆起', lower: '下陷', herd: '兽群', drought: '干旱', storm: '暴雨', war: '战鼓' },
-    toast: {
-      era: (t, e) => `${t}进入「${e}」时代`, war: '战鼓响起，两族开战', peace: t => (t ? `${t}赢得了这场战争` : '战争结束，双方退兵'),
-      drought: '大旱降临，河水开始退去', storm: '暴雨来了', plague: '瘟疫开始蔓延', colony: t => `${t}派人外出，建立了新的聚落`,
-    },
-    hint: '拖动移动地图 · 滚轮缩放 · 右键拖动旋转 · WASD 也能移动',
-    animals: '动物', settings: '设置',
-    set: {
-      lang: '语言 / Language', day: '昼夜', dayOpts: { cycle: '昼夜交替', day: '永远白天', night: '永远黑夜' }, sound: '声音', volume: '音量',
-      predators: '猛兽会吃人', nature: '大自然自己降灾（雷雨、干旱）', colonies: '人多了外出建新聚落', haze: '远处起雾', labels: '显示界面文字提示',
-    },
-  },
-  en: {
-    title: 'Savanna Sandbox', sub: 'You are the god of this grassland', day: n => `Day ${n}`,
-    tribes: ['Redrock', 'Blueriver'], eras: ['', 'Camp', 'Village', 'Town', 'Kingdom', 'Industrial city', 'Metropolis'], trees: 'Trees', pop: 'People', food: 'Food', wood: 'Wood', stone: 'Stone', towns: 'Towns',
-    tools: { hand: 'Move', rotate: 'Rotate', rain: 'Rain', lightning: 'Lightning', meteor: 'Meteor', tornado: 'Tornado', plague: 'Plague', bless: 'Bless', raise: 'Raise', lower: 'Lower', herd: 'Herd', drought: 'Drought', storm: 'Storm', war: 'War drum' },
-    toast: {
-      era: (t, e) => `${t} enters the ${e} age`, war: 'War drums: the two peoples march', peace: t => (t ? `${t} wins the war` : 'The war ends in a draw'),
-      drought: 'Drought. The river is falling', storm: 'A storm rolls in', plague: 'A plague is spreading', colony: t => `${t} sends settlers out to found a new town`,
-    },
-    hint: 'Drag to move the map · Scroll to zoom · Right-drag to rotate · WASD also moves',
-    animals: 'Animals', settings: 'Settings',
-    set: {
-      lang: 'Language / 语言', day: 'Day and night', dayOpts: { cycle: 'Day and night', day: 'Always day', night: 'Always night' }, sound: 'Sound', volume: 'Volume',
-      predators: 'Predators eat people', nature: 'Nature strikes on its own (storms, drought)', colonies: 'Big towns found new ones', haze: 'Distance haze', labels: 'Show the hint line',
-    },
-  },
-};
+// one file of interface text per language (js/lang/); a language's own name, for the switch in the settings
+const STR = { en, zh, es, pt, de, fr, ja, ko, it };
+export const LANGS = { en: 'English', zh: '中文', es: 'Español', pt: 'Português', de: 'Deutsch', fr: 'Français', ja: '日本語', ko: '한국어', it: 'Italiano' };
+export const title = lang => (STR[lang] || STR.en).title;
 
 const ICON = {
   hand: '<path d="M12 2l3.5 4h-2.5v5h5V8.5l4 3.5l-4 3.5V13h-5v5h2.5L12 22l-3.5-4H11v-5H6v2.5L2 12l4-3.5V11h5V6H8.5z"/>',
@@ -106,7 +87,7 @@ export function createUI(G, lang) {
   // ---- settings
   const o = G.opts, st = L.set;
   const panel = el('div', 'panel', `<h2>${L.settings}</h2>
-    <div class="grp"><label>${st.lang}</label><div class="seg" data-k="lang"><button data-v="zh">中文</button><button data-v="en">English</button></div></div>
+    <div class="grp"><label>${st.lang}</label><div class="seg wrap" data-k="lang">${Object.keys(LANGS).map(k => `<button data-v="${k}">${LANGS[k]}</button>`).join('')}</div></div>
     <div class="grp"><label>${st.day}</label><div class="seg" data-k="dayMode">${Object.keys(st.dayOpts).map(k => `<button data-v="${k}">${st.dayOpts[k]}</button>`).join('')}</div></div>
     <div class="grp"><label>${st.sound}</label><div class="line"><input type="checkbox" data-k="sound"><input type="range" min="0" max="100" data-k="volume"></div></div>
     ${['predators', 'nature', 'colonies', 'haze', 'labels'].map(k => `<label class="chk"><input type="checkbox" data-k="${k}"><span>${st[k]}</span></label>`).join('')}`);

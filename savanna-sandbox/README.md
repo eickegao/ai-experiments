@@ -46,7 +46,7 @@ python3 -m http.server 8000
 # open http://localhost:8000/
 ```
 
-Query parameters: `lang=zh|en`, `seed=<n>`, `demo=1` (a 50-second scripted show reel), `ui=0` (hide the interface), `post=0` (no post-processing), `debug=models` (a line-up of every model).
+Query parameters: `lang=en|zh|es|pt|de|fr|ja|ko|it`, `seed=<n>`, `demo=1` (a 50-second scripted show reel), `ui=0` (hide the interface), `post=0` (no post-processing), `debug=models` (a line-up of every model).
 
 Tools (need `pip install -r requirements.txt` and a local Chrome):
 

@@ -46,7 +46,7 @@ python3 -m http.server 8000
 # 打开 http://localhost:8000/
 ```
 
-网址参数：`lang=zh|en`、`seed=<数字>`、`demo=1`（50 秒的自动演示）、`ui=0`（隐藏界面）、`post=0`（关闭后处理）、`debug=models`（全部模型的展示）。
+网址参数：`lang=en|zh|es|pt|de|fr|ja|ko|it`、`seed=<数字>`、`demo=1`（50 秒的自动演示）、`ui=0`（隐藏界面）、`post=0`（关闭后处理）、`debug=models`（全部模型的展示）。
 
 工具（需要 `pip install -r requirements.txt` 和本机的 Chrome）：
 
