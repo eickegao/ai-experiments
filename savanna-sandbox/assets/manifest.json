@@ -1,0 +1,668 @@
+{
+ "acacia_a": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single umbrella thorn acacia tree with a wide flat-topped canopy and a slightly leaning trunk, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 8.5,
+  "image_usage": {
+   "input_tokens": 81,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 81
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 277
+  },
+  "model_task": "8fdff149-28dc-4b4c-a405-5f2d00a109f1",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 4000,
+  "model_started": 1795218638.903336,
+  "model_seconds": 81.6,
+  "model_bytes": 1552132,
+  "model_status": "success"
+ },
+ "zebra": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single zebra standing, side-on three-quarter view, all four legs visible and apart, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 12.0,
+  "image_usage": {
+   "input_tokens": 79,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 79
+   },
+   "output_tokens": 439,
+   "output_tokens_details": {
+    "image_tokens": 439,
+    "text_tokens": 0
+   },
+   "total_tokens": 518
+  },
+  "model_task": "fda9e047-d9f0-455b-9946-7e2ae2964388",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 3000,
+  "model_started": 1795218634.8352199,
+  "model_seconds": 59.5,
+  "model_bytes": 1430028,
+  "model_status": "success"
+ },
+ "person_red": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single East African savanna tribesman standing upright in an A-pose with arms held slightly away from the body, wearing a red cloth wrap with a yellow bead necklace and a red headband, barefoot, empty hands, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 14.1,
+  "image_usage": {
+   "input_tokens": 106,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 106
+   },
+   "output_tokens": 439,
+   "output_tokens_details": {
+    "image_tokens": 439,
+    "text_tokens": 0
+   },
+   "total_tokens": 545
+  },
+  "model_task": "db5ba972-ae22-46cf-8977-f3b281b44b5f",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 3000,
+  "model_started": 1795218629.9645288,
+  "model_seconds": 56.0,
+  "model_bytes": 1026620,
+  "model_status": "success"
+ },
+ "_runs": [
+  {
+   "date": "2026-11-20 17:52",
+   "items": [
+    "person_red",
+    "zebra",
+    "acacia_a"
+   ],
+   "tripo_credits_before": 1635,
+   "tripo_credits_after": 1545
+  },
+  {
+   "date": "2026-11-20 18:01",
+   "items": [
+    "person_blue",
+    "wildebeest",
+    "gazelle",
+    "elephant",
+    "giraffe",
+    "lion",
+    "vulture",
+    "acacia_b",
+    "baobab",
+    "bush",
+    "rock_a",
+    "rock_b",
+    "shelter",
+    "hut",
+    "house",
+    "stone_house",
+    "hall",
+    "granary",
+    "tower",
+    "totem",
+    "stall",
+    "bonfire"
+   ],
+   "tripo_credits_before": 1245,
+   "tripo_credits_after": 885
+  }
+ ],
+ "giraffe": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single giraffe standing tall, side-on three-quarter view, all four legs visible and apart, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 9.4,
+  "image_usage": {
+   "input_tokens": 81,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 81
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 277
+  },
+  "model_task": "b62a5338-6f01-4258-9f53-0e6dcaba84bd",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 4000,
+  "model_started": 1795218800.5492742,
+  "model_seconds": 107.5,
+  "model_bytes": 1146460,
+  "model_status": "success"
+ },
+ "acacia_b": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single umbrella thorn acacia tree with a forked trunk and two flat layered canopies, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 9.5,
+  "image_usage": {
+   "input_tokens": 80,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 80
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 276
+  },
+  "model_task": "49c370b5-9ebb-428f-9b13-7e51b57468a9",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 4000,
+  "model_started": 1795218811.719148,
+  "model_seconds": 127.8,
+  "model_bytes": 1657196,
+  "model_status": "success"
+ },
+ "rock_b": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single tall rounded granite boulder, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 9.8,
+  "image_usage": {
+   "input_tokens": 69,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 69
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 265
+  },
+  "model_task": "6926854f-c444-48b4-bb38-c68a6110c96d",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 1200,
+  "model_started": 1795218948.3967922,
+  "model_seconds": 91.0,
+  "model_bytes": 1396084,
+  "model_status": "success"
+ },
+ "wildebeest": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single blue wildebeest standing, side-on three-quarter view, all four legs visible and apart, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 9.8,
+  "image_usage": {
+   "input_tokens": 82,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 82
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 278
+  },
+  "model_task": "0237eb59-49d5-4cac-b658-e7ea8111215d",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 3000,
+  "model_started": 1795218788.8883042,
+  "model_seconds": 86.7,
+  "model_bytes": 1116748,
+  "model_status": "success"
+ },
+ "vulture": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single vulture in flight with wings spread flat and wide, seen from above at three-quarter view, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 10.0,
+  "image_usage": {
+   "input_tokens": 82,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 82
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 278
+  },
+  "model_task": "72d058b7-927a-49b4-8186-b7f20b191c23",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 2000,
+  "model_started": 1795218808.230596,
+  "model_seconds": 119.5,
+  "model_bytes": 942544,
+  "model_status": "success"
+ },
+ "elephant": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single African bush elephant standing, side-on three-quarter view, all four legs visible, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 10.0,
+  "image_usage": {
+   "input_tokens": 79,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 79
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 275
+  },
+  "model_task": "0bdb7e24-791d-460d-a178-4d51ca2a1055",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 4000,
+  "model_started": 1795218797.290097,
+  "model_seconds": 110.1,
+  "model_bytes": 1280000,
+  "model_status": "success"
+ },
+ "rock_a": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single weathered granite boulder cluster, one large rounded rock with two small ones beside it, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 10.0,
+  "image_usage": {
+   "input_tokens": 81,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 81
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 277
+  },
+  "model_task": "e24eba23-52b3-49a6-add2-58872c6a5679",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 1500,
+  "model_started": 1795218944.504281,
+  "model_seconds": 94.2,
+  "model_bytes": 1437596,
+  "model_status": "success"
+ },
+ "gazelle": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single Thomson's gazelle standing, side-on three-quarter view, all four legs visible and apart, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 10.5,
+  "image_usage": {
+   "input_tokens": 82,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 82
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 278
+  },
+  "model_task": "a1f9fb25-92b9-418b-9f30-5ba43a776934",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 3000,
+  "model_started": 1795218792.588025,
+  "model_seconds": 83.7,
+  "model_bytes": 1072388,
+  "model_status": "success"
+ },
+ "bush": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single low round savanna shrub with small red berries, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 10.6,
+  "image_usage": {
+   "input_tokens": 73,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 73
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 269
+  },
+  "model_task": "ddcc5911-25a0-4daa-a605-2960564acce8",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 1500,
+  "model_started": 1795218818.8257,
+  "model_seconds": 137.2,
+  "model_bytes": 1042608,
+  "model_status": "success"
+ },
+ "shelter": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single primitive lean-to shelter made of branches and dry grass thatch, open at the front, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 11.2,
+  "image_usage": {
+   "input_tokens": 81,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 81
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 277
+  },
+  "model_task": "9b72a534-7d2c-415f-9b00-64c323da6e49",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 3000,
+  "model_started": 1795219043.147634,
+  "model_seconds": 96.3,
+  "model_bytes": 1856272,
+  "model_status": "success"
+ },
+ "lion": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single male lion with a full mane standing, side-on three-quarter view, all four legs visible and apart, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 11.3,
+  "image_usage": {
+   "input_tokens": 84,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 84
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 280
+  },
+  "model_task": "c80f2322-ae72-4c58-bd4e-f4217b703701",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 3000,
+  "model_started": 1795218803.657206,
+  "model_seconds": 123.2,
+  "model_bytes": 1297284,
+  "model_status": "success"
+ },
+ "baobab": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single baobab tree with a very thick swollen trunk and short stubby branches with small leaf clusters, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 12.8,
+  "image_usage": {
+   "input_tokens": 83,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 83
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 279
+  },
+  "model_task": "18374d5d-2b85-4575-8347-a07b239921d0",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 4000,
+  "model_started": 1795218815.174203,
+  "model_seconds": 133.9,
+  "model_bytes": 1528620,
+  "model_status": "success"
+ },
+ "person_blue": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single East African savanna tribesman standing upright in an A-pose with arms held slightly away from the body, wearing a deep blue cloth wrap with a white bead necklace and a blue headband, barefoot, empty hands, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 13.1,
+  "image_usage": {
+   "input_tokens": 107,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 107
+   },
+   "output_tokens": 439,
+   "output_tokens_details": {
+    "image_tokens": 439,
+    "text_tokens": 0
+   },
+   "total_tokens": 546
+  },
+  "model_task": "26e437fe-f58e-4233-a85f-7e1fb26c091f",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 3000,
+  "model_started": 1795218784.4194229,
+  "model_seconds": 56.1,
+  "model_bytes": 826644,
+  "model_status": "success"
+ },
+ "hut": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single round African mud hut with a conical grass thatched roof and a small dark doorway, a red painted band around the wall, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 14.4,
+  "image_usage": {
+   "input_tokens": 89,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 89
+   },
+   "output_tokens": 439,
+   "output_tokens_details": {
+    "image_tokens": 439,
+    "text_tokens": 0
+   },
+   "total_tokens": 528
+  },
+  "model_task": "c2be5f6e-3a32-4dd2-bd77-5b2d75b023eb",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 4000,
+  "model_started": 1795219047.257,
+  "model_seconds": 92.9,
+  "model_bytes": 1354284,
+  "model_status": "success"
+ },
+ "stall": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single wooden market stall with a striped cloth canopy and baskets of fruit and vegetables on the counter, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 8.3,
+  "image_usage": {
+   "input_tokens": 81,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 81
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 277
+  },
+  "model_task": "d900478c-1eac-4563-95e6-8e87f1c1ec18",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 4000,
+  "model_started": 1795219229.599969,
+  "model_seconds": 50.6,
+  "model_bytes": 1272776,
+  "model_status": "success"
+ },
+ "granary": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single small round granary hut raised on wooden stilts with a conical thatched roof, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 8.6,
+  "image_usage": {
+   "input_tokens": 81,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 81
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 277
+  },
+  "model_task": "e45cfc1d-e038-4ddc-a9d8-6c3af499839d",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 3000,
+  "model_started": 1795219151.60398,
+  "model_seconds": 72.2,
+  "model_bytes": 1645956,
+  "model_status": "success"
+ },
+ "bonfire": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single campfire: a ring of stones around stacked logs, no flames, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 8.7,
+  "image_usage": {
+   "input_tokens": 77,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 77
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 273
+  },
+  "model_task": "aeff006a-1829-40c4-93a3-06de71208951",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 1500,
+  "model_started": 1795219234.413298,
+  "model_seconds": 75.0,
+  "model_bytes": 1129016,
+  "model_status": "success"
+ },
+ "house": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single flat-roofed mud-brick house with a small upper room, wooden roof beams sticking out, a wooden ladder, painted geometric band around the wall, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 9.9,
+  "image_usage": {
+   "input_tokens": 94,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 94
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 290
+  },
+  "model_task": "9cdefe33-9f77-4d59-9046-4d17210a46a0",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 5000,
+  "model_started": 1795219051.888782,
+  "model_seconds": 88.8,
+  "model_bytes": 1412036,
+  "model_status": "success"
+ },
+ "totem": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single tall carved and painted wooden totem pole with stacked faces and a pair of wings near the top, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 9.4,
+  "image_usage": {
+   "input_tokens": 83,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 83
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 279
+  },
+  "model_task": "48e6ecf1-ba42-4b85-8dc7-2208e8c8b2e1",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 3000,
+  "model_started": 1795219159.3441658,
+  "model_seconds": 66.3,
+  "model_bytes": 1136688,
+  "model_status": "success"
+ },
+ "stone_house": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single two-storey dry-stone house with a steep tiled pyramid roof, a wooden door and small windows, a banner on a pole, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 11.0,
+  "image_usage": {
+   "input_tokens": 90,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 90
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 286
+  },
+  "model_task": "87328bd2-da30-40c4-a45a-564f5fac5764",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 5000,
+  "model_started": 1795219056.498087,
+  "model_seconds": 84.7,
+  "model_bytes": 1662360,
+  "model_status": "success"
+ },
+ "tower": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single wooden watchtower on four tall legs with a railed platform and a small thatched roof, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 12.7,
+  "image_usage": {
+   "input_tokens": 82,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 82
+   },
+   "output_tokens": 439,
+   "output_tokens_details": {
+    "image_tokens": 439,
+    "text_tokens": 0
+   },
+   "total_tokens": 521
+  },
+  "model_task": "45bbf87d-12ab-4926-a18d-c4e56c81bb62",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 4000,
+  "model_started": 1795219155.029578,
+  "model_seconds": 69.5,
+  "model_bytes": 1309984,
+  "model_status": "success"
+ },
+ "hall": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single grand stone royal hall on a stepped stone platform with a columned porch, a large tiled pyramid roof and banners, ancient African kingdom architecture, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 14.9,
+  "image_usage": {
+   "input_tokens": 91,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 91
+   },
+   "output_tokens": 439,
+   "output_tokens_details": {
+    "image_tokens": 439,
+    "text_tokens": 0
+   },
+   "total_tokens": 530
+  },
+  "model_task": "8dc9b089-6f64-46f0-a114-f3c7bb67764e",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 8000,
+  "model_started": 1795219146.280405,
+  "model_seconds": 54.9,
+  "model_bytes": 2013320,
+  "model_status": "success"
+ }
+}

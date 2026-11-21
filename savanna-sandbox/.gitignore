@@ -1,1 +1,3 @@
 out/
+# reference pictures are large and can be regenerated from the prompts in assets/manifest.json
+assets/ref/*.png

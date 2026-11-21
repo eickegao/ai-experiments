@@ -13,8 +13,9 @@ export class CreatureKind {
     this.max = max;
     this.list = [];
     this.swing = opts.swing ?? 0.75;
+    this.hop = opts.hop || 0;        // models without separate legs walk with a small hop and sway
     this.meshes = parts.map(pt => {
-      const m = new THREE.InstancedMesh(pt.geo, material, max);
+      const m = new THREE.InstancedMesh(pt.geo, pt.material || material, max);
       m.castShadow = true;
       m.receiveShadow = false;
       m.frustumCulled = false;
@@ -31,9 +32,11 @@ export class CreatureKind {
     for (let i = 0; i < n; i++) {
       const c = list[i];
       const sc = c.scale || 1;
-      e3.set(c.pitch || 0, c.yaw, c.roll || 0);
+      let hopY = 0, sway = 0;
+      if (this.hop && c.amp > 0.02) { hopY = Math.abs(Math.sin(c.gait * 0.5)) * this.hop * c.amp * sc; sway = Math.sin(c.gait * 0.5) * 0.07 * c.amp; }
+      e3.set((c.pitch || 0) * (this.hop ? 0.35 : 1), c.yaw, (c.roll || 0) + sway);
       q.setFromEuler(e3);
-      M.compose(p.set(c.x, c.y + (c.bob || 0), c.z), q, s.set(sc, sc, sc));
+      M.compose(p.set(c.x, c.y + (c.bob || 0) + hopY, c.z), q, s.set(sc, sc, sc));
       for (let k = 0; k < parts.length; k++) {
         const pt = parts[k], mesh = this.meshes[k];
         let ang = 0, axis = 0, dz = 0;

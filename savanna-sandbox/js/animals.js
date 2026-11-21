@@ -18,14 +18,20 @@ export const SPEC = {
 export function createAnimals(G) {
   const { stage, terrain: T, rng, villages } = G;
   const scene = stage.scene;
+  // A generated model (assets/models) replaces the code-built one when it has been made.
+  const kind = (asset, parts, max, opts = {}, hop = 0.16) => {
+    const a = G.assets[asset];
+    return a ? new CreatureKind(scene, [{ kind: 'body', pivot: [0, 0, 0], phase: 0, geo: a.geo, material: a.mat }], max, { ...opts, hop })
+      : new CreatureKind(scene, parts(), max, opts);
+  };
   const kinds = {
-    zebra: new CreatureKind(scene, MD.zebraParts(), 420),
-    wildebeest: new CreatureKind(scene, MD.wildebeestParts(), 560),
-    gazelle: new CreatureKind(scene, MD.gazelleParts(), 420),
-    elephant: new CreatureKind(scene, MD.elephantParts(), 70, { swing: 0.45 }),
-    giraffe: new CreatureKind(scene, MD.giraffeParts(), 70, { swing: 0.5 }),
-    lion: new CreatureKind(scene, MD.lionParts(), 48),
-    bird: new CreatureKind(scene, MD.birdParts(), 160),
+    zebra: kind('zebra', MD.zebraParts, 420),
+    wildebeest: kind('wildebeest', MD.wildebeestParts, 560),
+    gazelle: kind('gazelle', MD.gazelleParts, 420, {}, 0.22),
+    elephant: kind('elephant', MD.elephantParts, 70, { swing: 0.45 }, 0.08),
+    giraffe: kind('giraffe', MD.giraffeParts, 70, { swing: 0.5 }, 0.1),
+    lion: kind('lion', MD.lionParts, 48),
+    bird: kind('vulture', MD.birdParts, 160, {}, 0),
   };
   const carcassMesh = new THREE.InstancedMesh(MD.carcassGeo(), toyMaterial(), 200);
   carcassMesh.castShadow = true; carcassMesh.count = 0; carcassMesh.frustumCulled = false;

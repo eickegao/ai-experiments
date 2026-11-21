@@ -254,10 +254,11 @@ export function rockGeo(v) {
   return b.build();
 }
 export function tuftGeo() {
+  // a clump of thin tapering blades
   const b = new Builder();
-  for (let i = 0; i < 5; i++) {
-    const a = i * 1.26;
-    b.box(0.07, 0.52, 0.03, Math.cos(a) * 0.14, 0.24, Math.sin(a) * 0.14, '#ffffff', Math.sin(a) * 0.35, a, Math.cos(a) * 0.35);
+  for (let i = 0; i < 9; i++) {
+    const a = i * 2.4, r = 0.05 + (i % 3) * 0.07, h = 0.42 + (i % 4) * 0.12;
+    b.cone(0.028, h, Math.cos(a) * r, h / 2, Math.sin(a) * r, '#ffffff', 3, Math.sin(a) * 0.3, a, -Math.cos(a) * 0.3);
   }
   return b.build();
 }

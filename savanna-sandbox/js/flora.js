@@ -18,13 +18,15 @@ export function createFlora(G) {
     scene.add(m);
     return m;
   };
+  const A = G.assets;
+  const gen = (name, make, max, shadow = true) => (A[name] ? inst(A[name].geo, max, shadow, A[name].mat) : inst(make(), max, shadow));
   const meshes = {
-    acacia: [0, 1, 2].map(v => inst(acaciaGeo(v), 320)),
-    baobab: inst(baobabGeo(), 60),
+    acacia: [0, 1, 2].map(v => gen(['acacia_a', 'acacia_b', 'acacia_a'][v], () => acaciaGeo(v), 320)),
+    baobab: gen('baobab', baobabGeo, 60),
     burnt: inst(burntTreeGeo(), 800),
-    bush: inst(bushGeo(), 640),
+    bush: gen('bush', bushGeo, 640),
     berries: inst(berriesGeo(), 640, false),
-    rock: [0, 1, 2].map(v => inst(rockGeo(v), 320)),
+    rock: [0, 1, 2].map(v => gen(['rock_a', 'rock_b', 'rock_a'][v], () => rockGeo(v), 320)),
     tuft: inst(tuftGeo(), 16500, false, new THREE.MeshStandardMaterial({ roughness: 1, flatShading: true })),
   };
 
@@ -103,7 +105,7 @@ export function createFlora(G) {
     const y = T.height(b.x, b.z) - 0.05;
     if (!b.alive) { meshes.bush.setMatrixAt(i, ZERO); meshes.berries.setMatrixAt(i, ZERO); meshes.bush.instanceMatrix.needsUpdate = meshes.berries.instanceMatrix.needsUpdate = true; return; }
     setM(meshes.bush, i, b.x, y, b.z, b.yaw, b.sc);
-    if (b.berries) setM(meshes.berries, i, b.x, y, b.z, b.yaw, b.sc);
+    if (b.berries && !A.bush) setM(meshes.berries, i, b.x, y, b.z, b.yaw, b.sc);
     else { meshes.berries.setMatrixAt(i, ZERO); meshes.berries.instanceMatrix.needsUpdate = true; }
   };
   const rockCount = [0, 0, 0];

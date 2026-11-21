@@ -16,7 +16,8 @@
 
 - 模型：Claude Fable 5.2（`claude-fable-5-2`），在 Claude Code 里和频道主的一次对话中完成。
 - 人负责定题（非洲草原上的上帝沙盒，有动物、打猎、自然灾害和两个打仗的部落）和审核结果。全部代码和场景里的全部模型由 AI 编写。
-- 没有美术素材：每只动物、每个人、每棵树、每座房子都是用代码拿方块、圆柱、圆锥和低面数球体搭出来的（`js/models.js`）。没有贴图，没有下载的模型，没有生成的图片。唯一的依赖是 three.js r187，放在 `vendor/three/`。
+- 模型有两代。第一个可玩版本完全没有美术素材：每只动物、每个人、每棵树、每座房子都是用代码拿方块、圆柱、圆锥搭出来的（`js/models.js`，现在作为后备，`?assets=0` 可以切回去）。频道主觉得这种长相太简陋，于是 AI 又调用另外两个 AI 生成了 25 个模型：每个物体先用 OpenAI 图像接口（`gpt-image-2`）出一张参考图，再用 Tripo（`v2.5-20250123`，每个 30 点、约一分钟）转成带贴图的 3D 模型。`tools/make_assets.py` 负责这两步，并把提示词、任务号、用时和点数记在 `assets/manifest.json`；GLB 文件在 `assets/models/`。没有任何东西是人手画或手工建模的。
+- 依赖：three.js r187 和它的 GLTF 加载器，放在 `vendor/three/`。
 - AI 自己检查成果：用无头 Chrome 打开页面、截图、看图（`tools/shot.py`、`tools/scenario.py`、`tools/probe.py`）。
 - 第一个可玩版本：从空目录开始，实际用时约 36 分钟，约 3100 行 JavaScript。
 

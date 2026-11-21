@@ -16,7 +16,8 @@ The question behind the video: how good and how fast is a current AI model at ma
 
 - Model: Claude Fable 5.2 (`claude-fable-5-2`) in Claude Code, working in one conversation with the channel owner.
 - The human chose the idea (a god sandbox on an African savanna with animals, hunting, disasters and two warring tribes) and reviews the result. The model wrote every line of code and every model in the scene.
-- No art assets: every animal, person, tree and building is built in code from boxes, cylinders, cones and low-poly spheres (`js/models.js`). No textures, no downloaded models, no generated images. The only dependency is three.js r187, vendored in `vendor/three/`.
+- Two generations of models. The first playable version had no art assets at all: every animal, person, tree and building was built in code from boxes, cylinders and cones (`js/models.js`, still used as the fallback and with `?assets=0`). The channel owner found that look too crude, so the model then generated 25 models with two other AIs: a reference picture per object from the OpenAI image API (`gpt-image-2`), turned into a textured 3D model by Tripo (`v2.5-20250123`, 30 credits each, about a minute each). `tools/make_assets.py` does both steps and records prompts, task ids, seconds and credits in `assets/manifest.json`; the GLB files are in `assets/models/`. Nothing was drawn or modelled by hand.
+- Dependencies: three.js r187 and its GLTF loader, vendored in `vendor/three/`.
 - The model checked its own work by opening the page in headless Chrome, taking screenshots and reading them (`tools/shot.py`, `tools/scenario.py`, `tools/probe.py`).
 - First playable version: about 36 minutes of wall-clock time from an empty directory, about 3,100 lines of JavaScript.
 

@@ -5,7 +5,7 @@ import { makeRng } from './util.js';
 import { createStage } from './stage.js';
 import { createTerrain, N, K } from './terrain.js';
 import { createFlora } from './flora.js';
-import { modelLineup } from './debug.js';
+import { modelLineup, assetLineup } from './debug.js';
 import { createFx } from './fx.js';
 import { createAnimals } from './animals.js';
 import { createTribes } from './tribes.js';
@@ -14,6 +14,7 @@ import { createUI } from './ui.js';
 import { createPost } from './post.js';
 import { createDirector } from './director.js';
 import { createRoom } from './room.js';
+import { loadAssets } from './assets.js';
 
 const params = new URLSearchParams(location.search);
 const seed = +(params.get('seed') || 7);
@@ -37,9 +38,11 @@ const G = window.G = {
   stats() { return { time: G.time, day: G.day, fps: G.fps }; },
 };
 
+G.assets = params.get('assets') === '0' ? {} : await loadAssets();
 G.flora = createFlora(G);
 G.fx = createFx(G);
 if (params.get('debug') === 'models') modelLineup(G);
+else if (params.get('debug') === 'assets') assetLineup(G);
 else {
   G.animals = createAnimals(G);
   G.tribes = createTribes(G);

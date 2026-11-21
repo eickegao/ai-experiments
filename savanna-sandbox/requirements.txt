@@ -1,1 +1,2 @@
 playwright
+tripo3d

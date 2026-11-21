@@ -18,13 +18,29 @@ export function createTribes(G) {
   const scene = stage.scene;
   const mat = toyMaterial();
   const glowMat = new THREE.MeshBasicMaterial({ vertexColors: true, toneMapped: false });
-  const kinds = [new CreatureKind(scene, MD.humanParts(0), 300), new CreatureKind(scene, MD.humanParts(1), 300)];
+  const personKind = (id) => {
+    const a = G.assets[id ? 'person_blue' : 'person_red'];
+    if (!a) return new CreatureKind(scene, MD.humanParts(id), 300);
+    // generated body; spear, shield and head basket stay as code-built parts
+    const extras = MD.humanParts(id).filter(pt => pt.kind === 'spear' || pt.kind === 'shield' || pt.kind === 'carry');
+    return new CreatureKind(scene, [{ kind: 'body', pivot: [0, 0, 0], phase: 0, geo: a.geo, material: a.mat }, ...extras], 300, { hop: 0.1 });
+  };
+  const kinds = [personKind(0), personKind(1)];
   const S = { tribes: [], people: [], kinds, war: null, peace: 60 };
   let nextId = 1000;
 
   const modelCache = {};
   const model = (key, make) => modelCache[key] || (modelCache[key] = make());
-  const houseModel = (tr, era) => model(`house${tr}${era}`, () => [null, MD.shelterModel, MD.hutModel, MD.houseModel, MD.stoneHouseModel][era](tr));
+  const EMPTY = new THREE.BufferGeometry();
+  // Generated building if there is one; the second tribe gets a cool tint so the two towns differ.
+  const gen = (asset, tr, make) => {
+    const a = G.assets[asset];
+    if (!a) return make();
+    let m = a.mat;
+    if (tr === 1) { m = a.mat.clone(); m.color.set('#a9bdf2'); }
+    return { geo: a.geo, glow: EMPTY, mat: m };
+  };
+  const houseModel = (tr, era) => model(`house${tr}${era}`, () => gen([null, 'shelter', 'hut', 'house', 'stone_house'][era], tr, () => [null, MD.shelterModel, MD.hutModel, MD.houseModel, MD.stoneHouseModel][era](tr)));
 
   // ------------------------------------------------------------ village layout
   villages.forEach((v, id) => {
@@ -71,16 +87,16 @@ export function createTribes(G) {
     let m;
     switch (b.type) {
       case 'house': m = houseModel(tr, b.era); break;
-      case 'bonfire': m = model('bonfire', MD.bonfireModel); break;
-      case 'granary': m = model('granary' + tr, () => MD.granaryModel(tr)); break;
-      case 'totem': m = model(`totem${tr}${b.era}`, () => MD.totemModel(tr, b.era)); break;
+      case 'bonfire': m = model('bonfire', () => gen('bonfire', 0, MD.bonfireModel)); break;
+      case 'granary': m = model('granary' + tr, () => gen('granary', tr, () => MD.granaryModel(tr))); break;
+      case 'totem': m = model(`totem${tr}${b.era}`, () => gen('totem', tr, () => MD.totemModel(tr, b.era))); break;
       case 'field': m = model('field', MD.fieldModel); break;
-      case 'tower': m = model('tower' + tr, () => MD.towerModel(tr)); break;
-      case 'hall': m = model('hall' + tr, () => MD.hallModel(tr)); break;
-      case 'stall': m = model(`stall${tr}${b.v}`, () => MD.stallModel(tr, b.v)); break;
+      case 'tower': m = model('tower' + tr, () => gen('tower', tr, () => MD.towerModel(tr))); break;
+      case 'hall': m = model('hall' + tr, () => gen('hall', tr, () => MD.hallModel(tr))); break;
+      case 'stall': m = model(`stall${tr}${b.v}`, () => gen('stall', tr, () => MD.stallModel(tr, b.v))); break;
       case 'wall': m = model(`wall${tr}${b.era}`, () => MD.wallModel(tr, b.era, WALL_R, b.tribe.gate)); break;
     }
-    b.mesh.geometry = m.geo; b.glow.geometry = m.glow;
+    b.mesh.geometry = m.geo; b.glow.geometry = m.glow; b.mesh.material = m.mat || mat;
     if (b.type === 'wall') b.yaw = 0;
     if (b.type === 'field') b.yaw = b.tribe.gate;
   };
