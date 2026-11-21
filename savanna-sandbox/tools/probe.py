@@ -12,12 +12,14 @@ setup, probe, times = sys.argv[1], sys.argv[2], [float(t) for t in sys.argv[3:]]
 with sync_playwright() as p:
     b = p.chromium.launch(channel="chrome", headless=True, args=["--use-angle=metal", "--enable-gpu", "--ignore-gpu-blocklist"])
     page = b.new_page(viewport={"width": 800, "height": 600})
-    page.on("pageerror", lambda e: print("PAGEERROR", e))
-    page.goto(f"http://127.0.0.1:{server.server_address[1]}/?demo=1&ui=0")
+    errs = {}
+    page.on("pageerror", lambda e: errs.__setitem__(str(e)[:200], errs.get(str(e)[:200], 0) + 1))
+    page.goto(f"http://127.0.0.1:{server.server_address[1]}/?nature=0")
     page.wait_for_function("window.G && window.G.ready")
     page.evaluate(setup)
     el = 0
     for t in times:
         page.wait_for_timeout(int((t - el) * 1000)); el = t
         print(t, page.evaluate(probe))
+    for k, v in errs.items(): print('PAGEERROR x%d: %s' % (v, k))
     b.close()

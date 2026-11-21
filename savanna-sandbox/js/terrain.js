@@ -2,7 +2,7 @@
 import * as THREE from '../vendor/three/three.module.js';
 import { clamp, lerp, smooth, makeNoise } from './util.js';
 
-export const N = 256;         // slab is N x N world units
+export const N = 512;         // slab is N x N world units
 export const GRID = N + 1;    // vertices per side
 export const BASE_Y = -5;
 export const RIM_Y = 1.3;
@@ -10,13 +10,16 @@ export const RIM_Y = 1.3;
 export const K = N / 96;      // the first version was 96 wide; layout numbers are scaled from it
 const RIVER = [[63, -2], [61, 9], [56, 18], [58, 27], [51, 35], [47, 48], [43, 57], [44, 66], [36, 74], [31, 84], [27, 98]].map(([x, z]) => [x * K, z * K]);
 export const LAKE = { x: 47 * K, z: 48 * K, r: 17 };
-export const PONDS = [{ x: 79 * K, z: 33 * K, r: 6.5 }, { x: 17 * K, z: 50 * K, r: 5.5 }, { x: 70 * K, z: 90 * K, r: 5 }, { x: 30 * K, z: 8 * K, r: 5 }];
-export const KOPJES = [{ x: 81, z: 15, s: 5.5 }, { x: 13, z: 68, s: 4.6 }, { x: 60, z: 87, s: 4.2 }, { x: 40, z: 22, s: 3.4 }, { x: 88, z: 52, s: 4.8 }, { x: 8, z: 12, s: 3.2 }, { x: 66, z: 62, s: 3.0 }].map(k => ({ x: k.x * K, z: k.z * K, s: k.s }));
+const RIVER2 = [[98, 72], [86, 66], [78, 67], [68, 60], [58, 54], [47, 48]].map(([x, z]) => [x * K, z * K]);
+const RIVER3 = [[-2, 30], [10, 34], [20, 30], [30, 38], [39, 42], [47, 48]].map(([x, z]) => [x * K, z * K]);
+export const PONDS = [[79, 33, 6.5], [17, 50, 5.5], [70, 90, 5], [30, 8, 5], [88, 12, 6], [12, 86, 6], [56, 76, 5], [36, 62, 4.5], [64, 26, 5], [90, 48, 5.5], [22, 18, 5], [46, 90, 5], [8, 8, 4.5], [78, 78, 5]].map(([x, z, r]) => ({ x: x * K, z: z * K, r }));
+export const KOPJES = [{ x: 81, z: 15, s: 5.5 }, { x: 13, z: 68, s: 4.6 }, { x: 60, z: 87, s: 4.2 }, { x: 40, z: 22, s: 3.4 }, { x: 88, z: 52, s: 4.8 }, { x: 8, z: 12, s: 3.2 }, { x: 66, z: 62, s: 3.0 }].concat([{ x: 28, z: 44, s: 4 }, { x: 52, z: 12, s: 4.5 }, { x: 74, z: 44, s: 3.6 }, { x: 34, z: 80, s: 4.4 }, { x: 92, z: 84, s: 5 }, { x: 20, z: 92, s: 3.4 }, { x: 94, z: 28, s: 4 }, { x: 46, z: 66, s: 3.2 }, { x: 6, z: 40, s: 4.2 }, { x: 70, z: 8, s: 3.6 }]).map(k => ({ x: k.x * K, z: k.z * K, s: k.s }));
 
-function distToRiver(x, z) {
+function distToRiver(x, z) { return Math.min(distToLine(RIVER, x, z), distToLine(RIVER2, x, z) + 1.2, distToLine(RIVER3, x, z) + 1.2); }
+function distToLine(L, x, z) {
   let best = 1e9;
-  for (let i = 0; i < RIVER.length - 1; i++) {
-    const [ax, az] = RIVER[i], [bx, bz] = RIVER[i + 1];
+  for (let i = 0; i < L.length - 1; i++) {
+    const [ax, az] = L[i], [bx, bz] = L[i + 1];
     const dx = bx - ax, dz = bz - az;
     const t = clamp(((x - ax) * dx + (z - az) * dz) / (dx * dx + dz * dz), 0, 1);
     const px = ax + dx * t, pz = az + dz * t;
@@ -43,7 +46,7 @@ export function createTerrain(scene, seed, villages) {
   const burnt = new Float32Array(GRID * GRID);
   const fire = new Float32Array(GRID * GRID);     // seconds of burning left
   const jitter = new Float32Array(GRID * GRID);
-  const T = { h, grass, burnt, fire, waterLevel: 0, colorsDirty: true };
+  const T = { h, grass, burnt, fire, waterLevel: 0, colorsDirty: true, walls: [] };
   const idx = (ix, iz) => iz * GRID + ix;
   T.idx = idx;
 
@@ -117,6 +120,7 @@ export function createTerrain(scene, seed, villages) {
 
   const tmp = new THREE.Color();
   T.updateColors = () => {
+    T.colorStamp = performance.now();
     const nor = geo.attributes.normal;
     const wl = T.waterLevel;
     for (let i = 0; i < GRID * GRID; i++) {
@@ -252,11 +256,13 @@ export function createTerrain(scene, seed, villages) {
         h[i] = clamp(lerp(h[i], fn(d, h[i]), edgeW), BASE_Y + 1.5, 14);
       }
     }
-    writeHeights();
+    T.heightsDirty = true;
     T.colorsDirty = true;
     T.version++;
   };
   T.version = 0;
+  // Sculpting can run every frame; heights and normals are pushed to the GPU once per frame.
+  T.flush = () => { if (T.heightsDirty) { T.heightsDirty = false; writeHeights(); } };
 
   // Nearest shoreline point to (x,z), searched on a coarse ring pattern.
   T.findShore = (x, z, maxR = 130) => {

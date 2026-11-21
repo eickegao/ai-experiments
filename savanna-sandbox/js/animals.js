@@ -12,8 +12,10 @@ export const SPEC = {
   gazelle:    { walk: 1.45, run: 5.9, hp: 1, meat: 6,  size: 0.95, cap: 22, prey: true, stride: 6.2, color: '#d6a45c' },
   elephant:   { walk: 0.85, run: 2.4, hp: 40, meat: 0, size: 1.05, cap: 9, prey: false, stride: 2.6, color: '#8f8b8e' },
   giraffe:    { walk: 1.0, run: 3.8, hp: 8, meat: 0,  size: 0.95, cap: 8, prey: false, stride: 2.4, color: '#e6b95c' },
-  lion:       { walk: 1.2, run: 6.4, hp: 6, meat: 0,  size: 1.0, cap: 7, prey: false, stride: 5.2, color: '#d7a24f' },
+  lion:       { walk: 1.2, run: 6.4, hp: 6, meat: 0,  size: 1.0, cap: 7, prey: false, predator: true, stride: 5.2, color: '#d7a24f', call: 'roar' },
+  hyena:      { walk: 1.3, run: 5.7, hp: 3, meat: 0,  size: 0.78, cap: 8, prey: false, predator: true, stride: 5.6, color: '#a8926a', call: 'hyena' },
 };
+SPEC.zebra.call = 'zebra'; SPEC.wildebeest.call = 'grunt'; SPEC.elephant.call = 'trumpet';
 
 export function createAnimals(G) {
   const { stage, terrain: T, rng, villages } = G;
@@ -25,19 +27,21 @@ export function createAnimals(G) {
       : new CreatureKind(scene, parts(), max, opts);
   };
   const kinds = {
-    zebra: kind('zebra', MD.zebraParts, 420),
-    wildebeest: kind('wildebeest', MD.wildebeestParts, 560),
-    gazelle: kind('gazelle', MD.gazelleParts, 420, {}, 0.22),
+    zebra: kind('zebra', MD.zebraParts, 500),
+    wildebeest: kind('wildebeest', MD.wildebeestParts, 650),
+    gazelle: kind('gazelle', MD.gazelleParts, 500, {}, 0.22),
     elephant: kind('elephant', MD.elephantParts, 70, { swing: 0.45 }, 0.08),
     giraffe: kind('giraffe', MD.giraffeParts, 70, { swing: 0.5 }, 0.1),
-    lion: kind('lion', MD.lionParts, 48),
-    bird: kind('vulture', MD.birdParts, 160, {}, 0),
+    lion: kind('lion', MD.lionParts, 80),
+    hyena: kind('hyena', MD.lionParts, 80),
+    crocodile: kind('crocodile', MD.crocParts, 80, {}, 0),
+    bird: kind('vulture', MD.birdParts, 200, {}, 0),
   };
   const carcassMesh = new THREE.InstancedMesh(MD.carcassGeo(), toyMaterial(), 200);
   carcassMesh.castShadow = true; carcassMesh.count = 0; carcassMesh.frustumCulled = false;
   scene.add(carcassMesh);
 
-  const A = { all: [], herds: [], carcasses: [], kinds, flocks: [] };
+  const A = { all: [], herds: [], carcasses: [], kinds, flocks: [], crocs: [] };
   let nextId = 1;
 
   const nearVillage = (x, z, r) => villages.some(v => Math.hypot(x - v.x, z - v.z) < r);
@@ -76,15 +80,27 @@ export function createAnimals(G) {
     }
     return { x: N / 2, z: 20 };
   };
-  for (const [kind, herds, size] of [['zebra', 10, 12], ['wildebeest', 9, 18], ['gazelle', 10, 12], ['elephant', 4, 6], ['giraffe', 6, 4]]) {
+  for (const [kind, herds, size] of [['zebra', 28, 12], ['wildebeest', 24, 18], ['gazelle', 28, 12], ['elephant', 10, 6], ['giraffe', 14, 4]]) {
     for (let i = 0; i < herds; i++) { const s = spot(); A.spawnHerd(kind, s.x, s.z, size); }
   }
-  for (const den of [KOPJES[2], KOPJES[3], KOPJES[4]]) {
-    const pride = A.spawnHerd('lion', den.x + 5, den.z - 6, 5);
-    pride.mode = 'rest'; pride.timer = 25; pride.home = { x: den.x + 5, z: den.z - 6 }; pride.hunger = rng.range(15, 50);
+  // lions and hyenas den at the rock outcrops that are not next to a village
+  const dens = KOPJES.filter(k => !nearVillage(k.x, k.z, 60));
+  dens.forEach((den, i) => {
+    const kind = i % 2 ? 'hyena' : 'lion';
+    const pride = A.spawnHerd(kind, den.x + 5, den.z - 6, kind === 'lion' ? 5 : 6);
+    pride.mode = 'rest'; pride.timer = 25; pride.home = { x: den.x + 5, z: den.z - 6 }; pride.hunger = rng.range(15, 60);
+  });
+
+  // crocodiles lurk in the water
+  for (let i = 0, tries = 0; i < 30 && tries < 6000; tries++) {
+    const x = rng.range(10, N - 10), z = rng.range(10, N - 10);
+    const d = T.depth(x, z);
+    if (d < 0.3 || d > 1.3) continue;
+    const c = { id: nextId++, kind: 'crocodile', x, z, y: 0, yaw: rng.range(0, 6.28), scale: rng.range(1.5, 2.1), gait: 0, amp: 0, mode: 'lurk', timer: rng.range(2, 10), tx: x, tz: z, hunger: rng.range(20, 200), alive: true };
+    A.crocs.push(c); kinds.crocodile.list.push(c); i++;
   }
 
-  for (let f = 0; f < 9; f++) {
+  for (let f = 0; f < 26; f++) {
     const flock = { x: rng.range(20, N - 20), z: rng.range(20, N - 20), r: rng.range(8, 16), h: rng.range(11, 17), w: rng.range(0.25, 0.4) * (f % 2 ? 1 : -1), birds: [], tx: 0, tz: 0, target: null };
     flock.tx = flock.x; flock.tz = flock.z;
     for (let i = 0; i < 7; i++) {
@@ -180,14 +196,15 @@ export function createAnimals(G) {
     h.timer -= dt;
     const c = centre(h);
 
-    if (h.kind === 'lion') { updatePride(h, c, dt); return; }
+    if (sp.call && G.fx.R() < dt * 0.012) G.sfx(sp.call, c.x, c.z);
+    if (sp.predator) { updatePride(h, c, dt); return; }
 
     // threats: lions on the hunt, hunters, fire
     h.look = (h.look || 0) - dt;
     if (h.look <= 0 && h.mode !== 'flee') {
       h.look = 0.5;
       if (sp.prey) {
-        for (const l of kinds.lion.list) if (l.herd.mode === 'chase' && Math.hypot(l.x - c.x, l.z - c.z) < 13) { flee(h, l.x, l.z, 5); break; }
+        for (const pk of predators) if (pk.mode === 'chase' && pk.members.length && Math.hypot(pk.members[0].x - c.x, pk.members[0].z - c.z) < 13) { flee(h, pk.members[0].x, pk.members[0].z, 5); break; }
         if (G.tribes) for (const p of G.tribes.people) if (p.role === 'hunter' && p.state === 'hunt' && Math.hypot(p.x - c.x, p.z - c.z) < 7.5) { flee(h, p.x, p.z, 4); break; }
       }
       const ci = T.cell(c.x, c.z);
@@ -220,7 +237,7 @@ export function createAnimals(G) {
     if (h.breed <= 0) {
       h.breed = rng.range(38, 70);
       const fed = h.members.reduce((s, m) => s + m.fed, 0) / h.members.length;
-      if (h.members.length < sp.cap && fed > 0.45 && h.mode !== 'flee') {
+      if (h.members.length < sp.cap && fed > 0.45 && h.mode !== 'flee' && A.all.length < 1500) {
         const m = rng.pick(h.members);
         spawn(h.kind, h, m.x + rng.range(-0.8, 0.8), m.z + rng.range(-0.8, 0.8), true);
       }
@@ -228,24 +245,40 @@ export function createAnimals(G) {
   };
 
   const updatePride = (h, c, dt) => {
+    const sp = SPEC[h.kind];
     h.hunger = (h.hunger ?? 30) - dt;
     if (h.mode === 'rest') {
       if (h.hunger <= 0 && G.stage.night < 0.8) {
-        const prey = A.nearestPrey(c.x, c.z, 90);
-        if (prey) { h.mode = 'stalk'; h.prey = prey; h.timer = 75; G.log('lion_hunt', { x: prey.x, z: prey.z }); }
+        let prey = A.nearestPrey(c.x, c.z, 90, h.kind === 'hyena' ? (a => a.kind !== 'zebra') : null);
+        // People out in the open are on the menu too (a setting can turn this off).
+        if (G.opts.predators && G.tribes) {
+          let best = null, bd = 70 * 70;
+          for (const p of G.tribes.people) {
+            if (p.role === 'warrior' || p.role === 'child') continue;
+            const d = (p.x - c.x) ** 2 + (p.z - c.z) ** 2;
+            if (d < bd && !G.tribes.sheltered(p)) { bd = d; best = p; }
+          }
+          if (best && (!prey || rng() < 0.3 || bd < ((prey.x - c.x) ** 2 + (prey.z - c.z) ** 2) * 0.5)) prey = best;
+        }
+        if (prey) { h.mode = 'stalk'; h.prey = prey; h.timer = 75; G.log('predator_hunt', { kind: h.kind, x: prey.x, z: prey.z }); G.sfx(sp.call, c.x, c.z); }
         else h.hunger = 15;
       }
     } else if (h.mode === 'stalk') {
-      if (!h.prey.alive) { h.mode = 'return'; return; }
+      if (!h.prey.alive || (h.prey.human && G.tribes.sheltered(h.prey))) { h.mode = 'return'; h.hunger = 15; return; }
       if (Math.hypot(c.x - h.prey.x, c.z - h.prey.z) < 11) { h.mode = 'chase'; h.timer = 8; }
       else if (h.timer <= 0) { h.mode = 'return'; h.hunger = 20; }
     } else if (h.mode === 'chase') {
       if (!h.prey.alive) { h.mode = 'return'; h.hunger = 10; return; }
       for (const l of h.members) {
         if (Math.hypot(l.x - h.prey.x, l.z - h.prey.z) < 1.3) {
-          const car = A.kill(h.prey, 'hunt');
-          G.log('lion_kill', { x: l.x, z: l.z });
-          h.mode = 'eat'; h.timer = 16; h.x = car.x; h.z = car.z; h.carcass = car; car.taken = 'lion'; h.hunger = rng.range(70, 110);
+          h.mode = 'eat'; h.x = h.prey.x; h.z = h.prey.z; h.hunger = rng.range(70, 110); h.carcass = null;
+          G.sfx(sp.call, l.x, l.z);
+          if (h.prey.human) { G.tribes.kill(h.prey, 'predator'); h.timer = 9; G.log('predator_kill', { kind: h.kind, human: true, x: l.x, z: l.z }); }
+          else {
+            const car = A.kill(h.prey, 'hunt');
+            G.log('predator_kill', { kind: h.kind, x: l.x, z: l.z });
+            h.timer = 16; if (car) { h.carcass = car; car.taken = 'lion'; }
+          }
           return;
         }
       }
@@ -269,7 +302,7 @@ export function createAnimals(G) {
     a.pitch += (0 - a.pitch) * Math.min(1, dt * 5);
     if (a.scale < a.size * 0.95) a.scale += dt * 0.006 * a.size;
 
-    if (a.kind === 'lion') {
+    if (sp.predator) {
       if (h.mode === 'rest') {
         const d = moveToward(T, a, h.home.x + a.ox, h.home.z + a.oz, sp.walk, dt);
         if (d < 0.4) { a.amp = 0; a.bob += (-0.22 * a.scale - a.bob) * Math.min(1, dt * 3); }   // lie down
@@ -335,7 +368,68 @@ export function createAnimals(G) {
     }
   };
 
+  // ---- crocodiles: drift about in the water; anything that comes to drink or wade is fair game
+  const updateCroc = (c, dt) => {
+    c.timer -= dt; c.hunger -= dt;
+    const wl = T.waterLevel;
+    c.y = Math.max(T.height(c.x, c.z), wl - 0.3 * c.scale * 0.5) + (T.depth(c.x, c.z) > 0.2 ? 0 : 0.02);
+    if (c.mode === 'eat') { if (c.timer <= 0) { c.mode = 'lurk'; c.timer = 4; } return; }
+    if (c.mode === 'lunge') {
+      const v = c.victim;
+      if (!v || !v.alive || c.timer <= 0) { c.mode = 'lurk'; c.timer = 5; return; }
+      const d = Math.hypot(v.x - c.x, v.z - c.z);
+      const want = Math.atan2(v.x - c.x, v.z - c.z);
+      c.yaw = want;
+      const nx = c.x + Math.sin(want) * 7 * dt, nz = c.z + Math.cos(want) * 7 * dt;
+      if (T.depth(nx, nz) > -0.25) { c.x = nx; c.z = nz; }
+      if (d < 1.4) {
+        G.fx.puff(v.x, wl + 0.2, v.z, '#e8f4fa', 14, 2.2);
+        G.sfx('splash', v.x, v.z);
+        if (v.human) G.tribes.kill(v, 'crocodile'); else A.kill(v, 'crocodile');
+        G.log('croc_kill', { human: !!v.human, x: c.x, z: c.z });
+        c.mode = 'eat'; c.timer = 12; c.hunger = rng.range(160, 320);
+      }
+      return;
+    }
+    // lurk: look for a victim now and then, otherwise drift to a new spot in the water
+    if (c.hunger <= 0 && (c.look = (c.look || 0) - dt) <= 0) {
+      c.look = 0.6;
+      let best = null, bd = 6.5 * 6.5;
+      for (const a of A.all) {
+        if (a.kind === 'elephant' || a.kind === 'giraffe' || SPEC[a.kind].predator) continue;
+        const d = (a.x - c.x) ** 2 + (a.z - c.z) ** 2;
+        if (d < bd && T.depth(a.x, a.z) > 0.05) { bd = d; best = a; }
+      }
+      if (G.opts.predators && G.tribes) for (const p of G.tribes.people) {
+        const d = (p.x - c.x) ** 2 + (p.z - c.z) ** 2;
+        if (d < bd && T.depth(p.x, p.z) > 0.05) { bd = d; best = p; }
+      }
+      if (best) { c.mode = 'lunge'; c.victim = best; c.timer = 2.2; return; }
+    }
+    if (c.timer <= 0) {
+      c.timer = rng.range(6, 16);
+      for (let i = 0; i < 6; i++) {
+        const a = rng.range(0, 6.28), r = rng.range(3, 12);
+        const x = c.x + Math.cos(a) * r, z = c.z + Math.sin(a) * r;
+        if (T.inside(x, z, 6) && T.depth(x, z) > 0.3) { c.tx = x; c.tz = z; break; }
+      }
+    }
+    const dx = c.tx - c.x, dz = c.tz - c.z, d = Math.hypot(dx, dz);
+    if (d > 0.4) {
+      const want = Math.atan2(dx, dz);
+      let diff = want - c.yaw; while (diff > Math.PI) diff -= 6.283; while (diff < -Math.PI) diff += 6.283;
+      c.yaw += clamp(diff, -1.5 * dt, 1.5 * dt);
+      const nx = c.x + Math.sin(c.yaw) * 0.7 * dt, nz = c.z + Math.cos(c.yaw) * 0.7 * dt;
+      if (T.depth(nx, nz) > 0.15) { c.x = nx; c.z = nz; } else c.timer = 0;
+    }
+  };
+
+  const predators = [];
+  A.refreshPredators = () => { predators.length = 0; for (const h of A.herds) if (SPEC[h.kind].predator) predators.push(h); };
+  A.refreshPredators();
+
   A.update = (dt) => {
+    for (const c of A.crocs) updateCroc(c, dt);
     for (const h of A.herds) updateHerd(h, dt);
     for (let i = A.all.length - 1; i >= 0; i--) updateAnimal(A.all[i], dt);
     A.flocks.forEach((f, i) => updateFlock(f, dt, i));

@@ -113,6 +113,19 @@
    ],
    "tripo_credits_before": 1245,
    "tripo_credits_after": 885
+  },
+  {
+   "date": "2026-11-20 18:18",
+   "items": [
+    "totem",
+    "crocodile",
+    "hyena",
+    "stump",
+    "quarry",
+    "lumber"
+   ],
+   "tripo_credits_before": 885,
+   "tripo_credits_after": 705
   }
  ],
  "giraffe": {
@@ -565,31 +578,6 @@
   "model_bytes": 1412036,
   "model_status": "success"
  },
- "totem": {
-  "image_model": "gpt-image-2",
-  "image_prompt": "a single tall carved and painted wooden totem pole with stacked faces and a pair of wings near the top, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
-  "image_seconds": 9.4,
-  "image_usage": {
-   "input_tokens": 83,
-   "input_tokens_details": {
-    "image_tokens": 0,
-    "text_tokens": 83
-   },
-   "output_tokens": 196,
-   "output_tokens_details": {
-    "image_tokens": 196,
-    "text_tokens": 0
-   },
-   "total_tokens": 279
-  },
-  "model_task": "48e6ecf1-ba42-4b85-8dc7-2208e8c8b2e1",
-  "tripo_version": "v2.5-20250123",
-  "face_limit": 3000,
-  "model_started": 1795219159.3441658,
-  "model_seconds": 66.3,
-  "model_bytes": 1136688,
-  "model_status": "success"
- },
  "stone_house": {
   "image_model": "gpt-image-2",
   "image_prompt": "a single two-storey dry-stone house with a steep tiled pyramid roof, a wooden door and small windows, a banner on a pole, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
@@ -663,6 +651,187 @@
   "model_started": 1795219146.280405,
   "model_seconds": 54.9,
   "model_bytes": 2013320,
+  "model_status": "success"
+ },
+ "_replaced": [
+  {
+   "name": "totem",
+   "reason": "Pacific Northwest style, wrong for the setting",
+   "old": {
+    "image_model": "gpt-image-2",
+    "image_prompt": "a single tall carved and painted wooden totem pole with stacked faces and a pair of wings near the top, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+    "image_seconds": 9.4,
+    "image_usage": {
+     "input_tokens": 83,
+     "input_tokens_details": {
+      "image_tokens": 0,
+      "text_tokens": 83
+     },
+     "output_tokens": 196,
+     "output_tokens_details": {
+      "image_tokens": 196,
+      "text_tokens": 0
+     },
+     "total_tokens": 279
+    },
+    "model_task": "48e6ecf1-ba42-4b85-8dc7-2208e8c8b2e1",
+    "tripo_version": "v2.5-20250123",
+    "face_limit": 3000,
+    "model_started": 1795219159.3441658,
+    "model_seconds": 66.3,
+    "model_bytes": 1136688,
+    "model_status": "success"
+   }
+  }
+ ],
+ "lumber": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single neat stack of cut tree logs, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 8.8,
+  "image_usage": {
+   "input_tokens": 70,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 70
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 266
+  },
+  "model_task": "c6d7d3a4-0abf-4f73-b033-4bba1183feaf",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 1200,
+  "model_started": 1795220227.466953,
+  "model_seconds": 85.1,
+  "model_bytes": 1082500,
+  "model_status": "success"
+ },
+ "crocodile": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single Nile crocodile lying flat with its body straight and its mouth slightly open, seen from above at three-quarter view, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 9.6,
+  "image_usage": {
+   "input_tokens": 86,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 86
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 282
+  },
+  "model_task": "7935367e-9d09-452e-a8d5-a873811f9a0b",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 3000,
+  "model_started": 1795220149.982099,
+  "model_seconds": 45.5,
+  "model_bytes": 1545900,
+  "model_status": "success"
+ },
+ "stump": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single freshly cut tree stump with a few wood chips around it, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 11.2,
+  "image_usage": {
+   "input_tokens": 75,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 75
+   },
+   "output_tokens": 439,
+   "output_tokens_details": {
+    "image_tokens": 439,
+    "text_tokens": 0
+   },
+   "total_tokens": 514
+  },
+  "model_task": "ed0f84f8-5cc5-4d67-a1c4-3fce61ce2257",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 800,
+  "model_started": 1795220157.653038,
+  "model_seconds": 62.3,
+  "model_bytes": 858684,
+  "model_status": "success"
+ },
+ "quarry": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single small open stone quarry pit cut into rock with rough stone blocks stacked beside it and a wooden crane, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 11.6,
+  "image_usage": {
+   "input_tokens": 83,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 83
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 279
+  },
+  "model_task": "ee73f418-3030-4a06-9ea9-9645324d0994",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 4000,
+  "model_started": 1795220223.736907,
+  "model_seconds": 54.5,
+  "model_bytes": 1525936,
+  "model_status": "success"
+ },
+ "totem": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single tall East African carved hardwood ancestor post: a slender dark wooden pole carved with stacked geometric patterns and stylised human figures, decorated with strings of coloured beads and a few feathers, standing upright, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 12.1,
+  "image_usage": {
+   "input_tokens": 101,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 101
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 297
+  },
+  "model_task": "9e819304-a8b0-4752-89c7-33d30340e100",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 3000,
+  "model_started": 1795220146.054175,
+  "model_seconds": 48.8,
+  "model_bytes": 1066376,
+  "model_status": "success"
+ },
+ "hyena": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single spotted hyena standing, side-on three-quarter view, all four legs visible and apart, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 14.4,
+  "image_usage": {
+   "input_tokens": 81,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 81
+   },
+   "output_tokens": 439,
+   "output_tokens_details": {
+    "image_tokens": 439,
+    "text_tokens": 0
+   },
+   "total_tokens": 520
+  },
+  "model_task": "c4a3ee53-e4a1-4efe-90b0-e8d724c85210",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 3000,
+  "model_started": 1795220153.230776,
+  "model_seconds": 54.1,
+  "model_bytes": 1710596,
   "model_status": "success"
  }
 }

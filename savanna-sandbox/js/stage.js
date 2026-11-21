@@ -36,10 +36,10 @@ export function createStage(canvas) {
   const sun = new THREE.DirectionalLight('#fff0d6', 2.7);
   sun.castShadow = true;
   const maxTex = renderer.capabilities.maxTextureSize;
-  sun.shadow.mapSize.set(Math.min(8192, maxTex), Math.min(8192, maxTex));
+  sun.shadow.mapSize.set(Math.min(4096, maxTex), Math.min(4096, maxTex));
   const sc = sun.shadow.camera;
   const half = N * 0.78;
-  sc.left = -half; sc.right = half; sc.top = half; sc.bottom = -half; sc.near = 10; sc.far = N * 4.2;
+  sc.left = -half; sc.right = half; sc.top = half; sc.bottom = -half; sc.near = 10; sc.far = 2400;
   sun.shadow.bias = -0.0005;
   sun.shadow.normalBias = 0.05;
   sun.shadow.radius = 2.5;
@@ -52,7 +52,7 @@ export function createStage(canvas) {
   table.receiveShadow = true;
   scene.add(table);
 
-  const S = { renderer, scene, camera, sun, hemi, night: 0, dayT: 0.4, flash: 0, shake: 0, bgBoost: 1 };
+  const S = { sunOffset: new THREE.Vector3(), renderer, scene, camera, sun, hemi, night: 0, dayT: 0.4, flash: 0, shake: 0, bgBoost: 1 };
 
   // ---- day / night
   S.setTime = (t) => {
@@ -78,20 +78,30 @@ export function createStage(canvas) {
     const ang = S.night > 0.5 ? 0.62 * Math.PI : lerp(0.14, 0.86, dayPhase) * Math.PI;
     const elev = S.night > 0.5 ? 0.9 : 0.35 + Math.sin(dayPhase * Math.PI) * 0.75;
     const q = N / 96;
-    sun.position.set(N / 2 + Math.cos(ang) * 150 * q, (Math.sin(elev) * 170 + 30) * q, N / 2 + (-70 + Math.sin(ang) * 30) * q);
+    const qq = S.room ? q : 2.6;
+    S.sunOffset.set(Math.cos(ang) * 150 * qq, (Math.sin(elev) * 170 + 30) * qq, (-70 + Math.sin(ang) * 30) * qq);
+    sun.position.set(N / 2, 0, N / 2).add(S.sunOffset);
   };
 
   // ---- orbit camera
   const cam = { tx: N / 2, ty: 0, tz: N / 2 + 10, yaw: 0.5, pitch: 0.72, dist: 150 };
   S.maxDist = 230; S.margin = 48;
+  // What is worth drawing: things within `r` of the point the camera looks at.
+  S.view = { x: cam.tx, z: cam.tz, r: 400 };
   S.cam = cam;
   S.applyCamera = (time = 0) => {
     cam.pitch = clamp(cam.pitch, S.room ? 0.05 : 0.2, 1.45);
     cam.dist = clamp(cam.dist, 10, S.room ? 1200 : S.maxDist);
     if (!S.room) {
       cam.tx = clamp(cam.tx, S.margin, N - S.margin); cam.tz = clamp(cam.tz, S.margin, N - S.margin);
-      scene.fog.near = cam.dist * 1.1 + 40; scene.fog.far = cam.dist * 1.1 + 230;
+      scene.fog.near = cam.dist * 1.1 + (S.haze === false ? 260 : 40); scene.fog.far = cam.dist * 1.1 + (S.haze === false ? 520 : 230);
     }
+    S.view.x = cam.tx; S.view.z = cam.tz; S.view.r = S.room ? 1e5 : cam.dist * (1.0 + 0.9 * (1 - Math.min(1, cam.pitch))) + (S.haze === false ? 300 : 150);
+    // The sun's shadow box follows the camera so shadows stay sharp on a big map.
+    const half = S.room ? N * 0.78 : clamp(cam.dist * 1.15 + 70, 90, 330);
+    const scm = sun.shadow.camera;
+    if (Math.abs(scm.right - half) > 4) { scm.left = -half; scm.right = half; scm.top = half; scm.bottom = -half; scm.updateProjectionMatrix(); }
+    if (!S.room) { sun.target.position.set(cam.tx, 0, cam.tz); sun.position.copy(S.sunOffset).add(sun.target.position); sun.target.updateMatrixWorld(); }
     const cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch);
     let sx = 0, sy = 0;
     if (S.shake > 0.001) {

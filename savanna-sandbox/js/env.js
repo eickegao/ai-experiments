@@ -5,7 +5,7 @@ import { N, GRID } from './terrain.js';
 
 export function createEnv(G) {
   const { stage, terrain: T, rng, fx } = G;
-  const E = { burning: new Set(), rains: [], drought: 0, waterTarget: 0, wind: { x: 1, z: 0.25 }, storm: 0 };
+  const E = { burning: new Set(), rains: [], tornados: [], drought: 0, waterTarget: 0, wind: { x: 1, z: 0.25 }, storm: 0 };
   const wet = new Float32Array(GRID * GRID);     // how much water is nearby (recomputed now and then)
   let wetTimer = 0, growTimer = 0, spreadTimer = 0;
 
@@ -159,6 +159,7 @@ export function createEnv(G) {
       // a thundercloud gathers over the strike and drifts apart again
       if (!raining(x, z)) { fx.addCloud(x - 2, z - 2, 27, 1.5, true).ttl = 4; fx.addCloud(x + 7, z + 4, 29, 1.1, true).ttl = 3.4; }
       fx.lightning(x, z);
+      G.sfx('thunder', x, z);
       E.ignite(x, z, true);
       for (let i = 0; i < 4; i++) E.ignite(x + rng.range(-1.5, 1.5), z + rng.range(-1.5, 1.5), true);
       killAt(x, z, 1.8, 'lightning');
@@ -167,7 +168,9 @@ export function createEnv(G) {
     },
     meteor: (x, z) => {
       G.log('meteor', { x, z });
+      G.sfx('whoosh', x, z);
       fx.meteor(x, z, () => {
+        G.sfx('boom', x, z);
         const R = 13;
         T.deform(x, z, R + 3, (d, h) => {
           const bowl = d < R ? -5 * (1 - (d / R) ** 2) : 0;
@@ -200,14 +203,81 @@ export function createEnv(G) {
       G.log('herd', { kind, x, z });
     },
     war: () => G.tribes.startWar(),
+    plague: (x, z) => {
+      const n = G.tribes.infect(x, z, 14);
+      for (let i = 0; i < 40; i++) { const a = rng.range(0, 6.28), d = rng.range(0, 14); fx.puff(x + Math.cos(a) * d, T.height(x, z) + 0.6, z + Math.sin(a) * d, '#8fae4a', 1, 0.8); }
+      G.sfx('cough', x, z);
+      G.log('plague', { x, z, infected: n });
+      if (n) G.ui && G.ui.toast('plague');
+    },
+    bless: (x, z) => {
+      G.tribes.heal(x, z, 26);
+      const x0 = Math.max(0, Math.floor(x - 26)), x1 = Math.min(N, Math.ceil(x + 26)), z0 = Math.max(0, Math.floor(z - 26)), z1 = Math.min(N, Math.ceil(z + 26));
+      for (let iz = z0; iz <= z1; iz++) for (let ix = x0; ix <= x1; ix++) if (Math.hypot(ix - x, iz - z) < 26) { const c = iz * GRID + ix; T.grass[c] = Math.min(1, T.grass[c] + 0.5); T.burnt[c] = 0; }
+      T.colorsDirty = true;
+      fx.ring(x, T.height(x, z), z, 26, '#fff3b0', 1.2); fx.spark(x, T.height(x, z) + 1.5, z, 60, '#fff3b0', 1.6);
+      G.sfx('bless', x, z);
+      G.log('bless', { x, z });
+    },
+    tornado: (x, z) => {
+      const a = rng.range(0, 6.28);
+      E.tornados.push({ x, z, vx: Math.cos(a) * 3.2, vz: Math.sin(a) * 3.2, t: 28, turn: 0 });
+      G.sfx('whoosh', x, z);
+      G.log('tornado', { x, z });
+    },
+  };
+
+  // ---------------------------------------------------------------- tornado
+  const updateTornados = (dt) => {
+    for (let i = E.tornados.length - 1; i >= 0; i--) {
+      const o = E.tornados[i];
+      o.t -= dt;
+      if (o.t <= 0) { E.tornados.splice(i, 1); continue; }
+      o.turn -= dt;
+      if (o.turn <= 0) { o.turn = rng.range(1.5, 4); const a = Math.atan2(o.vz, o.vx) + rng.range(-0.9, 0.9); o.vx = Math.cos(a) * 3.4; o.vz = Math.sin(a) * 3.4; }
+      o.x = clamp(o.x + o.vx * dt, 8, N - 8); o.z = clamp(o.z + o.vz * dt, 8, N - 8);
+      o.hit = (o.hit || 0) - dt;
+      if (o.hit <= 0) {
+        o.hit = 0.25;
+        killAt(o.x, o.z, 2.6, 'tornado');
+        G.tribes.destroyAt(o.x, o.z, 3.2, 'tornado');
+        G.flora.clear(o.x, o.z, 2.6);
+        G.animals.scare(o.x, o.z, 16);
+        if (G.fx.R() < 0.3) G.sfx('whoosh', o.x, o.z);
+      }
+    }
+  };
+  const renderTornados = (time) => {
+    for (const o of E.tornados) {
+      const gy = T.height(o.x, o.z), fade = Math.min(1, o.t / 3);
+      for (let k = 0; k < 9; k++) {
+        const h = fx.R() * 15, r = (0.7 + h * 0.22) * fade, a = fx.R() * 6.28, sp = 9 + h * 0.5;
+        const g = 0.5 + fx.R() * 0.25;
+        fx.lit.add({ x: o.x + Math.cos(a) * r, y: gy + h, z: o.z + Math.sin(a) * r, vx: -Math.sin(a) * sp + o.vx, vy: 2.5 + fx.R() * 2, vz: Math.cos(a) * sp + o.vz,
+          life: 0.5 + fx.R() * 0.4, max: 0.9, size: 0.22 + h * 0.03, shrink: 2, spin: 6, r: g * 0.95, g: g * 0.85, b: g * 0.68 });
+      }
+    }
   };
 
   E.update = (dt) => {
     updateFire(dt);
+    updateTornados(dt);
     updateRain(dt);
     growTimer -= dt;
     if (growTimer <= 0) { growTimer = 1; grow(1); }
     if (E.drought > 0) { E.drought -= dt; if (E.drought <= 0) E.endDrought(); }
+    // Nature acts on its own now and then: a thunderstorm, a dry spell, a shower.
+    if (G.opts.nature) {
+      E.natureT = (E.natureT ?? rng.range(120, 220)) - dt;
+      if (E.natureT <= 0) {
+        E.natureT = rng.range(150, 320);
+        const roll = rng();
+        if (roll < 0.4) E.startRain(rng.range(40, N - 40), rng.range(40, N - 40), 34, 18);
+        else if (roll < 0.7) { const x = rng.range(40, N - 40), z = rng.range(40, N - 40); E.powers.lightning(x, z); }
+        else if (roll < 0.85 && E.drought <= 0) E.startDrought(55);
+        else E.startStorm(14);
+      }
+    }
     if (E.storm > 0) {
       E.storm -= dt;
       if (rng() < dt * 0.8) E.powers.lightning(rng.range(8, N - 8), rng.range(8, N - 8));
@@ -219,6 +289,6 @@ export function createEnv(G) {
       if (wetTimer <= 0) { wetTimer = 4; computeWet(); }
     }
   };
-  E.render = (real) => { renderFire(); renderRain(real); };
+  E.render = (real, time) => { renderFire(); renderRain(real); renderTornados(time); };
   return E;
 }

@@ -34,6 +34,11 @@ export const SPEC = {
   totem: { size: ['y', 4.6], yaw: 0 },
   stall: { size: ['x', 2.6], yaw: 0 },
   bonfire: { size: ['x', 1.8], yaw: 0 },
+  crocodile: { size: ['z', 2.2], yaw: 0, align: 'z' },
+  hyena: { size: ['y', 1.0], yaw: 0, align: 'z' },
+  stump: { size: ['x', 1.0], yaw: 0 },
+  quarry: { size: ['x', 9], yaw: 0 },
+  lumber: { size: ['x', 1.6], yaw: 0 },
   tower_block: { size: ['y', 16], yaw: 0 },
   apartment: { size: ['y', 8], yaw: 0 },
 };

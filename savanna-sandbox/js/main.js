@@ -15,6 +15,8 @@ import { createPost } from './post.js';
 import { createDirector } from './director.js';
 import { createRoom } from './room.js';
 import { loadAssets } from './assets.js';
+import { createAudio } from './audio.js';
+import { CreatureKind } from './creatures.js';
 
 const params = new URLSearchParams(location.search);
 const seed = +(params.get('seed') || 7);
@@ -23,7 +25,7 @@ const DAY = 120;              // seconds of simulation per day
 
 const stage = createStage(document.getElementById('view'));
 const rng = makeRng(seed);
-const villages = [{ x: 21 * K, z: 25 * K }, { x: 76 * K, z: 73 * K }];
+const villages = [{ x: 33 * K, z: 50 * K }, { x: 64 * K, z: 71 * K }];
 const terrain = createTerrain(stage.scene, seed, villages);
 const room = params.get('room') === '1' ? createRoom(stage) : null;
 if (room) stage.room = room;
@@ -37,7 +39,26 @@ const G = window.G = {
   get day() { return Math.floor(G.time / DAY) + 1; },
   log(type, data = {}) { G.events.push({ t: +G.time.toFixed(2), type, ...data }); },
   stats() { return { time: G.time, day: G.day, fps: G.fps }; },
+  // Player settings (kept in the browser between visits).
+  opts: { dayMode: 'cycle', sound: true, volume: 0.7, predators: true, nature: true, colonies: true, haze: true, labels: true },
+  setOpt(k, v) {
+    G.opts[k] = v;
+    try { localStorage.setItem('savanna-opts', JSON.stringify(G.opts)); } catch (e) { /* private window: settings just do not persist */ }
+    G.applyOpts();
+  },
+  applyOpts() {
+    const o = G.opts;
+    G.dayOverride = o.dayMode === 'day' ? 0.46 : o.dayMode === 'night' ? 0.04 : undefined;
+    stage.haze = o.haze;
+    if (G.audio) { G.audio.setOn(o.sound); G.audio.setVolume(o.volume); }
+  },
+  // People keep the day-and-night routine only when the sun actually moves.
+  isNight() { return G.opts.dayMode === 'cycle' && G.dayOverride === undefined && stage.night > 0.6; },
+  sfx(name, x, z) { if (G.audio) G.audio.play(name, x, z); },
 };
+try { Object.assign(G.opts, JSON.parse(localStorage.getItem('savanna-opts') || '{}')); } catch (e) { /* keep defaults */ }
+for (const k of ['dayMode', 'predators', 'nature', 'colonies']) if (params.has(k)) G.opts[k] = k === 'dayMode' ? params.get(k) : params.get(k) !== '0';
+CreatureKind.view = stage.view;
 
 G.assets = params.get('assets') === '0' ? {} : await loadAssets();
 G.flora = createFlora(G);
@@ -52,9 +73,13 @@ else {
   document.documentElement.lang = lang;
   G.ui = createUI(G, lang);
   if (params.get('ui') === '0') document.body.classList.add('bare');
-  G.systems.push(G.env, G.flora, G.animals, G.tribes, G.ui);
+  G.audio = createAudio(G);
+  G.applyOpts();
+  G.systems.push(G.env, G.flora, G.animals, G.tribes, G.ui, G.audio);
+  // start by the red people's camp
+  Object.assign(stage.cam, { tx: villages[0].x, tz: villages[0].z + 6, dist: 120 });
   G.power = (name, x, z) => G.env.powers[name](x, z);
-  G.stats = () => ({ t: Math.round(G.time), day: G.day, fps: G.fps, animals: G.animals.all.length, tribes: G.tribes.info(), fire: G.env.burning.size, particles: G.fx.lit.items.length + G.fx.glow.items.length });
+  G.stats = () => ({ t: Math.round(G.time), day: G.day, fps: G.fps, animals: G.animals.all.length, tribes: G.tribes.summary(), villages: G.tribes.tribes.length, trees: G.flora.count(), fire: G.env.burning.size, particles: G.fx.lit.items.length + G.fx.glow.items.length });
 }
 G.systems.push(G.fx);
 const post = params.get('post') === '0' ? null : createPost(stage);
@@ -67,7 +92,7 @@ if (G.director && params.get('hold') !== '1') {
   const take = () => {
     if (!G.director.on) return;
     G.director.on = false;
-    G.dayOverride = undefined;
+    G.applyOpts();
     G.setSpeed(1);
     document.body.classList.remove('bare');
   };
@@ -96,7 +121,8 @@ function frame(now) {
   }
   stage.setTime(G.dayOverride ?? G.time / DAY);
   if (room) room.update(now / 1000, stage.night);
-  if (terrain.colorsDirty) terrain.updateColors();
+  terrain.flush();
+  if (terrain.colorsDirty && now - (terrain.colorStamp || 0) > 350) terrain.updateColors();
   for (const s of G.systems) s.render && s.render(real, now / 1000);
   stage.keyPan(real);
   stage.shake *= Math.pow(0.02, real);

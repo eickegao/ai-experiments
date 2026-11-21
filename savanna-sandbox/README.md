@@ -32,6 +32,7 @@ Nothing here is a benchmark; the claim is only "this is what came out, and this 
 - **Tribes** (`js/tribes.js`): people forage berries, hunt in parties of three, farm, build and have children. A village moves through four eras (camp, village, town, kingdom), each with its own buildings. The war drum sends warriors to rally, march and fight.
 - **God powers** (`js/env.js`): rain, lightning, meteor, raise land, lower land, summon a herd, drought, storm, war drum. Fire spreads through dry grass with the wind, burns trees and thatch, and is put out by rain.
 - **Look** (`js/stage.js`, `js/post.js`): a day and night cycle, soft shadows, and one post-processing pass with depth-of-field for the miniature look, filmic tone mapping and a vignette.
+- **Second round, after the owner's review** (same day): the map grew to 512 x 512 and fills the screen (only what is near the camera is drawn; distant land fades into haze); walls became real (everyone uses the gate); people fell trees and quarry stone, and buildings cost wood and stone; a big town sends settlers out to found a new one; hyena packs and crocodiles joined the lions, and predators eat people; new powers (plague, tornado, blessing); nature strikes on its own; synthesised sound (`js/audio.js`); a settings panel (day and night / always day / always night, volume, and switches for predators, natural disasters, new towns and haze).
 - **Deterministic**: the simulation runs in fixed 1/30 s steps from a seeded random number generator, so the same seed and the same inputs replay the same way.
 
 ## How to run

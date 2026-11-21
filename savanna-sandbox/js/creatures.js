@@ -8,6 +8,7 @@ const ZERO = new THREE.Matrix4().makeScale(0, 0, 0);
 const material = toyMaterial();
 
 export class CreatureKind {
+  static view = { x: 0, z: 0, r: 1e9 };
   constructor(scene, parts, max, opts = {}) {
     this.parts = parts;
     this.max = max;
@@ -28,9 +29,12 @@ export class CreatureKind {
   // Entities carry: x, y, z, yaw, scale, gait, amp, and optional pitch, roll, bob, flap,
   // attack (0..1), cheer (0..1), spear, shield, carry.
   draw() {
-    const list = this.list, n = Math.min(list.length, this.max), parts = this.parts;
-    for (let i = 0; i < n; i++) {
-      const c = list[i];
+    const list = this.list, parts = this.parts, v = CreatureKind.view, r2 = v.r * v.r, max = this.max;
+    let i = 0;
+    for (let j = 0; j < list.length && i < max; j++) {
+      const c = list[j];
+      const ddx = c.x - v.x, ddz = c.z - v.z;
+      if (ddx * ddx + ddz * ddz > r2) continue;      // too far from the camera to matter
       const sc = c.scale || 1;
       let hopY = 0, sway = 0;
       if (this.hop && c.amp > 0.02) { hopY = Math.abs(Math.sin(c.gait * 0.5)) * this.hop * c.amp * sc; sway = Math.sin(c.gait * 0.5) * 0.07 * c.amp; }
@@ -60,7 +64,8 @@ export class CreatureKind {
         O.multiplyMatrices(M, L);
         mesh.setMatrixAt(i, O);
       }
+      i++;
     }
-    for (const mesh of this.meshes) { mesh.count = n; mesh.instanceMatrix.needsUpdate = true; }
+    for (const mesh of this.meshes) { mesh.count = i; mesh.instanceMatrix.needsUpdate = true; }
   }
 }
