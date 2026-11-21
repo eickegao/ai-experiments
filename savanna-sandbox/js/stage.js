@@ -5,14 +5,14 @@ import { N } from './terrain.js';
 
 const KEYS = [
   // t (0..1 of a day), sky, sun colour, sun intensity, hemi sky, hemi ground, hemi intensity
-  { t: 0.00, sky: '#182040', sun: '#a9bcff', si: 0.9, hs: '#4a5aa8', hg: '#2a2a40', hi: 1.0 },
-  { t: 0.20, sky: '#1c2446', sun: '#a9bcff', si: 0.9, hs: '#4a5aa8', hg: '#2a2a40', hi: 1.0 },
-  { t: 0.27, sky: '#f3b48a', sun: '#ffb070', si: 1.6, hs: '#f6c9a8', hg: '#7a5a48', hi: 0.7 },
-  { t: 0.36, sky: '#f4e7cf', sun: '#fff0d6', si: 2.7, hs: '#fdf3e0', hg: '#b89468', hi: 0.9 },
-  { t: 0.64, sky: '#f4e7cf', sun: '#fff0d6', si: 2.7, hs: '#fdf3e0', hg: '#b89468', hi: 0.9 },
-  { t: 0.73, sky: '#f2a36e', sun: '#ff9a52', si: 1.9, hs: '#f7b98e', hg: '#7a5040', hi: 0.7 },
-  { t: 0.80, sky: '#34305e', sun: '#a9a4ff', si: 0.8, hs: '#4c4a98', hg: '#2a2438', hi: 0.95 },
-  { t: 1.00, sky: '#182040', sun: '#a9bcff', si: 0.9, hs: '#4a5aa8', hg: '#2a2a40', hi: 1.0 },
+  { t: 0.00, sky: '#3a4a86', sun: '#c2d0ff', si: 1.5, hs: '#7f93e0', hg: '#4a4f78', hi: 1.75 },
+  { t: 0.20, sky: '#3d4d8a', sun: '#c2d0ff', si: 1.5, hs: '#7f93e0', hg: '#4a4f78', hi: 1.75 },
+  { t: 0.27, sky: '#f6c3a0', sun: '#ffb884', si: 1.9, hs: '#f8d2b8', hg: '#8a6a58', hi: 1.0 },
+  { t: 0.36, sky: '#cfe4f2', sun: '#fff4e2', si: 2.35, hs: '#e8f2ff', hg: '#b8a078', hi: 1.15 },
+  { t: 0.64, sky: '#cfe4f2', sun: '#fff4e2', si: 2.35, hs: '#e8f2ff', hg: '#b8a078', hi: 1.15 },
+  { t: 0.73, sky: '#f4ae84', sun: '#ffa468', si: 2.0, hs: '#f8c4a0', hg: '#8a6050', hi: 1.0 },
+  { t: 0.80, sky: '#4a4a8c', sun: '#c0bcff', si: 1.4, hs: '#8088d8', hg: '#4a4870', hi: 1.6 },
+  { t: 1.00, sky: '#3a4a86', sun: '#c2d0ff', si: 1.5, hs: '#7f93e0', hg: '#4a4f78', hi: 1.75 },
 ];
 const ca = new THREE.Color(), cb = new THREE.Color();
 
@@ -25,7 +25,9 @@ export function createStage(canvas) {
   renderer.toneMappingExposure = 1.0;
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color('#f4e7cf');
+  scene.background = new THREE.Color('#cfe4f2');
+  // Distance haze: the far parts of the map fade into the sky until you travel there.
+  scene.fog = new THREE.Fog('#cfe4f2', 200, 400);
 
   const camera = new THREE.PerspectiveCamera(26, 1, 1, 3200);
 
@@ -67,8 +69,10 @@ export function createStage(canvas) {
     hemi.groundColor.copy(ca.set(a.hg)).lerp(cb.set(b.hg), f);
     hemi.intensity = lerp(a.hi, b.hi, f) + S.flash * 1.5;
     S.night = 1 - smooth(0.22, 0.3, t) * (1 - smooth(0.72, 0.8, t));
-    scene.background.multiplyScalar(lerp(S.bgBoost, 0.55, S.night));
-    if (S.room) { scene.background.copy(S.room.bg); table.visible = false; }
+    scene.background.multiplyScalar(lerp(S.bgBoost, 1.0, S.night));
+    if (S.room) { scene.background.copy(S.room.bg); scene.fog.near = 1e5; scene.fog.far = 2e5; }
+    scene.fog.color.copy(scene.background);
+    table.visible = false;
     // Sun travels east -> west during the day; at night the same light acts as a moon.
     const dayPhase = clamp((t - 0.25) / 0.5, 0, 1);
     const ang = S.night > 0.5 ? 0.62 * Math.PI : lerp(0.14, 0.86, dayPhase) * Math.PI;
@@ -78,11 +82,16 @@ export function createStage(canvas) {
   };
 
   // ---- orbit camera
-  const cam = { tx: N / 2, ty: 0, tz: N / 2, yaw: 0.72, pitch: 0.66, dist: 235 * N / 96 };
+  const cam = { tx: N / 2, ty: 0, tz: N / 2 + 10, yaw: 0.5, pitch: 0.72, dist: 150 };
+  S.maxDist = 230; S.margin = 48;
   S.cam = cam;
   S.applyCamera = (time = 0) => {
-    cam.pitch = clamp(cam.pitch, 0.05, 1.45);
-    cam.dist = clamp(cam.dist, 10, 1200);
+    cam.pitch = clamp(cam.pitch, S.room ? 0.05 : 0.2, 1.45);
+    cam.dist = clamp(cam.dist, 10, S.room ? 1200 : S.maxDist);
+    if (!S.room) {
+      cam.tx = clamp(cam.tx, S.margin, N - S.margin); cam.tz = clamp(cam.tz, S.margin, N - S.margin);
+      scene.fog.near = cam.dist * 1.1 + 40; scene.fog.far = cam.dist * 1.1 + 230;
+    }
     const cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch);
     let sx = 0, sy = 0;
     if (S.shake > 0.001) {
@@ -93,10 +102,26 @@ export function createStage(canvas) {
   };
 
   let drag = null;
+  S.dragMode = 'pan';       // left drag moves the map; the Rotate tool (or right drag) orbits
+  const keys = new Set();
+  window.addEventListener('keydown', e => keys.add(e.key.toLowerCase()));
+  window.addEventListener('keyup', e => keys.delete(e.key.toLowerCase()));
+  S.keyPan = (dt) => {
+    let dx = 0, dy = 0;
+    if (keys.has('a') || keys.has('arrowleft')) dx += 1;
+    if (keys.has('d') || keys.has('arrowright')) dx -= 1;
+    if (keys.has('w') || keys.has('arrowup')) dy += 1;
+    if (keys.has('s') || keys.has('arrowdown')) dy -= 1;
+    if (!dx && !dy) return;
+    const k = cam.dist * 0.9 * dt;
+    cam.tx -= (Math.cos(cam.yaw) * dx + Math.sin(cam.yaw) * dy) * k;
+    cam.tz -= (-Math.sin(cam.yaw) * dx + Math.cos(cam.yaw) * dy) * k;
+  };
   canvas.addEventListener('contextmenu', e => e.preventDefault());
   canvas.addEventListener('pointerdown', e => {
     if (S.onPointer && e.button === 0 && !e.shiftKey && S.onPointer('down', e)) { drag = { mode: 'tool' }; canvas.setPointerCapture(e.pointerId); return; }
-    drag = { x: e.clientX, y: e.clientY, mode: e.button === 2 || e.shiftKey ? 'pan' : 'orbit' };
+    const other = S.dragMode === 'pan' ? 'orbit' : 'pan';
+    drag = { x: e.clientX, y: e.clientY, mode: e.button === 2 || e.shiftKey ? other : S.dragMode };
     canvas.setPointerCapture(e.pointerId);
   });
   canvas.addEventListener('pointermove', e => {
@@ -106,7 +131,7 @@ export function createStage(canvas) {
     drag.x = e.clientX; drag.y = e.clientY;
     if (drag.mode === 'orbit') { cam.yaw -= dx * 0.005; cam.pitch += dy * 0.004; }
     else {
-      const k = cam.dist * 0.0011;
+      const k = cam.dist * 0.00125;
       cam.tx -= (Math.cos(cam.yaw) * dx + Math.sin(cam.yaw) * dy) * k;
       cam.tz -= (-Math.sin(cam.yaw) * dx + Math.cos(cam.yaw) * dy) * k;
       cam.tx = clamp(cam.tx, -10, N + 10); cam.tz = clamp(cam.tz, -10, N + 10);

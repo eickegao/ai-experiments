@@ -25,8 +25,9 @@ const stage = createStage(document.getElementById('view'));
 const rng = makeRng(seed);
 const villages = [{ x: 21 * K, z: 25 * K }, { x: 76 * K, z: 73 * K }];
 const terrain = createTerrain(stage.scene, seed, villages);
-const room = params.get('room') === '0' ? null : createRoom(stage);
-if (room) { stage.room = room; terrain.tray.visible = true; }
+const room = params.get('room') === '1' ? createRoom(stage) : null;
+if (room) stage.room = room;
+terrain.setFramed(!!room);
 
 const G = window.G = {
   DAY,
@@ -58,7 +59,7 @@ else {
 G.systems.push(G.fx);
 const post = params.get('post') === '0' ? null : createPost(stage);
 G.post = post;
-if (post) stage.bgBoost = 1.9;
+if (post) stage.bgBoost = 1.55;
 if (params.get('demo') === '1' && G.tribes) { G.director = createDirector(G); G.systems.push(G.director); }
 // The show reel drives the camera. The first click, drag or scroll hands control back to
 // the player (not while recording: `hold=1` keeps the reel running).
@@ -97,6 +98,7 @@ function frame(now) {
   if (room) room.update(now / 1000, stage.night);
   if (terrain.colorsDirty) terrain.updateColors();
   for (const s of G.systems) s.render && s.render(real, now / 1000);
+  stage.keyPan(real);
   stage.shake *= Math.pow(0.02, real);
   stage.flash *= Math.pow(0.001, real);
   stage.applyCamera(now / 1000);

@@ -156,6 +156,8 @@ export function createEnv(G) {
   E.powers = {
     rain: (x, z) => E.startRain(x, z),
     lightning: (x, z) => {
+      // a thundercloud gathers over the strike and drifts apart again
+      if (!raining(x, z)) { fx.addCloud(x - 2, z - 2, 27, 1.5, true).ttl = 4; fx.addCloud(x + 7, z + 4, 29, 1.1, true).ttl = 3.4; }
       fx.lightning(x, z);
       E.ignite(x, z, true);
       for (let i = 0; i < 4; i++) E.ignite(x + rng.range(-1.5, 1.5), z + rng.range(-1.5, 1.5), true);

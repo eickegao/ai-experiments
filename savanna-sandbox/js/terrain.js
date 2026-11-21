@@ -5,6 +5,7 @@ import { clamp, lerp, smooth, makeNoise } from './util.js';
 export const N = 256;         // slab is N x N world units
 export const GRID = N + 1;    // vertices per side
 export const BASE_Y = -5;
+export const RIM_Y = 1.3;
 
 export const K = N / 96;      // the first version was 96 wide; layout numbers are scaled from it
 const RIVER = [[63, -2], [61, 9], [56, 18], [58, 27], [51, 35], [47, 48], [43, 57], [44, 66], [36, 74], [31, 84], [27, 98]].map(([x, z]) => [x * K, z * K]);
@@ -69,6 +70,8 @@ export function createTerrain(scene, seed, villages) {
         y = lerp(y, -0.9, 1 - smooth(pd.r - 2.5, pd.r + 3, d));
         dp = Math.min(dp, d - pd.r * 0.5);
       }
+      // The map blends into a level plain at its rim, where the endless outer ground takes over.
+      y = lerp(RIM_Y, y, smooth(1, 16, Math.min(ix, iz, N - ix, N - iz)));
       h[idx(ix, iz)] = y;
       jitter[idx(ix, iz)] = noise(ix * 1.7 + 5, iz * 1.7 + 11) - 0.5;
       const wet = 1 - smooth(2, 14, Math.min(dr, dl - LAKE.r * 0.6, dp));
@@ -166,6 +169,7 @@ export function createTerrain(scene, seed, villages) {
   const sides = new THREE.Mesh(sideGeo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1, side: THREE.DoubleSide }));
   sides.receiveShadow = true;
   scene.add(sides);
+  T.sides = sides;
 
   // ---- wooden tray under the slab
   const tray = new THREE.Group();
@@ -218,6 +222,21 @@ export function createTerrain(scene, seed, villages) {
   };
   T.setWaterLevel(0);
   T.water = water;
+  T.curtain = curtain;
+
+  // ---- endless plain around the map (hidden when the slab sits on the desk)
+  const outerMat = new THREE.MeshStandardMaterial({ color: '#d9b65a', roughness: 0.95 });
+  const outer = new THREE.Group();
+  const R = 1400;
+  for (const [w, d, x, z] of [[R * 2 + N, R, N / 2, -R / 2], [R * 2 + N, R, N / 2, N + R / 2], [R, N, -R / 2, N / 2], [R, N, N + R / 2, N / 2]]) {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, d).rotateX(-Math.PI / 2), outerMat);
+    m.position.set(x, RIM_Y, z); m.receiveShadow = true;
+    outer.add(m);
+  }
+  scene.add(outer);
+  T.outer = outer;
+  T.outerMat = outerMat;
+  T.setFramed = (framed) => { tray.visible = sides.visible = curtain.visible = framed; outer.visible = !framed; };
 
   // ---- sculpting. fn(dist, oldHeight, weight) -> newHeight; weight fades to 0 near the slab edge.
   T.deform = (cx, cz, r, fn) => {

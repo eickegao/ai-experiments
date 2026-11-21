@@ -112,12 +112,12 @@ export function createFx(G) {
   // ---- lightning: a jagged bolt drawn with stretched glowing boxes
   F.lightning = (x, z) => {
     const gy = Math.max(T.height(x, z), T.waterLevel);
-    let px = x + (R() - 0.5) * 12, py = 70, pz = z + (R() - 0.5) * 12;
+    let px = x + (R() - 0.5) * 6, py = 27, pz = z + (R() - 0.5) * 6;
     const segs = [];
     const steps = 11;
     for (let i = 1; i <= steps; i++) {
       const t = i / steps;
-      const nx = lerp(px, x, 0.28) + (R() - 0.5) * 4.5 * (1 - t), nz = lerp(pz, z, 0.28) + (R() - 0.5) * 4.5 * (1 - t), ny = lerp(70, gy, t);
+      const nx = lerp(px, x, 0.28) + (R() - 0.5) * 4.5 * (1 - t), nz = lerp(pz, z, 0.28) + (R() - 0.5) * 4.5 * (1 - t), ny = lerp(27, gy, t);
       segs.push([px, py, pz, i === steps ? x : nx, ny, i === steps ? z : nz]);
       if (i > 3 && R() < 0.3) segs.push([px, py, pz, px + (R() - 0.5) * 9, py - 4 - R() * 4, pz + (R() - 0.5) * 9, 0.5]);
       px = i === steps ? x : nx; py = ny; pz = i === steps ? z : nz;
@@ -163,7 +163,6 @@ export function createFx(G) {
     F.clouds.push(c);
     return c;
   };
-  for (let i = 0; i < 16; i++) F.addCloud(rng.range(-20, N + 10), rng.range(4, N - 4), rng.range(24, 34), rng.range(1.2, 2.4));
 
   // ---- fire light: one light that follows the blaze
   const fireLight = new THREE.PointLight('#ff8a3a', 0, 120, 1.6);
@@ -229,14 +228,15 @@ export function createFx(G) {
     // clouds
     for (let i = F.clouds.length - 1; i >= 0; i--) {
       const c = F.clouds[i];
+      if (c.ttl !== undefined) { c.ttl -= dt; if (c.ttl <= 0) c.dying = true; }
       const target = c.dying ? 0 : 1;
-      c.grow += clamp(target - c.grow, -dt * 0.9, dt * 0.9);
+      c.grow += clamp(target - c.grow, -dt * 0.9, dt * (c.ttl !== undefined ? 6 : 0.9));
       c.mesh.scale.setScalar(Math.max(0.001, c.sc * c.grow * (1 + Math.sin(time * 0.4 + i) * 0.02)));
       c.mesh.position.x += c.vx * dt * G.speed * 0.6;
       if (c.mesh.position.x > N + 30) c.mesh.position.x = -30;
       // Clouds fade away as the camera gets close, so a close-up never ends up inside one.
       const cd = stage.camera.position.distanceTo(c.mesh.position);
-      const nearFade = clamp((cd - 26 * c.sc) / 30, 0, 1);
+      const nearFade = clamp((cd - 11 * c.sc) / 14, 0, 1);
       c.mesh.material.opacity = (c.rain ? 0.9 : 0.96 * (1 - stage.night * 0.3)) * nearFade;
       c.mesh.material.emissiveIntensity = c.rain ? 0 : 0.32 * (1 - stage.night * 0.85);
       c.mesh.visible = nearFade > 0.01;

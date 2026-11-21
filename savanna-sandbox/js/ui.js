@@ -6,23 +6,24 @@ const STR = {
   zh: {
     title: '草原沙盘', sub: '你是这片草原的神', day: n => `第 ${n} 天`,
     tribes: ['赤岩部落', '蓝河部落'], eras: ['', '营地', '村落', '城寨', '王城'], pop: '人口', food: '粮食',
-    tools: { hand: '观察', rain: '降雨', lightning: '闪电', meteor: '陨石', raise: '隆起', lower: '下陷', herd: '兽群', drought: '干旱', storm: '暴雨', war: '战鼓' },
+    tools: { hand: '移动', rotate: '旋转', rain: '降雨', lightning: '闪电', meteor: '陨石', raise: '隆起', lower: '下陷', herd: '兽群', drought: '干旱', storm: '暴雨', war: '战鼓' },
     toast: { era: (t, e) => `${t}进入「${e}」时代`, war: '战鼓响起，两个部落开战', peace: t => (t ? `${t}赢得了这场战争` : '战争结束，双方退兵'), drought: '大旱降临，河水开始退去', storm: '暴雨来了' },
-    hint: '拖动旋转 · 滚轮缩放 · 右键平移',
+    hint: '拖动移动地图 · 滚轮缩放 · 右键拖动旋转 · WASD 也能移动',
     animals: '动物',
   },
   en: {
     title: 'Savanna Sandbox', sub: 'You are the god of this grassland', day: n => `Day ${n}`,
     tribes: ['Redrock', 'Blueriver'], eras: ['', 'Camp', 'Village', 'Town', 'Kingdom'], pop: 'People', food: 'Food',
-    tools: { hand: 'Look', rain: 'Rain', lightning: 'Lightning', meteor: 'Meteor', raise: 'Raise', lower: 'Lower', herd: 'Herd', drought: 'Drought', storm: 'Storm', war: 'War drum' },
+    tools: { hand: 'Move', rotate: 'Rotate', rain: 'Rain', lightning: 'Lightning', meteor: 'Meteor', raise: 'Raise', lower: 'Lower', herd: 'Herd', drought: 'Drought', storm: 'Storm', war: 'War drum' },
     toast: { era: (t, e) => `${t} enters the ${e} age`, war: 'War drums: the tribes march', peace: t => (t ? `${t} wins the war` : 'The war ends in a draw'), drought: 'Drought. The river is falling', storm: 'A storm rolls in' },
-    hint: 'Drag to orbit · Scroll to zoom · Right-drag to pan',
+    hint: 'Drag to move the map · Scroll to zoom · Right-drag to rotate · WASD also moves',
     animals: 'Animals',
   },
 };
 
 const ICON = {
-  hand: '<path d="M12 5a7 7 0 1 0 0 14a7 7 0 0 0 0-14zm0 4a3 3 0 1 1 0 6a3 3 0 0 1 0-6z"/>',
+  hand: '<path d="M12 2l3.5 4h-2.5v5h5V8.5l4 3.5l-4 3.5V13h-5v5h2.5L12 22l-3.5-4H11v-5H6v2.5L2 12l4-3.5V11h5V6H8.5z"/>',
+  rotate: '<path d="M12 4a8 8 0 1 0 7.7 10.2h-2.1A6 6 0 1 1 12 6c1.6 0 3 .6 4.1 1.7L13 11h8V3l-3.5 3.3A8 8 0 0 0 12 4z"/>',
   rain: '<path d="M7 13a4 4 0 0 1 .6-8A5 5 0 0 1 17 6.2A3.5 3.5 0 0 1 17 13z"/><path d="M8 15l-1 3M12 15l-1 4M16 15l-1 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>',
   lightning: '<path d="M13 2L5 13h5l-1 9l8-12h-5z"/>',
   meteor: '<circle cx="15" cy="15" r="5"/><path d="M3 3l8 6M6 2l6 5M2 7l7 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>',
@@ -58,12 +59,12 @@ export function createUI(G, lang) {
   for (const k of Object.keys(ICON)) {
     const b = el('button', 'tool', `<svg viewBox="0 0 24 24" fill="currentColor">${ICON[k]}</svg><span>${L.tools[k]}</span>`);
     b.onclick = () => {
-      if (AREA_TOOLS.includes(k) || k === 'hand') U.setTool(k);
+      if (AREA_TOOLS.includes(k) || k === 'hand' || k === 'rotate') U.setTool(k);
       else { G.env.powers[k](); flash(b); }
     };
     buttons[k] = b;
     bar.appendChild(b);
-    if (k === 'hand' || k === 'herd') bar.appendChild(el('i', 'sep'));
+    if (k === 'rotate' || k === 'herd') bar.appendChild(el('i', 'sep'));
   }
   const speed = el('div', 'speed');
   const speedBtns = [[0, '❙❙'], [1, '1×'], [4, '4×'], [16, '16×']].map(([s, label]) => {
@@ -79,6 +80,8 @@ export function createUI(G, lang) {
 
   U.setTool = (k) => {
     U.tool = k;
+    if (k === 'hand') stage.dragMode = 'pan';
+    if (k === 'rotate') stage.dragMode = 'orbit';
     for (const n in buttons) buttons[n].classList.toggle('on', n === k);
     ring.visible = false;
   };
@@ -113,7 +116,7 @@ export function createUI(G, lang) {
 
   let held = null;
   stage.onPointer = (type, e) => {
-    if (U.tool === 'hand') return false;
+    if (U.tool === 'hand' || U.tool === 'rotate') return false;
     const pt = stage.pick(e, T);
     if (type === 'hover') { if (pt) moveRing(pt); else ring.visible = false; return false; }
     if (type === 'up') { held = null; return true; }
