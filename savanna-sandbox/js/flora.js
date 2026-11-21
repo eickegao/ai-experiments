@@ -190,7 +190,9 @@ export function createFlora(G) {
         if (t.burn <= 0) { t.state = 'burnt'; F.dirty = true; }
       } else if (t.state === 'stump') {
         t.regrow -= step;
-        if (t.regrow <= 0 && T.burnt[T.cell(t.x, t.z)] < 0.2) { t.state = 'alive'; t.grow = 0.25; F.dirty = true; }
+        // nothing grows back on land a city has taken
+        if (t.regrow <= 0 && T.burnt[T.cell(t.x, t.z)] < 0.2 && !villages.some(v => (v.era || 1) >= 4 && Math.hypot(t.x - v.x, t.z - v.z) < 45 + ((v.era || 1) - 3) * 25)) { t.state = 'alive'; t.grow = 0.25; F.dirty = true; }
+        else if (t.regrow <= 0) t.regrow = 60;
       }
     }
   };
@@ -219,6 +221,20 @@ export function createFlora(G) {
       if (d < bd) { bd = d; best = t; }
     }
     return best;
+  };
+  // A city clears the land around it for good: the trees nearest to (x, z) within R go.
+  F.clearNear = (x, z, R, n) => {
+    const hits = [];
+    for (const t of F.trees) {
+      if (t.state !== 'alive' && t.state !== 'stump') continue;
+      const d = Math.hypot(t.x - x, t.z - z);
+      if (d < R) hits.push([d, t]);
+    }
+    hits.sort((a, b) => a[0] - b[0]);
+    let cut = 0;
+    for (const [, t] of hits.slice(0, n)) { if (t.state === 'alive') cut++; t.state = 'gone'; t.taken = null; }
+    if (hits.length) F.dirty = true;
+    return cut;
   };
   F.fell = (t) => { t.state = 'stump'; t.regrow = G.rng.range(160, 260); t.taken = null; t.shake = 0; F.dirty = true; };
   F.count = () => F.trees.reduce((n, t) => n + (t.state === 'alive' ? 1 : 0), 0);

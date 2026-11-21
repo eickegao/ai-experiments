@@ -81,6 +81,7 @@ export function createAudio(G) {
     hammer: (v) => { const t = ctx.currentTime; tone('square', 420, 300, 0.04, 0.16 * v, t, 0.002); noise('bandpass', 2400, 3, 0.04, 0.16 * v, t, 0.002); },
     pick: (v) => { const t = ctx.currentTime; tone('sine', 1500, 1250, 0.14, 0.2 * v, t, 0.002); tone('sine', 2330, 2100, 0.09, 0.09 * v, t, 0.002); noise('highpass', 4000, 1, 0.03, 0.09 * v, t, 0.001); },
     spear: (v) => { noise('highpass', 2600, 1, 0.12, 0.13 * v, ctx.currentTime, 0.01, master, 800); },
+    gun: (v) => { const t = ctx.currentTime; noise('highpass', 1800, 0.6, 0.09, 0.5 * v, t, 0.001); noise('lowpass', 700, 0.7, 0.35, 0.4 * v, t, 0.002, master, 120); },
     clash: (v) => { const t = ctx.currentTime; noise('bandpass', 3300, 6, 0.09, 0.2 * v, t, 0.002); tone('square', 1100 + Math.random() * 500, 700, 0.06, 0.05 * v, t, 0.002); },
     cry: (v) => { tone('sawtooth', 520, 240, 0.25, 0.12 * v, ctx.currentTime, 0.02); },
     drum: (v) => { const t = ctx.currentTime; [0, 0.28, 0.56, 0.7, 0.98, 1.26, 1.4].forEach((d, i) => { tone('sine', 110, 52, 0.22, 0.75 * v, t + d, 0.004); noise('lowpass', 300, 1, 0.08, 0.2 * v, t + d, 0.002); }); },
@@ -94,8 +95,8 @@ export function createAudio(G) {
     bless: (v) => { const t = ctx.currentTime; [784, 988, 1175, 1568].forEach((f, i) => tone('sine', f, f, 0.6, 0.1 * v, t + i * 0.07, 0.03)); },
     click: () => { tone('sine', 880, 660, 0.05, 0.08, ctx.currentTime, 0.002); },
   };
-  const GAP = { chop: 0.16, hammer: 0.13, pick: 0.2, clash: 0.07, spear: 0.2, bird: 0.5, cry: 0.25, splash: 0.3, cough: 0.5, build: 0.4, zebra: 1.5, grunt: 1.2, roar: 2.5, trumpet: 2.5, hyena: 2, vulture: 2, thunder: 0.3 };
-  const REACH = { thunder: 3, boom: 5, drum: 3, horn: 3, roar: 1.6, trumpet: 1.6, whoosh: 2.5, era: 4, timber: 1.3 };
+  const GAP = { gun: 0.12, chop: 0.16, hammer: 0.13, pick: 0.2, clash: 0.07, spear: 0.2, bird: 0.5, cry: 0.25, splash: 0.3, cough: 0.5, build: 0.4, zebra: 1.5, grunt: 1.2, roar: 2.5, trumpet: 2.5, hyena: 2, vulture: 2, thunder: 0.3 };
+  const REACH = { gun: 1.8, thunder: 3, boom: 5, drum: 3, horn: 3, roar: 1.6, trumpet: 1.6, whoosh: 2.5, era: 4, timber: 1.3 };
 
   // Play `name` at a place on the map (or everywhere if no place is given).
   A.play = (name, x, z) => {

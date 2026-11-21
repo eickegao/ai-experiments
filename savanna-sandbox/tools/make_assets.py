@@ -54,8 +54,11 @@ ITEMS = {
     "lumber": ("a single neat stack of cut tree logs", 1200),
     "stall": ("a single wooden market stall with a striped cloth canopy and baskets of fruit and vegetables on the counter", 4000),
     "bonfire": ("a single campfire: a ring of stones around stacked logs, no flames", 1500),
-    "tower_block": ("a single modern glass and concrete office tower, about twenty storeys, simple and clean", 3000),
-    "apartment": ("a single modern mid-rise apartment block, about eight storeys, with balconies", 3000),
+    "townhouse": ("a single three-storey red brick terraced townhouse from the industrial age with a slate roof, chimneys and sash windows", 4000),
+    "factory": ("a single nineteenth century red brick factory building with a saw-tooth roof and two tall smoking-style brick chimneys (no smoke), a loading yard in front", 6000),
+    "apartment": ("a single modern mid-rise concrete apartment block, about nine storeys, with rows of balconies and a flat roof, standing upright", 4000),
+    "tower_block": ("a single modern glass and steel office skyscraper, about thirty storeys, slim and tall, blue-tinted glass curtain wall, standing upright", 4000),
+    "skyscraper": ("a single landmark supertall skyscraper with a tapering glass facade and a spire on top, about sixty storeys, on a small plaza base, standing upright", 6000),
 }
 
 

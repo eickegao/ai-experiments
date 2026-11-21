@@ -39,8 +39,11 @@ export const SPEC = {
   stump: { size: ['x', 1.0], yaw: 0 },
   quarry: { size: ['x', 9], yaw: 0 },
   lumber: { size: ['x', 1.6], yaw: 0 },
-  tower_block: { size: ['y', 16], yaw: 0 },
-  apartment: { size: ['y', 8], yaw: 0 },
+  townhouse: { size: ['x', 2.9], yaw: 0 },
+  factory: { size: ['x', 9.5], yaw: 0 },
+  apartment: { size: ['x', 3.7], yaw: 0 },
+  tower_block: { size: ['x', 3.3], yaw: 0 },
+  skyscraper: { size: ['x', 6.6], yaw: 0 },
 };
 
 export async function loadAssets(names = Object.keys(SPEC), base = 'assets/models/') {

@@ -9,12 +9,13 @@ import { CreatureKind } from './creatures.js';
 import { moveToward, settle, faceTo } from './agents.js';
 import * as MD from './models.js';
 
-const HOUSE_CAP = [0, 4, 5, 6, 8];
-const ERA_POP = [0, 30, 70, 120, 9999];        // population needed to leave each era
-const WORK = { house: 7, granary: 8, totem: 6, field: 6, tower: 12, wall: 26, hall: 34, stall: 5, bonfire: 1 };
+const HOUSE_CAP = [0, 4, 5, 6, 8, 9, 12];
+const MAX_ERA = 6;
+const ERA_POP = [0, 30, 70, 120, 175, 215, 9999];        // population needed to leave each era
+const WORK = { factory: 30, house: 7, granary: 8, totem: 6, field: 6, tower: 12, wall: 26, hall: 34, stall: 5, bonfire: 1 };
 // what a building costs: [wood, stone]
-const HOUSE_COST = [null, [2, 0], [4, 0], [6, 3], [4, 10]];
-const COST = { granary: [6, 0], totem: [4, 0], field: [0, 0], tower: [12, 0], hall: [30, 80], stall: [5, 0], bonfire: [0, 0] };
+const HOUSE_COST = [null, [2, 0], [4, 0], [6, 3], [4, 10], [10, 12], [8, 30]];
+const COST = { factory: [40, 60], granary: [6, 0], totem: [4, 0], field: [0, 0], tower: [12, 0], hall: [30, 80], stall: [5, 0], bonfire: [0, 0] };
 const WALL_COST = { 3: [70, 0], 4: [20, 140] };
 const MAX_POP = 230;
 const WALL_R = 25;
@@ -48,7 +49,11 @@ export function createTribes(G) {
     if (tr === 1) { m = a.mat.clone(); m.color.set('#a9bdf2'); }
     return { geo: a.geo, glow: EMPTY, mat: m };
   };
-  const houseModel = (tr, era) => model(`house${tr}${era}`, () => gen([null, 'shelter', 'hut', 'house', 'stone_house'][era], tr, () => [null, MD.shelterModel, MD.hutModel, MD.houseModel, MD.stoneHouseModel][era](tr)));
+  // From the industrial age on, towns look the same whoever built them (no tint).
+  const houseModel = (tr, era, tall) => {
+    const name = [null, 'shelter', 'hut', 'house', 'stone_house', 'townhouse', tall ? 'tower_block' : 'apartment'][era];
+    return model(`house${era >= 5 ? '' : tr}${name}`, () => gen(name, era >= 5 ? 0 : tr, () => [null, MD.shelterModel, MD.hutModel, MD.houseModel, MD.stoneHouseModel, MD.stoneHouseModel, MD.stoneHouseModel][era](tr)));
+  };
 
   // ------------------------------------------------------------ settlement layout
   const createVillage = (x, z, color, era, towards = null) => {
@@ -69,6 +74,7 @@ export function createTribes(G) {
       id: S.tribes.length, color, x, z, gate, era, food: 60, wood: 30, stone: 0, people: [], buildings: [], queue: [], slots,
       rally: at(33, gate), spots: {
         granary: at(3.1, gate + 2.1), totem: at(3.0, gate - 2.1), tower: at(22, gate + 0.42), hall: at(5.6, back),
+        factories: [at(47, gate + 0.8), at(47, gate - 0.8), at(52, gate + 1.6)].filter(f => T.inside(f.x, f.z, 8) && T.depth(f.x, f.z) < -0.3),
         stalls: [at(3.4, gate + 0.75), at(3.4, gate - 0.75), at(6.6, gate + 1.25)],
         fields: [1.0, -1.0, 1.7, -1.7, 2.4, -2.4, 0.5, -0.5, 3.1].map(d => at(31.5, gate + d)).concat([0.75, -0.75, 1.4, -1.4, 2.1, -2.1, 2.8].map(d => at(38.5, gate + d))).filter(f => T.inside(f.x, f.z, 4) && T.depth(f.x, f.z) < -0.3),
       },
@@ -81,7 +87,7 @@ export function createTribes(G) {
   };
 
   // ------------------------------------------------------------ buildings
-  const costOf = (b) => (b.type === 'house' ? HOUSE_COST[b.era] : b.type === 'wall' ? WALL_COST[b.era] : COST[b.type]) || [0, 0];
+  const costOf = (b) => (b.type === 'house' ? HOUSE_COST[b.era] : b.type === 'wall' ? WALL_COST[b.era] : b.type === 'hall' && b.era >= 6 ? [20, 150] : COST[b.type]) || [0, 0];
   const addBuilding = (tribe, type, x, z, extra = {}) => {
     const b = { tribe, type, x, z, era: tribe.era, built: 0, work: 0, need: WORK[type], state: 'site', paid: false, yaw: Math.atan2(tribe.x - x, tribe.z - z), burn: 0, ...extra };
     b.mesh = new THREE.Mesh(new THREE.BufferGeometry(), mat);
@@ -98,13 +104,14 @@ export function createTribes(G) {
     const tr = b.tribe.color;
     let m;
     switch (b.type) {
-      case 'house': m = houseModel(tr, b.era); break;
+      case 'house': m = houseModel(tr, b.era, b.slot && Math.hypot(b.slot.x - b.tribe.x, b.slot.z - b.tribe.z) < 13); break;
+      case 'factory': m = model('factory', () => gen('factory', 0, () => MD.hallModel(0))); break;
       case 'bonfire': m = model('bonfire', () => gen('bonfire', 0, MD.bonfireModel)); break;
       case 'granary': m = model('granary' + tr, () => gen('granary', tr, () => MD.granaryModel(tr))); break;
       case 'totem': m = model(`totem${tr}${b.era}`, () => gen('totem', tr, () => MD.totemModel(tr, b.era))); break;
       case 'field': m = model('field', MD.fieldModel); break;
       case 'tower': m = model('tower' + tr, () => gen('tower', tr, () => MD.towerModel(tr))); break;
-      case 'hall': m = model('hall' + tr, () => gen('hall', tr, () => MD.hallModel(tr))); break;
+      case 'hall': m = b.era >= 6 ? model('skyscraper', () => gen('skyscraper', 0, () => MD.hallModel(tr))) : model('hall' + tr, () => gen('hall', tr, () => MD.hallModel(tr))); break;
       case 'stall': m = model(`stall${tr}${b.v % 4}`, () => gen('stall', tr, () => MD.stallModel(tr, b.v))); break;
       case 'wall': m = { geo: MD.wallModel(tr, b.era, WALL_R, b.tribe.gate).geo, glow: EMPTY }; break;
     }
@@ -147,18 +154,33 @@ export function createTribes(G) {
     let upgrading = t.queue.filter(b => b.upgrading).length;
     for (const b of t.buildings) {
       if (upgrading >= 5) break;
-      if ((b.type === 'house' || b.type === 'totem' || b.type === 'wall') && b.state === 'done' && b.era < t.era && !(b.type === 'wall' && t.era < 4)) {
+      const due = b.type === 'house' || b.type === 'totem' ? b.era < t.era : b.type === 'wall' ? b.era < t.era && t.era === 4 : b.type === 'hall' ? t.era >= 6 && b.era < 6 : false;
+      if (due && b.state === 'done') {
         b.era = t.era; b.upgrading = true; b.state = 'site'; b.work = 0; b.built = 0.25; b.paid = false; setModel(b); t.queue.push(b); upgrading++;
       }
     }
     const sp = t.spots;
+    villages[t.id].era = t.era;      // animals and trees look at this
     if (t.era >= 2) {
       if (!find(t, 'totem')) addBuilding(t, 'totem', sp.totem.x, sp.totem.z);
       if (!find(t, 'granary')) addBuilding(t, 'granary', sp.granary.x, sp.granary.z);
       const nf = count(t, 'field');
       if (nf < Math.min(sp.fields.length, 1 + t.era * 2 + Math.floor(pop / 40)) && !t.queue.some(b => b.type === 'field')) addBuilding(t, 'field', sp.fields[nf].x, sp.fields[nf].z);
     }
-    if (t.era >= 3) {
+    if (t.era >= 5) {
+      // an industrial city outgrows its wall, clears the land around it and burns wood in its factories
+      if (t.wall && t.buildings.includes(t.wall)) {
+        G.fx.puff(t.x + Math.cos(t.gate) * WALL_R, T.height(t.x, t.z) + 1, t.z + Math.sin(t.gate) * WALL_R, '#d8c7a4', 30, 6);
+        removeBuilding(t.wall); t.wall = null; t.wallOn = false;
+        const i = T.walls.findIndex(w => w.x === t.x && w.z === t.z); if (i >= 0) T.walls.splice(i, 1);
+        G.log('wall_down', { tribe: t.color, village: t.id });
+      }
+      const nfac = count(t, 'factory');
+      if (nfac < t.era - 4 + (pop > 180 ? 1 : 0) && nfac < sp.factories.length && !t.queue.some(b => b.type === 'factory')) addBuilding(t, 'factory', sp.factories[nfac].x, sp.factories[nfac].z);
+      const cleared = G.flora.clearNear(t.x, t.z, 40 + (t.era - 4) * 18, 2);
+      if (cleared) { t.wood += cleared * 5; G.log('land_cleared', { tribe: t.color, trees: cleared }); }
+    }
+    if (t.era >= 3 && t.era <= 4) {
       if (!find(t, 'wall')) t.wall = addBuilding(t, 'wall', t.x, t.z);
       if (!find(t, 'tower')) addBuilding(t, 'tower', sp.tower.x, sp.tower.z);
     }
@@ -171,9 +193,10 @@ export function createTribes(G) {
       if (b.paid) continue;
       const [w, s] = costOf(b);
       if (t.wood >= w && t.stone >= s) { t.wood -= w; t.stone -= s; b.paid = true; }
+      else if (b.type !== 'house' && b.type !== 'wall') break;      // save up for the big project first
     }
     // next era?
-    if (t.era < 4 && pop >= ERA_POP[t.era] && t.food > pop && houses.length && houses.every(b => b.era === t.era && b.state === 'done')) {
+    if (t.era < MAX_ERA && pop >= ERA_POP[t.era] && t.food > pop && houses.length && houses.every(b => b.era === t.era && b.state === 'done')) {
       t.era++;
       t.cheer = 5;
       G.log('era', { tribe: t.color, village: t.id, era: t.era });
@@ -255,21 +278,25 @@ export function createTribes(G) {
     const take = (role, state, n, init) => { let have = cnt(role); while (have < n && idle.length) { const p = idle.pop(); p.role = role; p.state = state; init && init(p, have); have++; } };
 
     const [oweW, oweS] = owed(t);
-    const share = (f) => clamp(Math.ceil(all.length * f), 1, 16);
-    take('woodcutter', 'seek', t.wood < oweW + 24 ? share(0.16) : t.wood < 90 ? 1 : 0);
+    const share = (f) => clamp(Math.ceil(all.length * f), 1, 40);
+    // the further a town has come, the more wood it wants
+    const woodGoal = oweW + 24 + Math.max(0, t.era - 4) * 140;
+    take('woodcutter', 'seek', t.wood < woodGoal ? share(0.16 + Math.max(0, t.era - 3) * 0.04) : t.wood < 90 ? 1 : 0);
     take('miner', 'seek', t.era >= 2 && t.stone < oweS + (t.era >= 3 ? 60 : 30) ? share(0.16) : 0);
 
     const sites = t.queue.filter(b => b.state !== 'done' && b.paid);
     take('builder', 'toSite', sites.length ? clamp(Math.ceil(all.length / 5), 1, 16) : 0, p => { p.site = null; });
 
     const fields = t.buildings.filter(b => b.type === 'field' && b.state === 'done');
-    take('farmer', 'toField', fields.length * 3, (p, i) => { p.field = fields[i % fields.length]; });
+    take('farmer', 'toField', t.food < 300 + all.length * 12 ? fields.length * 3 : Math.ceil(fields.length / 2), (p, i) => { p.field = fields[i % fields.length]; });
 
     // hunting parties of three
     t.parties = t.parties.filter(pt => pt.members.some(m => m.alive && m.party === pt));
-    const wantParties = clamp(Math.floor(all.length / 14), 1, 6);
+    // later ages hunt more, further, and anything that moves (predators and elephants included)
+    const wantParties = clamp(Math.floor(all.length / 14) * (t.era >= 5 ? 2 : 1), 1, 14);
     if (t.parties.length < wantParties && idle.length >= 3) {
-      const prey = G.animals.nearestPrey(t.x, t.z, 95, a => !a.hunted);
+      const reach = 95 + t.era * 14;
+      const prey = G.animals.nearestPrey(t.x, t.z, reach, a => !a.hunted) || (t.era >= 4 ? G.animals.nearestAny(t.x, t.z, reach, a => !a.hunted) : null);
       if (prey) {
         const party = { members: [], prey, timer: 60, state: 'hunt' };
         prey.hunted = true;
@@ -504,20 +531,22 @@ export function createTribes(G) {
       }
       const d = Math.hypot(prey.x - p.x, prey.z - p.z);
       const i = pt.members.indexOf(p);
-      if (d > 6.5) moveToward(T, p, prey.x + Math.cos(i * 2.1) * 2.5, prey.z + Math.sin(i * 2.1) * 2.5, d > 16 ? RUN * 0.9 : WALK * 1.15, dt);
+      const gun = p.tribe.era >= 5;
+      if (d > (gun ? 11 : 6.5)) moveToward(T, p, prey.x + Math.cos(i * 2.1) * 2.5, prey.z + Math.sin(i * 2.1) * 2.5, d > 16 ? RUN * 0.9 : WALK * 1.15, dt);
       else {
         settle(T, p, dt); faceTo(p, prey.x, prey.z, dt);
         if (p.cd <= 0) {
           p.cd = 1.7; p.attack = 1;
-          G.sfx('spear', p.x, p.z);
+          G.sfx(gun ? 'gun' : 'spear', p.x, p.z);
+          if (gun) G.fx.spark(p.x + Math.sin(p.yaw) * 0.5, p.y + 1.1, p.z + Math.cos(p.yaw) * 0.5, 3, '#ffe6a0', 0.5);
           G.fx.lit.add({ x: p.x, y: p.y + 1.5, z: p.z, vx: (prey.x - p.x) / 0.4, vy: 2.2, vz: (prey.z - p.z) / 0.4, grav: 11, life: 0.4, max: 0.4, size: 0.09, sx: 1, sy: 1, spin: 0, r: 0.4, g: 0.3, b: 0.2 });
-          if (rng() < 0.6) {
-            prey.hp--;
+          if (rng() < (gun ? 0.8 : 0.6)) {
+            prey.hp -= gun ? 4 : 1;
             G.animals.scare(prey.x, prey.z, 4);
             if (prey.hp <= 0) {
               const car = G.animals.kill(prey, 'hunt');
               G.log('hunt_kill', { tribe: p.tribe.color, kind: prey.kind });
-              if (car) { car.taken = 'tribe'; p.state = 'toCarcass'; p.haul = car; }
+              if (car) { car.taken = 'tribe'; p.state = 'toCarcass'; p.haul = car; } else { p.spear = false; p.role = 'idle'; p.party = null; goHome(p); }
               for (const m of pt.members) if (m !== p && m.alive) { m.spear = false; m.role = 'idle'; m.party = null; goHome(m); }
             }
           }
@@ -665,6 +694,7 @@ export function createTribes(G) {
     t.plan -= dt;
     if (t.plan <= 0) { t.plan = 1.5; planTribe(t); assignJobs(t); }
 
+    for (const b of t.buildings) if (b.type === 'factory' && b.state === 'done') t.wood = Math.max(0, t.wood - 0.14 * dt);
     t.colonyCd -= dt;
     if (t.colonyCd <= 0 && pop >= 150 && t.era >= 3 && !S.war && G.opts.colonies && S.tribes.filter(o => o.color === t.color).length < MAX_VILLAGES) foundColony(t);
 
@@ -733,6 +763,7 @@ export function createTribes(G) {
         b.mesh.scale.set(1, Math.max(0.02, e), 1);
         b.glow.position.copy(b.mesh.position); b.glow.rotation.y = b.yaw; b.glow.scale.copy(b.mesh.scale);
         b.glow.visible = b.state === 'done' && (night > 0.15 || b.type === 'bonfire');
+        if (b.type === 'factory' && b.state === 'done' && G.fx.R() < 0.35) G.fx.smoke(b.x + G.fx.R.range(-2.5, 2.5), y + 6.5, b.z + G.fx.R.range(-2, 2), 1.1, 0.3);
       }
     });
   };

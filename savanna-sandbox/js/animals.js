@@ -17,6 +17,8 @@ export const SPEC = {
 };
 SPEC.zebra.call = 'zebra'; SPEC.wildebeest.call = 'grunt'; SPEC.elephant.call = 'trumpet';
 
+let A_cap = () => 1500;
+
 export function createAnimals(G) {
   const { stage, terrain: T, rng, villages } = G;
   const scene = stage.scene;
@@ -44,7 +46,10 @@ export function createAnimals(G) {
   const A = { all: [], herds: [], carcasses: [], kinds, flocks: [], crocs: [] };
   let nextId = 1;
 
-  const nearVillage = (x, z, r) => villages.some(v => Math.hypot(x - v.x, z - v.z) < r);
+  // the further a settlement has come, the wider the animals keep away from it
+  const nearVillage = (x, z, r) => villages.some(v => Math.hypot(x - v.x, z - v.z) < r + ((v.era || 1) - 1) * 9);
+  // Civilisation crowds the wildlife out: every town past the village stage lowers how many animals the land carries.
+  A_cap = () => Math.max(120, 1500 - villages.reduce((n, v) => n + Math.max(0, (v.era || 1) - 2) * 120, 0));
   const walkable = (x, z) => T.inside(x, z, 3) && !T.isWater(x, z);
 
   const spawn = (kind, herd, x, z, young = false) => {
@@ -138,6 +143,16 @@ export function createAnimals(G) {
       if (Math.hypot(c.x - x, c.z - z) < r + 6) flee(h, x, z, 6);
     }
   };
+  A.nearestAny = (x, z, maxR, pred = null) => {
+    let best = null, bd = maxR * maxR;
+    for (const a of A.all) {
+      if (pred && !pred(a)) continue;
+      const d = (a.x - x) ** 2 + (a.z - z) ** 2;
+      if (d < bd) { bd = d; best = a; }
+    }
+    return best;
+  };
+  A.cap = () => A_cap();
   A.nearestPrey = (x, z, maxR, pred = null) => {
     let best = null, bd = maxR * maxR;
     for (const a of A.all) {
@@ -237,7 +252,7 @@ export function createAnimals(G) {
     if (h.breed <= 0) {
       h.breed = rng.range(38, 70);
       const fed = h.members.reduce((s, m) => s + m.fed, 0) / h.members.length;
-      if (h.members.length < sp.cap && fed > 0.45 && h.mode !== 'flee' && A.all.length < 1500) {
+      if (h.members.length < sp.cap && fed > 0.45 && h.mode !== 'flee' && A.all.length < A_cap()) {
         const m = rng.pick(h.members);
         spawn(h.kind, h, m.x + rng.range(-0.8, 0.8), m.z + rng.range(-0.8, 0.8), true);
       }

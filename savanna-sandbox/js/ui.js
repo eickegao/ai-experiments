@@ -6,7 +6,7 @@ import { TRIBES } from './models.js';
 const STR = {
   zh: {
     title: '草原沙盘', sub: '你是这片草原的神', day: n => `第 ${n} 天`,
-    tribes: ['赤岩人', '蓝河人'], eras: ['', '营地', '村落', '城寨', '王城'], pop: '人口', food: '粮食', wood: '木头', stone: '石头', towns: '聚落',
+    tribes: ['赤岩人', '蓝河人'], eras: ['', '营地', '村落', '城寨', '王城', '工业城', '现代都市'], trees: '树木', pop: '人口', food: '粮食', wood: '木头', stone: '石头', towns: '聚落',
     tools: { hand: '移动', rotate: '旋转', rain: '降雨', lightning: '闪电', meteor: '陨石', tornado: '龙卷风', plague: '瘟疫', bless: '祝福', raise: '隆起', lower: '下陷', herd: '兽群', drought: '干旱', storm: '暴雨', war: '战鼓' },
     toast: {
       era: (t, e) => `${t}进入「${e}」时代`, war: '战鼓响起，两族开战', peace: t => (t ? `${t}赢得了这场战争` : '战争结束，双方退兵'),
@@ -21,7 +21,7 @@ const STR = {
   },
   en: {
     title: 'Savanna Sandbox', sub: 'You are the god of this grassland', day: n => `Day ${n}`,
-    tribes: ['Redrock', 'Blueriver'], eras: ['', 'Camp', 'Village', 'Town', 'Kingdom'], pop: 'People', food: 'Food', wood: 'Wood', stone: 'Stone', towns: 'Towns',
+    tribes: ['Redrock', 'Blueriver'], eras: ['', 'Camp', 'Village', 'Town', 'Kingdom', 'Industrial city', 'Metropolis'], trees: 'Trees', pop: 'People', food: 'Food', wood: 'Wood', stone: 'Stone', towns: 'Towns',
     tools: { hand: 'Move', rotate: 'Rotate', rain: 'Rain', lightning: 'Lightning', meteor: 'Meteor', tornado: 'Tornado', plague: 'Plague', bless: 'Bless', raise: 'Raise', lower: 'Lower', herd: 'Herd', drought: 'Drought', storm: 'Storm', war: 'War drum' },
     toast: {
       era: (t, e) => `${t} enters the ${e} age`, war: 'War drums: the two peoples march', peace: t => (t ? `${t} wins the war` : 'The war ends in a draw'),
@@ -75,7 +75,7 @@ export function createUI(G, lang) {
     cards.appendChild(c);
     return c;
   });
-  const wild = el('div', 'card wild', `<div class="row"><span>${L.animals}</span><b class="n"></b></div>`);
+  const wild = el('div', 'card wild', `<div class="row"><span>${L.animals}</span><b class="n"></b></div><div class="row"><span>${L.trees}</span><b class="tr"></b></div>`);
   cards.appendChild(wild);
 
   const bar = el('div', 'bar');
@@ -202,6 +202,7 @@ export function createUI(G, lang) {
       c.querySelector('.towns').textContent = s.villages;
     });
     wild.querySelector('.n').textContent = G.animals.all.length + G.animals.crocs.length;
+    wild.querySelector('.tr').textContent = G.flora.count();
     for (const [s, b] of speedBtns) b.classList.toggle('on', G.paused ? s === 0 : s === G.speed);
     buttons.drought.classList.toggle('on', G.env.drought > 0);
     buttons.war.classList.toggle('on', !!G.tribes.war);

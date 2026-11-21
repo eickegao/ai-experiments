@@ -126,6 +126,30 @@
    ],
    "tripo_credits_before": 885,
    "tripo_credits_after": 705
+  },
+  {
+   "date": "2026-11-20 18:43",
+   "items": [
+    "townhouse",
+    "factory",
+    "apartment",
+    "tower_block",
+    "skyscraper"
+   ],
+   "tripo_credits_before": 705,
+   "tripo_credits_after": 555
+  },
+  {
+   "date": "2026-11-20 18:45",
+   "items": [
+    "townhouse",
+    "factory",
+    "apartment",
+    "tower_block",
+    "skyscraper"
+   ],
+   "tripo_credits_before": 555,
+   "tripo_credits_after": 555
   }
  ],
  "giraffe": {
@@ -832,6 +856,131 @@
   "model_started": 1795220153.230776,
   "model_seconds": 54.1,
   "model_bytes": 1710596,
+  "model_status": "success"
+ },
+ "skyscraper": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single landmark supertall skyscraper with a tapering glass facade and a spire on top, about sixty storeys, on a small plaza base, standing upright, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 9.5,
+  "image_usage": {
+   "input_tokens": 96,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 96
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 292
+  },
+  "model_task": "3839caa6-ef70-40b2-a8bf-e10490480680",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 6000,
+  "model_started": 1795221782.2712011,
+  "model_seconds": 45.8,
+  "model_bytes": 1490964,
+  "model_status": "success"
+ },
+ "townhouse": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single three-storey red brick terraced townhouse from the industrial age with a slate roof, chimneys and sash windows, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 11.2,
+  "image_usage": {
+   "input_tokens": 86,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 86
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 282
+  },
+  "model_task": "06cdba7d-ea16-48f2-b757-adb494d5230a",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 4000,
+  "model_started": 1795221651.555797,
+  "model_seconds": 105.1,
+  "model_bytes": 1699292,
+  "model_status": "success"
+ },
+ "tower_block": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single modern glass and steel office skyscraper, about thirty storeys, slim and tall, blue-tinted glass curtain wall, standing upright, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 12.1,
+  "image_usage": {
+   "input_tokens": 90,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 90
+   },
+   "output_tokens": 196,
+   "output_tokens_details": {
+    "image_tokens": 196,
+    "text_tokens": 0
+   },
+   "total_tokens": 286
+  },
+  "model_task": "e9c85afa-f314-4e6a-8160-d5eb5d7fd3fb",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 4000,
+  "model_started": 1795221665.47247,
+  "model_seconds": 111.7,
+  "model_bytes": 1904248,
+  "model_status": "success"
+ },
+ "apartment": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single modern mid-rise concrete apartment block, about nine storeys, with rows of balconies and a flat roof, standing upright, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 12.6,
+  "image_usage": {
+   "input_tokens": 87,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 87
+   },
+   "output_tokens": 439,
+   "output_tokens_details": {
+    "image_tokens": 439,
+    "text_tokens": 0
+   },
+   "total_tokens": 526
+  },
+  "model_task": "1e1232f0-135c-42f7-9ff1-20f29054d2d3",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 4000,
+  "model_started": 1795221661.673433,
+  "model_seconds": 109.1,
+  "model_bytes": 1291232,
+  "model_status": "success"
+ },
+ "factory": {
+  "image_model": "gpt-image-2",
+  "image_prompt": "a single nineteenth century red brick factory building with a saw-tooth roof and two tall smoking-style brick chimneys (no smoke), a loading yard in front, tabletop diorama miniature model, realistic proportions, hand-painted matte finish, clean readable shapes, warm natural colours, the whole object visible, three-quarter front view from slightly above, centered, plain white background, soft even studio lighting, no ground shadow, no base, no text",
+  "image_seconds": 15.0,
+  "image_usage": {
+   "input_tokens": 93,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 93
+   },
+   "output_tokens": 439,
+   "output_tokens_details": {
+    "image_tokens": 439,
+    "text_tokens": 0
+   },
+   "total_tokens": 532
+  },
+  "model_task": "47e8d1c9-2def-4784-9032-106d2162953c",
+  "tripo_version": "v2.5-20250123",
+  "face_limit": 6000,
+  "model_started": 1795221656.630031,
+  "model_seconds": 109.1,
+  "model_bytes": 1513856,
   "model_status": "success"
  }
 }

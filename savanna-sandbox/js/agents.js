@@ -16,18 +16,18 @@ function routeAround(walls, a, tx, tz) {
       const k = (aIn ? (inCorridor ? 3 : -3) : (inCorridor ? -3 : 3.5));
       return [w.x + gx * (w.r + k), w.z + gz * (w.r + k)];
     }
-    if (!aIn && da < w.r + 60) {
-      // would the straight line cut through the town?
+    if (!aIn && da < w.r + 70) {
+      // Would the straight line cut through the town? Then walk round the outside of the
+      // ring, a stretch at a time, on whichever side is shorter.
       const dx = tx - a.x, dz = tz - a.z, len2 = dx * dx + dz * dz;
       if (len2 > 1) {
         const u = clamp(((w.x - a.x) * dx + (w.z - a.z) * dz) / len2, 0, 1);
-        const px = a.x + dx * u, pz = a.z + dz * u;
-        let ox = px - w.x, oz = pz - w.z;
-        const od = Math.hypot(ox, oz);
-        if (od < w.r + 1.5 && u > 0.02 && u < 0.98) {
-          if (od < 0.01) { ox = -dz; oz = dx; }
-          const n = Math.hypot(ox, oz) || 1;
-          return [w.x + (ox / n) * (w.r + 5), w.z + (oz / n) * (w.r + 5)];
+        const od = Math.hypot(a.x + dx * u - w.x, a.z + dz * u - w.z);
+        if (od < w.r + 1.5 && u > 0) {
+          const ta = Math.atan2(a.z - w.z, a.x - w.x), tt = Math.atan2(tz - w.z, tx - w.x);
+          const side = angDiff(ta, tt) >= 0 ? 1 : -1;
+          const ang = ta + side * Math.min(0.7, 14 / da);
+          return [w.x + Math.cos(ang) * (w.r + 5), w.z + Math.sin(ang) * (w.r + 5)];
         }
       }
     }
